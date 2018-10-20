@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skyer.mapper.MenuMapper">
+
+    <!-- 通过id获取 -->
+    <select id="getById" resultMap="menuMap">
+        select * from t_menu where dbid = #{id}
+    </select>
+
+    <!-- 结果集映射 -->
+    <resultMap type="com.skyer.vo.Menu" id="menuMap">
+        <id column="dbid" property="id"/>
+        <result column="menu_code" property="menuCode"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="pid" property="pid"/>
+        <result column="sort" property="sort"/>
+        <result column="url" property="url"/>
+        <result column="iconCls" property="iconCls"/>
+        <result column="type" property="type"/>
+        <result column="create_id" property="createId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="lastModify_id" property="lastModifyId"/>
+        <result column="last_modify_time" property="lastModifyTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+</mapper>

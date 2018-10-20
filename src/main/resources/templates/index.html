@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>财务管理系统</title>
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="header"></div>
+
+    <div th:replace="left"></div>
+
+    <div class="layui-body">
+        <div style="padding: 15px;">
+            <iframe id="mainFrm" name="mainFrm" style="border: none;"></iframe>
+        </div>
+    </div>
+
+    <div th:replace="footer"></div>
+</div>
+
+<script th:src="@{/layui.all.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

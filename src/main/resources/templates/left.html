@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li data-name="" data-jump="" class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:" lay-tips="主页" lay-direction="2">
+                    <i class="layui-icon layui-icon-home"></i>
+                    <cite>主页</cite>
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="" data-jump="/" class="layui-this"><a href="javascript:" lay-href="/">控制台</a></dd>
+                    <dd data-name="homepage1" data-jump="home/homepage1"><a href="javascript:" lay-href="home/homepage1">主页一</a></dd>
+                    <dd data-name="homepage2" data-jump="home/homepage2"><a href="javascript:" lay-href="home/homepage2">主页二</a></dd>
+                </dl>
+            </li>
+            <li data-name="user" data-jump="" class="layui-nav-item">
+                <a href="javascript:" lay-tips="用户" lay-direction="2">
+                    <i class="layui-icon layui-icon-user"></i>
+                    <cite>用户</cite>
+                    <span class="layui-nav-more"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd data-name="user" data-jump="user/user/list"><a href="javascript:" lay-href="user/user/list">网站用户</a></dd>
+                    <dd data-name="administrators-list" data-jump="user/administrators/list"><a href="javascript:" lay-href="user/administrators/list">后台管理员</a></dd>
+                    <dd data-name="administrators-rule" data-jump="user/administrators/role"> <a href="javascript:" lay-href="user/administrators/role">角色管理</a></dd>
+                </dl>
+            </li>
+            <li data-name="get" data-jump="system/get" class="layui-nav-item ">
+                <a href="javascript:" lay-href="system/get" lay-tips="授权" lay-direction="2">
+                    <i class="layui-icon layui-icon-auz"></i>
+                    <cite>授权</cite>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

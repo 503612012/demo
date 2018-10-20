@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skyer.mapper.UserRoleMapper">
+
+    <!-- 通过用户ID查询 -->
+    <select id="getByUserId" resultMap="userRoleMap">
+        select * from t_user_role where user_id = #{userId}
+    </select>
+
+    <!-- 结果集映射 -->
+    <resultMap type="com.skyer.vo.UserRole" id="userRoleMap">
+        <id column="dbid" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+</mapper>

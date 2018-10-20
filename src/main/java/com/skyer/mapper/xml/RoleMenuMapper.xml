@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skyer.mapper.RoleMenuMapper">
+
+    <!-- 通过角色ID查询 -->
+    <select id="getByRoleId" resultMap="roleMenuMap">
+        select * from t_role_menu where role_id = #{roleId}
+    </select>
+
+    <!-- 结果集映射 -->
+    <resultMap type="com.skyer.vo.RoleMenu" id="roleMenuMap">
+        <id column="dbid" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="menu_id" property="menuId"/>
+    </resultMap>
+
+</mapper>

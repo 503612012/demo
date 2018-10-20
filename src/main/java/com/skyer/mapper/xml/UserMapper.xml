@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skyer.mapper.UserMapper">
+
+    <!-- 通过id获取 -->
+    <select id="getById" resultMap="userMap">
+        select * from t_user where dbid = #{id}
+    </select>
+
+    <!-- 分页获取用户 -->
+    <select id="getByPage" resultMap="userMap">
+        select * from t_user where `status` = 0
+        order by create_time desc limit #{index},#{pageSize}
+    </select>
+
+    <!-- 获取用户总数量 -->
+    <select id="getTotalNum" resultType="long">
+        select count(*) from t_user where `status` = 0
+    </select>
+
+    <!-- 通过用户名查询 -->
+    <select id="getByUserName" resultMap="userMap">
+        select * from t_user where user_name = #{userName}
+    </select>
+
+    <!-- 结果集映射 -->
+    <resultMap type="com.skyer.vo.User" id="userMap">
+        <id column="dbid" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="status" property="status"/>
+        <result column="gender" property="gender"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="lastModify_time" property="lastModifyTime"/>
+        <result column="lastModify_id" property="lastModifyId"/>
+    </resultMap>
+
+</mapper>
