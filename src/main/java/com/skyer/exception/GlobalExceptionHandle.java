@@ -27,6 +27,7 @@ public class GlobalExceptionHandle {
      */
     @ExceptionHandler(value = Exception.class)
     public void handleException(Exception e, HttpServletRequest request, HttpServletResponse resp) throws IOException {
+        e.printStackTrace();
         LOG.error(AppConst.ERROR_LOG_PREFIX + "请求地址：" + request.getRequestURL().toString());
         LOG.error(AppConst.ERROR_LOG_PREFIX + "请求方法：" + request.getMethod());
         LOG.error(AppConst.ERROR_LOG_PREFIX + "请求者IP：" + request.getRemoteAddr());

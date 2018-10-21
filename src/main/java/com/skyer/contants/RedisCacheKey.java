@@ -17,6 +17,8 @@ public class RedisCacheKey {
     public static final String GET_LOG_TOTAL_NUM = "getLogTotalNum";
 
     public static final String GET_MENU_BY_ID = "getMenuById_";
+    public static final String GET_MENU_BY_PID = "getMenuByPid_";
+    public static final String GET_MENU_TREE_BY_USERID = "getMenuTreeByUserId_";
 
     public static final String GET_USERROLE_BY_USERID = "getUserRoleByUserId_";
     public static final String GET_ROLEMENU_BY_ROLEID = "getRoleMenuByUserId_";

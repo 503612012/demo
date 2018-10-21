@@ -1,9 +1,9 @@
 package com.skyer.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.skyer.contants.AppConst;
 import com.skyer.enumerate.ResultEnum;
 import com.skyer.service.LogService;
+import com.skyer.service.MenuService;
 import com.skyer.service.UserService;
 import com.skyer.util.IPUtils;
 import com.skyer.vo.User;
@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +41,8 @@ public class SystemController extends BaseController {
     private LogService logService;
     @Resource
     private UserService userService;
+    @Resource
+    private MenuService menuService;
 
     /**
      * 默认页面(系统主页面)
@@ -111,17 +114,15 @@ public class SystemController extends BaseController {
      * 登出操作
      */
     @RequestMapping("/logout")
-    @ResponseBody
-    public Object logout(HttpServletRequest req) {
+    public String logout(HttpServletRequest req) {
         try {
             req.getSession().removeAttribute(AppConst.CURRENT_USER);
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
-            return super.success("登出成功！");
         } catch (Exception e) {
             LOG.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，错误信息：", e);
             e.printStackTrace();
         }
-        return super.fail(ResultEnum.UNKNOW_ERROR.getCode(), ResultEnum.UNKNOW_ERROR.getValue());
+        return "login";
     }
 
     /**
@@ -130,6 +131,22 @@ public class SystemController extends BaseController {
     @RequestMapping("/noauth")
     public String noauth() {
         return "noauth";
+    }
+
+    /**
+     * 获取当前登录用户的菜单
+     */
+    @RequestMapping("/getMenus")
+    @ResponseBody
+    public Object getMenus() {
+        try {
+            List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
+            return super.success(menus);
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "获取菜单出错，错误信息：" + e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.UNKNOW_ERROR.getCode(), ResultEnum.UNKNOW_ERROR.getValue());
     }
 
 }

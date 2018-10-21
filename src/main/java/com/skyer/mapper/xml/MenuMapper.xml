@@ -10,6 +10,11 @@
         select * from t_menu where dbid = #{id}
     </select>
 
+    <!-- 通过父ID获取 -->
+    <select id="getByPid" resultMap="menuMap">
+        select * from t_menu where pid = #{pid}
+    </select>
+
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.Menu" id="menuMap">
         <id column="dbid" property="id"/>
