@@ -57,7 +57,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/getByPage")
     @ResponseBody
-    @RequiresPermissions("A1_01")
+    @RequiresPermissions("A1_01dd")
     public Object getByPage(Integer pageNum, HttpServletRequest req) {
         try {
             Map<String, Object> result = new HashMap<>();

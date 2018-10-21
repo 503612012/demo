@@ -134,6 +134,14 @@ public class SystemController extends BaseController {
     }
 
     /**
+     * 去到错误页面
+     */
+    @RequestMapping("/err")
+    public String err() {
+        return "err";
+    }
+
+    /**
      * 获取当前登录用户的菜单
      */
     @RequestMapping("/getMenus")

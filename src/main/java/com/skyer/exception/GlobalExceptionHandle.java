@@ -38,7 +38,9 @@ public class GlobalExceptionHandle {
         }
         if (e instanceof UnauthorizedException) {
             resp.sendRedirect("/noauth");
+            return;
         }
+        resp.sendRedirect("/err");
     }
 
 }
