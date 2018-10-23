@@ -83,4 +83,11 @@ public interface CacheService {
      */
     boolean contains(String key);
 
+    /**
+     * 批量移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    void batchRemove(String key);
+
 }

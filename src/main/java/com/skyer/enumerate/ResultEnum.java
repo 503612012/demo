@@ -20,7 +20,8 @@ public enum ResultEnum {
     PASSWORD_WRONG(4002, "密码错误！"),
     USER_DISABLE(4003, "该用户已被禁用，请联系管理人员！"),
     SESSION_TIMEOUT(4004, "未登录或会话超时，请重新登录！"),
-    OTHER_LOGINED(4005, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！");
+    LOSE_LOGIN(4005, "已掉线，请重新登录！"),
+    OTHER_LOGINED(4006, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！");
 
     private Integer code;
     private String value;

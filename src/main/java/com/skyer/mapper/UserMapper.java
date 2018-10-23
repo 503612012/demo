@@ -25,12 +25,12 @@ public interface UserMapper {
      * @param index    偏移量
      * @param pageSize 每页显示数量
      */
-    List<User> getByPage(@Param("index") Integer index, @Param("pageSize") Integer pageSize);
+    List<User> getByPage(@Param("index") Integer index, @Param("pageSize") Integer pageSize, @Param("user") User user);
 
     /**
      * 获取用户总数量
      */
-    Long getTotalNum();
+    Long getTotalNum(@Param("user") User user);
 
     /**
      * 通过用户名查询
@@ -38,5 +38,10 @@ public interface UserMapper {
      * @param userName 用户名
      */
     User getByUserName(String userName);
+
+    /**
+     * 添加
+     */
+    void add(User user);
 
 }

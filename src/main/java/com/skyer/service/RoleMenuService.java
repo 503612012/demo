@@ -28,13 +28,13 @@ public class RoleMenuService {
      * @param roleId 角色ID
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
-        List<RoleMenu> list = cacheService.get(RedisCacheKey.GET_ROLEMENU_BY_ROLEID + roleId); // 先读取缓存
+        List<RoleMenu> list = cacheService.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = cacheService.get(RedisCacheKey.GET_ROLEMENU_BY_ROLEID + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = cacheService.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = roleMenuMapper.getByRoleId(roleId);
-                    cacheService.set(RedisCacheKey.GET_ROLEMENU_BY_ROLEID + roleId, list);
+                    cacheService.set(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId, list);
                 }
             }
         }

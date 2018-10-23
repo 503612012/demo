@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -174,6 +175,21 @@ public class CacheServiceImpl implements CacheService {
             result = AppConst.CACHE_MINUTE;
         }
         return result;
+    }
+
+    /**
+     * 批量移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    @Override
+    public void batchRemove(String key) {
+        Set<String> set = redisTemplate.keys(key + "*");
+        if (set != null) {
+            for (String item : set) {
+                redisTemplate.delete(item);
+            }
+        }
     }
 
 }

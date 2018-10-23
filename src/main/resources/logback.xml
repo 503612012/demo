@@ -10,10 +10,10 @@
     </appender>
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/skyer/log/skyer/demo_error.log</file>
+        <file>/Users/skyer/log/skyer/demo/demo_error.log</file>
         <!--<file>/usr/local/log/demo/demo/demo_error.log</file>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/skyer/log/skyer/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/Users/skyer/log/skyer/demo/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--<fileNamePattern>/usr/local/log/demo/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -27,10 +27,10 @@
     </appender>
 
     <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/skyer/log/skyer/demo_debug.log</file>
+        <file>/Users/skyer/log/skyer/demo/demo_debug.log</file>
         <!--<file>/usr/local/log/demo/demo_debug.log</file>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/skyer/log/skyer/demo_debug.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/Users/skyer/log/skyer/demo/demo_debug.log.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--<fileNamePattern>/usr/local/log/demo/demo_debug.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -44,10 +44,10 @@
     </appender>
 
     <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/skyer/log/skyer/demo_info.log</file>
+        <file>/Users/skyer/log/skyer/demo/demo_info.log</file>
         <!--<file>/usr/local/log/demo/demo_info.log</file>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/skyer/log/skyer/demo_info.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/Users/skyer/log/skyer/demo/demo_info.log.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--<fileNamePattern>/usr/local/log/demo/demo_info.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
             <maxHistory>180</maxHistory>
         </rollingPolicy>

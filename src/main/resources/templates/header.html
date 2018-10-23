@@ -1,4 +1,4 @@
-<div class="layui-header">
+<div class="layui-header" xmlns:th="http://www.thymeleaf.org">
     <div class="layui-logo">财务管理系统</div>
     <ul class="layui-nav layui-layout-left">
         <li class="layui-nav-item layadmin-flexible" lay-unselect="">
@@ -13,7 +13,7 @@
     <ul class="layui-nav layui-layout-right">
         <li class="layui-nav-item">
             <a href="javascript:">
-                <img src="http://t.cn/RCzsdCq" class="layui-nav-img">贤心
+                <img src="http://t.cn/RCzsdCq" class="layui-nav-img"><font th:text="${session.current_user.nickName}">dd</font>
             </a>
             <dl class="layui-nav-child">
                 <dd><a href="">基本资料</a></dd>

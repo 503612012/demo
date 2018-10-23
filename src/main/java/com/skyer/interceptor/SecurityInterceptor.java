@@ -65,6 +65,19 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         ServletContext application = req.getServletContext();
         @SuppressWarnings("unchecked")
         Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+        if (loginedMap == null) { // 可能是掉线了
+            String requestType = req.getHeader("X-Requested-With");
+            if ("XMLHttpRequest".equals(requestType)) { // ajax请求
+                ResultInfo<Object> resultInfo = new ResultInfo<>();
+                resultInfo.setCode(ResultEnum.LOSE_LOGIN.getCode());
+                resultInfo.setData(ResultEnum.LOSE_LOGIN.getValue());
+                resp.getWriter().write(JSONObject.toJSONString(resultInfo));
+                return false;
+            }
+            String param = URLEncoder.encode(ResultEnum.LOSE_LOGIN.getValue(), "UTF-8");
+            resp.sendRedirect(getDomain(req) + "/login?errorMsg=" + param);
+            return false;
+        }
         String loginedUserSessionId = loginedMap.get(user.getUserName());
         String mySessionId = req.getSession().getId();
 

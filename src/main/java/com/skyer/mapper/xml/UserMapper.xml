@@ -12,19 +12,53 @@
 
     <!-- 分页获取用户 -->
     <select id="getByPage" resultMap="userMap">
-        select * from t_user where `status` = 0
-        order by create_time desc limit #{index},#{pageSize}
+        select * from t_user
+        <where>
+            <if test="user.id != null and user.id != ''">
+                and dbid = #{user.id}
+            </if>
+            <if test="user.userName != null and user.userName != ''">
+                and user_name like concat('%', #{user.userName}, '%')
+            </if>
+            <if test="user.nickName != null and user.nickName != ''">
+                and nick_name like concat('%', #{user.nickName}, '%')
+            </if>
+            <if test="user.phone != null and user.phone != ''">
+                and phone like concat('%', #{user.phone}, '%')
+            </if>
+        </where>
+        limit #{index},#{pageSize}
     </select>
 
     <!-- 获取用户总数量 -->
     <select id="getTotalNum" resultType="long">
-        select count(*) from t_user where `status` = 0
+        select count(*) from t_user
+        <where>
+            <if test="user.id != null and user.id != ''">
+                and dbid = #{user.id}
+            </if>
+            <if test="user.userName != null and user.userName != ''">
+                and user_name like concat('%', #{user.userName}, '%')
+            </if>
+            <if test="user.nickName != null and user.nickName != ''">
+                and nick_name like concat('%', #{user.nickName}, '%')
+            </if>
+            <if test="user.phone != null and user.phone != ''">
+                and phone like concat('%', #{user.phone}, '%')
+            </if>
+        </where>
     </select>
 
     <!-- 通过用户名查询 -->
     <select id="getByUserName" resultMap="userMap">
         select * from t_user where user_name = #{userName}
     </select>
+
+    <!-- 添加用户 -->
+    <insert id="add">
+        insert into t_user (dbid, user_name, password, nick_name, age, email, phone, status, gender, create_time, create_id, last_modify_time, last_modify_id)
+        values (null, #{userName}, #{password}, #{nickName}, #{age}, #{email}, #{phone}, 0, #{gender}, #{createTime}, #{createId}, #{lastModifyTime}, #{lastModifyId})
+    </insert>
 
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.User" id="userMap">
@@ -39,8 +73,8 @@
         <result column="gender" property="gender"/>
         <result column="create_time" property="createTime"/>
         <result column="create_id" property="createId"/>
-        <result column="lastModify_time" property="lastModifyTime"/>
-        <result column="lastModify_id" property="lastModifyId"/>
+        <result column="last_modify_time" property="lastModifyTime"/>
+        <result column="last_modify_id" property="lastModifyId"/>
     </resultMap>
 
 </mapper>

@@ -9,15 +9,15 @@ $(function () {
         for (var i = 0; i < data.length; i++) {
             html += '<li data-name="" data-jump="" class="layui-nav-item ' + (i == 0 ? 'layui-nav-itemed' : '') + '">';
             html += '<a href="javascript:" lay-tips="主页" lay-direction="2" class="level-one-menu">';
-            html += '<i class="layui-icon layui-icon-home"></i>';
-            html += '<cite>' + data[i].menu.menuName + '</cite>';
+            html += '<i class="layui-icon ' + data[i].menu.iconCls + '"></i>';
+            html += '<cite>&emsp;' + data[i].menu.menuName + '</cite>';
             if (data[i].children.length > 0) {
                 html += '<span class="layui-nav-more"></span>';
             }
             html += '</a>';
             for (var j = 0; j < data[i].children.length; j++) {
                 html += '<dl class="layui-nav-child">';
-                html += '<dd data-name="" data-jump="/" class="level-two-menu"><a href="javascript:" lay-href="/">' + data[i].children[j].menuName + '</a></dd>';
+                html += '<dd data-name="" data-jump="/" class="level-two-menu ' + ((i == 0 && j == 0) == true ? 'layui-this' : '') + '"><a href="' + data[i].children[j].url + '" target="mainFrm">' + data[i].children[j].menuName + '</a></dd>';
                 html += '</dl>';
             }
             html += '</li>';

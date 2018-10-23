@@ -2,14 +2,9 @@ package com.skyer.realm;
 
 import com.skyer.contants.AppConst;
 import com.skyer.enumerate.ResultEnum;
-import com.skyer.mapper.MenuMapper;
-import com.skyer.service.RoleMenuService;
-import com.skyer.service.UserRoleService;
+import com.skyer.service.MenuService;
 import com.skyer.service.UserService;
-import com.skyer.vo.Menu;
-import com.skyer.vo.RoleMenu;
 import com.skyer.vo.User;
-import com.skyer.vo.UserRole;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -19,19 +14,14 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Resource
-    private MenuMapper menuMapper;
+    private MenuService menuService;
     @Resource
     private UserService userService;
-    @Resource
-    private UserRoleService userRoleService;
-    @Resource
-    private RoleMenuService roleMenuService;
 
     /**
      * 授权
@@ -40,15 +30,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         User user = (User) principals.getPrimaryPrincipal();
-        List<String> permissions = new ArrayList<>();
-        List<UserRole> roles = userRoleService.getByUserId(user.getId());
-        for (UserRole userRole : roles) {
-            List<RoleMenu> menus = roleMenuService.getByRoleId(userRole.getRoleId());
-            for (RoleMenu roleMenu : menus) {
-                Menu menu = menuMapper.getById(roleMenu.getMenuId());
-                permissions.add(menu.getMenuCode());
-            }
-        }
+        List<String> permissions = menuService.getAllMenuCodeByUserId(user.getId());
         authorizationInfo.addStringPermissions(permissions);
         return authorizationInfo;
     }
