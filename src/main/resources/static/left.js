@@ -1,5 +1,5 @@
 //@sourceURL=/left.js
-$(function () {
+$(function() {
 
     /**
      * 填充菜单

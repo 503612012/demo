@@ -1,6 +1,5 @@
 package com.skyer.service;
 
-import com.skyer.cache.CacheService;
 import com.skyer.contants.AppConst;
 import com.skyer.contants.RedisCacheKey;
 import com.skyer.mapper.UserMapper;
@@ -8,6 +7,7 @@ import com.skyer.vo.User;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,8 +22,6 @@ public class UserService extends BaseService {
 
     @Resource
     private UserMapper userMapper;
-    @Resource
-    private CacheService cacheService;
 
     /**
      * 通过id获取
@@ -31,13 +29,13 @@ public class UserService extends BaseService {
      * @param id 用户ID
      */
     public User getById(Integer id) {
-        User user = cacheService.get(RedisCacheKey.USER_GET_BY_ID + id); // 先读取缓存
+        User user = super.get(RedisCacheKey.USER_GET_BY_ID + id); // 先读取缓存
         if (user == null) { // double check
             synchronized (this) {
-                user = cacheService.get(RedisCacheKey.USER_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                user = super.get(RedisCacheKey.USER_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (user == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     user = userMapper.getById(id);
-                    cacheService.set(RedisCacheKey.USER_GET_BY_ID + id, user);
+                    super.set(RedisCacheKey.USER_GET_BY_ID + id, user);
                 }
             }
         }
@@ -51,13 +49,13 @@ public class UserService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        List<User> list = cacheService.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + user.toString()); // 先读取缓存
+        List<User> list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + user.toString()); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = cacheService.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = userMapper.getByPage((pageNum - 1) * pageSize, pageSize, user);
-                    cacheService.set(RedisCacheKey.USER_GET_BY_PAGE + pageNum + user.toString(), list);
+                    super.set(RedisCacheKey.USER_GET_BY_PAGE + pageNum + user.toString(), list);
                 }
             }
         }
@@ -68,13 +66,13 @@ public class UserService extends BaseService {
      * 获取用户总数量
      */
     public Long getTotalNum(User user) {
-        Long totalNum = cacheService.get(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString()); // 先读取缓存
+        Long totalNum = super.get(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString()); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = cacheService.get(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = userMapper.getTotalNum(user);
-                    cacheService.set(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString(), totalNum);
+                    super.set(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString(), totalNum);
                 }
             }
         }
@@ -87,13 +85,13 @@ public class UserService extends BaseService {
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
-        User user = cacheService.get(RedisCacheKey.USER_GET_BY_USERNAME + userName); // 先读取缓存
+        User user = super.get(RedisCacheKey.USER_GET_BY_USERNAME + userName); // 先读取缓存
         if (user == null) { // double check
             synchronized (this) {
-                user = cacheService.get(RedisCacheKey.USER_GET_BY_USERNAME + userName); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                user = super.get(RedisCacheKey.USER_GET_BY_USERNAME + userName); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (user == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     user = userMapper.getByUserName(userName);
-                    cacheService.set(RedisCacheKey.USER_GET_BY_USERNAME + userName, user);
+                    super.set(RedisCacheKey.USER_GET_BY_USERNAME + userName, user);
                 }
             }
         }
@@ -104,11 +102,17 @@ public class UserService extends BaseService {
      * 添加用户
      */
     public void add(User user) {
-        userMapper.add(user);
-        // 删除用户相关的缓存
-        cacheService.batchRemove(RedisCacheKey.USER_PREFIX);
+        user.setCreateId(super.getCurrentUser().getId());
+        user.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        user.setLastModifyId(super.getCurrentUser().getId());
+        user.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
+        user.setPassword(md5.toString());
+        // 移除用户相关的缓存
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
         // 记录日志
         super.addLog("添加用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        userMapper.add(user);
     }
 
     /**
@@ -121,17 +125,19 @@ public class UserService extends BaseService {
             userInDb.setNickName(user.getNickName());
             content.append("昵称由[").append(userInDb.getNickName()).append("]改为[").append(user.getNickName()).append("]，");
         }
-        if (!user.getPassword().equals(userInDb.getPassword())) {
-            Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
-            userInDb.setPassword(md5.toString());
-            content.append("密码修改了，");
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            if (!user.getPassword().equals(userInDb.getPassword())) {
+                Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
+                userInDb.setPassword(md5.toString());
+                content.append("密码修改了，");
+            }
         }
         if (user.getStatus() == null) {
             user.setStatus(0);
         }
         if (!user.getStatus().equals(userInDb.getStatus())) {
             userInDb.setStatus(user.getStatus());
-            content.append("状态由[").append(userInDb.getStatus() == 0 ? "正常" : "禁用").append("]改为[").append(user.getStatus() == 0 ? "正常" : "禁用").append("]，");
+            content.append("状态由[").append(userInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(user.getStatus() == 0 ? "正常" : "锁定").append("]，");
         }
         if (!user.getAge().equals(userInDb.getAge())) {
             userInDb.setAge(user.getAge());
@@ -154,11 +160,25 @@ public class UserService extends BaseService {
             str = str.substring(0, str.length() - 1);
             userInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             userInDb.setLastModifyId(super.getCurrentUser().getId());
+            // 移除用户相关的缓存
+            super.batchRemove(RedisCacheKey.USER_PREFIX);
+            // 记录日志
             super.addLog("修改用户", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
             userMapper.update(userInDb);
-            // 移除缓存
-            cacheService.batchRemove(RedisCacheKey.USER_PREFIX);
         }
+    }
+
+    /**
+     * `
+     * 删除用户
+     */
+    public void delete(Integer id) {
+        User user = this.getById(id);
+        // 移除用户相关的缓存
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
+        // 记录日志
+        super.addLog("删除用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        userMapper.delete(id);
     }
 
 }

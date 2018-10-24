@@ -78,6 +78,11 @@
 
     </update>
 
+    <!-- 删除用户 -->
+    <delete id="delete">
+        delete from t_user where dbid = #{id}
+    </delete>
+
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.User" id="userMap">
         <id column="dbid" property="id"/>

@@ -1,5 +1,6 @@
 package com.skyer.service;
 
+import com.skyer.cache.CacheService;
 import com.skyer.contants.AppConst;
 import com.skyer.util.IPUtils;
 import com.skyer.vo.User;
@@ -20,6 +21,8 @@ public class BaseService {
 
     @Resource
     private LogService logService;
+    @Resource
+    private CacheService cacheService;
 
     /**
      * 获取当前登录人信息
@@ -44,6 +47,27 @@ public class BaseService {
      */
     public void addLog(String title, String content, Integer operatorId, String operatorIp) {
         logService.addLog(title, content, operatorId, operatorIp);
+    }
+
+    /**
+     * 读缓存
+     */
+    public <T> T get(String key) {
+        return cacheService.get(key);
+    }
+
+    /**
+     * 写缓存
+     */
+    public <T> void set(String key, T obj) {
+        cacheService.set(key, obj);
+    }
+
+    /**
+     * 批量移除缓存
+     */
+    public void batchRemove(String key) {
+        cacheService.batchRemove(key);
     }
 
 }

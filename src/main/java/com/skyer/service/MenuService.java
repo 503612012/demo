@@ -1,6 +1,5 @@
 package com.skyer.service;
 
-import com.skyer.cache.CacheService;
 import com.skyer.contants.RedisCacheKey;
 import com.skyer.mapper.MenuMapper;
 import com.skyer.vo.Menu;
@@ -25,8 +24,6 @@ public class MenuService extends BaseService {
     @Resource
     private MenuMapper menuMapper;
     @Resource
-    private CacheService cacheService;
-    @Resource
     private RoleMenuService roleMenuService;
     @Resource
     private UserRoleService userRoleService;
@@ -37,13 +34,13 @@ public class MenuService extends BaseService {
      * @param id 菜单ID
      */
     public Menu getById(Integer id) {
-        Menu menu = cacheService.get(RedisCacheKey.MENU_GET_BY_ID + id); // 先读取缓存
+        Menu menu = super.get(RedisCacheKey.MENU_GET_BY_ID + id); // 先读取缓存
         if (menu == null) { // double check
             synchronized (this) {
-                menu = cacheService.get(RedisCacheKey.MENU_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                menu = super.get(RedisCacheKey.MENU_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (menu == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     menu = menuMapper.getById(id);
-                    cacheService.set(RedisCacheKey.MENU_GET_BY_ID + id, menu);
+                    super.set(RedisCacheKey.MENU_GET_BY_ID + id, menu);
                 }
             }
         }
@@ -56,10 +53,10 @@ public class MenuService extends BaseService {
      * @param userId 用户ID
      */
     public List<Map<String, Object>> getMenuTreeByUserId(Integer userId) {
-        List<Map<String, Object>> list = cacheService.get(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId); // 先读取缓存
+        List<Map<String, Object>> list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = cacheService.get(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     List<List<RoleMenu>> menus = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
@@ -68,7 +65,7 @@ public class MenuService extends BaseService {
                         menus.add(item);
                     }
                     list = installMenu(menus);
-                    cacheService.set(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId, list);
+                    super.set(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId, list);
                 }
             }
         }
@@ -108,10 +105,10 @@ public class MenuService extends BaseService {
      * @param userId 用户ID
      */
     public List<String> getAllMenuCodeByUserId(Integer userId) {
-        List<String> list = cacheService.get(RedisCacheKey.USER_MENU_CODES + userId); // 先读取缓存
+        List<String> list = super.get(RedisCacheKey.USER_MENU_CODES + userId); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = cacheService.get(RedisCacheKey.USER_MENU_CODES + userId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.USER_MENU_CODES + userId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
@@ -124,7 +121,7 @@ public class MenuService extends BaseService {
                             }
                         }
                     }
-                    cacheService.set(RedisCacheKey.USER_MENU_CODES + userId, list);
+                    super.set(RedisCacheKey.USER_MENU_CODES + userId, list);
                 }
             }
         }

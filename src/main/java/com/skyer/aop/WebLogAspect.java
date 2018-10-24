@@ -33,8 +33,7 @@ public class WebLogAspect {
     public void doBefore() {
         // 获取请求
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        // FIXME: 2018/7/14 此处的日志应该放到redis中，并设置有效时间
+        @SuppressWarnings("ConstantConditions") HttpServletRequest request = attributes.getRequest();
         // 记录请求内容
         LOG.info("请求地址：" + request.getRequestURL().toString());
         LOG.info("请求方法：" + request.getMethod());

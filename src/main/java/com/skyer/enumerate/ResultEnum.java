@@ -8,6 +8,9 @@ package com.skyer.enumerate;
 public enum ResultEnum {
 
     SUCCESS(200, "操作成功！"),
+    INSERT_SUCCESS(200, "添加成功！"),
+    DELETE_SUCCESS(200, "删除成功！"),
+    UPDATE_SUCCESS(200, "修改成功！"),
 
     UNKNOW_ERROR(3001, "未知错误！"),
 
@@ -18,7 +21,7 @@ public enum ResultEnum {
 
     NO_THIS_USER(4001, "该用户不存在！"),
     PASSWORD_WRONG(4002, "密码错误！"),
-    USER_DISABLE(4003, "该用户已被禁用，请联系管理人员！"),
+    USER_DISABLE(4003, "该用户已被锁定，请联系管理人员！"),
     SESSION_TIMEOUT(4004, "未登录或会话超时，请重新登录！"),
     LOSE_LOGIN(4005, "已掉线，请重新登录！"),
     OTHER_LOGINED(4006, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！");

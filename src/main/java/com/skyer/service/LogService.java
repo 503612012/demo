@@ -1,6 +1,5 @@
 package com.skyer.service;
 
-import com.skyer.cache.CacheService;
 import com.skyer.contants.RedisCacheKey;
 import com.skyer.mapper.LogMapper;
 import com.skyer.vo.Log;
@@ -20,8 +19,6 @@ public class LogService extends BaseService {
 
     @Resource
     private LogMapper logMapper;
-    @Resource
-    private CacheService cacheService;
 
     /**
      * 通过id获取
@@ -29,13 +26,13 @@ public class LogService extends BaseService {
      * @param id 日志ID
      */
     public Log getById(Integer id) {
-        Log log = cacheService.get(RedisCacheKey.LOG_GET_BY_ID + id); // 先读取缓存
+        Log log = super.get(RedisCacheKey.LOG_GET_BY_ID + id); // 先读取缓存
         if (log == null) { // double check
             synchronized (this) {
-                log = cacheService.get(RedisCacheKey.LOG_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                log = super.get(RedisCacheKey.LOG_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (log == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     log = logMapper.getById(id);
-                    cacheService.set(RedisCacheKey.LOG_GET_BY_ID + id, log);
+                    super.set(RedisCacheKey.LOG_GET_BY_ID + id, log);
                 }
             }
         }
@@ -49,13 +46,13 @@ public class LogService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize) {
-        List<Log> list = cacheService.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum); // 先读取缓存
+        List<Log> list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = cacheService.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = logMapper.getByPage((pageNum - 1) * pageSize, pageSize);
-                    cacheService.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum, list);
+                    super.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum, list);
                 }
             }
         }
@@ -66,13 +63,13 @@ public class LogService extends BaseService {
      * 获取日志总数量
      */
     public Long getTotalNum() {
-        Long totalNum = cacheService.get(RedisCacheKey.LOG_GET_TOTAL_NUM); // 先读取缓存
+        Long totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = cacheService.get(RedisCacheKey.LOG_GET_TOTAL_NUM); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = logMapper.getTotalNum();
-                    cacheService.set(RedisCacheKey.LOG_GET_TOTAL_NUM, totalNum);
+                    super.set(RedisCacheKey.LOG_GET_TOTAL_NUM, totalNum);
                 }
             }
         }
@@ -85,7 +82,7 @@ public class LogService extends BaseService {
     public void add(Log log) {
         logMapper.add(log);
         // 清理缓存
-        cacheService.batchRemove(RedisCacheKey.LOG_PREFIX);
+        super.batchRemove(RedisCacheKey.LOG_PREFIX);
     }
 
     /**

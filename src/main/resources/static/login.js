@@ -1,5 +1,5 @@
 //@sourceURL=/login.js
-$(function () {
+$(function() {
 
     /**
      * 绑定记住我勾选事件

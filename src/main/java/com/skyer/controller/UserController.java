@@ -6,8 +6,6 @@ import com.skyer.enumerate.ResultEnum;
 import com.skyer.service.UserService;
 import com.skyer.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -93,21 +91,24 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 添加用户
+     * 去到添加用户页面
      */
     @RequestMapping("/add")
     @RequiresPermissions("A1_01_01")
+    public String add() {
+        return "user/add";
+    }
+
+    /**
+     * 添加用户
+     */
+    @RequestMapping("/doAdd")
+    @RequiresPermissions("A1_01_01")
     @ResponseBody
-    public Object add(User user) {
+    public Object doAdd(User user) {
         try {
-            user.setCreateId(super.getCurrentUser().getId());
-            user.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-            user.setLastModifyId(super.getCurrentUser().getId());
-            user.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-            Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
-            user.setPassword(md5.toString());
             userService.add(user);
-            return super.success("添加成功！");
+            return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
             LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[user: {}]", user.toString());
             LOG.error(AppConst.ERROR_LOG_PREFIX + "添加用户出错，错误信息：", e);
@@ -139,16 +140,59 @@ public class UserController extends BaseController {
     /**
      * 修改用户
      */
-    @RequestMapping("doUpdate")
+    @RequestMapping("/doUpdate")
     @RequiresPermissions("A1_01_02")
     @ResponseBody
     public Object doUpdate(User user) {
         try {
             userService.update(user);
-            return super.success("修改成功！");
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
             LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[user: {}]", user.toString());
             LOG.error(AppConst.ERROR_LOG_PREFIX + "修改用户出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id 用户ID
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions("A1_01_03")
+    @ResponseBody
+    public Object delete(Integer id) {
+        try {
+            userService.delete(id);
+            return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "删除用户出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
+    }
+
+    /**
+     * 修改用户状态
+     *
+     * @param userId 用户ID
+     * @param status 状态编码
+     */
+    @RequestMapping("/updateStatus")
+    @RequiresPermissions("A1_01_04")
+    @ResponseBody
+    public Object updateStatus(Integer userId, Integer status) {
+        try {
+            User user = userService.getById(userId);
+            user.setStatus(status);
+            userService.update(user);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[userId: {}, status: {}]", userId, status);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "修改用户状态出错，错误信息：", e);
             e.printStackTrace();
         }
         return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
