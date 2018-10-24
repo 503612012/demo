@@ -15,7 +15,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
-public class UserRoleService {
+public class UserRoleService extends BaseService {
 
     @Resource
     private CacheService cacheService;

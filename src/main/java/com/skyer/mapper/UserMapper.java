@@ -44,4 +44,9 @@ public interface UserMapper {
      */
     void add(User user);
 
+    /**
+     * 修改
+     */
+    void update(User userInDb);
+
 }

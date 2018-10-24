@@ -20,7 +20,7 @@ import java.util.Map;
  * @author SKYER
  */
 @Service
-public class MenuService {
+public class MenuService extends BaseService {
 
     @Resource
     private MenuMapper menuMapper;

@@ -1,9 +1,12 @@
 package com.skyer.service;
 
 import com.skyer.cache.CacheService;
+import com.skyer.contants.AppConst;
 import com.skyer.contants.RedisCacheKey;
 import com.skyer.mapper.UserMapper;
 import com.skyer.vo.User;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,7 +18,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
-public class UserService {
+public class UserService extends BaseService {
 
     @Resource
     private UserMapper userMapper;
@@ -102,7 +105,60 @@ public class UserService {
      */
     public void add(User user) {
         userMapper.add(user);
+        // 删除用户相关的缓存
         cacheService.batchRemove(RedisCacheKey.USER_PREFIX);
+        // 记录日志
+        super.addLog("添加用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+    }
+
+    /**
+     * 修改用户
+     */
+    public void update(User user) {
+        User userInDb = this.getById(user.getId());
+        StringBuilder content = new StringBuilder();
+        if (!user.getNickName().equals(userInDb.getNickName())) {
+            userInDb.setNickName(user.getNickName());
+            content.append("昵称由[").append(userInDb.getNickName()).append("]改为[").append(user.getNickName()).append("]，");
+        }
+        if (!user.getPassword().equals(userInDb.getPassword())) {
+            Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
+            userInDb.setPassword(md5.toString());
+            content.append("密码修改了，");
+        }
+        if (user.getStatus() == null) {
+            user.setStatus(0);
+        }
+        if (!user.getStatus().equals(userInDb.getStatus())) {
+            userInDb.setStatus(user.getStatus());
+            content.append("状态由[").append(userInDb.getStatus() == 0 ? "正常" : "禁用").append("]改为[").append(user.getStatus() == 0 ? "正常" : "禁用").append("]，");
+        }
+        if (!user.getAge().equals(userInDb.getAge())) {
+            userInDb.setAge(user.getAge());
+            content.append("年龄由[").append(userInDb.getAge()).append("]改为[").append(user.getAge()).append("]，");
+        }
+        if (!user.getEmail().equals(userInDb.getEmail())) {
+            userInDb.setEmail(user.getEmail());
+            content.append("邮箱由[").append(userInDb.getEmail()).append("]改为[").append(user.getEmail()).append("]，");
+        }
+        if (!user.getGender().equals(userInDb.getGender())) {
+            userInDb.setGender(user.getGender());
+            content.append("性别由[").append(userInDb.getGender() == 1 ? "男" : "女").append("]改为[").append(user.getGender() == 1 ? "男" : "女").append("]，");
+        }
+        if (!user.getPhone().equals(userInDb.getPhone())) {
+            userInDb.setPhone(user.getPhone());
+            content.append("手机号由[").append(userInDb.getPhone()).append("]改为[").append(user.getPhone()).append("]，");
+        }
+        String str = content.toString();
+        if (str.length() > 0) {
+            str = str.substring(0, str.length() - 1);
+            userInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+            userInDb.setLastModifyId(super.getCurrentUser().getId());
+            super.addLog("修改用户", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
+            userMapper.update(userInDb);
+            // 移除缓存
+            cacheService.batchRemove(RedisCacheKey.USER_PREFIX);
+        }
     }
 
 }

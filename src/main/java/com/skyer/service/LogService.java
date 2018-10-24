@@ -16,7 +16,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
-public class LogService {
+public class LogService extends BaseService {
 
     @Resource
     private LogMapper logMapper;

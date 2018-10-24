@@ -93,13 +93,13 @@ public class SystemController extends BaseController {
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
-                logService.addLog("登录系统！", "失败[" + ResultEnum.NO_THIS_USER + "]", 0, IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
             } else if (e instanceof IncorrectCredentialsException) {
-                logService.addLog("登录系统！", "失败[" + ResultEnum.PASSWORD_WRONG + "]", userInDb.getId(), IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
             } else if (e instanceof LockedAccountException) {
-                logService.addLog("登录系统！", "失败[" + ResultEnum.USER_DISABLE + "]", userInDb.getId(), IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
                 LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[userName: {}, pwd: {}]", userName, pwd);

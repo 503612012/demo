@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,6 +36,7 @@ public class UserController extends BaseController {
      * 去到用户管理页面
      */
     @RequestMapping("/index")
+    @RequiresPermissions("A1_01")
     public String index() {
         return "user/user";
     }
@@ -61,8 +63,8 @@ public class UserController extends BaseController {
     /**
      * 分页获取用户
      *
-     * @param page     页码
-     * @param limit    每页显示数量
+     * @param page  页码
+     * @param limit 每页显示数量
      */
     @RequestMapping("/getByPage")
     @RequiresPermissions("A1_01")
@@ -107,11 +109,49 @@ public class UserController extends BaseController {
             userService.add(user);
             return super.success("添加成功！");
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参: {}", user.toString());
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[user: {}]", user.toString());
             LOG.error(AppConst.ERROR_LOG_PREFIX + "添加用户出错，错误信息：", e);
             e.printStackTrace();
         }
         return super.fail(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue());
+    }
+
+    /**
+     * 去到用户更新页面
+     *
+     * @param id 用户ID
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions("A1_01_02")
+    public String update(Integer id, Model model) {
+        try {
+            User user = userService.getById(id);
+            model.addAttribute("user", user);
+            return "/user/update";
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "去到用户修改页面出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return "err";
+    }
+
+    /**
+     * 修改用户
+     */
+    @RequestMapping("doUpdate")
+    @RequiresPermissions("A1_01_02")
+    @ResponseBody
+    public Object doUpdate(User user) {
+        try {
+            userService.update(user);
+            return super.success("修改成功！");
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[user: {}]", user.toString());
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "修改用户出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
 }

@@ -28,7 +28,7 @@ $(function() {
                 , {field: 'createName', title: '创建人'}
                 , {field: 'lastModifyTime', title: '最后修改时间', sort: true}
                 , {field: 'lastModifyName', title: '最后修改人'}
-                , {field: 'status', title: '状态', templet: '#userStatusCheckbox', unresize: true}
+                , {field: 'status', title: '状态', templet: '#userStatusCheckbox', unresize: true, editable: false}
                 , {fixed: 'right', title: '操作', toolbar: '#userListBar'}
             ]]
             , page: true
@@ -77,7 +77,7 @@ $(function() {
                     layer.msg('删除的操作');
                 });
             } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                window.parent.mainFrm.location.href= "/user/update?id=" + data.id;
             }
         });
     });
