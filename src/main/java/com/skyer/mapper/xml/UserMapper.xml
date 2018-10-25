@@ -14,9 +14,6 @@
     <select id="getByPage" resultMap="userMap">
         select * from t_user
         <where>
-            <if test="user.id != null and user.id != ''">
-                and dbid = #{user.id}
-            </if>
             <if test="user.userName != null and user.userName != ''">
                 and user_name like concat('%', #{user.userName}, '%')
             </if>
@@ -34,9 +31,6 @@
     <select id="getTotalNum" resultType="long">
         select count(*) from t_user
         <where>
-            <if test="user.id != null and user.id != ''">
-                and dbid = #{user.id}
-            </if>
             <if test="user.userName != null and user.userName != ''">
                 and user_name like concat('%', #{user.userName}, '%')
             </if>

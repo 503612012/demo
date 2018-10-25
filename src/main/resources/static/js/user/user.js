@@ -8,7 +8,6 @@ layui.use('table', function() {
      * 重新加载表格
      */
     var reload = function() {
-        var userReload = $('#userReload');
         var nickNameReload = $('#nickNameReload');
         var userNameReload = $('#userNameReload');
         var phoneReload = $('#phoneReload');
@@ -18,7 +17,6 @@ layui.use('table', function() {
                 curr: 1 // 重新从第 1 页开始
             }
             , where: {
-                id: userReload.val(),
                 nickName: nickNameReload.val(),
                 userName: userNameReload.val(),
                 phone: phoneReload.val()
@@ -34,8 +32,7 @@ layui.use('table', function() {
         , title: '用户数据表'
         , cellMinWidth: 80
         , cols: [[
-            {field: 'id', title: 'ID', sort: true}
-            , {field: 'userName', title: '用户名', sort: true}
+            {field: 'userName', title: '用户名', sort: true}
             , {field: 'nickName', title: '昵称'}
             , {field: 'age', title: '年龄', sort: true}
             , {field: 'email', title: '邮箱'}
@@ -68,8 +65,9 @@ layui.use('table', function() {
     };
 
     $('.userTable .layui-btn').on('click', function() {
-        var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
+        // var type = $(this).data('type');
+        // active[type] ? active[type].call(this) : '';
+        reload();
     });
 
     /**
@@ -177,10 +175,7 @@ layui.use('table', function() {
     table.on('toolbar(user-list)', function(obj) {
         switch (obj.event) {
             case 'user-add-btn':
-                // TODO 添加用户的功能还没有编写
-                alert("tt");
-                var data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+                window.parent.mainFrm.location.href = "/user/add";
                 break;
         }
     });
