@@ -9,9 +9,9 @@ $(function() {
     });
 
     /**
-     * 绑定登录按钮点击事件
+     * 登录操作
      */
-    $("#login-submit").on("click", function() {
+    function doLogin() {
         var userName = $("input[name=userName]").val();
         var password = $("input[name=password]").val();
         var vercode = $("input[name=vercode]").val();
@@ -38,6 +38,20 @@ $(function() {
                 window.location.href = "/";
             }
         });
+    }
+
+    document.onkeydown = function(event) {
+        var e = event || window.event;
+        if (e && e.keyCode == 13) { //回车键的键值为13
+            $("#login-submit").click();
+        }
+    };
+
+    /**
+     * 绑定登录按钮点击事件
+     */
+    $("#login-submit").on("click", function() {
+        doLogin();
     });
 
 });
