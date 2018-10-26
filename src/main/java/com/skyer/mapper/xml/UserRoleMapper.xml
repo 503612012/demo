@@ -10,6 +10,26 @@
         select * from t_user_role where user_id = #{userId}
     </select>
 
+    <!-- 通过角色ID获取 -->
+    <select id="getByRoleId" resultMap="userRoleMap">
+        select * from t_user_role where role_id = #{roleId}
+    </select>
+
+    <!-- 通过用户ID和角色ID查询 -->
+    <select id="getByUserIdAndRoleId" resultMap="userRoleMap">
+        select * from t_user_role where user_id = #{userId} and role_id = #{roleId}
+    </select>
+
+    <!-- 通过用户ID删除 -->
+    <delete id="deleteByUserId">
+        delete from t_user_role where user_id = #{userId}
+    </delete>
+
+    <!-- 添加 -->
+    <insert id="add">
+        insert into t_user_role (dbid, user_id, role_id) values (null, #{userId}, #{roleId})
+    </insert>
+
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.UserRole" id="userRoleMap">
         <id column="dbid" property="id"/>

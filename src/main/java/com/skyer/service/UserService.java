@@ -1,15 +1,19 @@
 package com.skyer.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.skyer.contants.AppConst;
 import com.skyer.contants.RedisCacheKey;
 import com.skyer.mapper.UserMapper;
+import com.skyer.vo.Role;
 import com.skyer.vo.User;
+import com.skyer.vo.UserRole;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +26,10 @@ public class UserService extends BaseService {
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private UserRoleService userRoleService;
 
     /**
      * 通过id获取
@@ -122,8 +130,8 @@ public class UserService extends BaseService {
         User userInDb = this.getById(user.getId());
         StringBuilder content = new StringBuilder();
         if (!user.getNickName().equals(userInDb.getNickName())) {
-            userInDb.setNickName(user.getNickName());
             content.append("昵称由[").append(userInDb.getNickName()).append("]改为[").append(user.getNickName()).append("]，");
+            userInDb.setNickName(user.getNickName());
         }
         if (!StringUtils.isEmpty(user.getPassword())) {
             if (!user.getPassword().equals(userInDb.getPassword())) {
@@ -136,24 +144,24 @@ public class UserService extends BaseService {
             user.setStatus(0);
         }
         if (!user.getStatus().equals(userInDb.getStatus())) {
-            userInDb.setStatus(user.getStatus());
             content.append("状态由[").append(userInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(user.getStatus() == 0 ? "正常" : "锁定").append("]，");
+            userInDb.setStatus(user.getStatus());
         }
         if (!user.getAge().equals(userInDb.getAge())) {
-            userInDb.setAge(user.getAge());
             content.append("年龄由[").append(userInDb.getAge()).append("]改为[").append(user.getAge()).append("]，");
+            userInDb.setAge(user.getAge());
         }
         if (!user.getEmail().equals(userInDb.getEmail())) {
-            userInDb.setEmail(user.getEmail());
             content.append("邮箱由[").append(userInDb.getEmail()).append("]改为[").append(user.getEmail()).append("]，");
+            userInDb.setEmail(user.getEmail());
         }
         if (!user.getGender().equals(userInDb.getGender())) {
-            userInDb.setGender(user.getGender());
             content.append("性别由[").append(userInDb.getGender() == 1 ? "男" : "女").append("]改为[").append(user.getGender() == 1 ? "男" : "女").append("]，");
+            userInDb.setGender(user.getGender());
         }
         if (!user.getPhone().equals(userInDb.getPhone())) {
-            userInDb.setPhone(user.getPhone());
             content.append("手机号由[").append(userInDb.getPhone()).append("]改为[").append(user.getPhone()).append("]，");
+            userInDb.setPhone(user.getPhone());
         }
         String str = content.toString();
         if (str.length() > 0) {
@@ -169,7 +177,6 @@ public class UserService extends BaseService {
     }
 
     /**
-     * `
      * 删除用户
      */
     public void delete(Integer id) {
@@ -179,6 +186,70 @@ public class UserService extends BaseService {
         // 记录日志
         super.addLog("删除用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
         userMapper.delete(id);
+    }
+
+    /**
+     * 通过用户ID获取角色列表
+     *
+     * @param id 用户ID
+     */
+    public List<JSONObject> getRoleByUserId(Integer id) {
+        List<JSONObject> list = super.get(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID + id); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = new ArrayList<>();
+                    List<Role> roles = roleService.getAll();
+                    for (Role role : roles) {
+                        JSONObject obj = new JSONObject();
+                        obj.put("role", role);
+                        if (userRoleService.getByUserIdAndRoleId(id, role.getId()) != null) {
+                            obj.put("checked", true);
+                        } else {
+                            obj.put("checked", false);
+                        }
+                        list.add(obj);
+                    }
+                    super.set(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID + id, list);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 设置用户角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID列表
+     */
+    public void setUserRole(Integer userId, String roleIds) {
+        // 删除用户原有的所有角色
+        userRoleService.deleteByUserId(userId);
+        // 给用户添加新的角色
+        List<UserRole> userRoles = new ArrayList<>();
+        String[] roles = roleIds.split(",");
+        for (String roleId : roles) {
+            UserRole item = new UserRole();
+            item.setUserId(userId);
+            item.setRoleId(Integer.parseInt(roleId));
+            userRoleService.add(item);
+            userRoles.add(item);
+        }
+        User user = this.getById(userId);
+        StringBuilder roleNames = new StringBuilder();
+        for (UserRole item : userRoles) {
+            roleNames.append(roleService.getById(item.getRoleId()).getRoleName()).append("，");
+        }
+        String content = roleNames.toString();
+        if (content.length() > 0) {
+            content = content.substring(0, content.length() - 1);
+        }
+        // 移除用户相关的缓存
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+        // 记录日志
+        super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUserIp());
     }
 
 }

@@ -12,7 +12,7 @@
 
     <!-- 通过父ID获取 -->
     <select id="getByPid" resultMap="menuMap">
-        select * from t_menu where pid = #{pid}
+        select * from t_menu where pid = #{pid} order by sort
     </select>
 
     <!-- 结果集映射 -->

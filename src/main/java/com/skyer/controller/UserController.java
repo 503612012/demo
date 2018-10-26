@@ -198,4 +198,45 @@ public class UserController extends BaseController {
         return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
+    /**
+     * 通过用户ID获取角色列表
+     *
+     * @param id 用户ID
+     */
+    @RequestMapping("/getRoleByUserId")
+    @RequiresPermissions("A1_01_05")
+    @ResponseBody
+    public Object getRoleByUserId(Integer id) {
+        try {
+            List<JSONObject> list = userService.getRoleByUserId(id);
+            return super.success(list);
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "通过用户ID获取角色列表出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
+    }
+
+    /**
+     * 设置用户角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID列表
+     */
+    @RequestMapping("/setUserRole")
+    @RequiresPermissions("A1_01_05")
+    @ResponseBody
+    public Object setUserRole(Integer userId, String roleIds) {
+        try {
+            userService.setUserRole(userId, roleIds);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[userId: {}, roleIds: {}]", userId, roleIds);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "设置用户角色出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
+    }
+
 }

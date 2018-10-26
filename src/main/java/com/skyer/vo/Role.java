@@ -22,4 +22,8 @@ public class Role implements Serializable {
     private String lastModifyTime;
     private Integer lastModifyId;
 
+    // 非数据库属性
+    private String createName;
+    private String lastModifyName;
+
 }

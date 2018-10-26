@@ -38,4 +38,53 @@ public class UserRoleService extends BaseService {
         return list;
     }
 
+    /**
+     * 通过用户ID和角色ID查询
+     *
+     * @param userId 用户ID
+     * @param roleId 角色ID
+     */
+    public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
+        UserRole userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + roleId); // 先读取缓存
+        if (userRole == null) { // double check
+            synchronized (this) {
+                userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (userRole == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    userRole = userRoleMapper.getByUserIdAndRoleId(userId, roleId);
+                    super.set(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + roleId, userRole);
+                }
+            }
+        }
+        return userRole;
+    }
+
+    /**
+     * 通过用户ID删除
+     *
+     * @param userId 用户ID
+     */
+    public void deleteByUserId(Integer userId) {
+        userRoleMapper.deleteByUserId(userId);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+    }
+
+    /**
+     * 添加
+     */
+    public void add(UserRole userRole) {
+        userRoleMapper.add(userRole);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+    }
+
+    /**
+     * 通过角色ID获取
+     *
+     * @param roleId 角色ID
+     */
+    public List<UserRole> getByRoleId(Integer roleId) {
+        return userRoleMapper.getByRoleId(roleId);
+    }
+
 }

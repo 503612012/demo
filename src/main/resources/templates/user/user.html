@@ -6,27 +6,45 @@
 </head>
 <body>
 
-<div class="userTable" style="margin-top: 10px;">
-    搜索用户名:
-    <div class="layui-inline">
-        <input class="layui-input" name="userName" id="userNameReload" autocomplete="off">
+<div class="layui-fluid" style="padding: 10px;">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header userTable layuiadmin-card-header-auto" style="padding-top: 15px; padding-bottom: 15px; height: auto; position: relative;">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="userName" id="userNameReload" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="nickName" id="nickNameReload" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="phone" id="phoneReload" autocomplete="off">
+                </div>
+            </div>
+            <button class="layui-btn layuiadmin-btn-admin user-search" lay-submit="" lay-filter="LAY-user-back-search" style="line-height: 0px">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
+            </button>
+            <button class="layui-btn layuiadmin-btn-admin user-reset" lay-submit="" lay-filter="LAY-user-back-search" style="line-height: 0px">
+                <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
+            </button>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-hide" id="user-list" lay-filter="user-list" style="margin: 10px;"></table>
+        </div>
     </div>
-    昵称:
-    <div class="layui-inline">
-        <input class="layui-input" name="nickName" id="nickNameReload" autocomplete="off">
-    </div>
-    手机号:
-    <div class="layui-inline">
-        <input class="layui-input" name="phone" id="phoneReload" autocomplete="off">
-    </div>
-    <button class="layui-btn" data-type="reload">搜索</button>
 </div>
-
-<table class="layui-hide" id="user-list" lay-filter="user-list" style="margin: 10px;"></table>
 
 <script type="text/html" id="userListToolBar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">添加用户</button>
+        <button class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">
+            <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加用户</i>
+        </button>
     </div>
 </script>
 <script type="text/html" id="userListBar">

@@ -29,8 +29,8 @@ layui.use('table', function() {
         , url: '/user/getByPage/'
         , toolbar: '#userListToolBar'
         , id: 'userReload'
+        , even: true
         , title: '用户数据表'
-        , cellMinWidth: 80
         , cols: [[
             {field: 'userName', title: '用户名', sort: true}
             , {field: 'nickName', title: '昵称'}
@@ -64,11 +64,23 @@ layui.use('table', function() {
         reload: reload()
     };
 
-    $('.userTable .layui-btn').on('click', function() {
-        // var type = $(this).data('type');
-        // active[type] ? active[type].call(this) : '';
+    /**
+     * 查询按钮点击事件绑定
+     */
+    $('.userTable .user-search').on('click', function() {
         reload();
     });
+
+    /**
+     * 重置按钮点击事件绑定
+     */
+    $('.userTable .user-reset').on('click', function() {
+        $('#nickNameReload').val('');
+        $('#userNameReload').val('');
+        $('#phoneReload').val('');
+        reload();
+    });
+
 
     /**
      * 更改用户状态
@@ -96,6 +108,9 @@ layui.use('table', function() {
         });
     };
 
+    /**
+     * 绑定用户状态更改点击事件
+     */
     $("body").on("click", ".user-status", function() {
         if(hasPermission("A1_01_04")) {
             var id = $(this).attr("data-id");
@@ -120,30 +135,87 @@ layui.use('table', function() {
         }
     });
 
-    // 监听状态操作
-    form.on('checkbox(userStatus)', function(obj) {
-        var status = obj.elem.checked;
-        var userId = $(this).attr("data-id");
-        if (status == false) { // 取消锁定
-            layer.confirm('确认取消锁定该用户吗？', function(index) {
-                updateUserStatus(userId, 0);
-                layer.close(index);
-            });
-        }
-        if (status == true) { // 锁定
-            layer.confirm('确认锁定该用户吗？', function(index) {
-                updateUserStatus(userId, 1);
-                layer.close(index);
-            });
-        }
+    /**
+     * 设置角色复选框选中事件
+     */
+    $("body").on("click", ".user-set-role-checkbox", function() {
+        $(this).parent().toggleClass("layui-form-checked");
     });
+
+    /**
+     * 设置用户角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID列表
+     */
+    var setUserRole = function(userId, roleIds) {
+        $.ajax({
+            url: '/user/setUserRole',
+            type: 'POST',
+            data: {
+                userId: userId,
+                roleIds: roleIds
+            },
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                }
+                layer.closeAll();
+            }
+        });
+    };
 
     // 监听工具条
     table.on('tool(user-list)', function(obj) {
         var data = obj.data;
+        var userid = data.id;
         if (obj.event === 'detail') {
-            // TODO 这里的代码还没有编写
-            layer.msg('ID：' + data.id + ' 的分配角色操作');
+            $.ajax({
+                url: '/user/getRoleByUserId',
+                type: 'POST',
+                data: {
+                    id: userid
+                },
+                dataType: 'json',
+                success: function(result) {
+                    if (result.code != 200) {
+                        layer.open({
+                            title: '系统提示',
+                            content: result.data,
+                            btnAlign: 'c'
+                        });
+                        return;
+                    }
+                    var data = result.data;
+                    var html = '<div style="padding: 15px;">';
+                    for (var i=0; i<data.length; i++) {
+                        html += '<div data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
+                    }
+                    html += '</div>';
+                    layer.open({
+                        title: '分配角色',
+                        area: ['600px', '450px'],
+                        btn: ['保存', '关闭'],
+                        type: 1,
+                        content: html,
+                        yes: function() {
+                            var roleIds = [];
+                            $("body .layui-form-checked").each(function() {
+                                roleIds.push($(this).attr("data-role-id"));
+                            });
+                            setUserRole(userid, roleIds.toString());
+                        },
+                        btn2: function() {
+                            layer.closeAll();
+                        }
+                    });
+                }
+            });
         } else if (obj.event === 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({
@@ -162,6 +234,7 @@ layui.use('table', function() {
                             });
                             return;
                         }
+                        layer.close(index);
                         reload();
                     }
                 });
