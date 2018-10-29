@@ -4,6 +4,7 @@ import com.skyer.contants.RedisCacheKey;
 import com.skyer.mapper.UserRoleMapper;
 import com.skyer.vo.UserRole;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
+@Transactional
 public class UserRoleService extends BaseService {
 
     @Resource

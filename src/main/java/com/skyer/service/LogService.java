@@ -5,6 +5,7 @@ import com.skyer.mapper.LogMapper;
 import com.skyer.vo.Log;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
+@Transactional
 public class LogService extends BaseService {
 
     @Resource

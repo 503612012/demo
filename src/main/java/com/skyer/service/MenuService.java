@@ -6,6 +6,7 @@ import com.skyer.vo.Menu;
 import com.skyer.vo.RoleMenu;
 import com.skyer.vo.UserRole;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Map;
  * @author SKYER
  */
 @Service
+@Transactional
 public class MenuService extends BaseService {
 
     @Resource

@@ -7,6 +7,7 @@ import com.skyer.mapper.RoleMapper;
 import com.skyer.vo.*;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
+@Transactional
 public class RoleService extends BaseService {
 
     @Resource
@@ -169,7 +171,6 @@ public class RoleService extends BaseService {
         for (Menu levelOneItem : levelOne) {
             JSONObject oneObj = new JSONObject();
             oneObj.put("text", levelOneItem.getMenuName());
-            oneObj.put("state", "closed");
             oneObj.put("id", levelOneItem.getId());
             RoleMenu levelOneRoleMenu = roleMenuService.getByRoleIdAndMenuId(id, levelOneItem.getId());
             if (levelOneRoleMenu == null) {
@@ -182,7 +183,6 @@ public class RoleService extends BaseService {
             for (Menu levelTwoItem : levelTwo) {
                 JSONObject twoObj = new JSONObject();
                 twoObj.put("text", levelTwoItem.getMenuName());
-                twoObj.put("state", "closed");
                 twoObj.put("id", levelTwoItem.getId());
                 RoleMenu levelTwoRoleMenu = roleMenuService.getByRoleIdAndMenuId(id, levelTwoItem.getId());
                 if (levelTwoRoleMenu == null) {
@@ -204,10 +204,16 @@ public class RoleService extends BaseService {
                     }
                     levelTwoChildren.add(threeObj);
                 }
-                twoObj.put("children", levelTwoChildren);
+                if (levelTwoChildren.size() > 0) {
+                    twoObj.put("children", levelTwoChildren);
+                    twoObj.put("state", "closed");
+                }
                 levelOneChildren.add(twoObj);
             }
-            oneObj.put("children", levelOneChildren);
+            if (levelOneChildren.size() > 0) {
+                oneObj.put("children", levelOneChildren);
+                oneObj.put("state", "closed");
+            }
             result.add(oneObj);
         }
         return result;

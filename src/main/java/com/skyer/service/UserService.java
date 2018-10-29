@@ -10,6 +10,7 @@ import com.skyer.vo.UserRole;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author SKYER
  */
 @Service
+@Transactional
 public class UserService extends BaseService {
 
     @Resource
@@ -248,7 +250,9 @@ public class UserService extends BaseService {
         }
         // 移除用户相关的缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.MENU_PREFIX);
         // 记录日志
         super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUserIp());
     }
