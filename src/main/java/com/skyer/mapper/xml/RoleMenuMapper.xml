@@ -10,6 +10,21 @@
         select * from t_role_menu where role_id = #{roleId}
     </select>
 
+    <!-- 通过角色ID和菜单ID查询 -->
+    <select id="getByRoleIdAndMenuId" resultMap="roleMenuMap">
+        select * from t_role_menu where role_id = #{roleId} and menu_id = #{menuId}
+    </select>
+
+    <!-- 通过角色ID删除 -->
+    <delete id="deleteByRoleId">
+        delete from t_role_menu where role_id = #{roleId}
+    </delete>
+
+    <!-- 添加 -->
+    <insert id="add">
+        insert into t_role_menu (dbid, role_id, menu_id) values (#{id}, #{roleId}, #{menuId})
+    </insert>
+
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.RoleMenu" id="roleMenuMap">
         <id column="dbid" property="id"/>

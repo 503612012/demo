@@ -12,7 +12,16 @@
 
     <!-- 通过父ID获取 -->
     <select id="getByPid" resultMap="menuMap">
-        select * from t_menu where pid = #{pid} order by sort
+        select * from t_menu where pid = #{pid} and `status` = 0 order by sort
+    </select>
+
+    <!-- 获取某个用户授过权的菜单的子菜单 -->
+    <select id="getByPidAndHasPermission" resultMap="menuMap">
+        select * from t_menu where pid = #{pid} and `status` = 0 and dbid in
+        <foreach item="item" collection="menuIds" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+        order by sort
     </select>
 
     <!-- 结果集映射 -->

@@ -151,7 +151,7 @@ public class SystemController extends BaseController {
             List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
-            req.getSession().setAttribute("menu", code);
+            req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(menus);
         } catch (Exception e) {
             LOG.error(AppConst.ERROR_LOG_PREFIX + "获取菜单出错，错误信息：" + e);

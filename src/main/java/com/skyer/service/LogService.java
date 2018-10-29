@@ -46,13 +46,13 @@ public class LogService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize) {
-        List<Log> list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum); // 先读取缓存
+        List<Log> list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + pageSize); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + pageSize); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = logMapper.getByPage((pageNum - 1) * pageSize, pageSize);
-                    super.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum, list);
+                    super.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + pageSize, list);
                 }
             }
         }

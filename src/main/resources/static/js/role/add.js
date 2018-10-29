@@ -25,5 +25,6 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                 window.parent.mainFrm.location.href= "/role/index";
             }
         });
+        return false;
     });
 });

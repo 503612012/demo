@@ -28,6 +28,7 @@ $(function() {
             dataType: "json",
             success: function(result) {
                 if (result.code != 200) {
+                    $("input[name=vercode]").val("");
                     layer.open({
                         title: '系统提示',
                         content: result.data,

@@ -37,5 +37,6 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                 window.parent.mainFrm.location.href= "/user/index";
             }
         });
+        return false;
     });
 });

@@ -32,7 +32,8 @@ layui.use('table', function() {
         , even: true
         , title: '用户数据表'
         , cols: [[
-            {field: 'userName', title: '用户名', sort: true}
+            {type:'numbers'}
+            , {field: 'userName', title: '用户名', sort: true}
             , {field: 'nickName', title: '昵称'}
             , {field: 'age', title: '年龄', sort: true}
             , {field: 'email', title: '邮箱'}
@@ -47,7 +48,7 @@ layui.use('table', function() {
             , {field: 'lastModifyTime', title: '最后修改时间', sort: true}
             , {field: 'lastModifyName', title: '最后修改人'}
             , {
-                field: 'status', title: '状态', unresize: true, templet: function(d) {
+                field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked user-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     } else if (d.status == 0) {
@@ -55,7 +56,7 @@ layui.use('table', function() {
                     }
                 }
             }
-            , {fixed: 'right', title: '操作', toolbar: '#userListBar'}
+            , {title: '操作', toolbar: '#userListBar'}
         ]]
         , page: true
     });
@@ -80,7 +81,6 @@ layui.use('table', function() {
         $('#phoneReload').val('');
         reload();
     });
-
 
     /**
      * 更改用户状态
@@ -194,7 +194,7 @@ layui.use('table', function() {
                     var data = result.data;
                     var html = '<div style="padding: 15px;">';
                     for (var i=0; i<data.length; i++) {
-                        html += '<div data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
+                        html += '<div style="margin-top: 7px;" data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
                     }
                     html += '</div>';
                     layer.open({

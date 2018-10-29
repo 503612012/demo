@@ -2,6 +2,7 @@ package com.skyer.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.skyer.contants.AppConst;
+import com.skyer.contants.PermissionCode;
 import com.skyer.enumerate.ResultEnum;
 import com.skyer.service.UserService;
 import com.skyer.vo.User;
@@ -34,7 +35,7 @@ public class UserController extends BaseController {
      * 去到用户管理页面
      */
     @RequestMapping("/index")
-    @RequiresPermissions("A1_01")
+    @RequiresPermissions(PermissionCode.USER_MANAGER)
     public String index() {
         return "user/user";
     }
@@ -45,7 +46,7 @@ public class UserController extends BaseController {
      * @param id 用户ID
      */
     @RequestMapping("/getById")
-    @RequiresPermissions("A1_01")
+    @RequiresPermissions(PermissionCode.USER_MANAGER)
     @ResponseBody
     public Object getById(Integer id) {
         try {
@@ -65,7 +66,7 @@ public class UserController extends BaseController {
      * @param limit 每页显示数量
      */
     @RequestMapping("/getByPage")
-    @RequiresPermissions("A1_01")
+    @RequiresPermissions(PermissionCode.USER_MANAGER)
     @ResponseBody
     public Object getByPage(Integer page, Integer limit, User user) {
         JSONObject result = new JSONObject();
@@ -94,7 +95,7 @@ public class UserController extends BaseController {
      * 去到添加用户页面
      */
     @RequestMapping("/add")
-    @RequiresPermissions("A1_01_01")
+    @RequiresPermissions(PermissionCode.USER_INSERT)
     public String add() {
         return "user/add";
     }
@@ -103,7 +104,7 @@ public class UserController extends BaseController {
      * 添加用户
      */
     @RequestMapping("/doAdd")
-    @RequiresPermissions("A1_01_01")
+    @RequiresPermissions(PermissionCode.USER_INSERT)
     @ResponseBody
     public Object doAdd(User user) {
         try {
@@ -123,7 +124,7 @@ public class UserController extends BaseController {
      * @param id 用户ID
      */
     @RequestMapping("/update")
-    @RequiresPermissions("A1_01_02")
+    @RequiresPermissions(PermissionCode.USER_UPDATE)
     public String update(Integer id, Model model) {
         try {
             User user = userService.getById(id);
@@ -141,7 +142,7 @@ public class UserController extends BaseController {
      * 修改用户
      */
     @RequestMapping("/doUpdate")
-    @RequiresPermissions("A1_01_02")
+    @RequiresPermissions(PermissionCode.USER_UPDATE)
     @ResponseBody
     public Object doUpdate(User user) {
         try {
@@ -161,7 +162,7 @@ public class UserController extends BaseController {
      * @param id 用户ID
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("A1_01_03")
+    @RequiresPermissions(PermissionCode.USER_DELETE)
     @ResponseBody
     public Object delete(Integer id) {
         try {
@@ -182,7 +183,7 @@ public class UserController extends BaseController {
      * @param status 状态编码
      */
     @RequestMapping("/updateStatus")
-    @RequiresPermissions("A1_01_04")
+    @RequiresPermissions(PermissionCode.USER_SETSTATUS)
     @ResponseBody
     public Object updateStatus(Integer userId, Integer status) {
         try {
@@ -204,7 +205,7 @@ public class UserController extends BaseController {
      * @param id 用户ID
      */
     @RequestMapping("/getRoleByUserId")
-    @RequiresPermissions("A1_01_05")
+    @RequiresPermissions(PermissionCode.USER_SETROLE)
     @ResponseBody
     public Object getRoleByUserId(Integer id) {
         try {
@@ -225,7 +226,7 @@ public class UserController extends BaseController {
      * @param roleIds 角色ID列表
      */
     @RequestMapping("/setUserRole")
-    @RequiresPermissions("A1_01_05")
+    @RequiresPermissions(PermissionCode.USER_SETROLE)
     @ResponseBody
     public Object setUserRole(Integer userId, String roleIds) {
         try {

@@ -64,7 +64,7 @@ public class MenuService extends BaseService {
                         List<RoleMenu> item = roleMenuService.getByRoleId(role.getRoleId());
                         menus.add(item);
                     }
-                    list = installMenu(menus);
+                    list = installMenu(userId, menus);
                     super.set(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID + userId, list);
                 }
             }
@@ -75,9 +75,10 @@ public class MenuService extends BaseService {
     /**
      * 组装菜单
      *
-     * @param list 所有菜单的ID（不区分菜单的类型，即该用户下所有拥有的权限）
+     * @param userId 用户ID
+     * @param list   所有菜单的ID（不区分菜单的类型，即该用户下所有拥有的权限）
      */
-    private List<Map<String, Object>> installMenu(List<List<RoleMenu>> list) {
+    private List<Map<String, Object>> installMenu(Integer userId, List<List<RoleMenu>> list) {
         List<Map<String, Object>> result = new ArrayList<>();
         List<Menu> menus = new ArrayList<>();
         for (List<RoleMenu> item : list) {
@@ -90,13 +91,43 @@ public class MenuService extends BaseService {
             if (menu.getPid() == 0) { // 是一级菜单，直接放入map，并添加其子菜单
                 Map<String, Object> item = new HashMap<>();
                 item.put("menu", menu);
-                // 添加该菜单的子菜单
-                List<Menu> childMenus = menuMapper.getByPid(menu.getId());
+                // 添加该菜单的子菜单（授过权的子菜单）
+                List<Menu> childMenus = this.getByPidAndHasPermission(userId, menu.getId());
                 item.put("children", childMenus);
                 result.add(item);
             }
         }
         return result;
+    }
+
+    /**
+     * 获取某个用户授过权的菜单的子菜单
+     *
+     * @param userId 用户ID
+     * @param pid    菜单ID
+     */
+    public List<Menu> getByPidAndHasPermission(Integer userId, Integer pid) {
+        List<Menu> list = super.get(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION + userId + "_" + pid); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION + userId + "_" + pid); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    List<Integer> menuIds = new ArrayList<>();
+                    List<UserRole> roles = userRoleService.getByUserId(userId);
+                    for (UserRole role : roles) {
+                        List<RoleMenu> roleMenus = roleMenuService.getByRoleId(role.getRoleId());
+                        if (roleMenus != null && roleMenus.size() > 0) {
+                            for (RoleMenu roleMenu : roleMenus) {
+                                menuIds.add(roleMenu.getMenuId());
+                            }
+                        }
+                    }
+                    list = menuMapper.getByPidAndHasPermission(pid, menuIds);
+                    super.set(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION + userId + "_" + pid, list);
+                }
+            }
+        }
+        return list;
     }
 
     /**
@@ -122,6 +153,23 @@ public class MenuService extends BaseService {
                         }
                     }
                     super.set(RedisCacheKey.USER_MENU_CODES + userId, list);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 通过父ID获取
+     */
+    public List<Menu> getByPid(Integer pid) {
+        List<Menu> list = super.get(RedisCacheKey.MENU_GET_BY_PID + pid); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.MENU_GET_BY_PID + pid); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = menuMapper.getByPid(pid);
+                    super.set(RedisCacheKey.MENU_GET_BY_PID + pid, list);
                 }
             }
         }

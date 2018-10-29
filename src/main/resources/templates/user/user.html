@@ -42,7 +42,7 @@
 
 <script type="text/html" id="userListToolBar">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">
+        <button th:if="${session.menu.contains('A1_01_01')}" class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加用户</i>
         </button>
     </div>

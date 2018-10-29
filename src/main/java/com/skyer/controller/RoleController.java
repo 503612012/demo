@@ -1,8 +1,11 @@
 package com.skyer.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.skyer.contants.AppConst;
+import com.skyer.contants.PermissionCode;
 import com.skyer.enumerate.ResultEnum;
+import com.skyer.service.MenuService;
 import com.skyer.service.RoleService;
 import com.skyer.service.UserRoleService;
 import com.skyer.service.UserService;
@@ -17,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色控制层
@@ -35,13 +40,15 @@ public class RoleController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
+    private MenuService menuService;
+    @Resource
     private UserRoleService userRoleService;
 
     /**
      * 去到角色管理页面
      */
     @RequestMapping("/index")
-    @RequiresPermissions("A1_03")
+    @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     public String index() {
         return "role/role";
     }
@@ -52,7 +59,7 @@ public class RoleController extends BaseController {
      * @param id 角色ID
      */
     @RequestMapping("/getById")
-    @RequiresPermissions("A1_03")
+    @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     @ResponseBody
     public Object getById(Integer id) {
         try {
@@ -72,7 +79,7 @@ public class RoleController extends BaseController {
      * @param limit 每页显示数量
      */
     @RequestMapping("/getByPage")
-    @RequiresPermissions("A1_03")
+    @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     @ResponseBody
     public Object getByPage(Integer page, Integer limit, Role role) {
         JSONObject result = new JSONObject();
@@ -101,7 +108,7 @@ public class RoleController extends BaseController {
      * 去到添加角色页面
      */
     @RequestMapping("/add")
-    @RequiresPermissions("A1_03_01")
+    @RequiresPermissions(PermissionCode.ROLE_INSERT)
     public String add() {
         return "role/add";
     }
@@ -110,7 +117,7 @@ public class RoleController extends BaseController {
      * 添加角色
      */
     @RequestMapping("/doAdd")
-    @RequiresPermissions("A1_03_01")
+    @RequiresPermissions(PermissionCode.ROLE_INSERT)
     @ResponseBody
     public Object doAdd(Role role) {
         try {
@@ -130,7 +137,7 @@ public class RoleController extends BaseController {
      * @param id 角色ID
      */
     @RequestMapping("/update")
-    @RequiresPermissions("A1_03_02")
+    @RequiresPermissions(PermissionCode.ROLE_UPDATE)
     public String update(Integer id, Model model) {
         try {
             Role role = roleService.getById(id);
@@ -148,7 +155,7 @@ public class RoleController extends BaseController {
      * 修改角色
      */
     @RequestMapping("/doUpdate")
-    @RequiresPermissions("A1_03_02")
+    @RequiresPermissions(PermissionCode.ROLE_UPDATE)
     @ResponseBody
     public Object doUpdate(Role role) {
         try {
@@ -168,7 +175,7 @@ public class RoleController extends BaseController {
      * @param id 角色ID
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("A1_03_03")
+    @RequiresPermissions(PermissionCode.ROLE_DELETE)
     @ResponseBody
     public Object delete(Integer id) {
         try {
@@ -193,7 +200,7 @@ public class RoleController extends BaseController {
      * @param status 状态编码
      */
     @RequestMapping("/updateStatus")
-    @RequiresPermissions("A1_03_04")
+    @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
     @ResponseBody
     public Object updateStatus(Integer roleId, Integer status) {
         try {
@@ -204,6 +211,61 @@ public class RoleController extends BaseController {
         } catch (Exception e) {
             LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[roleId: {}, status: {}]", roleId, status);
             LOG.error(AppConst.ERROR_LOG_PREFIX + "修改角色状态出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
+    }
+
+    /**
+     * 去到给角色授权页面
+     */
+    @RequestMapping("/roleMenu")
+    @RequiresPermissions(PermissionCode.ROLE_SETMENU)
+    public String roleMenu(Integer roleId, Model model) {
+        Role role = roleService.getById(roleId);
+        model.addAttribute("role", role);
+        return "role/setMenu";
+    }
+
+    /**
+     * 根据角色ID获取权限树
+     *
+     * @param roleId 角色ID
+     */
+    @RequestMapping("/getRoleMenuTree")
+    @RequiresPermissions(PermissionCode.ROLE_SETMENU)
+    @ResponseBody
+    public JSONArray getRoleMenuTree(Integer roleId) {
+        try {
+            return roleService.getMenuTreeByRoleId(roleId);
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[roleId: {}]", roleId);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "去到给角色授权页面出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 设置角色权限
+     *
+     * @param roleId  角色ID
+     * @param menuIds 菜单ID列表
+     */
+    @RequestMapping("/setRoleMenu")
+    @RequiresPermissions(PermissionCode.ROLE_SETMENU)
+    @ResponseBody
+    public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) {
+        try {
+            roleService.setRoleMenu(roleId, menuIds);
+            List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
+            // 获取该用户的所有权限编码，放入session中
+            List<String> code = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
+            req.getSession().setAttribute(AppConst.USER_MENU, code);
+            return super.success(ResultEnum.UPDATE_ERROR.getValue());
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[roleId: {}, menuIds: {}]", roleId, menuIds);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "设置角色权限出错，错误信息：", e);
             e.printStackTrace();
         }
         return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());

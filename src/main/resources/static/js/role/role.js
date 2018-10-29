@@ -28,13 +28,14 @@ layui.use('table', function() {
         , even: true
         , title: '角色数据表'
         , cols: [[
-            {field: 'roleName', title: '角色名', sort: true}
+            {type:'numbers'}
+            , {field: 'roleName', title: '角色名', sort: true}
             , {field: 'createTime', title: '创建时间', sort: true}
             , {field: 'createName', title: '创建人'}
             , {field: 'lastModifyTime', title: '最后修改时间', sort: true}
             , {field: 'lastModifyName', title: '最后修改人'}
             , {
-                field: 'status', title: '状态', unresize: true, templet: function(d) {
+                field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked role-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     } else if (d.status == 0) {
@@ -42,7 +43,7 @@ layui.use('table', function() {
                     }
                 }
             }
-            , {fixed: 'right', title: '操作', toolbar: '#roleListBar'}
+            , {title: '操作', toolbar: '#roleListBar'}
         ]]
         , page: true
     });
@@ -123,8 +124,7 @@ layui.use('table', function() {
     table.on('tool(role-list)', function(obj) {
         var data = obj.data;
         if (obj.event === 'detail') {
-            // TODO 这里的代码还没有编写
-            layer.msg('ID：' + data.id + ' 的设置权限操作');
+            window.parent.mainFrm.location.href = "/role/roleMenu?roleId=" + data.id;
         } else if (obj.event === 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({

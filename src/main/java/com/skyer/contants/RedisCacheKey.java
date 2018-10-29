@@ -33,6 +33,7 @@ public class RedisCacheKey {
     public static final String MENU_GET_BY_ID = "menu_getById_";
     public static final String MENU_GET_BY_PID = "menu_getByPid_";
     public static final String MENU_GET_MENU_TREE_BY_USERID = "menu_getMenuTreeByUserId_";
+    public static final String MENU_GET_BY_PID_AND_HASPERMISSION = "menu_getByPidAndHasPermission_";
 
     // 用户角色关系实体类缓存key定义
     public static final String USERROLE_PREFIX = "userRole_";
@@ -43,6 +44,7 @@ public class RedisCacheKey {
     // 角色菜单关系实体类缓存key定义
     public static final String ROLEMENU_PREFIX = "roleMenu_";
     public static final String ROLEMENU_GET_BY_ROLEID = "roleMenu_getByRoleId_";
+    public static final String ROLEMENU_GET_BY_ROLEID_AND_MENUID = "roleMenu_getByRoleIdAndMenuId_";
 
     // 用户菜单编码
     public static final String USER_MENU_CODES = "userMenuCodes_";

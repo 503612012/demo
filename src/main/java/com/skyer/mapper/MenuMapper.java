@@ -1,6 +1,7 @@
 package com.skyer.mapper;
 
 import com.skyer.vo.Menu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,5 +25,13 @@ public interface MenuMapper {
      * @param pid 父ID
      */
     List<Menu> getByPid(Integer pid);
+
+    /**
+     * 获取某个用户授过权的菜单的子菜单
+     *
+     * @param pid     用户ID
+     * @param menuIds 菜单ID列表
+     */
+    List<Menu> getByPidAndHasPermission(@Param("pid") Integer pid, @Param("menuIds") List<Integer> menuIds);
 
 }
