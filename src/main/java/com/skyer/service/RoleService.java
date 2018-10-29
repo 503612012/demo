@@ -8,6 +8,7 @@ import com.skyer.vo.*;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -228,6 +229,16 @@ public class RoleService extends BaseService {
     public void setRoleMenu(Integer roleId, String menuIds) {
         // 删除用户原有的所有角色
         roleMenuService.deleteByRoleId(roleId);
+        Role role = this.getById(roleId);
+        if (StringUtils.isEmpty(menuIds)) { // 删除了该角色所有的权限
+            // 移除缓存
+            super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
+            super.batchRemove(RedisCacheKey.USER_MENU_CODES);
+            super.batchRemove(RedisCacheKey.MENU_PREFIX);
+            // 记录日志
+            super.addLog("分配权限", "删除了角色[" + role.getRoleName() + "]所有的权限！", super.getCurrentUser().getId(), super.getCurrentUserIp());
+            return;
+        }
         // 给角色添加新的菜单
         List<RoleMenu> roleMenus = new ArrayList<>();
         String[] menus = menuIds.split(",");
@@ -238,7 +249,6 @@ public class RoleService extends BaseService {
             roleMenuService.add(item);
             roleMenus.add(item);
         }
-        Role role = this.getById(roleId);
         StringBuilder menuNames = new StringBuilder();
         for (RoleMenu item : roleMenus) {
             menuNames.append(menuService.getById(item.getMenuId()).getMenuName()).append("，");

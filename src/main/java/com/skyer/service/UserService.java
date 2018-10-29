@@ -183,8 +183,11 @@ public class UserService extends BaseService {
      */
     public void delete(Integer id) {
         User user = this.getById(id);
+        // 删除该用户的所有角色信息
+        userRoleService.deleteByUserId(id);
         // 移除用户相关的缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX);
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
         super.addLog("删除用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
         userMapper.delete(id);
