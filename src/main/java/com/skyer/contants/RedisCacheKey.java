@@ -34,6 +34,7 @@ public class RedisCacheKey {
     public static final String MENU_GET_BY_ID = "menu_getById_";
     public static final String MENU_GET_BY_PID = "menu_getByPid_";
     public static final String MENU_GET_MENU_TREE_BY_USERID = "menu_getMenuTreeByUserId_";
+    public static final String MENU_GET_MENU_TREE_DATLE_DATA = "menu_getMenuTreeTableData";
     public static final String MENU_GET_BY_PID_AND_HASPERMISSION = "menu_getByPidAndHasPermission_";
 
     // 用户角色关系实体类缓存key定义

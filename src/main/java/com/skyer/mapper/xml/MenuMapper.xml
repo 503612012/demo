@@ -24,6 +24,28 @@
         order by sort
     </select>
 
+    <!-- 修改菜单 -->
+    <update id="update">
+        update t_menu set menu_code = #{menuCode},
+                          menu_name = #{menuName},
+                          pid = #{pid},
+                          sort = #{sort},
+                          url = #{url},
+                          iconCls = #{iconCls},
+                          type = #{type},
+                          create_id = #{createId},
+                          create_time = #{createTime},
+                          last_modify_id = #{lastModifyId},
+                          last_modify_time = #{lastModifyTime},
+                          status = #{status}
+                    where dbid = #{id}
+    </update>
+
+    <!-- 分页菜单树形表格内容 -->
+    <select id="getMenuTreeTableData" resultMap="menuMap">
+        select dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_time, last_modify_id, status, menu_name as title from t_menu
+    </select>
+
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.Menu" id="menuMap">
         <id column="dbid" property="id"/>
@@ -36,9 +58,10 @@
         <result column="type" property="type"/>
         <result column="create_id" property="createId"/>
         <result column="create_time" property="createTime"/>
-        <result column="lastModify_id" property="lastModifyId"/>
+        <result column="last_modify_id" property="lastModifyId"/>
         <result column="last_modify_time" property="lastModifyTime"/>
         <result column="status" property="status"/>
+        <result column="title" property="title"/>
     </resultMap>
 
 </mapper>

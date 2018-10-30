@@ -33,7 +33,7 @@ layui.use('table', function() {
         , even: true
         , title: '日志数据表'
         , cols: [[
-            {type:'numbers'}
+            {type: 'numbers'}
             , {field: 'title', title: '标题', sort: true}
             , {field: 'content', title: '内容'}
             , {field: 'operatorName', title: '操作人', sort: true}

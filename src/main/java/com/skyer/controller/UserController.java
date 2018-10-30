@@ -84,7 +84,7 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             result.put("code", ResultEnum.SEARCH_ERROR.getCode());
             result.put("msg", ResultEnum.SEARCH_ERROR.getValue());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}]", page, limit);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}, user: {}]", page, limit, user.toString());
             LOG.error(AppConst.ERROR_LOG_PREFIX + "分页查询用户出错，错误信息：", e);
             e.printStackTrace();
         }

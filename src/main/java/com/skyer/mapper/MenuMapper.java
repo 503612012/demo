@@ -34,4 +34,14 @@ public interface MenuMapper {
      */
     List<Menu> getByPidAndHasPermission(@Param("pid") Integer pid, @Param("menuIds") List<Integer> menuIds);
 
+    /**
+     * 修改菜单
+     */
+    void update(Menu menuInDb);
+
+    /**
+     * 分页菜单树形表格内容
+     */
+    List<Menu> getMenuTreeTableData();
+
 }

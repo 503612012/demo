@@ -85,7 +85,7 @@ public class LogController extends BaseController {
         } catch (Exception e) {
             result.put("code", ResultEnum.SEARCH_ERROR.getCode());
             result.put("msg", ResultEnum.SEARCH_ERROR.getValue());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}]", page, limit);
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}, log: {}]", page, limit, log.toString());
             LOG.error(AppConst.ERROR_LOG_PREFIX + "分页查询日志出错，错误信息：", e);
             e.printStackTrace();
         }

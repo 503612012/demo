@@ -5,6 +5,7 @@ import com.skyer.mapper.MenuMapper;
 import com.skyer.vo.Menu;
 import com.skyer.vo.RoleMenu;
 import com.skyer.vo.UserRole;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,39 @@ public class MenuService extends BaseService {
     }
 
     /**
+     * 修改菜单
+     */
+    public void update(Menu menu) {
+        Menu menuInDb = this.getById(menu.getId());
+        StringBuilder content = new StringBuilder();
+        if (!menu.getMenuName().equals(menuInDb.getMenuName())) {
+            content.append("菜单名称由[").append(menuInDb.getMenuName()).append("]改为[").append(menu.getMenuName()).append("]，");
+            menuInDb.setMenuName(menu.getMenuName());
+        }
+        if (menu.getStatus() == null) {
+            menu.setStatus(0);
+        }
+        if (!menu.getStatus().equals(menuInDb.getStatus())) {
+            content.append("状态由[").append(menuInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(menu.getStatus() == 0 ? "正常" : "锁定").append("]，");
+            menuInDb.setStatus(menu.getStatus());
+        }
+        String str = content.toString();
+        if (str.length() > 0) {
+            str = str.substring(0, str.length() - 1);
+            menuInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+            menuInDb.setLastModifyId(super.getCurrentUser().getId());
+            // 移除缓存
+            super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
+            super.batchRemove(RedisCacheKey.USER_MENU_CODES);
+            super.batchRemove(RedisCacheKey.MENU_PREFIX);
+            super.batchRemove(RedisCacheKey.ROLE_PREFIX);
+            // 记录日志
+            super.addLog("修改菜单", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
+            menuMapper.update(menuInDb);
+        }
+    }
+
+    /**
      * 根据用户ID获取该用户的目录树
      *
      * @param userId 用户ID
@@ -90,7 +124,7 @@ public class MenuService extends BaseService {
             }
         }
         for (Menu menu : menus) {
-            if (menu.getPid() == 0) { // 是一级菜单，直接放入map，并添加其子菜单
+            if (menu.getPid() == 0 && menu.getStatus() == 0) { // 是一级菜单，直接放入map，并添加其子菜单
                 Map<String, Object> item = new HashMap<>();
                 item.put("menu", menu);
                 // 添加该菜单的子菜单（授过权的子菜单）
@@ -172,6 +206,23 @@ public class MenuService extends BaseService {
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = menuMapper.getByPid(pid);
                     super.set(RedisCacheKey.MENU_GET_BY_PID + pid, list);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 分页菜单树形表格内容
+     */
+    public List<Menu> getMenuTreeTableData() {
+        List<Menu> list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = menuMapper.getMenuTreeTableData();
+                    super.set(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA, list);
                 }
             }
         }

@@ -28,4 +28,7 @@ public class Menu implements Serializable {
     private String lastModifyTime;
     private Integer status; // 状态，0-正常、1-删除
 
+    // 非数据库属性
+    private String title;
+
 }
