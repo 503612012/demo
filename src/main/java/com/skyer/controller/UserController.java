@@ -240,4 +240,20 @@ public class UserController extends BaseController {
         return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
+    /**
+     * 获取所有用户
+     */
+    @RequestMapping("/getAll")
+    @RequiresPermissions(PermissionCode.USER_MANAGER)
+    @ResponseBody
+    public Object getAll() {
+        try {
+            return super.success(userService.getAll());
+        } catch (Exception e) {
+            LOG.error(AppConst.ERROR_LOG_PREFIX + "设置用户角色出错，错误信息：", e);
+            e.printStackTrace();
+        }
+        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
+    }
+
 }

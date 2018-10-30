@@ -9,10 +9,11 @@ public class RedisCacheKey {
 
     // 用户实体类缓存key定义
     public static final String USER_PREFIX = "user_";
+    public static final String USER_GET_ALL = "user_getAll";
     public static final String USER_GET_BY_ID = "user_getById_";
     public static final String USER_GET_BY_PAGE = "user_getByPage_";
     public static final String USER_GET_BY_USERNAME = "user_getByUserName_";
-    public static final String USER_GET_TOTAL_NUM = "user_getTotalNum";
+    public static final String USER_GET_TOTAL_NUM = "user_getTotalNum_";
 
     // 角色实体类缓存key定义
     public static final String ROLE_PREFIX = "role_";
@@ -20,13 +21,13 @@ public class RedisCacheKey {
     public static final String ROLE_GET_BY_PAGE = "role_getByPage_";
     public static final String ROLE_GET_ALL = "role_getAll_";
     public static final String ROLE_GET_BY_USERNAME = "role_getByUserName_";
-    public static final String ROLE_GET_TOTAL_NUM = "role_getTotalNum";
+    public static final String ROLE_GET_TOTAL_NUM = "role_getTotalNum_";
 
     // 日志实体类缓存key定义
     public static final String LOG_PREFIX = "log_";
     public static final String LOG_GET_BY_ID = "log_getById_";
     public static final String LOG_GET_BY_PAGE = "log_getByPage_";
-    public static final String LOG_GET_TOTAL_NUM = "log_getTotalNum";
+    public static final String LOG_GET_TOTAL_NUM = "log_getTotalNum_";
 
     // 菜单实体类缓存key定义
     public static final String MENU_PREFIX = "menu_";

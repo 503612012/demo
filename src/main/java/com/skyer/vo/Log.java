@@ -21,4 +21,7 @@ public class Log implements Serializable {
     private String operatorTime;
     private String operatorIp;
 
+    // 非数据库属性
+    private String operatorName;
+
 }

@@ -47,13 +47,13 @@ public class UserRoleService extends BaseService {
      * @param roleId 角色ID
      */
     public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
-        UserRole userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + roleId); // 先读取缓存
+        UserRole userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId); // 先读取缓存
         if (userRole == null) { // double check
             synchronized (this) {
-                userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (userRole == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     userRole = userRoleMapper.getByUserIdAndRoleId(userId, roleId);
-                    super.set(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + roleId, userRole);
+                    super.set(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId, userRole);
                 }
             }
         }

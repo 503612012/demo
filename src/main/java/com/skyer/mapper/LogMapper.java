@@ -25,12 +25,12 @@ public interface LogMapper {
      * @param index    偏移量
      * @param pageSize 每页显示数量
      */
-    List<Log> getByPage(@Param("index") Integer index, @Param("pageSize") Integer pageSize);
+    List<Log> getByPage(@Param("index") Integer index, @Param("pageSize") Integer pageSize, @Param("log") Log log);
 
     /**
      * 获取日志总数量
      */
-    Long getTotalNum();
+    Long getTotalNum(@Param("log") Log log);
 
     /**
      * 添加

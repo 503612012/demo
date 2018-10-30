@@ -47,14 +47,14 @@ public class LogService extends BaseService {
      * @param pageNum  页码
      * @param pageSize 每页显示数量
      */
-    public List<Log> getByPage(Integer pageNum, Integer pageSize) {
-        List<Log> list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + pageSize); // 先读取缓存
+    public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
+        List<Log> list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + log.toString()); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + pageSize); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + log.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = logMapper.getByPage((pageNum - 1) * pageSize, pageSize);
-                    super.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + pageSize, list);
+                    list = logMapper.getByPage((pageNum - 1) * pageSize, pageSize, log);
+                    super.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + log.toString(), list);
                 }
             }
         }
@@ -64,14 +64,14 @@ public class LogService extends BaseService {
     /**
      * 获取日志总数量
      */
-    public Long getTotalNum() {
-        Long totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM); // 先读取缓存
+    public Long getTotalNum(Log log) {
+        Long totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM + log.toString()); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM + log.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    totalNum = logMapper.getTotalNum();
-                    super.set(RedisCacheKey.LOG_GET_TOTAL_NUM, totalNum);
+                    totalNum = logMapper.getTotalNum(log);
+                    super.set(RedisCacheKey.LOG_GET_TOTAL_NUM + log.toString(), totalNum);
                 }
             }
         }

@@ -77,6 +77,11 @@
         delete from t_user where dbid = #{id}
     </delete>
 
+    <!-- 获取所有用户 -->
+    <select id="getAll" resultMap="userMap">
+        select * from t_user where `status` = 0
+    </select>
+
     <!-- 结果集映射 -->
     <resultMap type="com.skyer.vo.User" id="userMap">
         <id column="dbid" property="id"/>

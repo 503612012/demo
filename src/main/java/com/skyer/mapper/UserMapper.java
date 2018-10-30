@@ -54,4 +54,9 @@ public interface UserMapper {
      */
     void delete(Integer id);
 
+    /**
+     * 获取所有用户
+     */
+    List<User> getAll();
+
 }

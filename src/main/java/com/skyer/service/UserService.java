@@ -59,13 +59,13 @@ public class UserService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        List<User> list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + pageSize + user.toString()); // 先读取缓存
+        List<User> list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + user.toString()); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + pageSize + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = userMapper.getByPage((pageNum - 1) * pageSize, pageSize, user);
-                    super.set(RedisCacheKey.USER_GET_BY_PAGE + pageNum + pageSize + user.toString(), list);
+                    super.set(RedisCacheKey.USER_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + user.toString(), list);
                 }
             }
         }
@@ -258,6 +258,23 @@ public class UserService extends BaseService {
         super.batchRemove(RedisCacheKey.MENU_PREFIX);
         // 记录日志
         super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUserIp());
+    }
+
+    /**
+     * 获取所有用户
+     */
+    public Object getAll() {
+        List<User> list = super.get(RedisCacheKey.USER_GET_ALL); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.USER_GET_ALL); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = userMapper.getAll();
+                    super.set(RedisCacheKey.USER_GET_ALL, list);
+                }
+            }
+        }
+        return list;
     }
 
 }

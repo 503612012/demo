@@ -56,13 +56,13 @@ public class RoleService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Role> getByPage(Integer pageNum, Integer pageSize, Role role) {
-        List<Role> list = super.get(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + pageSize + role.toString()); // 先读取缓存
+        List<Role> list = super.get(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + role.toString()); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + pageSize + role.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + role.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = roleMapper.getByPage((pageNum - 1) * pageSize, pageSize, role);
-                    super.set(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + pageSize + role.toString(), list);
+                    super.set(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + role.toString(), list);
                 }
             }
         }
