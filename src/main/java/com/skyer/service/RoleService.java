@@ -94,7 +94,7 @@ public class RoleService extends BaseService {
         role.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         role.setLastModifyId(super.getCurrentUser().getId());
         role.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-        // 移除角色相关的缓存
+        // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
         // 记录日志
         super.addLog("添加角色", role.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
@@ -123,7 +123,7 @@ public class RoleService extends BaseService {
             str = str.substring(0, str.length() - 1);
             roleInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             roleInDb.setLastModifyId(super.getCurrentUser().getId());
-            // 移除角色相关的缓存
+            // 移除缓存
             super.batchRemove(RedisCacheKey.ROLE_PREFIX);
             super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
             // 记录日志
@@ -137,7 +137,7 @@ public class RoleService extends BaseService {
      */
     public void delete(Integer id) {
         Role role = this.getById(id);
-        // 移除角色相关的缓存
+        // 移除 缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
         // 记录日志
         super.addLog("删除角色", role.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());

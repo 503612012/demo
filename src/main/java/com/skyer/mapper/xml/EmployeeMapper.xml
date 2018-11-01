@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skyer.mapper.EmployeeMapper">
+	
+	<!-- 添加 -->
+	<insert id="add">
+		insert into t_employee
+		            (`dbid`,
+		             `name`,
+		             `age`,
+		             `gender`,
+		             `address`,
+		             `contact`,
+		             `day_salary`,
+		             `month_salary`,
+		             `create_time`,
+		             `create_id`,
+		             `last_modify_time`,
+		             `last_modify_id`,
+		             `status`)
+		values (null,
+		        #{name},
+		        #{age},
+		        #{gender},
+		        #{address},
+		        #{contact},
+		        #{daySalary},
+		        #{monthSalary},
+		        #{createTime},
+		        #{createId},
+		        #{lastModifyTime},
+		        #{lastModifyId},
+		        0)
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update">
+		UPDATE t_employee
+		SET `name` = #{name},
+		    `age` = #{age},
+		    `gender` = #{gender},
+		    `address` = #{address},
+		    `contact` = #{contact},
+		    `day_salary` = #{daySalary},
+		    `month_salary` = #{monthSalary},
+		    `create_time` = #{createTime},
+		    `create_id` = #{createId},
+		    `last_modify_time` = #{lastModifyTime},
+		    `last_modify_id` = #{lastModifyId},
+		    `status` = #{status}
+		WHERE `dbid` = #{id}
+	</update>
+	
+	<!-- 通过主键查询 -->
+	<select id="getById" resultMap="employeeMap">
+		select * from t_employee where dbid = #{id}
+	</select>
+	
+	<!-- 分页查询员工 -->
+	<select id="getByPage" resultMap="employeeMap">
+		select * from t_employee e
+		<where>
+			<if test="employee.name != null and employee.name != ''">
+				and e.`name` like concat("%", #{employee.name}, "%")
+			</if>
+            <if test="employee.contact != null and employee.contact != ''">
+                and e.contact like concat("%", #{employee.contact}, "%")
+            </if>
+            <if test="employee.gender != null and employee.gender != ''">
+                and e.contact = #{employee.gender}
+            </if>
+		</where>
+		limit #{index},#{pageSize}
+	</select>
+	
+	<!-- 统计员工总数量 -->
+	<select id="getTotalNum" resultType="long">
+		select count(*) from t_employee e
+        <where>
+            <if test="employee.name != null and employee.name != ''">
+                and e.`name` like concat("%", #{employee.name}, "%")
+            </if>
+            <if test="employee.contact != null and employee.contact != ''">
+                and e.contact like concat("%", #{employee.contact}, "%")
+            </if>
+            <if test="employee.gender != null and employee.gender != ''">
+                and e.contact = #{employee.gender}
+            </if>
+        </where>
+	</select>
+	
+	<!-- 删除员工 -->
+	<delete id="delete">
+		delete from t_employee where dbid = #{id}
+	</delete>
+	
+	<!-- 结果集映射 -->
+	<resultMap type="com.skyer.vo.Employee" id="employeeMap">
+		<id column="dbid" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+        <result column="status" property="status" />
+        <result column="gender" property="gender" />
+        <result column="address" property="address" />
+        <result column="contact" property="contact" />
+        <result column="day_salary" property="daySalary" />
+        <result column="month_salary" property="monthSalary" />
+        <result column="create_id" property="createId" />
+        <result column="create_time" property="createTime" />
+        <result column="last_modify_id" property="lastModifyId" />
+        <result column="last_modify_time" property="lastModifyTime" />
+	</resultMap>
+
+</mapper>

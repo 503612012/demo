@@ -118,7 +118,7 @@ public class UserService extends BaseService {
         user.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
-        // 移除用户相关的缓存
+        // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX);
         // 记录日志
         super.addLog("添加用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
@@ -170,7 +170,7 @@ public class UserService extends BaseService {
             str = str.substring(0, str.length() - 1);
             userInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             userInDb.setLastModifyId(super.getCurrentUser().getId());
-            // 移除用户相关的缓存
+            // 移除缓存
             super.batchRemove(RedisCacheKey.USER_PREFIX);
             // 记录日志
             super.addLog("修改用户", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
@@ -185,7 +185,7 @@ public class UserService extends BaseService {
         User user = this.getById(id);
         // 删除该用户的所有角色信息
         userRoleService.deleteByUserId(id);
-        // 移除用户相关的缓存
+        // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX);
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
@@ -251,7 +251,7 @@ public class UserService extends BaseService {
         if (content.length() > 0) {
             content = content.substring(0, content.length() - 1);
         }
-        // 移除用户相关的缓存
+        // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
         super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);

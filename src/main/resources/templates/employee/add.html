@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>添加员工</legend>
+</fieldset>
+<form lay-filter="employee-add-from" class="layui-form" action="" style="width: 80%;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">员工姓名</label>
+        <div class="layui-input-inline" style="width: 400px;">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">年龄</label>
+        <div class="layui-input-inline" style="width: 400px;">
+            <input type="number" name="age" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline" style="width: 400px;">
+            <input type="tel" name="contact" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input layui-form-danger">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="gender" value="1" title="男">
+            <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
+                <div>男</div>
+            </div>
+            <input type="radio" name="gender" value="0" title="女">
+            <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                <div>女</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">日薪</label>
+        <div class="layui-input-block" style="width: 400px;">
+            <input type="number" name="daySalary" placeholder="￥" lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">月薪</label>
+        <div class="layui-input-block" style="width: 400px;">
+            <input type="number" name="monthSalary" placeholder="￥" lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">住址</label>
+        <div class="layui-input-block" style="width: 400px;">
+            <textarea name="address" placeholder="请输入住址" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="employee-add-submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/layui.all.js}"></script>
+<script th:src="@{/js/employee/add.js}"></script>
+</body>
+</html>

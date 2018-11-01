@@ -15,6 +15,12 @@ public class RedisCacheKey {
     public static final String USER_GET_BY_USERNAME = "user_getByUserName_";
     public static final String USER_GET_TOTAL_NUM = "user_getTotalNum_";
 
+    // 员工实体类缓存key定义
+    public static final String EMPLOYEE_PREFIX = "employee_";
+    public static final String EMPLOYEE_GET_BY_ID = "employee_getById_";
+    public static final String EMPLOYEE_GET_BY_PAGE = "employee_getByPage_";
+    public static final String EMPLOYEE_GET_TOTAL_NUM = "employee_getTotalNum_";
+
     // 角色实体类缓存key定义
     public static final String ROLE_PREFIX = "role_";
     public static final String ROLE_GET_BY_ID = "role_getById_";
