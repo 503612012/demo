@@ -11,7 +11,7 @@
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/Users/skyer/log/skyer/demo/demo_error.log</file>
-        <!--<file>/usr/local/log/demo/demo/demo_error.log</file>-->
+        <!--<file>/usr/local/log/demo/demo_error.log</file>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/Users/skyer/log/skyer/demo/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--<fileNamePattern>/usr/local/log/demo/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
