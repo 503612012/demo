@@ -56,14 +56,14 @@ public class MenuService extends BaseService {
     public void update(Menu menu) {
         Menu menuInDb = this.getById(menu.getId());
         StringBuilder content = new StringBuilder();
-        if (!menu.getMenuName().equals(menuInDb.getMenuName())) {
+        if (!menuInDb.getMenuName().equals(menu.getMenuName())) {
             content.append("菜单名称由[").append(menuInDb.getMenuName()).append("]改为[").append(menu.getMenuName()).append("]，");
             menuInDb.setMenuName(menu.getMenuName());
         }
         if (menu.getStatus() == null) {
             menu.setStatus(0);
         }
-        if (!menu.getStatus().equals(menuInDb.getStatus())) {
+        if (!menuInDb.getStatus().equals(menu.getStatus())) {
             content.append("状态由[").append(menuInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(menu.getStatus() == 0 ? "正常" : "锁定").append("]，");
             menuInDb.setStatus(menu.getStatus());
         }

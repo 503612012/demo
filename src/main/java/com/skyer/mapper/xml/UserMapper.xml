@@ -50,25 +50,49 @@
 
     <!-- 添加用户 -->
     <insert id="add">
-        insert into t_user (dbid, user_name, password, nick_name, age, email, phone, status, gender, create_time, create_id, last_modify_time, last_modify_id)
-        values (null, #{userName}, #{password}, #{nickName}, #{age}, #{email}, #{phone}, 0, #{gender}, #{createTime}, #{createId}, #{lastModifyTime}, #{lastModifyId})
+        insert into t_user (`dbid`,
+                            `user_name`,
+                            `password`,
+                            `nick_name`,
+                            `age`,
+                            `email`,
+                            `phone`,
+                            `status`,
+                            `gender`,
+                            `create_time`,
+                            `create_id`,
+                            `last_modify_time`,
+                            `last_modify_id`)
+                     values (null,
+                             #{userName},
+                             #{password},
+                             #{nickName},
+                             #{age},
+                             #{email},
+                             #{phone},
+                             0,
+                             #{gender},
+                             #{createTime},
+                             #{createId},
+                             #{lastModifyTime},
+                             #{lastModifyId})
     </insert>
 
     <!-- 修改用户 -->
     <update id="update">
-        update t_user set user_name = #{userName},
+        update t_user set `user_name` = #{userName},
                           `password` = #{password},
-                          nick_name = #{nickName},
-                          age = #{age},
-                          email = #{email},
-                          phone = #{phone},
+                          `nick_name` = #{nickName},
+                          `age` = #{age},
+                          `email` = #{email},
+                          `phone` = #{phone},
                           `status` = #{status},
-                          gender = #{gender},
-                          create_id = #{createId},
-                          create_time = #{createTime},
-                          last_modify_id = #{lastModifyId},
-                          last_modify_time = #{lastModifyTime}
-                    where dbid = #{id}
+                          `gender` = #{gender},
+                          `create_id` = #{createId},
+                          `create_time` = #{createTime},
+                          `last_modify_id` = #{lastModifyId},
+                          `last_modify_time` = #{lastModifyTime}
+                    where `dbid` = #{id}
 
     </update>
 

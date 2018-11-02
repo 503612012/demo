@@ -21,37 +21,36 @@
 		             `last_modify_time`,
 		             `last_modify_id`,
 		             `status`)
-		values (null,
-		        #{name},
-		        #{age},
-		        #{gender},
-		        #{address},
-		        #{contact},
-		        #{daySalary},
-		        #{monthSalary},
-		        #{createTime},
-		        #{createId},
-		        #{lastModifyTime},
-		        #{lastModifyId},
-		        0)
+              values (null,
+                     #{name},
+                     #{age},
+                     #{gender},
+                     #{address},
+                     #{contact},
+                     #{daySalary},
+                     #{monthSalary},
+                     #{createTime},
+                     #{createId},
+                     #{lastModifyTime},
+                     #{lastModifyId},
+                     0)
 	</insert>
 	
 	<!-- 更新 -->
 	<update id="update">
-		UPDATE t_employee
-		SET `name` = #{name},
-		    `age` = #{age},
-		    `gender` = #{gender},
-		    `address` = #{address},
-		    `contact` = #{contact},
-		    `day_salary` = #{daySalary},
-		    `month_salary` = #{monthSalary},
-		    `create_time` = #{createTime},
-		    `create_id` = #{createId},
-		    `last_modify_time` = #{lastModifyTime},
-		    `last_modify_id` = #{lastModifyId},
-		    `status` = #{status}
-		WHERE `dbid` = #{id}
+		update t_employee set `name` = #{name},
+                              `age` = #{age},
+                              `gender` = #{gender},
+                              `address` = #{address},
+                              `contact` = #{contact},
+                              `day_salary` = #{daysalary},
+                              `month_salary` = #{monthsalary},
+                              `create_time` = #{createtime},
+                              `create_id` = #{createid},
+                              `last_modify_time` = #{lastmodifytime},
+                              `last_modify_id` = #{lastmodifyid},
+                              `status` = #{status}
+                        where `dbid` = #{id}
 	</update>
 	
 	<!-- 通过主键查询 -->

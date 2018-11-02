@@ -1,4 +1,4 @@
-//@sourceURL=/js/role/add.js
+//@sourceURL=/js/worksite/add.js
 
 layui.use(['form', 'layedit', 'laydate'], function() {
     var form = layui.form
@@ -7,9 +7,9 @@ layui.use(['form', 'layedit', 'laydate'], function() {
         , laydate = layui.laydate;
 
     // 监听提交
-    form.on('submit(role-add-submit)', function(data) {
+    form.on('submit(worksite-add-submit)', function(data) {
         $.ajax({
-            url: '/role/doAdd',
+            url: '/worksite/doAdd',
             type: 'POST',
             data: data.field,
             dataType: 'json',
@@ -22,7 +22,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                     });
                     return;
                 }
-                window.parent.mainFrm.location.href= "/role/index";
+                window.parent.mainFrm.location.href= "/worksite/index";
             }
         });
         return false;

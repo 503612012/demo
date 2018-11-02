@@ -33,19 +33,25 @@
 
     <!-- 添加角色 -->
     <insert id="add">
-        insert into t_role (dbid, role_name, status, create_time, create_id, last_modify_time, last_modify_id)
+        insert into t_role (`dbid`,
+                            `role_name`,
+                            `status`,
+                            `create_time`,
+                            `create_id`,
+                            `last_modify_time`,
+                            `last_modify_id`)
         values (null, #{roleName}, 0, #{createTime}, #{createId}, #{lastModifyTime}, #{lastModifyId})
     </insert>
 
     <!-- 修改角色 -->
     <update id="update">
-        update t_role set role_name = #{roleName},
+        update t_role set `role_name` = #{roleName},
                           `status` = #{status},
-                          create_id = #{createId},
-                          create_time = #{createTime},
-                          last_modify_id = #{lastModifyId},
-                          last_modify_time = #{lastModifyTime}
-                    where dbid = #{id}
+                          `create_id` = #{createId},
+                          `create_time` = #{createTime},
+                          `last_modify_id` = #{lastModifyId},
+                          `last_modify_time` = #{lastModifyTime}
+                    where `dbid` = #{id}
 
     </update>
 

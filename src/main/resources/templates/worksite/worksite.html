@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+</head>
+<body>
+
+<div class="layui-fluid" style="padding: 10px;">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header worksiteTable layuiadmin-card-header-auto" style="padding-top: 15px; padding-bottom: 15px; height: auto; position: relative;">
+            <div class="layui-inline">
+                <label class="layui-form-label">工地名称</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="worksiteName" id="worksiteNameReload" autocomplete="off">
+                </div>
+            </div>
+            <button class="layui-btn layuiadmin-btn-admin worksite-search" lay-submit="" lay-filter="LAY-user-back-search" style="line-height: 0px">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
+            </button>
+            <button class="layui-btn layuiadmin-btn-admin worksite-reset" lay-submit="" lay-filter="LAY-user-back-search" style="line-height: 0px">
+                <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
+            </button>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-hide" id="worksite-list" lay-filter="worksite-list" style="margin: 10px;"></table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="worksiteListToolBar">
+    <div class="layui-btn-container">
+        <button th:if="${session.menu.contains('B1_03_01')}" class="layui-btn layui-btn-sm" id="worksite-add-btn" lay-event="worksite-add-btn">
+            <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加工地</i>
+        </button>
+    </div>
+</script>
+<script type="text/html" id="worksiteListBar">
+    <a th:if="${session.menu.contains('B1_03_02')}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains('B1_03_03')}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var menu = [[${session.menu}]];
+    function hasPermission(code) {
+        for (var i=0; i<menu.length; i++) {
+            if (code == menu[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /*]]>*/
+</script>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/layui.all.js}"></script>
+<script th:src="@{/js/worksite/worksite.js}"></script>
+</body>
+</html>

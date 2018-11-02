@@ -26,19 +26,19 @@
 
     <!-- 修改菜单 -->
     <update id="update">
-        update t_menu set menu_code = #{menuCode},
-                          menu_name = #{menuName},
-                          pid = #{pid},
-                          sort = #{sort},
-                          url = #{url},
-                          iconCls = #{iconCls},
-                          type = #{type},
-                          create_id = #{createId},
-                          create_time = #{createTime},
-                          last_modify_id = #{lastModifyId},
-                          last_modify_time = #{lastModifyTime},
-                          status = #{status}
-                    where dbid = #{id}
+        update t_menu set `menu_code` = #{menuCode},
+                          `menu_name` = #{menuName},
+                          `pid` = #{pid},
+                          `sort` = #{sort},
+                          `url` = #{url},
+                          `iconCls` = #{iconCls},
+                          `type` = #{type},
+                          `create_id` = #{createId},
+                          `create_time` = #{createTime},
+                          `last_modify_id` = #{lastModifyId},
+                          `last_modify_time` = #{lastModifyTime},
+                          `status` = #{status}
+                    where `dbid` = #{id}
     </update>
 
     <!-- 分页菜单树形表格内容 -->

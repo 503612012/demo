@@ -107,14 +107,14 @@ public class RoleService extends BaseService {
     public void update(Role role) {
         Role roleInDb = this.getById(role.getId());
         StringBuilder content = new StringBuilder();
-        if (!role.getRoleName().equals(roleInDb.getRoleName())) {
+        if (!roleInDb.getRoleName().equals(role.getRoleName())) {
             content.append("角色名称由[").append(roleInDb.getRoleName()).append("]改为[").append(role.getRoleName()).append("]，");
             roleInDb.setRoleName(role.getRoleName());
         }
         if (role.getStatus() == null) {
             role.setStatus(0);
         }
-        if (!role.getStatus().equals(roleInDb.getStatus())) {
+        if (!roleInDb.getStatus().equals(role.getStatus())) {
             content.append("状态由[").append(roleInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(role.getStatus() == 0 ? "正常" : "锁定").append("]，");
             roleInDb.setStatus(role.getStatus());
         }

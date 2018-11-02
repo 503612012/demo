@@ -131,12 +131,12 @@ public class UserService extends BaseService {
     public void update(User user) {
         User userInDb = this.getById(user.getId());
         StringBuilder content = new StringBuilder();
-        if (!user.getNickName().equals(userInDb.getNickName())) {
+        if (!userInDb.getNickName().equals(user.getNickName())) {
             content.append("昵称由[").append(userInDb.getNickName()).append("]改为[").append(user.getNickName()).append("]，");
             userInDb.setNickName(user.getNickName());
         }
         if (!StringUtils.isEmpty(user.getPassword())) {
-            if (!user.getPassword().equals(userInDb.getPassword())) {
+            if (!userInDb.getPassword().equals(user.getPassword())) {
                 Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
                 userInDb.setPassword(md5.toString());
                 content.append("密码修改了，");
@@ -145,23 +145,23 @@ public class UserService extends BaseService {
         if (user.getStatus() == null) {
             user.setStatus(0);
         }
-        if (!user.getStatus().equals(userInDb.getStatus())) {
+        if (!userInDb.getStatus().equals(user.getStatus())) {
             content.append("状态由[").append(userInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(user.getStatus() == 0 ? "正常" : "锁定").append("]，");
             userInDb.setStatus(user.getStatus());
         }
-        if (!user.getAge().equals(userInDb.getAge())) {
+        if (!userInDb.getAge().equals(user.getAge())) {
             content.append("年龄由[").append(userInDb.getAge()).append("]改为[").append(user.getAge()).append("]，");
             userInDb.setAge(user.getAge());
         }
-        if (!user.getEmail().equals(userInDb.getEmail())) {
+        if (!userInDb.getEmail().equals(user.getEmail())) {
             content.append("邮箱由[").append(userInDb.getEmail()).append("]改为[").append(user.getEmail()).append("]，");
             userInDb.setEmail(user.getEmail());
         }
-        if (!user.getGender().equals(userInDb.getGender())) {
+        if (!userInDb.getGender().equals(user.getGender())) {
             content.append("性别由[").append(userInDb.getGender() == 1 ? "男" : "女").append("]改为[").append(user.getGender() == 1 ? "男" : "女").append("]，");
             userInDb.setGender(user.getGender());
         }
-        if (!user.getPhone().equals(userInDb.getPhone())) {
+        if (!userInDb.getPhone().equals(user.getPhone())) {
             content.append("手机号由[").append(userInDb.getPhone()).append("]改为[").append(user.getPhone()).append("]，");
             userInDb.setPhone(user.getPhone());
         }
