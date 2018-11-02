@@ -1,6 +1,11 @@
 //@sourceURL=/login.js
 $(function() {
 
+    // 跳出iframe
+    if (window != top) {
+        top.location.href = location.href;
+    }
+
     /**
      * 绑定记住我勾选事件
      */
