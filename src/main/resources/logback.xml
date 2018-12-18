@@ -1,75 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n</pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
-
-    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/skyer/log/skyer/demo/demo_error.log</file>
-        <!--<file>/usr/local/log/demo/demo_error.log</file>-->
+    <!--<property name="LOG_HOME" value="/usr/local/log/demo"/>-->
+    <property name="LOG_HOME" value="/Users/skyer/log/demo"/>
+    <!-- INFO日志定义 -->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/demo.info.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/skyer/log/skyer/demo/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!--<fileNamePattern>/usr/local/log/demo/demo_error.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>10MB</maxFileSize>
-        </triggeringPolicy>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n</pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
-
-    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/skyer/log/skyer/demo/demo_debug.log</file>
-        <!--<file>/usr/local/log/demo/demo_debug.log</file>-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/skyer/log/skyer/demo/demo_debug.log.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!--<fileNamePattern>/usr/local/log/demo/demo_debug.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>10MB</maxFileSize>
-        </triggeringPolicy>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n</pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
-
-    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/skyer/log/skyer/demo/demo_info.log</file>
-        <!--<file>/usr/local/log/demo/demo_info.log</file>-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Users/skyer/log/skyer/demo/demo_info.log.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!--<fileNamePattern>/usr/local/log/demo/demo_info.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+            <FileNamePattern>${LOG_HOME}/demo.info.%d{yyyy-MM-dd}.log</FileNamePattern>
             <maxHistory>180</maxHistory>
         </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>10MB</maxFileSize>
-        </triggeringPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n</pattern>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
             <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ERROR日志定义 -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/demo.error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/demo.error.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- DEBUG日志定义 -->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/demo.debug.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/demo.debug.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 定义控制台日志信息 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="STDOUT"/>
     </root>
     <logger name="com.skyer.controller" level="ERROR">
-        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="ERROR"/>
     </logger>
     <logger name="com.skyer.mapper" level="DEBUG">
-        <appender-ref ref="FILE_DEBUG"/>
+        <appender-ref ref="DEBUG"/>
     </logger>
-    <logger name="com.skyer.aop" level="info">
-        <appender-ref ref="FILE_INFO"/>
+    <logger name="com.skyer.aop" level="INFO">
+        <appender-ref ref="INFO"/>
     </logger>
+
 </configuration>
