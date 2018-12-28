@@ -121,7 +121,7 @@ public class UserService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX);
         // 记录日志
-        super.addLog("添加用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("添加用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         userMapper.add(user);
     }
 
@@ -130,6 +130,7 @@ public class UserService extends BaseService {
      */
     public void update(User user) {
         User userInDb = this.getById(user.getId());
+        String nickName = userInDb.getNickName();
         StringBuilder content = new StringBuilder();
         if (!userInDb.getNickName().equals(user.getNickName())) {
             content.append("昵称由[").append(userInDb.getNickName()).append("]改为[").append(user.getNickName()).append("]，");
@@ -173,7 +174,7 @@ public class UserService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.USER_PREFIX);
             // 记录日志
-            super.addLog("修改用户", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
+            super.addLog("修改用户", "[" + nickName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
             userMapper.update(userInDb);
         }
     }
@@ -189,7 +190,7 @@ public class UserService extends BaseService {
         super.batchRemove(RedisCacheKey.USER_PREFIX);
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
-        super.addLog("删除用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("删除用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         userMapper.delete(id);
     }
 
@@ -257,7 +258,7 @@ public class UserService extends BaseService {
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
         super.batchRemove(RedisCacheKey.MENU_PREFIX);
         // 记录日志
-        super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }
 
     /**

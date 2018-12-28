@@ -5,15 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.skyer.contants.AppConst;
 import com.skyer.contants.PermissionCode;
 import com.skyer.enumerate.ResultEnum;
+import com.skyer.exception.MyException;
 import com.skyer.service.MenuService;
 import com.skyer.service.RoleService;
 import com.skyer.service.UserRoleService;
 import com.skyer.service.UserService;
 import com.skyer.vo.Role;
+import com.skyer.vo.User;
 import com.skyer.vo.UserRole;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +30,10 @@ import java.util.Map;
  *
  * @author SKYER
  */
+@Slf4j
 @Controller
 @RequestMapping("/role")
 public class RoleController extends BaseController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
 
     @Resource
     private RoleService roleService;
@@ -65,11 +65,8 @@ public class RoleController extends BaseController {
         try {
             return super.success(roleService.getById(id));
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "通过ID查询角色出错，错误信息：", e);
-            e.printStackTrace();
+            return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
         }
-        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
     }
 
     /**
@@ -81,27 +78,25 @@ public class RoleController extends BaseController {
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     @ResponseBody
-    public Object getByPage(Integer page, Integer limit, Role role) {
-        JSONObject result = new JSONObject();
+    public Object getByPage(Integer page, Integer limit, Role role) throws MyException {
         try {
+            JSONObject result = new JSONObject();
             List<Role> list = roleService.getByPage(page, limit, role);
             for (Role item : list) {
-                item.setCreateName(userService.getById(item.getCreateId()).getNickName());
-                item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
+                User createUser = userService.getById(item.getCreateId());
+                item.setCreateName(createUser == null ? "" : createUser.getNickName());
+                User lastModifyUser = userService.getById(item.getLastModifyId());
+                item.setLastModifyName(lastModifyUser == null ? "" : lastModifyUser.getNickName());
             }
             Long totalNum = roleService.getTotalNum(role);
             result.put("code", 0);
             result.put("msg", "");
             result.put("count", totalNum);
             result.put("data", list);
+            return result;
         } catch (Exception e) {
-            result.put("code", ResultEnum.SEARCH_ERROR.getCode());
-            result.put("msg", ResultEnum.SEARCH_ERROR.getValue());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}, role: {}]", page, limit, role.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "分页查询角色出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), e);
         }
-        return result;
     }
 
     /**
@@ -119,16 +114,13 @@ public class RoleController extends BaseController {
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
     @ResponseBody
-    public Object doAdd(Role role) {
+    public Object doAdd(Role role) throws MyException {
         try {
             roleService.add(role);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[role: {}]", role.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "添加角色出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue());
     }
 
     /**
@@ -138,17 +130,14 @@ public class RoleController extends BaseController {
      */
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
-    public String update(Integer id, Model model) {
+    public String update(Integer id, Model model) throws MyException {
         try {
             Role role = roleService.getById(id);
             model.addAttribute("role", role);
             return "/role/update";
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "去到角色修改页面出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.ERROR_PAGE.getValue(), e);
         }
-        return "err";
     }
 
     /**
@@ -157,16 +146,13 @@ public class RoleController extends BaseController {
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
     @ResponseBody
-    public Object doUpdate(Role role) {
+    public Object doUpdate(Role role) throws MyException {
         try {
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[role: {}]", role.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "修改角色出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
     /**
@@ -177,7 +163,7 @@ public class RoleController extends BaseController {
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.ROLE_DELETE)
     @ResponseBody
-    public Object delete(Integer id) {
+    public Object delete(Integer id) throws MyException {
         try {
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
             if (userRoles != null && userRoles.size() > 0) {
@@ -186,11 +172,8 @@ public class RoleController extends BaseController {
             roleService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "删除角色出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
     }
 
     /**
@@ -202,18 +185,15 @@ public class RoleController extends BaseController {
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
     @ResponseBody
-    public Object updateStatus(Integer roleId, Integer status) {
+    public Object updateStatus(Integer roleId, Integer status) throws MyException {
         try {
             Role role = roleService.getById(roleId);
             role.setStatus(status);
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[roleId: {}, status: {}]", roleId, status);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "修改角色状态出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
     /**
@@ -239,9 +219,7 @@ public class RoleController extends BaseController {
         try {
             return roleService.getMenuTreeByRoleId(roleId);
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[roleId: {}]", roleId);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "去到给角色授权页面出错，错误信息：", e);
-            e.printStackTrace();
+            log.error(AppConst.ERROR_LOG_PREFIX + "去到给角色授权页面出错，入参[roleId: {}]", roleId, e);
         }
         return null;
     }
@@ -255,7 +233,7 @@ public class RoleController extends BaseController {
     @RequestMapping("/setRoleMenu")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
     @ResponseBody
-    public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) {
+    public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             roleService.setRoleMenu(roleId, menuIds);
             List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
@@ -264,11 +242,8 @@ public class RoleController extends BaseController {
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(ResultEnum.UPDATE_ERROR.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[roleId: {}, menuIds: {}]", roleId, menuIds);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "设置角色权限出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
 }

@@ -45,7 +45,7 @@
 
     <!-- 添加 -->
     <insert id="add">
-        insert into t_log values (null, #{title}, #{content}, #{operatorId}, #{operatorTime}, #{operatorIp})
+        insert into t_log values (null, #{title}, #{content}, #{operatorId}, #{operatorName}, #{operatorTime}, #{operatorIp})
     </insert>
 
     <!-- 结果集映射 -->
@@ -54,6 +54,7 @@
         <result column="title" property="title"/>
         <result column="content" property="content"/>
         <result column="operator_id" property="operatorId"/>
+        <result column="operator_name" property="operatorName"/>
         <result column="operator_time" property="operatorTime"/>
         <result column="operator_ip" property="operatorIp"/>
     </resultMap>

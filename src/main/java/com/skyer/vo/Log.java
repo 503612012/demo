@@ -18,10 +18,8 @@ public class Log implements Serializable {
     private String title;
     private String content;
     private Integer operatorId;
+    private String operatorName;
     private String operatorTime;
     private String operatorIp;
-
-    // 非数据库属性
-    private String operatorName;
 
 }

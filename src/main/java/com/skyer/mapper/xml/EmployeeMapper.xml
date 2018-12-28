@@ -43,12 +43,12 @@
                               `gender` = #{gender},
                               `address` = #{address},
                               `contact` = #{contact},
-                              `day_salary` = #{daysalary},
-                              `month_salary` = #{monthsalary},
-                              `create_time` = #{createtime},
-                              `create_id` = #{createid},
-                              `last_modify_time` = #{lastmodifytime},
-                              `last_modify_id` = #{lastmodifyid},
+                              `day_salary` = #{daySalary},
+                              `month_salary` = #{monthSalary},
+                              `create_time` = #{createTime},
+                              `create_id` = #{createId},
+                              `last_modify_time` = #{lastModifyTime},
+                              `last_modify_id` = #{lastModifyId},
                               `status` = #{status}
                         where `dbid` = #{id}
 	</update>

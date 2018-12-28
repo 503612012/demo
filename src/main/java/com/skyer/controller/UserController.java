@@ -1,14 +1,12 @@
 package com.skyer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.skyer.contants.AppConst;
 import com.skyer.contants.PermissionCode;
 import com.skyer.enumerate.ResultEnum;
+import com.skyer.exception.MyException;
 import com.skyer.service.UserService;
 import com.skyer.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +23,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -48,15 +44,12 @@ public class UserController extends BaseController {
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
     @ResponseBody
-    public Object getById(Integer id) {
+    public Object getById(Integer id) throws MyException {
         try {
             return super.success(userService.getById(id));
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "通过ID查询用户出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
     }
 
     /**
@@ -68,9 +61,9 @@ public class UserController extends BaseController {
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
     @ResponseBody
-    public Object getByPage(Integer page, Integer limit, User user) {
-        JSONObject result = new JSONObject();
+    public Object getByPage(Integer page, Integer limit, User user) throws MyException {
         try {
+            JSONObject result = new JSONObject();
             List<User> list = userService.getByPage(page, limit, user);
             for (User item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
@@ -81,14 +74,10 @@ public class UserController extends BaseController {
             result.put("msg", "");
             result.put("count", totalNum);
             result.put("data", list);
+            return result;
         } catch (Exception e) {
-            result.put("code", ResultEnum.SEARCH_ERROR.getCode());
-            result.put("msg", ResultEnum.SEARCH_ERROR.getValue());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}, user: {}]", page, limit, user.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "分页查询用户出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), e);
         }
-        return result;
     }
 
     /**
@@ -106,16 +95,13 @@ public class UserController extends BaseController {
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.USER_INSERT)
     @ResponseBody
-    public Object doAdd(User user) {
+    public Object doAdd(User user) throws MyException {
         try {
             userService.add(user);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[user: {}]", user.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "添加用户出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue());
     }
 
     /**
@@ -125,17 +111,14 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
-    public String update(Integer id, Model model) {
+    public String update(Integer id, Model model) throws MyException {
         try {
             User user = userService.getById(id);
             model.addAttribute("user", user);
             return "/user/update";
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "去到用户修改页面出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.ERROR_PAGE.getValue(), e);
         }
-        return "err";
     }
 
     /**
@@ -144,16 +127,13 @@ public class UserController extends BaseController {
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
     @ResponseBody
-    public Object doUpdate(User user) {
+    public Object doUpdate(User user) throws MyException {
         try {
             userService.update(user);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[user: {}]", user.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "修改用户出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
     /**
@@ -164,16 +144,13 @@ public class UserController extends BaseController {
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.USER_DELETE)
     @ResponseBody
-    public Object delete(Integer id) {
+    public Object delete(Integer id) throws MyException {
         try {
             userService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "删除用户出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
     }
 
     /**
@@ -185,18 +162,15 @@ public class UserController extends BaseController {
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.USER_SETSTATUS)
     @ResponseBody
-    public Object updateStatus(Integer userId, Integer status) {
+    public Object updateStatus(Integer userId, Integer status) throws MyException {
         try {
             User user = userService.getById(userId);
             user.setStatus(status);
             userService.update(user);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[userId: {}, status: {}]", userId, status);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "修改用户状态出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
     /**
@@ -207,16 +181,13 @@ public class UserController extends BaseController {
     @RequestMapping("/getRoleByUserId")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
     @ResponseBody
-    public Object getRoleByUserId(Integer id) {
+    public Object getRoleByUserId(Integer id) throws MyException {
         try {
             List<JSONObject> list = userService.getRoleByUserId(id);
             return super.success(list);
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "通过用户ID获取角色列表出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
     }
 
     /**
@@ -228,16 +199,13 @@ public class UserController extends BaseController {
     @RequestMapping("/setUserRole")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
     @ResponseBody
-    public Object setUserRole(Integer userId, String roleIds) {
+    public Object setUserRole(Integer userId, String roleIds) throws MyException {
         try {
             userService.setUserRole(userId, roleIds);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[userId: {}, roleIds: {}]", userId, roleIds);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "设置用户角色出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue());
     }
 
     /**
@@ -246,14 +214,12 @@ public class UserController extends BaseController {
     @RequestMapping("/getAll")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
     @ResponseBody
-    public Object getAll() {
+    public Object getAll() throws MyException {
         try {
             return super.success(userService.getAll());
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "设置用户角色出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
     }
 
 }

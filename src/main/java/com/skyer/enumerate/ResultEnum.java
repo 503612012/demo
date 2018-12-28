@@ -14,10 +14,13 @@ public enum ResultEnum {
 
     UNKNOW_ERROR(3001, "未知错误！"),
 
+    SEARCH_PAGE_ERROR(5000, "分页查询错误！"),
     SEARCH_ERROR(5001, "查询错误！"),
     INSERT_ERROR(5002, "添加错误！"),
     DELETE_ERROR(5003, "删除错误！"),
     UPDATE_ERROR(5004, "修改错误！"),
+
+    ERROR_PAGE(5005, "去到错误页面！"),
 
     NO_THIS_USER(4001, "该用户不存在！"),
     PASSWORD_WRONG(4002, "密码错误！"),

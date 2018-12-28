@@ -72,7 +72,7 @@ public class WorksiteService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
-        super.addLog("添加工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("添加工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         worksiteMapper.add(worksite);
     }
 
@@ -98,6 +98,7 @@ public class WorksiteService extends BaseService {
      */
     public void update(Worksite worksite) {
         Worksite worksiteInDb = worksiteMapper.getById(worksite.getId());
+        String name = worksiteInDb.getName();
         StringBuilder content = new StringBuilder();
         if (!worksiteInDb.getName().equals(worksite.getName())) {
             content.append("工地名称由[").append(worksiteInDb.getName()).append("]改为[").append(worksite.getName()).append("]；");
@@ -122,7 +123,7 @@ public class WorksiteService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
             // 记录日志
-            super.addLog("修改工地", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
+            super.addLog("修改工地", "[" + name + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
             worksiteMapper.update(worksiteInDb);
         }
     }
@@ -135,7 +136,7 @@ public class WorksiteService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
-        super.addLog("删除工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("删除工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         worksiteMapper.delete(id);
     }
 

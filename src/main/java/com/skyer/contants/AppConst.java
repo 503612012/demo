@@ -17,4 +17,5 @@ public class AppConst {
     public static final String MD5_SALT = "5217"; // MD5盐值
 
     public static final String USER_MENU = "menu"; // 用户菜单
+
 }

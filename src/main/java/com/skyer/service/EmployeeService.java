@@ -33,7 +33,7 @@ public class EmployeeService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
         // 记录日志
-        super.addLog("添加员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("添加员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         employeeMapper.add(employee);
     }
 
@@ -42,6 +42,7 @@ public class EmployeeService extends BaseService {
      */
     public void update(Employee employee) {
         Employee employeeInDb = this.getById(employee.getId());
+        String employeeName = employeeInDb.getName();
         StringBuilder content = new StringBuilder();
         if (!employeeInDb.getName().equals(employee.getName())) {
             content.append("姓名由[").append(employeeInDb.getName()).append("]改为[").append(employee.getName()).append("]，");
@@ -86,7 +87,7 @@ public class EmployeeService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
             // 记录日志
-            super.addLog("修改员工", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
+            super.addLog("修改员工", "[" + employeeName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
             employeeMapper.update(employeeInDb);
         }
     }
@@ -153,7 +154,7 @@ public class EmployeeService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
         // 记录日志
-        super.addLog("删除员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUserIp());
+        super.addLog("删除员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         employeeMapper.delete(id);
     }
 

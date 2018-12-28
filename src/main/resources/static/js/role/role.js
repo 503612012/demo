@@ -48,9 +48,7 @@ layui.use('table', function() {
         , page: true
     });
 
-    var $ = layui.$, active = {
-        reload: reload()
-    };
+    var $ = layui.$;
 
     /**
      * 查询按钮点击事件绑定

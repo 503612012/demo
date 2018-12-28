@@ -55,6 +55,7 @@ public class MenuService extends BaseService {
      */
     public void update(Menu menu) {
         Menu menuInDb = this.getById(menu.getId());
+        String menuName = menuInDb.getMenuName();
         StringBuilder content = new StringBuilder();
         if (!menuInDb.getMenuName().equals(menu.getMenuName())) {
             content.append("菜单名称由[").append(menuInDb.getMenuName()).append("]改为[").append(menu.getMenuName()).append("]，");
@@ -78,7 +79,7 @@ public class MenuService extends BaseService {
             super.batchRemove(RedisCacheKey.MENU_PREFIX);
             super.batchRemove(RedisCacheKey.ROLE_PREFIX);
             // 记录日志
-            super.addLog("修改菜单", str, super.getCurrentUser().getId(), super.getCurrentUserIp());
+            super.addLog("修改菜单", "[" + menuName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
             menuMapper.update(menuInDb);
         }
     }

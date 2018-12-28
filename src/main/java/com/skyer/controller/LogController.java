@@ -1,15 +1,13 @@
 package com.skyer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.skyer.contants.AppConst;
 import com.skyer.contants.PermissionCode;
 import com.skyer.enumerate.ResultEnum;
+import com.skyer.exception.MyException;
 import com.skyer.service.LogService;
 import com.skyer.service.UserService;
 import com.skyer.vo.Log;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,8 +23,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/log")
 public class LogController extends BaseController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(LogController.class);
 
     @Resource
     private LogService logService;
@@ -50,15 +46,12 @@ public class LogController extends BaseController {
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
     @ResponseBody
-    public Object getById(Integer id) {
+    public Object getById(Integer id) throws MyException {
         try {
             return super.success(logService.getById(id));
         } catch (Exception e) {
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[id: {}]", id);
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "通过ID查询日志出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
-        return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
     }
 
     /**
@@ -70,26 +63,19 @@ public class LogController extends BaseController {
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
     @ResponseBody
-    public Object getByPage(Integer page, Integer limit, Log log) {
-        JSONObject result = new JSONObject();
+    public Object getByPage(Integer page, Integer limit, Log logVo) throws MyException {
         try {
-            List<Log> list = logService.getByPage(page, limit, log);
-            for (Log item : list) {
-                item.setOperatorName(userService.getById(item.getOperatorId()).getNickName());
-            }
-            Long totalNum = logService.getTotalNum(log);
+            JSONObject result = new JSONObject();
+            List<Log> list = logService.getByPage(page, limit, logVo);
+            Long totalNum = logService.getTotalNum(logVo);
             result.put("code", 0);
             result.put("msg", "");
             result.put("count", totalNum);
             result.put("data", list);
+            return result;
         } catch (Exception e) {
-            result.put("code", ResultEnum.SEARCH_ERROR.getCode());
-            result.put("msg", ResultEnum.SEARCH_ERROR.getValue());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "入参[page: {}, limit: {}, log: {}]", page, limit, log.toString());
-            LOG.error(AppConst.ERROR_LOG_PREFIX + "分页查询日志出错，错误信息：", e);
-            e.printStackTrace();
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), e);
         }
-        return result;
     }
 
 }

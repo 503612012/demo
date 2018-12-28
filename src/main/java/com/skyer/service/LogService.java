@@ -90,11 +90,12 @@ public class LogService extends BaseService {
     /**
      * 添加日志
      */
-    public void addLog(String title, String content, Integer operatorId, String operatorIp) {
+    public void addLog(String title, String content, Integer operatorId, String operatorName, String operatorIp) {
         Log log = new Log();
         log.setTitle(title);
         log.setContent(content);
         log.setOperatorId(operatorId);
+        log.setOperatorName(operatorName);
         log.setOperatorIp(operatorIp);
         log.setOperatorTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         this.add(log);

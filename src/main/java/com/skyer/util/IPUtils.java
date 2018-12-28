@@ -1,7 +1,7 @@
 package com.skyer.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.skyer.contants.AppConst;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -13,9 +13,8 @@ import java.util.regex.Pattern;
  *
  * @author skyer
  */
+@Slf4j
 public class IPUtils {
-
-    private static final Logger L = LoggerFactory.getLogger(IPUtils.class);
 
     public static String getClientIPAddr(HttpServletRequest request) {
         String ip;
@@ -46,7 +45,7 @@ public class IPUtils {
                 ip = InetAddress.getLocalHost().getHostAddress();
             } catch (UnknownHostException e) {
                 e.printStackTrace();
-                L.error("---------------------------", e);
+                log.error(AppConst.ERROR_LOG_PREFIX, e);
             }
         }
         // 6.校验ip的合法性，不合法返回""
@@ -71,7 +70,7 @@ public class IPUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            L.error("---------------------------", e);
+            log.error(AppConst.ERROR_LOG_PREFIX, e);
         }
         return retVal;
     }
