@@ -1,5 +1,6 @@
 package com.skyer.aop;
 
+import com.skyer.contants.AppConst;
 import com.skyer.util.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -33,13 +34,18 @@ public class WebLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         @SuppressWarnings("ConstantConditions") HttpServletRequest request = attributes.getRequest();
         // 记录请求内容
-        log.info("请求地址：" + request.getRequestURL().toString());
-        log.info("请求方法：" + request.getMethod());
-        log.info("请求者IP：" + request.getRemoteAddr());
+        log.info(AppConst.INFO_LOG_PREFIX + "请求地址：" + request.getRequestURL().toString());
+        log.info(AppConst.INFO_LOG_PREFIX + "请求方法：" + request.getMethod());
+        log.info(AppConst.INFO_LOG_PREFIX + "请求者IP：" + request.getRemoteAddr());
         Enumeration<String> enums = request.getParameterNames();
+        StringBuilder content = new StringBuilder();
         while (enums.hasMoreElements()) {
             String name = enums.nextElement();
-            log.info("name: {}, value: {}", name, request.getParameter(name));
+            content.append("\"").append(name).append("\"").append(": ").append("\"").append(request.getParameter(name)).append("\"").append(", ");
+        }
+        String str = content.toString();
+        if (str.length() > 0) {
+            log.debug("请求参数：{" + str.substring(0, str.length() - 2) + "}");
         }
     }
 
@@ -47,7 +53,7 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) {
         // 请求返回的内容
         if (ret instanceof ResultInfo) {
-            log.info(((ResultInfo) ret).getCode().toString());
+            log.info(AppConst.INFO_LOG_PREFIX + "请求结果：" + ((ResultInfo) ret).getCode().toString());
         }
     }
 
