@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOG_HOME" value="/Users/skyer/log/demo"/>
+    <property name="LOG_HOME" value="/Users/Oven/log/demo"/>
     <!--<property name="LOG_HOME" value="/usr/local/log/demo"/>-->
     <!-- INFO日志定义 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -52,16 +52,16 @@
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="com.skyer.controller" level="ERROR">
+    <logger name="com.oven.controller" level="ERROR">
         <appender-ref ref="ERROR"/>
     </logger>
-    <logger name="com.skyer.exception" level="ERROR">
+    <logger name="com.oven.exception" level="ERROR">
         <appender-ref ref="ERROR"/>
     </logger>
-    <logger name="com.skyer.mapper" level="DEBUG">
+    <logger name="com.oven.mapper" level="DEBUG">
         <appender-ref ref="DEBUG"/>
     </logger>
-    <logger name="com.skyer.aop" level="INFO">
+    <logger name="com.oven.aop" level="INFO">
         <appender-ref ref="INFO"/>
     </logger>
 

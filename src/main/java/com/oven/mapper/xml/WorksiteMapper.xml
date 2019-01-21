@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oven.mapper.WorksiteMapper">
+
+	<!-- 添加 -->
+	<insert id="add">
+		insert into t_worksite (`dbid`,
+							 	`name`,
+                                `status`,
+							 	`desc`,
+							 	`create_id`,
+							 	`create_time`,
+								`last_modify_id`,
+								`last_modify_time`)
+						values (null,
+								#{name},
+                                0,
+								#{desc},
+								#{createId},
+								#{createTime},
+								#{lastModifyId},
+								#{lastModifyTime})
+	</insert>
+
+	<!-- 分页查询工地 -->
+	<select id="getByPage" resultMap="worksiteMap">
+		select * from t_worksite ws
+		<where>
+			<if test="worksite.name != null and worksite.name != ''">
+				and ws.`name` like concat("%", #{worksite.name}, "%")
+			</if>
+		</where>
+		limit #{index},#{pageSize}
+	</select>
+
+	<!-- 统计工地总数量 -->
+	<select id="getTotalNum" resultType="long">
+		select count(*) from t_worksite ws
+        <where>
+            <if test="worksite.name != null and worksite.name != ''">
+                and ws.`name` like concat("%", #{worksite.name}, "%")
+            </if>
+        </where>
+	</select>
+
+	<!-- 更新 -->
+	<update id="update">
+		update t_worksite set `name` = #{name},
+							  `desc` = #{desc},
+							  `status` = #{status},
+							  `create_id` = #{createId},
+							  `create_time` = #{createTime},
+                              `last_modify_id` = #{lastModifyId},
+                              `last_modify_time` = #{lastModifyTime}
+                        where `dbid` = #{id}
+	</update>
+
+	<!-- 通过主键查询 -->
+	<select id="getById" resultMap="worksiteMap">
+		select * from t_worksite where dbid = #{id}
+	</select>
+
+	<!-- 删除 -->
+	<delete id="delete">
+		delete from t_worksite where dbid = #{id}
+	</delete>
+
+	<!-- 查询所有工地 -->
+	<select id="getAll" resultMap="worksiteMap">
+		select * from t_worksite where `status` = 0
+	</select>
+
+	<!-- 结果集映射 -->
+	<resultMap type="com.oven.vo.Worksite" id="worksiteMap">
+		<id column="dbid" property="id" />
+		<result column="name" property="name" />
+		<result column="desc" property="desc" />
+		<result column="status" property="status" />
+		<result column="create_id" property="createId" />
+		<result column="create_time" property="createTime" />
+		<result column="last_modify_id" property="lastModifyId" />
+        <result column="last_modify_time" property="lastModifyTime" />
+    </resultMap>
+
+</mapper>

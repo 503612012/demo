@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.skyer</groupId>
+    <groupId>com.oven</groupId>
     <artifactId>demo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -122,7 +122,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>com.skyer.app.Application</mainClass>
+                            <mainClass>com.oven.app.Application</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>./resources/</Class-Path>
