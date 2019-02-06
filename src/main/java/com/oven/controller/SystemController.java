@@ -101,7 +101,7 @@ public class SystemController extends BaseController {
                 logService.addLog("登录系统！", "失败[" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
-                throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), ResultEnum.UNKNOW_ERROR.getValue(), e);
+                throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，错误信息：", e);
             }
         }
     }
@@ -149,7 +149,7 @@ public class SystemController extends BaseController {
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(menus);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), ResultEnum.UNKNOW_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，错误信息：", e);
         }
     }
 

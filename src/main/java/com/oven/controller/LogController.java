@@ -5,7 +5,6 @@ import com.oven.contants.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.LogService;
-import com.oven.service.UserService;
 import com.oven.vo.Log;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -26,8 +25,6 @@ public class LogController extends BaseController {
 
     @Resource
     private LogService logService;
-    @Resource
-    private UserService userService;
 
     /**
      * 去到日志管理页面
@@ -50,7 +47,7 @@ public class LogController extends BaseController {
         try {
             return super.success(logService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "通过ID获取日志出错，错误信息：", e);
         }
     }
 
@@ -74,7 +71,7 @@ public class LogController extends BaseController {
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), "分页获取日志出错，错误信息：", e);
         }
     }
 

@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 角色控制层
@@ -61,11 +60,11 @@ public class RoleController extends BaseController {
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     @ResponseBody
-    public Object getById(Integer id) {
+    public Object getById(Integer id) throws MyException {
         try {
             return super.success(roleService.getById(id));
         } catch (Exception e) {
-            return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "通过ID获取角色出错，错误信息：", e);
         }
     }
 
@@ -95,7 +94,7 @@ public class RoleController extends BaseController {
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), "分页获取角色出错，错误信息：", e);
         }
     }
 
@@ -119,7 +118,7 @@ public class RoleController extends BaseController {
             roleService.add(role);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加角色出错，错误信息：", e);
         }
     }
 
@@ -136,7 +135,7 @@ public class RoleController extends BaseController {
             model.addAttribute("role", role);
             return "/role/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.ERROR_PAGE.getValue(), e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), "去到角色更新页面出错，错误信息：", e);
         }
     }
 
@@ -151,7 +150,7 @@ public class RoleController extends BaseController {
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改角色出错，错误信息：", e);
         }
     }
 
@@ -172,7 +171,7 @@ public class RoleController extends BaseController {
             roleService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除角色出错，错误信息：", e);
         }
     }
 
@@ -192,7 +191,7 @@ public class RoleController extends BaseController {
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改角色状态出错，错误信息：", e);
         }
     }
 
@@ -215,13 +214,12 @@ public class RoleController extends BaseController {
     @RequestMapping("/getRoleMenuTree")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
     @ResponseBody
-    public JSONArray getRoleMenuTree(Integer roleId) {
+    public JSONArray getRoleMenuTree(Integer roleId) throws MyException {
         try {
             return roleService.getMenuTreeByRoleId(roleId);
         } catch (Exception e) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "去到给角色授权页面出错，入参[roleId: {}]", roleId, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "根据角色ID获取权限树出错，错误信息：", e);
         }
-        return null;
     }
 
     /**
@@ -236,13 +234,12 @@ public class RoleController extends BaseController {
     public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             roleService.setRoleMenu(roleId, menuIds);
-            List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(ResultEnum.UPDATE_ERROR.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "设置角色权限出错，错误信息：", e);
         }
     }
 

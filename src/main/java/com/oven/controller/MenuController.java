@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.contants.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -41,11 +40,10 @@ public class MenuController extends BaseController {
     @RequiresPermissions(PermissionCode.MENU_MANAGER)
     @ResponseBody
     public Object getMenuTreeTableData() throws MyException {
-        JSONObject result = new JSONObject();
         try {
             return super.success(menuService.getMenuTreeTableData());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "分页菜单树形表格内容出错，错误信息：", e);
         }
     }
 
@@ -60,7 +58,7 @@ public class MenuController extends BaseController {
             menuService.update(menu);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单出错，错误信息：", e);
         }
     }
 
@@ -80,7 +78,7 @@ public class MenuController extends BaseController {
             menuService.update(menu);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单状态出错，错误信息：", e);
         }
     }
 

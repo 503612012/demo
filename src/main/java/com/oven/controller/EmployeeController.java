@@ -51,7 +51,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "通过ID获取员工出错，错误信息：", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class EmployeeController extends BaseController {
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), "分页获取员工出错，错误信息：", e);
         }
     }
 
@@ -103,7 +103,7 @@ public class EmployeeController extends BaseController {
             employeeService.add(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加员工出错，错误信息：", e);
         }
     }
 
@@ -120,7 +120,7 @@ public class EmployeeController extends BaseController {
             model.addAttribute("employee", employee);
             return "/employee/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.ERROR_PAGE.getValue(), e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), "去到员工更新页面出错，错误信息：", e);
         }
     }
 
@@ -135,7 +135,7 @@ public class EmployeeController extends BaseController {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改员工出错，错误信息：", e);
         }
     }
 
@@ -152,7 +152,7 @@ public class EmployeeController extends BaseController {
             employeeService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除员工出错，错误信息：", e);
         }
     }
 
@@ -172,7 +172,7 @@ public class EmployeeController extends BaseController {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改员工状态出错，错误信息：", e);
         }
     }
 
