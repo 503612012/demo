@@ -1,6 +1,7 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.contants.AppConst;
 import com.oven.contants.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -48,7 +49,7 @@ public class UserController extends com.oven.controller.BaseController {
         try {
             return super.success(userService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "通过ID获取用户出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -70,13 +71,13 @@ public class UserController extends com.oven.controller.BaseController {
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
             }
             Long totalNum = userService.getTotalNum(user);
-            result.put("code", 0);
             result.put("msg", "");
+            result.put("code", 0);
             result.put("count", totalNum);
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), "分页获取用户出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -100,7 +101,7 @@ public class UserController extends com.oven.controller.BaseController {
             userService.add(user);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加用户出错，错误信息：", e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加用户出错，请联系网站管理人员。", e);
         }
     }
 
@@ -117,7 +118,7 @@ public class UserController extends com.oven.controller.BaseController {
             model.addAttribute("user", user);
             return "/user/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), "去到用户更新页面出错，错误信息：", e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -132,7 +133,7 @@ public class UserController extends com.oven.controller.BaseController {
             userService.update(user);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改用户出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改用户出错，请联系网站管理人员。", e);
         }
     }
 
@@ -149,7 +150,7 @@ public class UserController extends com.oven.controller.BaseController {
             userService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除用户出错，错误信息：", e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除用户出错，请联系网站管理人员。", e);
         }
     }
 
@@ -169,7 +170,7 @@ public class UserController extends com.oven.controller.BaseController {
             userService.update(user);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改用户状态出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改用户状态出错，请联系网站管理人员。", e);
         }
     }
 
@@ -186,7 +187,7 @@ public class UserController extends com.oven.controller.BaseController {
             List<JSONObject> list = userService.getRoleByUserId(id);
             return super.success(list);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "通过用户ID获取角色列表信息出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -204,7 +205,7 @@ public class UserController extends com.oven.controller.BaseController {
             userService.setUserRole(userId, roleIds);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "设置用户角色出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "设置用户角色出错，请联系网站管理人员。", e);
         }
     }
 
@@ -218,7 +219,7 @@ public class UserController extends com.oven.controller.BaseController {
         try {
             return super.success(userService.getAll());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "获取所有用户出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 

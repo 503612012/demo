@@ -1,6 +1,7 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.contants.AppConst;
 import com.oven.contants.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -58,12 +59,12 @@ public class WorksiteController extends BaseController {
             }
             Long totalNum = worksiteService.getTotalNum(worksite);
             result.put("code", 0);
-            result.put("msg", "");
             result.put("count", totalNum);
+            result.put("msg", "");
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), "分页获取工地出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -87,7 +88,7 @@ public class WorksiteController extends BaseController {
             worksiteService.add(worksite);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加工地出错，错误信息：", e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加工地出错，请联系网站管理人员。", e);
         }
     }
 
@@ -104,7 +105,7 @@ public class WorksiteController extends BaseController {
             model.addAttribute("worksite", worksite);
             return "/worksite/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), "去到工地更新页面出错，错误信息：", e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -119,7 +120,7 @@ public class WorksiteController extends BaseController {
             worksiteService.update(worksite);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改工地出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改工地出错，请联系网站管理人员。", e);
         }
     }
 
@@ -136,7 +137,7 @@ public class WorksiteController extends BaseController {
             worksiteService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除工地出错，错误信息：", e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除工地出错，请联系网站管理人员。", e);
         }
     }
 
@@ -156,7 +157,7 @@ public class WorksiteController extends BaseController {
             worksiteService.update(worksite);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改工地状态出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改工地状态出错，请联系网站管理人员。", e);
         }
     }
 

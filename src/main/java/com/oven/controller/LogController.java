@@ -1,6 +1,7 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.contants.AppConst;
 import com.oven.contants.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -47,7 +48,7 @@ public class LogController extends BaseController {
         try {
             return super.success(logService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "通过ID获取日志出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -66,12 +67,12 @@ public class LogController extends BaseController {
             List<Log> list = logService.getByPage(page, limit, logVo);
             Long totalNum = logService.getTotalNum(logVo);
             result.put("code", 0);
+            result.put("data", list);
             result.put("msg", "");
             result.put("count", totalNum);
-            result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), "分页获取日志出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 

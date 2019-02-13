@@ -1,5 +1,6 @@
 package com.oven.controller;
 
+import com.oven.contants.AppConst;
 import com.oven.contants.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -34,7 +35,7 @@ public class MenuController extends BaseController {
     }
 
     /**
-     * 分页菜单树形表格内容
+     * 分页获取菜单树形表格内容
      */
     @RequestMapping("/getMenuTreeTableData")
     @RequiresPermissions(PermissionCode.MENU_MANAGER)
@@ -43,7 +44,7 @@ public class MenuController extends BaseController {
         try {
             return super.success(menuService.getMenuTreeTableData());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "分页菜单树形表格内容出错，错误信息：", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
@@ -58,7 +59,7 @@ public class MenuController extends BaseController {
             menuService.update(menu);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单出错，请联系网站管理人员。", e);
         }
     }
 
@@ -78,7 +79,7 @@ public class MenuController extends BaseController {
             menuService.update(menu);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单状态出错，错误信息：", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单状态出错，请联系网站管理人员。", e);
         }
     }
 
