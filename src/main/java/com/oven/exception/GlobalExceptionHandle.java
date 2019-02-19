@@ -48,10 +48,11 @@ public class GlobalExceptionHandle {
             } else {
                 return new ResultInfo<>(myException.getCode(), myException.getMsg());
             }
-        }
-        if (e instanceof UnauthorizedException) {
+        } else if (e instanceof UnauthorizedException) {
             resp.sendRedirect("/noauth");
             return "";
+        } else {
+            log.error(AppConst.ERROR_LOG_PREFIX + "错误信息：", e);
         }
         resp.sendRedirect("/err");
         return "";
