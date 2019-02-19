@@ -3,6 +3,7 @@ package com.oven.exception;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.contants.AppConst;
 import com.oven.enumerate.ResultEnum;
+import com.oven.util.ParametersUtils;
 import com.oven.util.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 
 /**
  * 全局异常捕获
@@ -30,17 +30,10 @@ public class GlobalExceptionHandle {
      */
     @ExceptionHandler(value = Exception.class)
     public Object handleException(Exception e, HttpServletRequest request, HttpServletResponse resp) throws IOException {
-        e.printStackTrace();
         log.error(AppConst.ERROR_LOG_PREFIX + "请求地址：" + request.getRequestURL().toString());
         log.error(AppConst.ERROR_LOG_PREFIX + "请求方法：" + request.getMethod());
         log.error(AppConst.ERROR_LOG_PREFIX + "请求者IP：" + request.getRemoteAddr());
-        Enumeration<String> enums = request.getParameterNames();
-        StringBuilder content = new StringBuilder();
-        while (enums.hasMoreElements()) {
-            String name = enums.nextElement();
-            content.append("\"").append(name).append("\"").append(": ").append("\"").append(request.getParameter(name)).append("\"").append(", ");
-        }
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：[{" + content.toString().substring(0, content.toString().length() - 2) + "}]");
+        log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：" + ParametersUtils.getParameters(request));
         if (e instanceof MyException) {
             MyException myException = (MyException) e;
             log.error(AppConst.ERROR_LOG_PREFIX + "错误信息：", myException.getE());

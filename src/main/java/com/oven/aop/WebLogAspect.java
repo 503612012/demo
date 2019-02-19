@@ -1,6 +1,7 @@
 package com.oven.aop;
 
 import com.oven.contants.AppConst;
+import com.oven.util.ParametersUtils;
 import com.oven.util.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -12,7 +13,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 
 /**
  * 全局请求参数记录
@@ -37,16 +37,7 @@ public class WebLogAspect {
         log.info(AppConst.INFO_LOG_PREFIX + "请求地址：" + request.getRequestURL().toString());
         log.info(AppConst.INFO_LOG_PREFIX + "请求方法：" + request.getMethod());
         log.info(AppConst.INFO_LOG_PREFIX + "请求者IP：" + request.getRemoteAddr());
-        Enumeration<String> enums = request.getParameterNames();
-        StringBuilder content = new StringBuilder();
-        while (enums.hasMoreElements()) {
-            String name = enums.nextElement();
-            content.append("\"").append(name).append("\"").append(": ").append("\"").append(request.getParameter(name)).append("\"").append(", ");
-        }
-        String str = content.toString();
-        if (str.length() > 0) {
-            log.debug("请求参数：{" + str.substring(0, str.length() - 2) + "}");
-        }
+        log.info(AppConst.INFO_LOG_PREFIX + "请求参数：" + ParametersUtils.getParameters(request));
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
