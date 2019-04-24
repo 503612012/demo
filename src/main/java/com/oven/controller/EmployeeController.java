@@ -150,8 +150,12 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     public Object delete(Integer id) throws MyException {
         try {
-            employeeService.delete(id);
-            return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+            boolean result = employeeService.delete(id);
+            if (result) {
+                return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+            } else {
+                return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
+            }
         } catch (Exception e) {
             throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除员工出错，请联系网站管理人员。", e);
         }

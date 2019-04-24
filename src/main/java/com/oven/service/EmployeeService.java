@@ -149,13 +149,16 @@ public class EmployeeService extends BaseService {
     /**
      * 删除员工
      */
-    public void delete(Integer id) {
+    public boolean delete(Integer id) {
         Employee employee = this.getById(id);
-        employeeDao.delete(id);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
-        // 记录日志
-        super.addLog("删除员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        boolean flag = employeeDao.delete(id) > 0;
+        if (flag) {
+            // 移除缓存
+            super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
+            // 记录日志
+            super.addLog("删除员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        }
+        return flag;
     }
 
 }

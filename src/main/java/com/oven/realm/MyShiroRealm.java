@@ -16,6 +16,11 @@ import org.apache.shiro.util.ByteSource;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 自定义Realm
+ *
+ * @author Oven
+ */
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Resource
