@@ -1,4 +1,4 @@
-package com.oven.contants;
+package com.oven.constant;
 
 /**
  * Reids缓存使用的key定义类

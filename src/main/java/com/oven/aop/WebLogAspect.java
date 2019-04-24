@@ -1,6 +1,6 @@
 package com.oven.aop;
 
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import com.oven.util.ParametersUtils;
 import com.oven.util.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) {
         // 请求返回的内容
         if (ret instanceof ResultInfo) {
-            log.info(AppConst.INFO_LOG_PREFIX + "请求结果：" + ((ResultInfo) ret).getCode().toString());
+            log.info(AppConst.INFO_LOG_PREFIX + "返回结果：" + ((ResultInfo) ret).getCode().toString());
         }
     }
 

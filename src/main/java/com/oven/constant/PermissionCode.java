@@ -1,4 +1,4 @@
-package com.oven.contants;
+package com.oven.constant;
 
 /**
  * 菜单权限Code定义类

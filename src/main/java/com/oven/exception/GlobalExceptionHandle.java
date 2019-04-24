@@ -1,7 +1,7 @@
 package com.oven.exception;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.util.ParametersUtils;
 import com.oven.util.ResultInfo;
@@ -36,7 +36,7 @@ public class GlobalExceptionHandle {
         log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：" + ParametersUtils.getParameters(request));
         if (e instanceof MyException) {
             MyException myException = (MyException) e;
-            log.error(AppConst.ERROR_LOG_PREFIX + "错误信息：", myException.getE());
+            log.error(AppConst.ERROR_LOG_PREFIX + myException.getMsg(), myException.getE());
             if (myException.getCode().equals(ResultEnum.SEARCH_PAGE_ERROR.getCode())) {
                 JSONObject result = new JSONObject();
                 result.put("code", myException.getCode());

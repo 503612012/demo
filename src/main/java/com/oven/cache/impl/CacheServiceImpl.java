@@ -1,7 +1,7 @@
 package com.oven.cache.impl;
 
 import com.oven.cache.CacheService;
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;

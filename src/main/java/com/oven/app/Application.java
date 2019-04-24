@@ -1,7 +1,6 @@
 package com.oven.app;
 
 import com.oven.config.PropertyConfig;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +12,6 @@ import java.util.Properties;
  * @author Oven
  */
 @SpringBootApplication(scanBasePackages = "com.oven")
-@MapperScan(basePackages = "com.oven.mapper")
 public class Application {
 
     /**

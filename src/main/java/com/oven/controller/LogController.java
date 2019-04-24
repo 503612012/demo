@@ -1,8 +1,8 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.contants.AppConst;
-import com.oven.contants.PermissionCode;
+import com.oven.constant.AppConst;
+import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.LogService;
@@ -65,7 +65,7 @@ public class LogController extends BaseController {
         try {
             JSONObject result = new JSONObject();
             List<Log> list = logService.getByPage(page, limit, logVo);
-            Long totalNum = logService.getTotalNum(logVo);
+            Integer totalNum = logService.getTotalNum(logVo);
             result.put("code", 0);
             result.put("data", list);
             result.put("msg", "");

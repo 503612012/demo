@@ -1,7 +1,7 @@
 package com.oven.service;
 
-import com.oven.contants.RedisCacheKey;
-import com.oven.mapper.MenuMapper;
+import com.oven.constant.RedisCacheKey;
+import com.oven.dao.MenuDao;
 import com.oven.vo.Menu;
 import com.oven.vo.RoleMenu;
 import com.oven.vo.UserRole;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class MenuService extends BaseService {
 
     @Resource
-    private MenuMapper menuMapper;
+    private MenuDao menuDao;
     @Resource
     private RoleMenuService roleMenuService;
     @Resource
@@ -42,7 +42,7 @@ public class MenuService extends BaseService {
             synchronized (this) {
                 menu = super.get(RedisCacheKey.MENU_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (menu == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    menu = menuMapper.getById(id);
+                    menu = menuDao.getById(id);
                     super.set(RedisCacheKey.MENU_GET_BY_ID + id, menu);
                 }
             }
@@ -73,6 +73,7 @@ public class MenuService extends BaseService {
             str = str.substring(0, str.length() - 1);
             menuInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             menuInDb.setLastModifyId(super.getCurrentUser().getId());
+            menuDao.update(menuInDb);
             // 移除缓存
             super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
             super.batchRemove(RedisCacheKey.USER_MENU_CODES);
@@ -80,7 +81,6 @@ public class MenuService extends BaseService {
             super.batchRemove(RedisCacheKey.ROLE_PREFIX);
             // 记录日志
             super.addLog("修改菜单", "[" + menuName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-            menuMapper.update(menuInDb);
         }
     }
 
@@ -120,7 +120,7 @@ public class MenuService extends BaseService {
         List<Menu> menus = new ArrayList<>();
         for (List<RoleMenu> item : list) {
             for (RoleMenu mid : item) {
-                Menu menu = menuMapper.getById(mid.getMenuId());
+                Menu menu = menuDao.getById(mid.getMenuId());
                 menus.add(menu);
             }
         }
@@ -159,7 +159,7 @@ public class MenuService extends BaseService {
                             }
                         }
                     }
-                    list = menuMapper.getByPidAndHasPermission(pid, menuIds);
+                    list = menuDao.getByPidAndHasPermission(pid, menuIds);
                     super.set(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION + userId + "_" + pid, list);
                 }
             }
@@ -183,7 +183,7 @@ public class MenuService extends BaseService {
                     for (UserRole role : roles) {
                         List<RoleMenu> menus = roleMenuService.getByRoleId(role.getRoleId());
                         for (RoleMenu menu : menus) {
-                            Menu item = menuMapper.getById(menu.getMenuId());
+                            Menu item = menuDao.getById(menu.getMenuId());
                             if (item != null) {
                                 list.add(item.getMenuCode());
                             }
@@ -205,7 +205,7 @@ public class MenuService extends BaseService {
             synchronized (this) {
                 list = super.get(RedisCacheKey.MENU_GET_BY_PID + pid); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = menuMapper.getByPid(pid);
+                    list = menuDao.getByPid(pid);
                     super.set(RedisCacheKey.MENU_GET_BY_PID + pid, list);
                 }
             }
@@ -222,7 +222,7 @@ public class MenuService extends BaseService {
             synchronized (this) {
                 list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = menuMapper.getMenuTreeTableData();
+                    list = menuDao.getMenuTreeTableData();
                     super.set(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA, list);
                 }
             }

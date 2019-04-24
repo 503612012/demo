@@ -1,7 +1,7 @@
 package com.oven.service;
 
-import com.oven.contants.RedisCacheKey;
-import com.oven.mapper.UserRoleMapper;
+import com.oven.constant.RedisCacheKey;
+import com.oven.dao.UserRoleDao;
 import com.oven.vo.UserRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.List;
 public class UserRoleService extends BaseService {
 
     @Resource
-    private UserRoleMapper userRoleMapper;
+    private UserRoleDao userRoleDao;
 
     /**
      * 通过用户ID查询
@@ -32,7 +32,7 @@ public class UserRoleService extends BaseService {
             synchronized (this) {
                 list = super.get(RedisCacheKey.USERROLE_GET_BY_USERID + userId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = userRoleMapper.getByUserId(userId);
+                    list = userRoleDao.getByUserId(userId);
                     super.set(RedisCacheKey.USERROLE_GET_BY_USERID + userId, list);
                 }
             }
@@ -52,7 +52,7 @@ public class UserRoleService extends BaseService {
             synchronized (this) {
                 userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (userRole == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    userRole = userRoleMapper.getByUserIdAndRoleId(userId, roleId);
+                    userRole = userRoleDao.getByUserIdAndRoleId(userId, roleId);
                     super.set(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId, userRole);
                 }
             }
@@ -66,7 +66,7 @@ public class UserRoleService extends BaseService {
      * @param userId 用户ID
      */
     public void deleteByUserId(Integer userId) {
-        userRoleMapper.deleteByUserId(userId);
+        userRoleDao.deleteByUserId(userId);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
     }
@@ -75,7 +75,7 @@ public class UserRoleService extends BaseService {
      * 添加
      */
     public void add(UserRole userRole) {
-        userRoleMapper.add(userRole);
+        userRoleDao.add(userRole);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
     }
@@ -86,7 +86,7 @@ public class UserRoleService extends BaseService {
      * @param roleId 角色ID
      */
     public List<UserRole> getByRoleId(Integer roleId) {
-        return userRoleMapper.getByRoleId(roleId);
+        return userRoleDao.getByRoleId(roleId);
     }
 
 }

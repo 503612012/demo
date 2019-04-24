@@ -1,7 +1,7 @@
 package com.oven.service;
 
-import com.oven.contants.RedisCacheKey;
-import com.oven.mapper.EmployeeMapper;
+import com.oven.constant.RedisCacheKey;
+import com.oven.dao.EmployeeDao;
 import com.oven.vo.Employee;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
 public class EmployeeService extends BaseService {
 
     @Resource
-    private EmployeeMapper employeeMapper;
+    private EmployeeDao employeeDao;
 
     /**
      * 添加员工
@@ -30,11 +30,11 @@ public class EmployeeService extends BaseService {
         employee.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         employee.setLastModifyId(super.getCurrentUser().getId());
         employee.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        employeeDao.add(employee);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
         // 记录日志
         super.addLog("添加员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-        employeeMapper.add(employee);
     }
 
     /**
@@ -84,11 +84,11 @@ public class EmployeeService extends BaseService {
             str = str.substring(0, str.length() - 1);
             employeeInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             employeeInDb.setLastModifyId(super.getCurrentUser().getId());
+            employeeDao.update(employeeInDb);
             // 移除缓存
             super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
             // 记录日志
             super.addLog("修改员工", "[" + employeeName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-            employeeMapper.update(employeeInDb);
         }
     }
 
@@ -101,7 +101,7 @@ public class EmployeeService extends BaseService {
             synchronized (this) {
                 employee = super.get(RedisCacheKey.EMPLOYEE_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (employee == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    employee = employeeMapper.getById(id);
+                    employee = employeeDao.getById(id);
                     super.set(RedisCacheKey.EMPLOYEE_GET_BY_ID + id, employee);
                 }
             }
@@ -121,7 +121,7 @@ public class EmployeeService extends BaseService {
             synchronized (this) {
                 list = super.get(RedisCacheKey.EMPLOYEE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + employee.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = employeeMapper.getByPage((pageNum - 1) * pageSize, pageSize, employee);
+                    list = employeeDao.getByPage(pageNum, pageSize, employee);
                     super.set(RedisCacheKey.EMPLOYEE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + employee.toString(), list);
                 }
             }
@@ -132,13 +132,13 @@ public class EmployeeService extends BaseService {
     /**
      * 获取员工总数量
      */
-    public Long getTotalNum(Employee employee) {
-        Long totalNum = super.get(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM + employee.toString()); // 先读取缓存
+    public Integer getTotalNum(Employee employee) {
+        Integer totalNum = super.get(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM + employee.toString()); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
                 totalNum = super.get(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM + employee.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    totalNum = employeeMapper.getTotalNum(employee);
+                    totalNum = employeeDao.getTotalNum(employee);
                     super.set(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM + employee.toString(), totalNum);
                 }
             }
@@ -151,11 +151,11 @@ public class EmployeeService extends BaseService {
      */
     public void delete(Integer id) {
         Employee employee = this.getById(id);
+        employeeDao.delete(id);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
         // 记录日志
         super.addLog("删除员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-        employeeMapper.delete(id);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.oven.util;
 
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;

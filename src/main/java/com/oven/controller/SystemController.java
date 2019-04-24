@@ -1,6 +1,6 @@
 package com.oven.controller;
 
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.LogService;

@@ -1,4 +1,4 @@
-package com.oven.contants;
+package com.oven.constant;
 
 /**
  * 系统常量定义类

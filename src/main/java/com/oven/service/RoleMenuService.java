@@ -1,7 +1,7 @@
 package com.oven.service;
 
-import com.oven.contants.RedisCacheKey;
-import com.oven.mapper.RoleMenuMapper;
+import com.oven.constant.RedisCacheKey;
+import com.oven.dao.RoleMenuDao;
 import com.oven.vo.RoleMenu;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.List;
 public class RoleMenuService extends BaseService {
 
     @Resource
-    private RoleMenuMapper roleMenuMapper;
+    private RoleMenuDao roleMenuDao;
 
     /**
      * 通过角色ID查询
@@ -32,7 +32,7 @@ public class RoleMenuService extends BaseService {
             synchronized (this) {
                 list = super.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = roleMenuMapper.getByRoleId(roleId);
+                    list = roleMenuDao.getByRoleId(roleId);
                     super.set(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId, list);
                 }
             }
@@ -52,7 +52,7 @@ public class RoleMenuService extends BaseService {
             synchronized (this) {
                 roleMenu = super.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID + roleId + "_" + menuId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (roleMenu == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    roleMenu = roleMenuMapper.getByRoleIdAndMenuId(roleId, menuId);
+                    roleMenu = roleMenuDao.getByRoleIdAndMenuId(roleId, menuId);
                     super.set(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID + roleId + "_" + menuId, roleMenu);
                 }
             }
@@ -66,7 +66,7 @@ public class RoleMenuService extends BaseService {
      * @param roleId 角色ID
      */
     public void deleteByRoleId(Integer roleId) {
-        roleMenuMapper.deleteByRoleId(roleId);
+        roleMenuDao.deleteByRoleId(roleId);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
     }
@@ -75,7 +75,7 @@ public class RoleMenuService extends BaseService {
      * 添加
      */
     public void add(RoleMenu item) {
-        roleMenuMapper.add(item);
+        roleMenuDao.add(item);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
     }

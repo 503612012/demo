@@ -1,8 +1,8 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.contants.AppConst;
-import com.oven.contants.PermissionCode;
+import com.oven.constant.AppConst;
+import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.UserService;
@@ -70,7 +70,7 @@ public class UserController extends com.oven.controller.BaseController {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
             }
-            Long totalNum = userService.getTotalNum(user);
+            Integer totalNum = userService.getTotalNum(user);
             result.put("msg", "");
             result.put("code", 0);
             result.put("count", totalNum);

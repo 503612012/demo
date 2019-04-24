@@ -2,8 +2,8 @@ package com.oven.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.oven.contants.RedisCacheKey;
-import com.oven.mapper.WorksiteMapper;
+import com.oven.constant.RedisCacheKey;
+import com.oven.dao.WorksiteDao;
 import com.oven.vo.Worksite;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.List;
 public class WorksiteService extends BaseService {
 
     @Resource
-    private WorksiteMapper worksiteMapper;
+    private WorksiteDao worksiteDao;
 
     /**
      * 分页查询工地
@@ -36,7 +36,7 @@ public class WorksiteService extends BaseService {
             synchronized (this) {
                 list = super.get(RedisCacheKey.WORKSITE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + worksite.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = worksiteMapper.getByPage((pageNum - 1) * pageSize, pageSize, worksite);
+                    list = worksiteDao.getByPage(pageNum, pageSize, worksite);
                     super.set(RedisCacheKey.WORKSITE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + worksite.toString(), list);
                 }
             }
@@ -47,13 +47,13 @@ public class WorksiteService extends BaseService {
     /**
      * 获取工地总数量
      */
-    public Long getTotalNum(Worksite worksite) {
-        Long totalNum = super.get(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString()); // 先读取缓存
+    public Integer getTotalNum(Worksite worksite) {
+        Integer totalNum = super.get(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString()); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
                 totalNum = super.get(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    totalNum = worksiteMapper.getTotalNum(worksite);
+                    totalNum = worksiteDao.getTotalNum(worksite);
                     super.set(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString(), totalNum);
                 }
             }
@@ -69,11 +69,11 @@ public class WorksiteService extends BaseService {
         worksite.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         worksite.setLastModifyId(super.getCurrentUser().getId());
         worksite.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        worksiteDao.add(worksite);
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
         super.addLog("添加工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-        worksiteMapper.add(worksite);
     }
 
     /**
@@ -85,7 +85,7 @@ public class WorksiteService extends BaseService {
             synchronized (this) {
                 worksite = super.get(RedisCacheKey.WORKSITE_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (worksite == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    worksite = worksiteMapper.getById(id);
+                    worksite = worksiteDao.getById(id);
                     super.set(RedisCacheKey.WORKSITE_GET_BY_ID + id, worksite);
                 }
             }
@@ -97,7 +97,7 @@ public class WorksiteService extends BaseService {
      * 更新
      */
     public void update(Worksite worksite) {
-        Worksite worksiteInDb = worksiteMapper.getById(worksite.getId());
+        Worksite worksiteInDb = worksiteDao.getById(worksite.getId());
         String name = worksiteInDb.getName();
         StringBuilder content = new StringBuilder();
         if (!worksiteInDb.getName().equals(worksite.getName())) {
@@ -120,11 +120,11 @@ public class WorksiteService extends BaseService {
             str = str.substring(0, str.length() - 1);
             worksiteInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             worksiteInDb.setLastModifyId(super.getCurrentUser().getId());
+            worksiteDao.update(worksiteInDb);
             // 移除缓存
             super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
             // 记录日志
             super.addLog("修改工地", "[" + name + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-            worksiteMapper.update(worksiteInDb);
         }
     }
 
@@ -133,18 +133,18 @@ public class WorksiteService extends BaseService {
      */
     public void delete(Integer id) {
         Worksite worksite = this.getById(id);
+        worksiteDao.delete(id);
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
         super.addLog("删除工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-        worksiteMapper.delete(id);
     }
 
     /**
      * 查询所有工地
      */
     public JSONArray findAll() {
-        List<Worksite> list = worksiteMapper.getAll();
+        List<Worksite> list = worksiteDao.getAll();
         JSONArray result = new JSONArray();
         for (int i = 0; i < list.size(); i++) {
             JSONObject obj = new JSONObject();

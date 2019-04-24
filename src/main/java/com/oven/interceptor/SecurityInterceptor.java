@@ -1,7 +1,7 @@
 package com.oven.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.util.ResultInfo;
 import com.oven.vo.User;
@@ -88,6 +88,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
                 resultInfo.setCode(ResultEnum.OTHER_LOGINED.getCode());
                 resultInfo.setData(ResultEnum.OTHER_LOGINED.getValue());
                 resp.getWriter().write(JSONObject.toJSONString(resultInfo));
+                // TODO 编写文档的时候，这里可以提示使用ajaxhook，参考monkey项目
                 return false;
             }
             String param = URLEncoder.encode(ResultEnum.OTHER_LOGINED.getValue(), "UTF-8");

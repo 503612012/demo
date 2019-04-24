@@ -1,6 +1,6 @@
 package com.oven.realm;
 
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.service.MenuService;
 import com.oven.service.UserService;

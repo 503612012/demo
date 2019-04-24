@@ -2,8 +2,8 @@ package com.oven.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.oven.contants.AppConst;
-import com.oven.contants.PermissionCode;
+import com.oven.constant.AppConst;
+import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.MenuService;
@@ -87,7 +87,7 @@ public class RoleController extends BaseController {
                 User lastModifyUser = userService.getById(item.getLastModifyId());
                 item.setLastModifyName(lastModifyUser == null ? "" : lastModifyUser.getNickName());
             }
-            Long totalNum = roleService.getTotalNum(role);
+            Integer totalNum = roleService.getTotalNum(role);
             result.put("code", 0);
             result.put("msg", "");
             result.put("data", list);

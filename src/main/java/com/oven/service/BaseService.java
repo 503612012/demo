@@ -1,7 +1,7 @@
 package com.oven.service;
 
 import com.oven.cache.CacheService;
-import com.oven.contants.AppConst;
+import com.oven.constant.AppConst;
 import com.oven.util.IPUtils;
 import com.oven.vo.User;
 import org.springframework.stereotype.Service;
