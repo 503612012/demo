@@ -235,6 +235,32 @@ INSERT INTO `t_user` (`dbid`, `user_name`, `password`, `nick_name`, `age`, `emai
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_sys_dic`
+--
+
+DROP TABLE IF EXISTS `t_sys_dic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+SET character_set_client = utf8mb4 ;
+CREATE TABLE `t_sys_dic` (
+                           `dbid` int(11) NOT NULL AUTO_INCREMENT,
+                           `_key` varchar(1024) DEFAULT NULL,
+                           `_value` varchar(1024) DEFAULT NULL,
+                           `_profile` varchar(31) DEFAULT NULL,
+                           `_desc` varchar(1024) DEFAULT NULL,
+                           PRIMARY KEY (`dbid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_sys_dic`
+--
+
+LOCK TABLES `t_sys_dic` WRITE;
+/*!40000 ALTER TABLE `t_sys_dic` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_sys_dic` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_user_role`
 --
 
