@@ -1,5 +1,5 @@
 # OVEN SPRINGBOOT DEOM
-___
+
 ## 安装步骤
 #### 1. 下载代码
 git clone https://github.com/503612012/demo.git
@@ -15,7 +15,6 @@ mysql加载demo.sql文件
 进入项目根目录执行：./demo.sh log
 #### 7. 停止工程
 进入项目根目录执行：./demo.sh stop
-___
 
 ## TODO LIST
 - [x] 框架搭建
