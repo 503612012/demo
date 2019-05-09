@@ -87,6 +87,13 @@
             <version>2.9.9</version>
         </dependency>
 
+        <!-- 实体操作数据库,只需要column注解与数据库字段相同即可 -->
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>jdbctemplatetool</artifactId>
+            <version>1.0.4-RELEASE</version>
+        </dependency>
+
         <!-- AOP支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -165,7 +172,7 @@
                                     <directory>src/main/resources</directory>
                                 </resource>
                                 <!--<resource>-->
-                                    <!--<directory>src/main/java</directory>-->
+                                <!--<directory>src/main/java</directory>-->
                                 <!--</resource>-->
                             </resources>
                             <outputDirectory>${project.build.directory}/resources</outputDirectory>

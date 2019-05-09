@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.RoleMenu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +31,7 @@ public class RoleMenuDao {
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
         String sql = "select * from t_role_menu where role_id = ?";
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getRoleMenu(rs), roleId);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(RoleMenu.class), roleId);
     }
 
     /**
@@ -43,7 +42,7 @@ public class RoleMenuDao {
      */
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
         String sql = "select * from t_role_menu where role_id = ? and menu_id = ?";
-        List<RoleMenu> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getRoleMenu(rs), roleId, menuId);
+        List<RoleMenu> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(RoleMenu.class), roleId, menuId);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -71,17 +70,6 @@ public class RoleMenuDao {
         };
         this.jdbcTemplate.update(creator, key);
         return Objects.requireNonNull(key.getKey()).intValue();
-    }
-
-    /**
-     * 关系映射
-     */
-    private RoleMenu getRoleMenu(ResultSet rs) throws SQLException {
-        RoleMenu roleMenu = new RoleMenu();
-        roleMenu.setId(rs.getInt("dbid"));
-        roleMenu.setRoleId(rs.getInt("role_id"));
-        roleMenu.setMenuId(rs.getInt("menu_id"));
-        return roleMenu;
     }
 
 }

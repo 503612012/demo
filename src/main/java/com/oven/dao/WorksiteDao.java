@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Worksite;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -10,8 +11,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class WorksiteDao {
         StringBuilder sb = new StringBuilder("select * from t_worksite ws");
         addCondition(sb, worksite);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getWorksite(rs), (pageNum - 1) * pageSize, pageSize);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Worksite.class), (pageNum - 1) * pageSize, pageSize);
     }
 
     /**
@@ -103,7 +102,7 @@ public class WorksiteDao {
      */
     public Worksite getById(Integer id) {
         String sql = "select * from t_worksite where dbid = ?";
-        List<Worksite> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getWorksite(rs), id);
+        List<Worksite> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Worksite.class), id);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -112,7 +111,7 @@ public class WorksiteDao {
      */
     public List<Worksite> getAll() {
         String sql = "select * from t_worksite where `status` = 0";
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getWorksite(rs));
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Worksite.class));
     }
 
     /**
@@ -122,22 +121,6 @@ public class WorksiteDao {
         if (!StringUtils.isEmpty(worksite.getName())) {
             sb.append(" and ws.`name` like '%").append(worksite.getName()).append("%'");
         }
-    }
-
-    /**
-     * 关系映射
-     */
-    private Worksite getWorksite(ResultSet rs) throws SQLException {
-        Worksite worksite = new Worksite();
-        worksite.setId(rs.getInt("dbid"));
-        worksite.setName(rs.getString("name"));
-        worksite.setDesc(rs.getString("desc"));
-        worksite.setStatus(rs.getInt("status"));
-        worksite.setCreateTime(rs.getString("create_time"));
-        worksite.setCreateId(rs.getInt("create_id"));
-        worksite.setLastModifyId(rs.getInt("last_modify_id"));
-        worksite.setLastModifyTime(rs.getString("last_modify_time"));
-        return worksite;
     }
 
 }

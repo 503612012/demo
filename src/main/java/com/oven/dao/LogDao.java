@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -10,8 +11,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class LogDao {
      */
     public Log getById(Integer id) {
         String sql = "select * from t_log where dbid = ?";
-        List<Log> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getLog(rs), id);
+        List<Log> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Log.class), id);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -47,7 +46,7 @@ public class LogDao {
         StringBuilder sb = new StringBuilder("select * from t_log");
         addCondition(sb, log);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getLog(rs), (pageNum - 1) * pageSize, pageSize);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Log.class), (pageNum - 1) * pageSize, pageSize);
     }
 
     /**
@@ -93,21 +92,6 @@ public class LogDao {
         if (log.getOperatorId() != null) {
             sb.append(" and operator_id = ").append(log.getOperatorId());
         }
-    }
-
-    /**
-     * 关系映射
-     */
-    private Log getLog(ResultSet rs) throws SQLException {
-        Log log = new Log();
-        log.setId(rs.getInt("dbid"));
-        log.setTitle(rs.getString("title"));
-        log.setContent(rs.getString("content"));
-        log.setOperatorId(rs.getInt("operator_id"));
-        log.setOperatorName(rs.getString("operator_name"));
-        log.setOperatorTime(rs.getString("operator_time"));
-        log.setOperatorIp(rs.getString("operator_ip"));
-        return log;
     }
 
 }

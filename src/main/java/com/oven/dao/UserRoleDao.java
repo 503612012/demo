@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +31,7 @@ public class UserRoleDao {
      */
     public List<UserRole> getByUserId(Integer userId) {
         String sql = "select * from t_user_role where user_id = ?";
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getUserRole(rs), userId);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(UserRole.class), userId);
     }
 
     /**
@@ -43,7 +42,7 @@ public class UserRoleDao {
      */
     public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
         String sql = "select * from t_user_role where user_id = ? and role_id = ?";
-        List<UserRole> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getUserRole(rs), userId, roleId);
+        List<UserRole> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(UserRole.class), userId, roleId);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -80,18 +79,7 @@ public class UserRoleDao {
      */
     public List<UserRole> getByRoleId(Integer roleId) {
         String sql = "select * from t_user_role where role_id = ?";
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getUserRole(rs), roleId);
-    }
-
-    /**
-     * 关系映射
-     */
-    private UserRole getUserRole(ResultSet rs) throws SQLException {
-        UserRole userRole = new UserRole();
-        userRole.setId(rs.getInt("dbid"));
-        userRole.setRoleId(rs.getInt("role_id"));
-        userRole.setUserId(rs.getInt("user_id"));
-        return userRole;
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(UserRole.class), roleId);
     }
 
 }

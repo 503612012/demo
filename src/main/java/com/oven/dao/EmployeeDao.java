@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Employee;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -10,8 +11,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,7 +90,7 @@ public class EmployeeDao {
      */
     public Employee getById(Integer id) {
         String sql = "select * from t_employee where dbid = ?";
-        List<Employee> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getEmployee(rs), id);
+        List<Employee> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class), id);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -102,7 +101,7 @@ public class EmployeeDao {
         StringBuilder sb = new StringBuilder("select * from t_employee e");
         addCondition(sb, employee);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getEmployee(rs), (pageNum - 1) * pageSize, pageSize);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class), (pageNum - 1) * pageSize, pageSize);
     }
 
     /**
@@ -136,27 +135,6 @@ public class EmployeeDao {
         if (employee.getGender() != null) {
             sb.append(" and e.contact = ").append(employee.getGender());
         }
-    }
-
-    /**
-     * 关系映射
-     */
-    private Employee getEmployee(ResultSet rs) throws SQLException {
-        Employee employee = new Employee();
-        employee.setId(rs.getInt("dbid"));
-        employee.setName(rs.getString("name"));
-        employee.setAge(rs.getInt("age"));
-        employee.setStatus(rs.getInt("status"));
-        employee.setGender(rs.getInt("gender"));
-        employee.setAddress(rs.getString("address"));
-        employee.setContact(rs.getString("contact"));
-        employee.setDaySalary(rs.getDouble("day_salary"));
-        employee.setMonthSalary(rs.getDouble("month_salary"));
-        employee.setCreateId(rs.getInt("create_id"));
-        employee.setCreateTime(rs.getString("create_time"));
-        employee.setLastModifyId(rs.getInt("last_modify_id"));
-        employee.setLastModifyTime(rs.getString("last_modify_time"));
-        return employee;
     }
 
 }

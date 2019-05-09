@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.SysDicVo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,15 +24,7 @@ public class SysDicDao {
      */
     public List<SysDicVo> findAll() {
         String sql = "select * from t_sys_dic";
-        return this.jdbcTemplate.query(sql, (rs, i) -> {
-            SysDicVo sysDic = new SysDicVo();
-            sysDic.setId(rs.getInt("dbid"));
-            sysDic.setKey(rs.getString("_key"));
-            sysDic.setValue(rs.getString("_value"));
-            sysDic.setDesc(rs.getString("_desc"));
-            sysDic.setProfile(rs.getString("_profile"));
-            return sysDic;
-        });
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(SysDicVo.class));
     }
 
 }

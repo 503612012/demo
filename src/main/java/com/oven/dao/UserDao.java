@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -10,8 +11,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class UserDao {
      */
     public User getById(Integer id) {
         String sql = "select * from t_user where dbid = ?";
-        List<User> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getUser(rs), id);
+        List<User> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), id);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -47,7 +46,7 @@ public class UserDao {
         StringBuilder sb = new StringBuilder("select * from t_user");
         addCondition(sb, user);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getUser(rs), (pageNum - 1) * pageSize, pageSize);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), (pageNum - 1) * pageSize, pageSize);
     }
 
     /**
@@ -67,7 +66,7 @@ public class UserDao {
      */
     public User getByUserName(String userName) {
         String sql = "select * from t_user where user_name = ?";
-        List<User> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getUser(rs), userName);
+        List<User> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), userName);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -145,7 +144,7 @@ public class UserDao {
      */
     public List<User> getAll() {
         String sql = "select * from t_user where `status` = 0";
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getUser(rs));
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class));
     }
 
     /**
@@ -161,27 +160,6 @@ public class UserDao {
         if (!StringUtils.isEmpty(user.getPhone())) {
             sb.append(" and phone like '%").append(user.getPhone()).append("%'");
         }
-    }
-
-    /**
-     * 关系映射
-     */
-    private User getUser(ResultSet rs) throws SQLException {
-        User user = new User();
-        user.setId(rs.getInt("dbid"));
-        user.setUserName(rs.getString("user_name"));
-        user.setPassword(rs.getString("password"));
-        user.setNickName(rs.getString("nick_name"));
-        user.setAge(rs.getInt("age"));
-        user.setEmail(rs.getString("email"));
-        user.setPhone(rs.getString("phone"));
-        user.setStatus(rs.getInt("status"));
-        user.setGender(rs.getInt("gender"));
-        user.setCreateTime(rs.getString("create_time"));
-        user.setCreateId(rs.getInt("create_id"));
-        user.setLastModifyId(rs.getInt("last_modify_id"));
-        user.setLastModifyTime(rs.getString("last_modify_time"));
-        return user;
     }
 
 }

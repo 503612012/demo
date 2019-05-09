@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -10,8 +11,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class RoleDao {
      */
     public Role getById(Integer id) {
         String sql = "select * from t_role where dbid = ?";
-        List<Role> list = this.jdbcTemplate.query(sql, (rs, rowNum) -> getRole(rs), id);
+        List<Role> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Role.class), id);
         return list == null || list.size() == 0 ? null : list.get(0);
     }
 
@@ -47,7 +46,7 @@ public class RoleDao {
         StringBuilder sb = new StringBuilder("select * from t_role");
         addCondition(sb, role);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getRole(rs), (pageNum - 1) * pageSize, pageSize);
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Role.class), (pageNum - 1) * pageSize, pageSize);
     }
 
     /**
@@ -114,7 +113,7 @@ public class RoleDao {
      */
     public List<Role> getAll() {
         String sql = "select * from t_role where `status` = 0";
-        return this.jdbcTemplate.query(sql, (rs, rowNum) -> getRole(rs));
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Role.class));
     }
 
     /**
@@ -124,21 +123,6 @@ public class RoleDao {
         if (!StringUtils.isEmpty(role.getRoleName())) {
             sb.append(" and role_name like '%").append(role.getRoleName()).append("%'");
         }
-    }
-
-    /**
-     * 关系映射
-     */
-    private Role getRole(ResultSet rs) throws SQLException {
-        Role role = new Role();
-        role.setId(rs.getInt("dbid"));
-        role.setCreateTime(rs.getString("create_time"));
-        role.setRoleName(rs.getString("role_name"));
-        role.setCreateId(rs.getInt("create_id"));
-        role.setStatus(rs.getInt("status"));
-        role.setLastModifyId(rs.getInt("last_modify_id"));
-        role.setLastModifyTime(rs.getString("last_modify_time"));
-        return role;
     }
 
 }
