@@ -1,5 +1,19 @@
 package com.oven.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.NotWritablePropertyException;
+import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.Column;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -10,22 +24,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.persistence.Column;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.NotWritablePropertyException;
-import org.springframework.beans.PropertyAccessorFactory;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.JdbcUtils;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * JDBC关系映射工具类
@@ -33,44 +31,23 @@ import org.springframework.util.StringUtils;
  * @author Oven
  */
 public class VoPropertyRowMapper<T> implements RowMapper<T> {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Class<T> mappedClass;
-    private boolean checkFullyPopulated = false;
-    private boolean primitivesDefaultedForNullValue = false;
     private Map<String, PropertyDescriptor> mappedFields;
     private Set<String> mappedProperties;
-
-    public VoPropertyRowMapper() {
-    }
 
     public VoPropertyRowMapper(Class<T> mappedClass) {
         this.initialize(mappedClass);
     }
 
-    public VoPropertyRowMapper(Class<T> mappedClass, boolean checkFullyPopulated) {
-        this.initialize(mappedClass);
-        this.checkFullyPopulated = checkFullyPopulated;
-    }
-
-    public void setMappedClass(Class<T> mappedClass) {
-        if (this.mappedClass == null) {
-            this.initialize(mappedClass);
-        } else if (!this.mappedClass.equals(mappedClass)) {
-            throw new InvalidDataAccessApiUsageException("The mapped class can not be reassigned to map to " + mappedClass + " since it is already providing mapping for " + this.mappedClass);
-        }
-
-    }
-
-    protected void initialize(Class<T> mappedClass) {
+    private void initialize(Class<T> mappedClass) {
         this.mappedClass = mappedClass;
-        this.mappedFields = new HashMap();
-        this.mappedProperties = new HashSet();
+        this.mappedFields = new HashMap<>();
+        this.mappedProperties = new HashSet<>();
         PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(mappedClass);
-        PropertyDescriptor[] arr$ = pds;
-        int len$ = pds.length;
 
-        for (int i$ = 0; i$ < len$; ++i$) {
-            PropertyDescriptor pd = arr$[i$];
+        for (PropertyDescriptor pd : pds) {
             String propertyName = pd.getName();
             Method method = pd.getWriteMethod();
             if (method != null) {
@@ -97,10 +74,9 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
         Column column = null;
         Field[] fields = mappedClass.getDeclaredFields();
 
-        for (int i = 0; i < fields.length; ++i) {
-            Field f = fields[i];
+        for (Field f : fields) {
             if (f.getName().equals(propertyName)) {
-                column = (Column) f.getAnnotation(Column.class);
+                column = f.getAnnotation(Column.class);
                 break;
             }
         }
@@ -129,55 +105,29 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
         }
     }
 
-    public final Class<T> getMappedClass() {
-        return this.mappedClass;
-    }
-
-    public void setCheckFullyPopulated(boolean checkFullyPopulated) {
-        this.checkFullyPopulated = checkFullyPopulated;
-    }
-
-    public boolean isCheckFullyPopulated() {
-        return this.checkFullyPopulated;
-    }
-
-    public void setPrimitivesDefaultedForNullValue(boolean primitivesDefaultedForNullValue) {
-        this.primitivesDefaultedForNullValue = primitivesDefaultedForNullValue;
-    }
-
-    public boolean isPrimitivesDefaultedForNullValue() {
-        return this.primitivesDefaultedForNullValue;
+    private boolean isCheckFullyPopulated() {
+        return false;
     }
 
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         Assert.state(this.mappedClass != null, "Mapped class was not specified");
-        T mappedObject = BeanUtils.instantiate(this.mappedClass);
+        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
-        this.initBeanWrapper(bw);
+        this.initBeanWrapper();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
-        Set<String> populatedProperties = this.isCheckFullyPopulated() ? new HashSet() : null;
+        Set<String> populatedProperties = this.isCheckFullyPopulated() ? new HashSet<>() : null;
 
         for (int index = 1; index <= columnCount; ++index) {
             String column = JdbcUtils.lookupColumnName(rsmd, index);
-            PropertyDescriptor pd = (PropertyDescriptor) this.mappedFields.get(column.replaceAll(" ", "").toLowerCase());
+            PropertyDescriptor pd = this.mappedFields.get(column.replaceAll(" ", "").toLowerCase());
             if (pd != null) {
                 try {
                     Object value = this.getColumnValue(rs, index, pd);
                     if (this.logger.isDebugEnabled() && rowNumber == 0) {
                         this.logger.debug("Mapping column '" + column + "' to property '" + pd.getName() + "' of type " + pd.getPropertyType());
                     }
-
-                    try {
-                        bw.setPropertyValue(pd.getName(), value);
-                    } catch (TypeMismatchException var13) {
-                        if (value != null || !this.primitivesDefaultedForNullValue) {
-                            throw var13;
-                        }
-
-                        this.logger.debug("Intercepted TypeMismatchException for row " + rowNumber + " and column '" + column + "' with value " + value + " when setting property '" + pd.getName() + "' of type " + pd.getPropertyType() + " on object: " + mappedObject);
-                    }
-
+                    bw.setPropertyValue(pd.getName(), value);
                     if (populatedProperties != null) {
                         populatedProperties.add(pd.getName());
                     }
@@ -194,16 +144,11 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
         }
     }
 
-    protected void initBeanWrapper(BeanWrapper bw) {
+    private void initBeanWrapper() {
     }
 
-    protected Object getColumnValue(ResultSet rs, int index, PropertyDescriptor pd) throws SQLException {
+    private Object getColumnValue(ResultSet rs, int index, PropertyDescriptor pd) throws SQLException {
         return JdbcUtils.getResultSetValue(rs, index, pd.getPropertyType());
     }
 
-    public static <T> BeanPropertyRowMapper<T> newInstance(Class<T> mappedClass) {
-        BeanPropertyRowMapper<T> newInstance = new BeanPropertyRowMapper();
-        newInstance.setMappedClass(mappedClass);
-        return newInstance;
-    }
 }
