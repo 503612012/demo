@@ -99,6 +99,7 @@ public class RoleService extends BaseService {
         roleDao.add(role);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
         super.addLog("添加角色", role.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }
