@@ -57,9 +57,6 @@
     <logger name="com.oven.exception" level="ERROR">
         <appender-ref ref="ERROR"/>
     </logger>
-    <logger name="com.oven.mapper" level="DEBUG">
-        <appender-ref ref="DEBUG"/>
-    </logger>
     <logger name="com.oven.aop" level="INFO">
         <appender-ref ref="INFO"/>
     </logger>

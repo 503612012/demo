@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.oven.config.SysDic;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
