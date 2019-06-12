@@ -159,4 +159,22 @@ layui.use('table', function() {
                 break;
         }
     });
+
+    // 缓存当前操作的是哪个表格的哪个tr的哪个td
+    $(document).off('mousedown', '.layui-table-grid-down').on('mousedown', '.layui-table-grid-down', function() {
+        table._tableTrCurr = $(this).closest('td');
+    });
+
+    $(document).off('click', '.layui-table-tips-main [lay-event]').on('click', '.layui-table-tips-main [lay-event]', function() {
+        var elem = $(this);
+        var tableTrCurr = table._tableTrCurr;
+        if (!tableTrCurr) {
+            return;
+        }
+        var layerIndex = elem.closest('.layui-table-tips').attr('times');
+        // 关闭当前这个显示更多的tip
+        layer.close(layerIndex);
+        table._tableTrCurr.find('[lay-event="' + elem.attr('lay-event') + '"]')[0].click();
+    });
+
 });
