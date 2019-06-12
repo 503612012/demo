@@ -106,6 +106,25 @@ public class UserController extends com.oven.controller.BaseController {
     }
 
     /**
+     * 判断用户名是否存在
+     */
+    @RequestMapping("isExist")
+    @RequiresPermissions(PermissionCode.USER_INSERT)
+    @ResponseBody
+    public Object isExist(String userName) throws MyException {
+        try {
+            User user = userService.getByUserName(userName);
+            if (user == null) {
+                return super.success(false);
+            } else {
+                return super.success(true);
+            }
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加用户出错，请联系网站管理人员。", e);
+        }
+    }
+
+    /**
      * 去到用户更新页面
      *
      * @param id 用户ID
