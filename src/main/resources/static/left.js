@@ -72,6 +72,7 @@ $(function() {
             } else {
                 $(this).hide();
             }
+            $("ul.layui-layout-right .layui-nav-item span").show();
         });
         // 判断isshow的状态
         if (isShow) { // 缩回去
