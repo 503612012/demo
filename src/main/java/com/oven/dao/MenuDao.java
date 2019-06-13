@@ -72,7 +72,7 @@ public class MenuDao {
                 "                 where `dbid` = ?";
         return this.jdbcTemplate.update(sql, menuInDb.getMenuCode(), menuInDb.getMenuName(), menuInDb.getPid(), menuInDb.getSort(),
                 menuInDb.getUrl(), menuInDb.getIconCls(), menuInDb.getType(), menuInDb.getCreateId(), menuInDb.getCreateTime(),
-                menuInDb.getLastModifyId(), menuInDb.getLastModifyTime(), menuInDb.getStatus());
+                menuInDb.getLastModifyId(), menuInDb.getLastModifyTime(), menuInDb.getStatus(), menuInDb.getId());
     }
 
     /**
