@@ -1,13 +1,9 @@
 package com.oven.vcode;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * @author: wuhongjun
- * @version:1.0
- */
-public class Encoder
-{
+public class Encoder {
     private static final int EOF = -1;
 
     private int imgW, imgH;
@@ -107,7 +103,7 @@ public class Encoder
                     0x1FFF,
                     0x3FFF,
                     0x7FFF,
-                    0xFFFF };
+                    0xFFFF};
 
     // Number of characters so far in this 'packet'
     int a_count;
@@ -183,7 +179,8 @@ public class Encoder
 
         output(ClearCode, outs);
 
-        outer_loop : while ((c = nextPixel()) != EOF) {
+        outer_loop:
+        while ((c = nextPixel()) != EOF) {
             fcode = (c << maxbits) + ent;
             i = (c << hshift) ^ ent; // xor hashing
 

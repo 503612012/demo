@@ -62,3 +62,7 @@ $(function() {
     });
 
 });
+
+function changeCode() {
+    document.getElementById("LAY-user-get-vercode").src="/getGifCode?"+Math.random();
+}
