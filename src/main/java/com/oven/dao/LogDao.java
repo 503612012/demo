@@ -45,6 +45,7 @@ public class LogDao {
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
         StringBuilder sb = new StringBuilder("select * from t_log");
         addCondition(sb, log);
+        sb.append(" order by operator_time desc");
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Log.class), (pageNum - 1) * pageSize, pageSize);
     }
