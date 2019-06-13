@@ -7,6 +7,8 @@ import com.oven.service.LogService;
 import com.oven.service.MenuService;
 import com.oven.service.UserService;
 import com.oven.util.IPUtils;
+import com.oven.vcode.Captcha;
+import com.oven.vcode.GifCaptcha;
 import com.oven.vo.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -17,12 +19,15 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +47,29 @@ public class SystemController extends BaseController {
     private UserService userService;
     @Resource
     private MenuService menuService;
+
+    /**
+     * 获取验证码（Gif版本）
+     */
+    @RequestMapping("/getGifCode")
+    public void getGifCode(HttpServletResponse response, HttpServletRequest request) throws MyException {
+        try {
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.setContentType("image/gif");
+            /*
+             * gif格式动画验证码
+             * 宽，高，位数。
+             */
+            Captcha captcha = new GifCaptcha(146, 33, 4);
+            captcha.out(response.getOutputStream());
+            HttpSession session = request.getSession(true);
+            session.setAttribute(AppConst.CAPTCHA, captcha.text().toLowerCase());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", e);
+        }
+    }
 
     /**
      * 默认页面(系统主页面)
@@ -68,8 +96,18 @@ public class SystemController extends BaseController {
      */
     @RequestMapping("/doLogin")
     @ResponseBody
-    public Object doLogin(String userName, String pwd, HttpServletRequest req) throws MyException {
+    public Object doLogin(String userName, String pwd, String inputCode, HttpServletRequest req) throws MyException {
         try {
+            // 校验验证码
+            String code = (String) req.getSession().getAttribute(AppConst.CAPTCHA);
+            if (StringUtils.isEmpty(inputCode)) {
+                return super.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
+            } else {
+                if (!inputCode.equals(code)) {
+                    return super.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
+                }
+            }
+
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(userName, pwd);
             subject.login(token);

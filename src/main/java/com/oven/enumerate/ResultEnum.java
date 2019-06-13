@@ -27,7 +27,10 @@ public enum ResultEnum {
     USER_DISABLE(4003, "该用户已被锁定，请联系管理人员！"),
     SESSION_TIMEOUT(4004, "未登录或会话超时，请重新登录！"),
     LOSE_LOGIN(4005, "已掉线，请重新登录！"),
-    OTHER_LOGINED(4006, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！");
+    OTHER_LOGINED(4006, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！"),
+
+    CAPTCHA_ERROR(4007, "验证码错误，请重新输入！"),
+    CAPTCHA_IS_NONE(4008, "请输入验证码！");
 
     private Integer code;
     private String value;

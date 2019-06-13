@@ -27,7 +27,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         resp.setContentType("text/plain;charset=UTF-8");
         String servletPath = req.getServletPath();
         // 放行的请求
-        if (servletPath.startsWith("/login") || servletPath.startsWith("/doLogin") || servletPath.equals("/err")) {
+        if (servletPath.startsWith("/login") || servletPath.startsWith("/doLogin") || servletPath.equals("/err") || servletPath.startsWith("/getGifCode")) {
             return true;
         }
         if (servletPath.startsWith("/error")) {

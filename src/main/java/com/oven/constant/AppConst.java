@@ -19,4 +19,5 @@ public class AppConst {
     public static final String USER_MENU = "menu"; // 用户菜单
     public static final String SYSTEM_ERROR = "系统错误，请联系网站管理人员。";
 
+    public static final String CAPTCHA = "_captcha";
 }
