@@ -3,10 +3,23 @@
         .menu-border-left {
             border-left: 5px solid #009688;
         }
+
+        .kit-side-fold {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .hide {
+            display: none;
+        }
     </style>
     <script type="text/javascript" th:src="@{/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/left.js}"></script>
-    <div class="layui-side-scroll">
+    <div class="layui-side-scroll" style="width: auto;">
+        <div title="菜单缩放" class="kit-side-fold"><i class="layui-icon layui-icon-shrink-right" aria-hidden="true"></i></div>
         <ul class="layui-nav layui-nav-tree" lay-filter="test" id="user-menus"></ul>
     </div>
 </div>
