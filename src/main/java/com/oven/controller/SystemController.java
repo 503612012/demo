@@ -72,6 +72,14 @@ public class SystemController extends BaseController {
     }
 
     /**
+     * 欢迎页面
+     */
+    @RequestMapping("/main.html")
+    public String main() {
+        return "main";
+    }
+
+    /**
      * 默认页面(系统主页面)
      */
     @RequestMapping("/")
