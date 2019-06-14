@@ -20,6 +20,10 @@ $(function() {
         var userName = $("input[name=userName]").val();
         var password = $("input[name=password]").val();
         var vercode = $("input[name=vercode]").val();
+        var rememberMe = false;
+        if ($(".layui-form-checked").length === 1) {
+            rememberMe = true;
+        }
         if (userName == null || userName === '' || password == null || password === '' || vercode == null || vercode === '') {
             return;
         }
@@ -29,7 +33,8 @@ $(function() {
             data: {
                 "userName": userName,
                 "pwd": password,
-                "inputCode": vercode
+                "inputCode": vercode,
+                "rememberMe": rememberMe
             },
             dataType: "json",
             success: function(result) {

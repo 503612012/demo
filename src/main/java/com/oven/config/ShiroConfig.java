@@ -56,7 +56,6 @@ public class ShiroConfig {
         return myShiroRealm;
     }
 
-
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
