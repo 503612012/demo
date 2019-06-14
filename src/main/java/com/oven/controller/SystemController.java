@@ -160,7 +160,6 @@ public class SystemController extends BaseController {
         try {
             req.getSession().removeAttribute(AppConst.CURRENT_USER);
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
-            SecurityUtils.getSubject().logout();
         } catch (Exception e) {
             log.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，请联系网站管理人员。：", e);
         }
