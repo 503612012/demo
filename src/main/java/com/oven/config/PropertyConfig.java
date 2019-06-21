@@ -1,5 +1,8 @@
 package com.oven.config;
 
+import com.oven.constant.AppConst;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +15,7 @@ import java.util.Properties;
  *
  * @author Oven
  */
+@Slf4j
 public class PropertyConfig {
 
     /**
@@ -52,9 +56,11 @@ public class PropertyConfig {
             conn = DriverManager.getConnection(url, userName, password);
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
+            log.info(AppConst.INFO_LOG_PREFIX + "从数据库中加载配置信息...");
             while (rs.next()) {
                 String key = rs.getString("key");
                 String value = rs.getString("value");
+                log.info(AppConst.INFO_LOG_PREFIX + " {} --- {}", key, value);
                 properties.put(key, value);
             }
         } catch (Exception e) {

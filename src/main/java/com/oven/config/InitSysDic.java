@@ -24,7 +24,6 @@ public class InitSysDic implements CommandLineRunner {
     @Resource
     private SysDicService sysDicService;
 
-
     @Override
     public void run(String... args) {
         log.info(AppConst.INFO_LOG_PREFIX + "开始加载系统字典" + AppConst.INFO_LOG_PREFIX);
@@ -32,6 +31,7 @@ public class InitSysDic implements CommandLineRunner {
         ConcurrentMap<String, Object> map = new ConcurrentHashMap<>();
         for (SysDicVo item : list) {
             map.put(item.getKey(), item.getValue());
+            log.info(AppConst.INFO_LOG_PREFIX + " {} --- {}", item.getKey(), item.getValue());
             SysDic.setSysDic(map);
         }
     }
