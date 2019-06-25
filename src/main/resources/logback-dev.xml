@@ -60,6 +60,12 @@
     <logger name="com.oven.aop" level="INFO">
         <appender-ref ref="INFO"/>
     </logger>
+    <logger name="com.oven.limitation" level="INFO">
+        <appender-ref ref="INFO"/>
+    </logger>
+    <logger name="com.oven.limitation" level="ERROR">
+        <appender-ref ref="ERROR"/>
+    </logger>
     <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="DEBUG"/>

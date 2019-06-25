@@ -3,6 +3,8 @@ package com.oven.controller;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitType;
 import com.oven.service.LogService;
 import com.oven.service.MenuService;
 import com.oven.service.UserService;
@@ -31,6 +33,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 系统控制器
@@ -111,7 +114,7 @@ public class SystemController extends BaseController {
             if (StringUtils.isEmpty(inputCode)) {
                 return super.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
             } else {
-                if (!inputCode.equals(code)) {
+                if (!inputCode.toLowerCase().equals(code.toLowerCase())) {
                     return super.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
                 }
             }
@@ -197,6 +200,16 @@ public class SystemController extends BaseController {
         } catch (Exception e) {
             throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", e);
         }
+    }
+
+    /**
+     * 测试接口限流
+     */
+    @ResponseBody
+    @RequestMapping("/limit")
+    @Limit(key = "limit", period = 10, count = 5, limitType = LimitType.IP)
+    public Object limit() {
+        return UUID.randomUUID().toString();
     }
 
 }

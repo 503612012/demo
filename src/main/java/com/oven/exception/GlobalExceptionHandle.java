@@ -3,6 +3,8 @@ package com.oven.exception;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitException;
 import com.oven.util.ParametersUtils;
 import com.oven.util.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,12 @@ public class GlobalExceptionHandle {
         } else if (e instanceof UnauthorizedException) {
             resp.sendRedirect("/noauth");
             return "";
+        } else if (e instanceof LimitException) {
+            LimitException limitException = (LimitException) e;
+            JSONObject result = new JSONObject();
+            result.put("code", limitException.getCode());
+            result.put("msg", limitException.getMsg());
+            return result;
         } else {
             log.error(AppConst.ERROR_LOG_PREFIX + "错误信息：", e);
         }

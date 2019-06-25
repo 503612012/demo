@@ -20,4 +20,6 @@ public class AppConst {
     public static final String SYSTEM_ERROR = "系统错误，请联系网站管理人员。";
 
     public static final String CAPTCHA = "_captcha";
+    public static final String LIMIT_KEY_PREFIX = "limit_key_prefix_";
+
 }

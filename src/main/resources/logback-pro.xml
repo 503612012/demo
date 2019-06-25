@@ -57,6 +57,12 @@
     <logger name="com.oven.exception" level="ERROR">
         <appender-ref ref="ERROR"/>
     </logger>
+    <logger name="com.oven.limitation" level="INFO">
+        <appender-ref ref="INFO"/>
+    </logger>
+    <logger name="com.oven.limitation" level="ERROR">
+        <appender-ref ref="ERROR"/>
+    </logger>
     <logger name="com.oven.aop" level="INFO">
         <appender-ref ref="INFO"/>
     </logger>
