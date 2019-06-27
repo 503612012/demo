@@ -27,6 +27,13 @@ $(function() {
         if (userName == null || userName === '' || password == null || password === '' || vercode == null || vercode === '') {
             return;
         }
+
+        var key = $("input[name=key]").val();
+        key = CryptoJS.enc.Utf8.parse(key);
+        var srcs = CryptoJS.enc.Utf8.parse(password);
+        var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
+        password = encrypted.toString();
+
         $.ajax({
             url: "/doLogin",
             type: "POST",
@@ -69,5 +76,5 @@ $(function() {
 });
 
 function changeCode() {
-    document.getElementById("LAY-user-get-vercode").src="/getGifCode?"+Math.random();
+    document.getElementById("LAY-user-get-vercode").src = "/getGifCode?" + Math.random();
 }

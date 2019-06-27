@@ -19,6 +19,7 @@
             <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
                 <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                    <input type="hidden" name="key" th:value="${key}">
                     <input type="text" name="userName" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
                 </div>
                 <div class="layui-form-item">
@@ -59,6 +60,7 @@
 </div>
 <script th:src="@{/jquery.min.js}"></script>
 <script th:src="@{/layui.all.js}"></script>
+<script th:src="@{/crypto-js.js}"></script>
 <script th:src="@{/login.js}"></script>
 <script>
     var errorMsg = '[[${errorMsg}]]';

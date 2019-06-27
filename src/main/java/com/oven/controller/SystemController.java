@@ -8,6 +8,7 @@ import com.oven.limitation.LimitType;
 import com.oven.service.LogService;
 import com.oven.service.MenuService;
 import com.oven.service.UserService;
+import com.oven.util.EncryptUtils;
 import com.oven.util.IPUtils;
 import com.oven.vcode.Captcha;
 import com.oven.vcode.GifCaptcha;
@@ -96,6 +97,7 @@ public class SystemController extends BaseController {
     @RequestMapping("/login")
     public String login(String errorMsg, Model model) {
         model.addAttribute("errorMsg", errorMsg);
+        model.addAttribute("key", EncryptUtils.KEY);
         return "login";
     }
 
@@ -120,6 +122,7 @@ public class SystemController extends BaseController {
             }
 
             Subject subject = SecurityUtils.getSubject();
+            pwd = EncryptUtils.aesDecrypt(pwd, EncryptUtils.KEY);
             UsernamePasswordToken token = new UsernamePasswordToken(userName, pwd);
             subject.login(token);
 
