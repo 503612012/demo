@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +40,13 @@ public class UserService extends BaseService {
      * @param id 用户ID
      */
     public User getById(Integer id) {
-        User user = super.get(RedisCacheKey.USER_GET_BY_ID + id); // 先读取缓存
+        User user = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_ID, id)); // 先读取缓存
         if (user == null) { // double check
             synchronized (this) {
-                user = super.get(RedisCacheKey.USER_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                user = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (user == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     user = userDao.getById(id);
-                    super.set(RedisCacheKey.USER_GET_BY_ID + id, user);
+                    super.set(MessageFormat.format(RedisCacheKey.USER_GET_BY_ID, id), user);
                 }
             }
         }
@@ -59,13 +60,13 @@ public class UserService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        List<User> list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + user.toString()); // 先读取缓存
+        List<User> list = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_PAGE, pageNum, pageSize, user.toString())); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.USER_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_PAGE, pageNum, pageSize, user.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = userDao.getByPage(pageNum, pageSize, user);
-                    super.set(RedisCacheKey.USER_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + user.toString(), list);
+                    super.set(MessageFormat.format(RedisCacheKey.USER_GET_BY_PAGE, pageNum, pageSize, user.toString()), list);
                 }
             }
         }
@@ -76,13 +77,13 @@ public class UserService extends BaseService {
      * 获取用户总数量
      */
     public Integer getTotalNum(User user) {
-        Integer totalNum = super.get(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString()); // 先读取缓存
+        Integer totalNum = super.get(MessageFormat.format(RedisCacheKey.USER_GET_TOTAL_NUM, user.toString())); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = super.get(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(MessageFormat.format(RedisCacheKey.USER_GET_TOTAL_NUM, user.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = userDao.getTotalNum(user);
-                    super.set(RedisCacheKey.USER_GET_TOTAL_NUM + user.toString(), totalNum);
+                    super.set(MessageFormat.format(RedisCacheKey.USER_GET_TOTAL_NUM, user.toString()), totalNum);
                 }
             }
         }
@@ -95,13 +96,13 @@ public class UserService extends BaseService {
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
-        User user = super.get(RedisCacheKey.USER_GET_BY_USERNAME + userName); // 先读取缓存
+        User user = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_USERNAME, userName)); // 先读取缓存
         if (user == null) { // double check
             synchronized (this) {
-                user = super.get(RedisCacheKey.USER_GET_BY_USERNAME + userName); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                user = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_USERNAME, userName)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (user == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     user = userDao.getByUserName(userName);
-                    super.set(RedisCacheKey.USER_GET_BY_USERNAME + userName, user);
+                    super.set(MessageFormat.format(RedisCacheKey.USER_GET_BY_USERNAME, userName), user);
                 }
             }
         }
@@ -200,10 +201,10 @@ public class UserService extends BaseService {
      * @param id 用户ID
      */
     public List<JSONObject> getRoleByUserId(Integer id) {
-        List<JSONObject> list = super.get(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID + id); // 先读取缓存
+        List<JSONObject> list = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = new ArrayList<>();
                     List<Role> roles = roleService.getAll();
@@ -217,7 +218,7 @@ public class UserService extends BaseService {
                         }
                         list.add(obj);
                     }
-                    super.set(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID + id, list);
+                    super.set(MessageFormat.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id), list);
                 }
             }
         }

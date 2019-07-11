@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -27,13 +28,13 @@ public class UserRoleService extends BaseService {
      * @param userId 用户ID
      */
     public List<UserRole> getByUserId(Integer userId) {
-        List<UserRole> list = super.get(RedisCacheKey.USERROLE_GET_BY_USERID + userId); // 先读取缓存
+        List<UserRole> list = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_BY_USERID, userId)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.USERROLE_GET_BY_USERID + userId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_BY_USERID, userId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = userRoleDao.getByUserId(userId);
-                    super.set(RedisCacheKey.USERROLE_GET_BY_USERID + userId, list);
+                    super.set(MessageFormat.format(RedisCacheKey.USERROLE_GET_BY_USERID, userId), list);
                 }
             }
         }
@@ -47,13 +48,13 @@ public class UserRoleService extends BaseService {
      * @param roleId 角色ID
      */
     public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
-        UserRole userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId); // 先读取缓存
+        UserRole userRole = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID, userId, roleId)); // 先读取缓存
         if (userRole == null) { // double check
             synchronized (this) {
-                userRole = super.get(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                userRole = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID, userId, roleId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (userRole == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     userRole = userRoleDao.getByUserIdAndRoleId(userId, roleId);
-                    super.set(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID + userId + "_" + roleId, userRole);
+                    super.set(MessageFormat.format(RedisCacheKey.USERROLE_GET_BY_USERID_AND_ROLEID, userId, roleId), userRole);
                 }
             }
         }

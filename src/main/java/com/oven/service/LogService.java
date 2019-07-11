@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -28,13 +29,13 @@ public class LogService extends BaseService {
      * @param id 日志ID
      */
     public Log getById(Integer id) {
-        Log log = super.get(RedisCacheKey.LOG_GET_BY_ID + id); // 先读取缓存
+        Log log = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_BY_ID, id)); // 先读取缓存
         if (log == null) { // double check
             synchronized (this) {
-                log = super.get(RedisCacheKey.LOG_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                log = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (log == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     log = logDao.getById(id);
-                    super.set(RedisCacheKey.LOG_GET_BY_ID + id, log);
+                    super.set(MessageFormat.format(RedisCacheKey.LOG_GET_BY_ID, id), log);
                 }
             }
         }
@@ -48,13 +49,13 @@ public class LogService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
-        List<Log> list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + log.toString()); // 先读取缓存
+        List<Log> list = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_BY_PAGE, pageNum, pageSize, log.toString())); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + log.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_BY_PAGE, pageNum, pageSize, log.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = logDao.getByPage(pageNum, pageSize, log);
-                    super.set(RedisCacheKey.LOG_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + log.toString(), list);
+                    super.set(MessageFormat.format(RedisCacheKey.LOG_GET_BY_PAGE, pageNum, pageSize, log.toString()), list);
                 }
             }
         }
@@ -65,13 +66,13 @@ public class LogService extends BaseService {
      * 获取日志总数量
      */
     public Integer getTotalNum(Log log) {
-        Integer totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM + log.toString()); // 先读取缓存
+        Integer totalNum = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_TOTAL_NUM, log.toString())); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = super.get(RedisCacheKey.LOG_GET_TOTAL_NUM + log.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_TOTAL_NUM, log.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = logDao.getTotalNum(log);
-                    super.set(RedisCacheKey.LOG_GET_TOTAL_NUM + log.toString(), totalNum);
+                    super.set(MessageFormat.format(RedisCacheKey.LOG_GET_TOTAL_NUM, log.toString()), totalNum);
                 }
             }
         }

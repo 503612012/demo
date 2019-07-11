@@ -43,7 +43,7 @@ show_log(){
 }
 
 show_help(){
-    echo -e "\r\n\t欢迎使用深圳小产权"
+    echo -e "\r\n\t欢迎使用"
     echo -e "\r\nUsage: sh demo.sh start|stop|reload|status|log"
     exit
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -27,13 +28,13 @@ public class RoleMenuService extends BaseService {
      * @param roleId 角色ID
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
-        List<RoleMenu> list = super.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId); // 先读取缓存
+        List<RoleMenu> list = super.get(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID, roleId)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID, roleId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = roleMenuDao.getByRoleId(roleId);
-                    super.set(RedisCacheKey.ROLEMENU_GET_BY_ROLEID + roleId, list);
+                    super.set(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID, roleId), list);
                 }
             }
         }
@@ -47,13 +48,13 @@ public class RoleMenuService extends BaseService {
      * @param menuId 菜单ID
      */
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
-        RoleMenu roleMenu = super.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID + roleId + "_" + menuId); // 先读取缓存
+        RoleMenu roleMenu = super.get(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID, roleId, menuId)); // 先读取缓存
         if (roleMenu == null) { // double check
             synchronized (this) {
-                roleMenu = super.get(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID + roleId + "_" + menuId); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                roleMenu = super.get(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID, roleId, menuId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (roleMenu == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     roleMenu = roleMenuDao.getByRoleIdAndMenuId(roleId, menuId);
-                    super.set(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID + roleId + "_" + menuId, roleMenu);
+                    super.set(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID, roleId, menuId), roleMenu);
                 }
             }
         }

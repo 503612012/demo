@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +39,13 @@ public class RoleService extends BaseService {
      * @param id 角色ID
      */
     public Role getById(Integer id) {
-        Role role = super.get(RedisCacheKey.ROLE_GET_BY_ID + id); // 先读取缓存
+        Role role = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_ID, id)); // 先读取缓存
         if (role == null) { // double check
             synchronized (this) {
-                role = super.get(RedisCacheKey.ROLE_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                role = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (role == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     role = roleDao.getById(id);
-                    super.set(RedisCacheKey.ROLE_GET_BY_ID + id, role);
+                    super.set(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_ID, id), role);
                 }
             }
         }
@@ -58,13 +59,13 @@ public class RoleService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Role> getByPage(Integer pageNum, Integer pageSize, Role role) {
-        List<Role> list = super.get(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + role.toString()); // 先读取缓存
+        List<Role> list = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_PAGE, pageNum, pageSize, role.toString())); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + role.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_PAGE, pageNum, pageSize, role.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = roleDao.getByPage(pageNum, pageSize, role);
-                    super.set(RedisCacheKey.ROLE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + role.toString(), list);
+                    super.set(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_PAGE, pageNum, pageSize, role.toString()), list);
                 }
             }
         }
@@ -75,13 +76,13 @@ public class RoleService extends BaseService {
      * 获取角色总数量
      */
     public Integer getTotalNum(Role role) {
-        Integer totalNum = super.get(RedisCacheKey.ROLE_GET_TOTAL_NUM + role.toString()); // 先读取缓存
+        Integer totalNum = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_TOTAL_NUM, role.toString())); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = super.get(RedisCacheKey.ROLE_GET_TOTAL_NUM + role.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_TOTAL_NUM, role.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = roleDao.getTotalNum(role);
-                    super.set(RedisCacheKey.ROLE_GET_TOTAL_NUM + role.toString(), totalNum);
+                    super.set(MessageFormat.format(RedisCacheKey.ROLE_GET_TOTAL_NUM, role.toString()), totalNum);
                 }
             }
         }

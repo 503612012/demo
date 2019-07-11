@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -31,13 +32,13 @@ public class WorksiteService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Worksite> getByPage(Integer pageNum, Integer pageSize, Worksite worksite) {
-        List<Worksite> list = super.get(RedisCacheKey.WORKSITE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + worksite.toString()); // 先读取缓存
+        List<Worksite> list = super.get(MessageFormat.format(RedisCacheKey.WORKSITE_GET_BY_PAGE, pageNum, pageSize, worksite.toString())); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.WORKSITE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + worksite.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.WORKSITE_GET_BY_PAGE, pageNum, pageSize, worksite.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = worksiteDao.getByPage(pageNum, pageSize, worksite);
-                    super.set(RedisCacheKey.WORKSITE_GET_BY_PAGE + pageNum + "_" + pageSize + "_" + worksite.toString(), list);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKSITE_GET_BY_PAGE, pageNum, pageSize, worksite.toString()), list);
                 }
             }
         }
@@ -48,13 +49,13 @@ public class WorksiteService extends BaseService {
      * 获取工地总数量
      */
     public Integer getTotalNum(Worksite worksite) {
-        Integer totalNum = super.get(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString()); // 先读取缓存
+        Integer totalNum = super.get(MessageFormat.format(RedisCacheKey.WORKSITE_GET_TOTAL_NUM, worksite.toString())); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = super.get(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString()); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(MessageFormat.format(RedisCacheKey.WORKSITE_GET_TOTAL_NUM, worksite.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = worksiteDao.getTotalNum(worksite);
-                    super.set(RedisCacheKey.WORKSITE_GET_TOTAL_NUM + worksite.toString(), totalNum);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKSITE_GET_TOTAL_NUM, worksite.toString()), totalNum);
                 }
             }
         }
@@ -80,13 +81,13 @@ public class WorksiteService extends BaseService {
      * 通过主键查询
      */
     public Worksite getById(Integer id) {
-        Worksite worksite = super.get(RedisCacheKey.WORKSITE_GET_BY_ID + id); // 先读取缓存
+        Worksite worksite = super.get(MessageFormat.format(RedisCacheKey.WORKSITE_GET_BY_ID, id)); // 先读取缓存
         if (worksite == null) { // double check
             synchronized (this) {
-                worksite = super.get(RedisCacheKey.WORKSITE_GET_BY_ID + id); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                worksite = super.get(MessageFormat.format(RedisCacheKey.WORKSITE_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (worksite == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     worksite = worksiteDao.getById(id);
-                    super.set(RedisCacheKey.WORKSITE_GET_BY_ID + id, worksite);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKSITE_GET_BY_ID, id), worksite);
                 }
             }
         }
