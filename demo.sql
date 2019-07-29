@@ -230,7 +230,7 @@ CREATE TABLE `t_user` (
 
 LOCK TABLES `t_user` WRITE;
 /*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-INSERT INTO `t_user` (`dbid`, `user_name`, `password`, `nick_name`, `age`, `email`, `phone`, `status`, `gender`, `create_time`, `create_id`, `last_modify_time`, `last_modify_id`) VALUES (1,'Oven','96ba8efe664c1b11fa56a691e1094cc8','Oven',18,'oven@vhzsqm.com','12345678909',0,1,'2018-10-19 12:52:17',1,'2018-10-29 20:32:18',1), (8,'admin','d8e6ca2238dccaf93c13bde915f9e88f','admin',18,'admin@vhzsqm.com','12345678909',0,1,'2018-10-30 09:49:43',1,'2018-11-01 13:59:14',1);
+INSERT INTO `t_user` (`dbid`, `user_name`, `password`, `nick_name`, `age`, `email`, `phone`, `status`, `gender`, `create_time`, `create_id`, `last_modify_time`, `last_modify_id`) VALUES (1,'Oven','96ba8efe664c1b11fa56a691e1094cc8','Oven',18,'oven@cloveaire.com','12345678909',0,1,'2018-10-19 12:52:17',1,'2018-10-29 20:32:18',1), (8,'admin','d8e6ca2238dccaf93c13bde915f9e88f','admin',18,'admin@cloveaire.com','12345678909',0,1,'2018-10-30 09:49:43',1,'2018-11-01 13:59:14',1);
 /*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
