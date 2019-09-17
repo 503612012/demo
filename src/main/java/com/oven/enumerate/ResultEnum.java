@@ -13,7 +13,7 @@ public enum ResultEnum {
     UPDATE_SUCCESS(200, "修改成功！"),
 
     UNKNOW_ERROR(3001, "未知错误！"),
-    OVER_LIMIT_ERROR(3002, "OVEN LIMIT!"),
+    OVER_LIMIT_ERROR(3002, "OVER LIMIT!"),
 
     SEARCH_PAGE_ERROR(5000, "分页查询错误！"),
     SEARCH_ERROR(5001, "查询错误！"),
