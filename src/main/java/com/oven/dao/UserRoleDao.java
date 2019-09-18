@@ -43,7 +43,7 @@ public class UserRoleDao {
     public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
         String sql = "select * from t_user_role where user_id = ? and role_id = ?";
         List<UserRole> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(UserRole.class), userId, roleId);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

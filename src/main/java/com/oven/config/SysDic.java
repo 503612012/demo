@@ -20,7 +20,7 @@ public class SysDic {
     }
 
     /**
-     * 从MCD_SYS_DIC中查找key-value数据 如果查找则返回value查询不到则返回null
+     * 从字典中查找key-value数据 如果查找则返回value查询不到则返回null
      */
     public static String getProperty(String key) {
         if (SYS_DIC == null) {

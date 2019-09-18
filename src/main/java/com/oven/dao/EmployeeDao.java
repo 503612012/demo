@@ -91,7 +91,7 @@ public class EmployeeDao {
     public Employee getById(Integer id) {
         String sql = "select * from t_employee where dbid = ?";
         List<Employee> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class), id);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

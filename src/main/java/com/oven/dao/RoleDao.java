@@ -33,7 +33,7 @@ public class RoleDao {
     public Role getById(Integer id) {
         String sql = "select * from t_role where dbid = ?";
         List<Role> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Role.class), id);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

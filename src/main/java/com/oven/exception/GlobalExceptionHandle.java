@@ -3,7 +3,6 @@ package com.oven.exception;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
-import com.oven.limitation.Limit;
 import com.oven.limitation.LimitException;
 import com.oven.util.ParametersUtils;
 import com.oven.util.ResultInfo;
@@ -32,10 +31,10 @@ public class GlobalExceptionHandle {
      */
     @ExceptionHandler(value = Exception.class)
     public Object handleException(Exception e, HttpServletRequest request, HttpServletResponse resp) throws IOException {
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求地址：" + request.getRequestURL().toString());
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求方法：" + request.getMethod());
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求者IP：" + request.getRemoteAddr());
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：" + ParametersUtils.getParameters(request));
+        log.error(AppConst.ERROR_LOG_PREFIX + "请求地址：{}", request.getRequestURL().toString());
+        log.error(AppConst.ERROR_LOG_PREFIX + "请求方法：{}", request.getMethod());
+        log.error(AppConst.ERROR_LOG_PREFIX + "请求者IP：{}", request.getRemoteAddr());
+        log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：{}", ParametersUtils.getParameters(request));
         if (e instanceof MyException) {
             MyException myException = (MyException) e;
             log.error(AppConst.ERROR_LOG_PREFIX + myException.getMsg(), myException.getE());

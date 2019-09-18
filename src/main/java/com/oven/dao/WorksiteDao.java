@@ -103,7 +103,7 @@ public class WorksiteDao {
     public Worksite getById(Integer id) {
         String sql = "select * from t_worksite where dbid = ?";
         List<Worksite> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Worksite.class), id);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

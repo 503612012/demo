@@ -43,7 +43,7 @@ public class RoleMenuDao {
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
         String sql = "select * from t_role_menu where role_id = ? and menu_id = ?";
         List<RoleMenu> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(RoleMenu.class), roleId, menuId);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

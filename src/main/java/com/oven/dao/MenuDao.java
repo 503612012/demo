@@ -28,7 +28,7 @@ public class MenuDao {
     public Menu getById(Integer id) {
         String sql = "select * from t_menu where dbid = ?";
         List<Menu> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class), id);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

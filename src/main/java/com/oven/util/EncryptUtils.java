@@ -34,6 +34,7 @@ public class EncryptUtils {
         return cipher.doFinal(content.getBytes(StandardCharsets.UTF_8));
     }
 
+    @SuppressWarnings("unused")
     public static String aesEncrypt(String content, String encryptKey) throws Exception {
         return base64Encode(aesEncryptToBytes(content, encryptKey));
     }

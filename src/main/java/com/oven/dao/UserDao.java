@@ -33,7 +33,7 @@ public class UserDao {
     public User getById(Integer id) {
         String sql = "select * from t_user where dbid = ?";
         List<User> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), id);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**
@@ -67,7 +67,7 @@ public class UserDao {
     public User getByUserName(String userName) {
         String sql = "select * from t_user where user_name = ?";
         List<User> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), userName);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

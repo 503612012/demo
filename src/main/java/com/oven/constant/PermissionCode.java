@@ -36,6 +36,8 @@ public class PermissionCode {
     public static final String EMPLOYEE_SETSTATUS = "B1_01_04";   // 修改员工状态
     public static final String EMPLOYEE_SHOWMONEY = "B1_01_05";   // 显示金额
 
+    public static final String ECHARTS_MANAGER    = "D1_01";      // Echarts功能
+
     public static final String WORKTIME_MANAGER   = "B1_02";      // 工时管理
     public static final String WORKTIME_SEARCH    = "B1_02_01";   // 工时查询
     public static final String WORKTIME_INSERT    = "B1_02_02";   // 工时录入

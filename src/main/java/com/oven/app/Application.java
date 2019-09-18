@@ -3,6 +3,7 @@ package com.oven.app;
 import com.oven.config.PropertyConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Properties;
 
@@ -11,6 +12,7 @@ import java.util.Properties;
  *
  * @author Oven
  */
+@EnableScheduling
 @SpringBootApplication(scanBasePackages = "com.oven")
 public class Application {
 
