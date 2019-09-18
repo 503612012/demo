@@ -35,14 +35,13 @@ public class EmployeeDao {
                 "                             `gender`," +
                 "                             `address`," +
                 "                             `contact`," +
-                "                             `day_salary`," +
-                "                             `month_salary`," +
+                "                             `hour_salary`," +
                 "                             `create_time`," +
                 "                             `create_id`," +
                 "                             `last_modify_time`," +
                 "                             `last_modify_id`," +
                 "                             `status`)" +
-                "                       values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
+                "                       values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
@@ -51,12 +50,11 @@ public class EmployeeDao {
             ps.setInt(3, employee.getGender());
             ps.setString(4, employee.getAddress());
             ps.setString(5, employee.getContact());
-            ps.setDouble(6, employee.getDaySalary());
-            ps.setDouble(7, employee.getMonthSalary());
-            ps.setString(8, employee.getCreateTime());
-            ps.setInt(9, employee.getCreateId());
-            ps.setString(10, employee.getLastModifyTime());
-            ps.setInt(11, employee.getLastModifyId());
+            ps.setDouble(6, employee.getHourSalary());
+            ps.setString(7, employee.getCreateTime());
+            ps.setInt(8, employee.getCreateId());
+            ps.setString(9, employee.getLastModifyTime());
+            ps.setInt(10, employee.getLastModifyId());
             return ps;
         };
         this.jdbcTemplate.update(creator, key);
@@ -72,8 +70,7 @@ public class EmployeeDao {
                 "                           `gender` = ?," +
                 "                           `address` = ?," +
                 "                           `contact` = ?," +
-                "                           `day_salary` = ?," +
-                "                           `month_salary` = ?," +
+                "                           `hour_salary` = ?," +
                 "                           `create_time` = ?," +
                 "                           `create_id` = ?," +
                 "                           `last_modify_time` = ?," +
@@ -81,8 +78,8 @@ public class EmployeeDao {
                 "                           `status` = ?" +
                 "                     where `dbid` = ?";
         return this.jdbcTemplate.update(sql, employee.getName(), employee.getAge(), employee.getGender(), employee.getAddress(),
-                employee.getContact(), employee.getDaySalary(), employee.getMonthSalary(), employee.getCreateTime(),
-                employee.getCreateId(), employee.getLastModifyTime(), employee.getLastModifyId(), employee.getStatus(), employee.getId());
+                employee.getContact(), employee.getHourSalary(), employee.getCreateTime(), employee.getCreateId(),
+                employee.getLastModifyTime(), employee.getLastModifyId(), employee.getStatus(), employee.getId());
     }
 
     /**

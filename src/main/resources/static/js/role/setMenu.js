@@ -42,12 +42,12 @@ $(function() {
                         $("#" + currentValue.domId).parent().find(".tree-checkbox").removeClass("tree-checkbox1").removeClass("tree-checkbox2").addClass("tree-checkbox0");
                     });
                 };
-                var checkChangeProperties = checked == true ? checkedTrue() : checkedFalse();
+                checked == true ? checkedTrue() : checkedFalse();
             } else { // 没有子菜单，即为叶子节点，点击的时候级联父节点
                 var parentNode = $('#permission_tree').tree('getParent', node.target); //得到父节点
                 if (checked == true) { // 选中子节点
                     var checkBoxList = $("#" + node.domId).parent().parent().find(".tree-checkbox");
-                    for (var i=0; i<checkBoxList.length; i++) {
+                    for (var i = 0; i < checkBoxList.length; i++) {
                         if ($(checkBoxList[i]).hasClass("tree-checkbox0")) {
                             $("#" + parentNode.domId).find(".tree-checkbox").removeClass("tree-checkbox0").removeClass("tree-checkbox1").addClass("tree-checkbox2");
                             return;
@@ -56,7 +56,7 @@ $(function() {
                     $("#" + parentNode.domId).find(".tree-checkbox").removeClass("tree-checkbox0").removeClass("tree-checkbox2").addClass("tree-checkbox1");
                 } else { // 取消选中子节点
                     var checkBoxList = $("#" + node.domId).parent().parent().find(".tree-checkbox");
-                    for (var i=0; i<checkBoxList.length; i++) {
+                    for (var i = 0; i < checkBoxList.length; i++) {
                         if ($(checkBoxList[i]).hasClass("tree-checkbox1")) {
                             $("#" + parentNode.domId).find(".tree-checkbox").removeClass("tree-checkbox0").removeClass("tree-checkbox1").addClass("tree-checkbox2");
                             return;
@@ -70,10 +70,10 @@ $(function() {
     /**
      * 确认事件
      */
-    $(".layui-btn").on("click",function() {
+    $(".layui-btn").on("click", function() {
         var list = $('#permission_tree').find(".tree-checkbox"); // 不是获取选中的，而是获取所有节点
         var data = [];
-        for (var i=0; i<list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             var menuId = $("#permission_tree").tree("getNode", $(list[i]).parent()).id;
             if ($(list[i]).hasClass("tree-checkbox2") || $(list[i]).hasClass("tree-checkbox1")) {
                 data.push(menuId);
@@ -97,7 +97,7 @@ $(function() {
                     });
                     return;
                 }
-                window.parent.mainFrm.location.href= "/role/index";
+                window.parent.mainFrm.location.href = "/role/index";
             }
         });
         return false;

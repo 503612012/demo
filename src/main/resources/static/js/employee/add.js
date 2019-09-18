@@ -1,10 +1,8 @@
 //@sourceURL=/js/employee/add.js
 
 layui.use(['form', 'layedit', 'laydate'], function() {
-    var form = layui.form
-        , layer = layui.layer
-        , layedit = layui.layedit
-        , laydate = layui.laydate;
+    var form = layui.form;
+    var layer = layui.layer;
 
     // 监听提交
     form.on('submit(employee-add-submit)', function(data) {
@@ -22,7 +20,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                     });
                     return;
                 }
-                window.parent.mainFrm.location.href= "/employee/index";
+                window.parent.mainFrm.location.href = "/employee/index";
             }
         });
         return false;

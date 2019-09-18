@@ -61,13 +61,9 @@ public class EmployeeService extends BaseService {
             content.append("联系方式由[").append(employeeInDb.getContact()).append("]改为[").append(employee.getContact()).append("]，");
             employeeInDb.setContact(employee.getContact());
         }
-        if (!employeeInDb.getDaySalary().equals(employee.getDaySalary())) {
-            content.append("日薪由[").append(employeeInDb.getDaySalary()).append("]改为[").append(employee.getDaySalary()).append("]，");
-            employeeInDb.setDaySalary(employee.getDaySalary());
-        }
-        if (!employeeInDb.getMonthSalary().equals(employee.getMonthSalary())) {
-            content.append("月薪由[").append(employeeInDb.getMonthSalary()).append("]改为[").append(employee.getMonthSalary()).append("]，");
-            employeeInDb.setMonthSalary(employee.getMonthSalary());
+        if (!employeeInDb.getHourSalary().equals(employee.getHourSalary())) {
+            content.append("时薪由[").append(employeeInDb.getHourSalary()).append("]改为[").append(employee.getHourSalary()).append("]，");
+            employeeInDb.setHourSalary(employee.getHourSalary());
         }
         if (employee.getStatus() == null) {
             employee.setStatus(0);

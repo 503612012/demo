@@ -34,7 +34,7 @@
                         </div>
                         <div class="layui-col-xs5">
                             <div style="margin-left: 10px;">
-                                <img th:src="@{/getGifCode}" onclick="changeCode();" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
+                                <img th:src="@{/getGifCode}" onclick="changeCode();" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode" alt="">
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
 <script>
     var errorMsg = '[[${errorMsg}]]';
     console.log(errorMsg);
-    if (errorMsg != null && errorMsg != '') {
+    if (errorMsg != null && errorMsg !== '') {
         layer.open({
             title: '系统提示',
             content: errorMsg,

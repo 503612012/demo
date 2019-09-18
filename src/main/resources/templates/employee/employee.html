@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/layui.css}">
-    <style>
-        .red {
-            color: red;
-        }
-    </style>
 </head>
 <body>
 
@@ -26,10 +21,10 @@
                     <input class="layui-input" name="contact" id="contactReload" autocomplete="off">
                 </div>
             </div>
-            <button class="layui-btn layuiadmin-btn-admin employee-search" lay-submit="" style="line-height: 0px">
+            <button class="layui-btn layuiadmin-btn-admin employee-search" lay-submit="" style="line-height: 0">
                 <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
             </button>
-            <button class="layui-btn layuiadmin-btn-admin employee-reset" lay-submit="" style="line-height: 0px">
+            <button class="layui-btn layuiadmin-btn-admin employee-reset" lay-submit="" style="line-height: 0">
                 <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
             </button>
         </div>
@@ -53,14 +48,16 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
+
     function hasPermission(code) {
-        for (var i=0; i<menu.length; i++) {
+        for (var i = 0; i < menu.length; i++) {
             if (code == menu[i]) {
                 return true;
             }
         }
         return false;
     }
+
     /*]]>*/
 </script>
 <script th:src="@{/jquery.min.js}"></script>

@@ -2,7 +2,6 @@
 
 layui.use('table', function() {
     var table = layui.table;
-    var form = layui.form;
 
     /**
      * 重新加载表格
@@ -28,7 +27,7 @@ layui.use('table', function() {
         , even: true
         , title: '角色数据表'
         , cols: [[
-            {type:'numbers'}
+            {type: 'numbers'}
             , {field: 'roleName', title: '角色名', sort: true}
             , {field: 'createTime', title: '创建时间', sort: true}
             , {field: 'createName', title: '创建人'}
@@ -95,7 +94,7 @@ layui.use('table', function() {
      * 绑定角色状态更改点击事件
      */
     $("body").on("click", ".role-status", function() {
-        if(hasPermission("A1_03_04")) {
+        if (hasPermission("A1_03_04")) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {
@@ -121,9 +120,9 @@ layui.use('table', function() {
     // 监听工具条
     table.on('tool(role-list)', function(obj) {
         var data = obj.data;
-        if (obj.event === 'detail') {
+        if (obj.event == 'detail') {
             window.parent.mainFrm.location.href = "/role/roleMenu?roleId=" + data.id;
-        } else if (obj.event === 'del') {
+        } else if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({
                     url: '/role/delete',
@@ -146,17 +145,15 @@ layui.use('table', function() {
                     }
                 });
             });
-        } else if (obj.event === 'edit') {
+        } else if (obj.event == 'edit') {
             window.parent.mainFrm.location.href = "/role/update?id=" + data.id;
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(role-list)', function(obj) {
-        switch (obj.event) {
-            case 'role-add-btn':
-                window.parent.mainFrm.location.href = "/role/add";
-                break;
+        if (obj.event == 'role-add-btn') {
+            window.parent.mainFrm.location.href = "/role/add";
         }
     });
 

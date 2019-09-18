@@ -19,7 +19,7 @@ import java.util.Random;
  * @author Oven
  */
 @Slf4j
-@Component
+//@Component
 public class AppTask implements SchedulingConfigurer {
 
     @Resource

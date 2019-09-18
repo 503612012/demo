@@ -4,7 +4,7 @@ layui.config({
 });
 layui.use(['treetable', 'form'], function() {
     var o = layui.$, treetable = layui.treetable;
-    var form = layui.form, layer = layui.layer;
+    var layer = layui.layer;
     var data = null;
 
     var loadData = function() {
@@ -157,8 +157,8 @@ layui.use(['treetable', 'form'], function() {
             url: "/menu/updateStatus",
             type: "POST",
             data: {
-                menuId: menuId,
-                status: status
+                'menuId': menuId,
+                'status': status
             },
             dataType: "json",
             success: function(result) {

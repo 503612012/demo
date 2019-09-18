@@ -29,10 +29,8 @@ public class Employee implements Serializable {
     private String address; // 住址
     @Column(name = "contact")
     private String contact; // 联系方式
-    @Column(name = "day_salary")
-    private Double daySalary; // 日新
-    @Column(name = "month_salary")
-    private Double monthSalary; // 月薪
+    @Column(name = "hour_salary")
+    private Double hourSalary; // 时薪
     @Column(name = "create_time")
     private String createTime; // 创建时间
     @Column(name = "create_id")

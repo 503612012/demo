@@ -33,7 +33,7 @@ layui.use(['table', 'jquery'], function() {
         , even: true
         , title: '用户数据表'
         , cols: [[
-            {type:'numbers'}
+            {type: 'numbers'}
             , {field: 'userName', title: '用户名', sort: true}
             , {field: 'nickName', title: '昵称'}
             , {field: 'age', title: '年龄', sort: true}
@@ -109,7 +109,7 @@ layui.use(['table', 'jquery'], function() {
      * 绑定用户状态更改点击事件
      */
     $("body").on("click", ".user-status", function() {
-        if(hasPermission("A1_01_04")) {
+        if (hasPermission("A1_01_04")) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {
@@ -150,8 +150,8 @@ layui.use(['table', 'jquery'], function() {
             url: '/user/setUserRole',
             type: 'POST',
             data: {
-                userId: userId,
-                roleIds: roleIds
+                'userId': userId,
+                'roleIds': roleIds
             },
             dataType: 'json',
             success: function(result) {
@@ -171,7 +171,7 @@ layui.use(['table', 'jquery'], function() {
     table.on('tool(user-list)', function(obj) {
         var data = obj.data;
         var userid = data.id;
-        if (obj.event === 'detail') {
+        if (obj.event == 'detail') {
             $.ajax({
                 url: '/user/getRoleByUserId',
                 type: 'POST',
@@ -190,7 +190,7 @@ layui.use(['table', 'jquery'], function() {
                     }
                     var data = result.data;
                     var html = '<div style="padding: 15px;">';
-                    for (var i=0; i<data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
                         html += '<div style="margin-top: 7px;" data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
                     }
                     html += '</div>';
@@ -213,7 +213,7 @@ layui.use(['table', 'jquery'], function() {
                     });
                 }
             });
-        } else if (obj.event === 'del') {
+        } else if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({
                     url: '/user/delete',
@@ -236,17 +236,15 @@ layui.use(['table', 'jquery'], function() {
                     }
                 });
             });
-        } else if (obj.event === 'edit') {
+        } else if (obj.event == 'edit') {
             window.parent.mainFrm.location.href = "/user/update?id=" + data.id;
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(user-list)', function(obj) {
-        switch (obj.event) {
-            case 'user-add-btn':
-                window.parent.mainFrm.location.href = "/user/add";
-                break;
+        if (obj.event == 'user-add-btn') {
+            window.parent.mainFrm.location.href = "/user/add";
         }
     });
 

@@ -2,7 +2,6 @@
 
 layui.use('table', function() {
     var table = layui.table;
-    var form = layui.form;
 
     /**
      * 重新加载表格
@@ -28,7 +27,7 @@ layui.use('table', function() {
         , even: true
         , title: '工地数据表'
         , cols: [[
-            {type:'numbers'}
+            {type: 'numbers'}
             , {field: 'name', title: '工地名称', sort: true}
             , {field: 'desc', title: '工地描述'}
             , {field: 'createTime', title: '创建时间', sort: true}
@@ -74,8 +73,8 @@ layui.use('table', function() {
             url: "/worksite/updateStatus",
             type: "POST",
             data: {
-                worksiteId: worksiteId,
-                status: status
+                'worksiteId': worksiteId,
+                'status': status
             },
             dataType: "json",
             success: function(result) {
@@ -96,7 +95,7 @@ layui.use('table', function() {
      * 绑定工地状态更改点击事件
      */
     $("body").on("click", ".worksite-status", function() {
-        if(hasPermission("B1_03_04")) {
+        if (hasPermission("B1_03_04")) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {
@@ -122,9 +121,9 @@ layui.use('table', function() {
     // 监听工具条
     table.on('tool(worksite-list)', function(obj) {
         var data = obj.data;
-        if (obj.event === 'detail') {
+        if (obj.event == 'detail') {
             window.parent.mainFrm.location.href = "/worksite/worksiteMenu?worksiteId=" + data.id;
-        } else if (obj.event === 'del') {
+        } else if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({
                     url: '/worksite/delete',
@@ -147,17 +146,15 @@ layui.use('table', function() {
                     }
                 });
             });
-        } else if (obj.event === 'edit') {
+        } else if (obj.event == 'edit') {
             window.parent.mainFrm.location.href = "/worksite/update?id=" + data.id;
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(worksite-list)', function(obj) {
-        switch (obj.event) {
-            case 'worksite-add-btn':
-                window.parent.mainFrm.location.href = "/worksite/add";
-                break;
+        if (obj.event == 'worksite-add-btn') {
+            window.parent.mainFrm.location.href = "/worksite/add";
         }
     });
 

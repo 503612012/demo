@@ -2,7 +2,7 @@
 $(function() {
 
     // 跳出iframe
-    if (window !== top) {
+    if (window != top) {
         top.location.href = location.href;
     }
 
@@ -21,10 +21,10 @@ $(function() {
         var password = $("input[name=password]").val();
         var vercode = $("input[name=vercode]").val();
         var rememberMe = false;
-        if ($(".layui-form-checked").length === 1) {
+        if ($(".layui-form-checked").length == 1) {
             rememberMe = true;
         }
-        if (userName == null || userName === '' || password == null || password === '' || vercode == null || vercode === '') {
+        if (userName == null || userName == '' || password == null || password == '' || vercode == null || vercode == '') {
             return;
         }
 
@@ -45,7 +45,7 @@ $(function() {
             },
             dataType: "json",
             success: function(result) {
-                if (result.code !== 200) {
+                if (result.code != 200) {
                     $("input[name=vercode]").val("");
                     layer.open({
                         title: '系统提示',
@@ -61,7 +61,7 @@ $(function() {
 
     document.onkeydown = function(event) {
         var e = event || window.event;
-        if (e && e.keyCode === 13) { //回车键的键值为13
+        if (e && e.keyCode == 13) { //回车键的键值为13
             $("#login-submit").click();
         }
     };

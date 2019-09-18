@@ -80,7 +80,7 @@ layui.use('table', function() {
             }
             var data = result.data;
             var html = '<option value="">请选择操作人</option>';
-            for (var i=0; i<data.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 html += '<option value="' + data[i].id + '">' + data[i].nickName + '</option>';
             }
             $("#logSearchSelect").html(html);

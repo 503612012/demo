@@ -43,7 +43,7 @@ layui.define(["form"], function (exports) {
                         tr += '<i class="layui-icon ' + t.c.icon_class + '">' + (item.id == t.cache(item.id) || t.c.is_open ? t.c.icon_val.close : t.c.icon_val.open) + "</i>"
                     }
                 }
-                tr += (item[obj.field] !== undefined ? item[obj.field] : (obj.template ? obj.template(item) : "")) + "</div></td>"
+                tr += (item[obj.field] != undefined ? item[obj.field] : (obj.template ? obj.template(item) : "")) + "</div></td>"
             });
             tbody += tr + "</tr>";
         });
@@ -160,7 +160,7 @@ layui.define(["form"], function (exports) {
             val = val.toString(),
             cache = t.get_cookie(name) ? t.get_cookie(name).split(",") : [],
             index = o.inArray(val, cache);
-        if (option === undefined) {
+        if (option == undefined) {
             return index == -1 ? false : val
         }
         if (option && index == -1) {

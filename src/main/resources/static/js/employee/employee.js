@@ -2,7 +2,7 @@
 
 layui.use('table', function() {
     var table = layui.table;
-    var form = layui.form;
+    var $ = layui.$;
 
     /**
      * 重新加载表格
@@ -30,7 +30,7 @@ layui.use('table', function() {
         , even: true
         , title: '员工数据表'
         , cols: [[
-            {type:'numbers'}
+            {type: 'numbers'}
             , {field: 'name', title: '员工姓名', sort: true}
             , {field: 'age', title: '年龄', sort: true}
             , {field: 'contact', title: '手机号'}
@@ -40,13 +40,8 @@ layui.use('table', function() {
                 }
             }
             , {
-                field: 'daySalary', title: '日薪', sort: true, templet: function(d) {
-                    return '<span class="daySalary" data-value="' + d.daySalary + '" style="cursor: pointer;">***</span>';
-                }
-            }
-            , {
-                field: 'monthSalary', title: '月薪', sort: true, templet: function(d) {
-                    return '<span class="monthSalary" data-value="' + d.monthSalary + '" style="cursor: pointer;">***</span>';
+                field: 'hourSalary', title: '时薪', sort: true, templet: function(d) {
+                    return '<span class="hourSalary" data-value="' + d.hourSalary + '" style="cursor: pointer;">***</span>';
                 }
             }
             , {field: 'address', title: '住址'}
@@ -67,8 +62,6 @@ layui.use('table', function() {
         ]]
         , page: true
     });
-
-    var $ = layui.$;
 
     /**
      * 查询按钮点击事件绑定
@@ -94,8 +87,8 @@ layui.use('table', function() {
             url: "/employee/updateStatus",
             type: "POST",
             data: {
-                employeeId: employeeId,
-                status: status
+                "employeeId": employeeId,
+                "status": status
             },
             dataType: "json",
             success: function(result) {
@@ -113,25 +106,10 @@ layui.use('table', function() {
     };
 
     /**
-     * 显示/隐藏金额
-     */
-    $("body").on("click", "span.daySalary,span.monthSalary", function() {
-        if(hasPermission("B1_01_05")) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
-    });
-
-    /**
      * 绑定员工状态更改点击事件
      */
     $("body").on("click", ".employee-status", function() {
-        if(hasPermission("B1_01_04")) {
+        if (hasPermission("B1_01_04")) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {
@@ -154,11 +132,25 @@ layui.use('table', function() {
         }
     });
 
+    /**
+     * 显示/隐藏金额
+     */
+    $("body").on("click", "span.hourSalary", function() {
+        if(hasPermission("B1_01_05")) {
+            if ($(this).hasClass("red")) { // 隐藏
+                $(this).removeClass("red");
+                $(this).html("***");
+            } else {
+                $(this).addClass("red");
+                $(this).html($(this).attr("data-value"));
+            }
+        }
+    });
+
     // 监听工具条
     table.on('tool(employee-list)', function(obj) {
         var data = obj.data;
-        var employeeid = data.id;
-        if (obj.event === 'del') {
+        if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({
                     url: '/employee/delete',
@@ -181,17 +173,15 @@ layui.use('table', function() {
                     }
                 });
             });
-        } else if (obj.event === 'edit') {
+        } else if (obj.event == 'edit') {
             window.parent.mainFrm.location.href = "/employee/update?id=" + data.id;
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(employee-list)', function(obj) {
-        switch (obj.event) {
-            case 'employee-add-btn':
-                window.parent.mainFrm.location.href = "/employee/add";
-                break;
+        if (obj.event == 'employee-add-btn') {
+            window.parent.mainFrm.location.href = "/employee/add";
         }
     });
 

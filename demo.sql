@@ -73,7 +73,7 @@ CREATE TABLE `t_employee` (
 
 LOCK TABLES `t_employee` WRITE;
 /*!40000 ALTER TABLE `t_employee` DISABLE KEYS */;
-INSERT INTO `t_employee` (`dbid`, `name`, `age`, `status`, `gender`, `address`, `contact`, `day_salary`, `month_salary`, `create_id`, `create_time`, `last_modify_id`, `last_modify_time`) VALUES (1,'张三',18,0,1,'河北邯郸','12345678901',140,4500,1,'2018-11-01 11:40:09',1,'2018-11-01 13:50:13'),(3,'李四',19,0,0,'北京','12345678901',180,5500,1,'2018-11-01 13:51:49',1,'2018-11-01 14:07:01');
+INSERT INTO `t_employee` (`dbid`, `name`, `age`, `status`, `gender`, `address`, `contact`, hour_salary, `month_salary`, `create_id`, `create_time`, `last_modify_id`, `last_modify_time`) VALUES (1,'张三',18,0,1,'河北邯郸','12345678901',140,4500,1,'2018-11-01 11:40:09',1,'2018-11-01 13:50:13'),(3,'李四',19,0,0,'北京','12345678901',180,5500,1,'2018-11-01 13:51:49',1,'2018-11-01 14:07:01');
 /*!40000 ALTER TABLE `t_employee` ENABLE KEYS */;
 UNLOCK TABLES;
 

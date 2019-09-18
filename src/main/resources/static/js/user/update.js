@@ -1,10 +1,8 @@
 //@sourceURL=/js/user/update.js
 
 layui.use(['form', 'layedit', 'laydate'], function() {
-    var form = layui.form
-        , layer = layui.layer
-        , layedit = layui.layedit
-        , laydate = layui.laydate;
+    var form = layui.form;
+    var layer = layui.layer;
 
     // 监听提交
     form.on('submit(user-update-submit)', function(data) {
@@ -22,7 +20,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                     });
                     return;
                 }
-                window.location.href= "/user/index";
+                window.location.href = "/user/index";
             }
         });
         return false;

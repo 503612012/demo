@@ -1,10 +1,8 @@
 //@sourceURL=/js/worksite/update.js
 
 layui.use(['form', 'layedit', 'laydate'], function() {
-    var form = layui.form
-        , layer = layui.layer
-        , layedit = layui.layedit
-        , laydate = layui.laydate;
+    var form = layui.form;
+    var layer = layui.layer;
 
     // 监听提交
     // $(".worksite-update-btn").on();

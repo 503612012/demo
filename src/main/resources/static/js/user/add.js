@@ -1,10 +1,8 @@
 //@sourceURL=/js/user/add.js
 
 layui.use(['form', 'layedit', 'laydate'], function() {
-    var form = layui.form
-        , layer = layui.layer
-        , layedit = layui.layedit
-        , laydate = layui.laydate;
+    var form = layui.form;
+    var layer = layui.layer;
 
     // 自定义验证规则
     form.verify({
@@ -12,7 +10,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
         confirmPass: function() {
             var pass = $("input[name=password]").val();
             var confirmPass = $("input[name=confirmPassword]").val();
-            if (pass !== confirmPass) {
+            if (pass != confirmPass) {
                 return "两次输入的密码不一致，请重新输入！";
             }
         },
@@ -28,7 +26,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                 async: false,
                 dataType: 'json',
                 success: function(result) {
-                    if (result.code !== 200) {
+                    if (result.code != 200) {
                         layer.open({
                             title: '系统提示',
                             content: result.data,
@@ -53,7 +51,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
             data: data.field,
             dataType: 'json',
             success: function(result) {
-                if (result.code !== 200) {
+                if (result.code != 200) {
                     layer.open({
                         title: '系统提示',
                         content: result.data,
@@ -61,7 +59,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                     });
                     return;
                 }
-                window.parent.mainFrm.location.href= "/user/index";
+                window.parent.mainFrm.location.href = "/user/index";
             }
         });
         return false;
