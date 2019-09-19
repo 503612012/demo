@@ -164,6 +164,7 @@ public class SystemController extends BaseController {
     @RequestMapping("/logout")
     public String logout(HttpServletRequest req) {
         try {
+            req.setAttribute("key", EncryptUtils.KEY);
             req.getSession().removeAttribute(AppConst.CURRENT_USER);
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
         } catch (Exception e) {
