@@ -76,6 +76,11 @@ $(function() {
         });
         // 判断isshow的状态
         if (isShow) { // 缩回去
+            // 操作logo部分
+            $("#logoBox").animate({"width": "55px"});
+            $("#searchBox").animate({"left": "55px"});
+            $("#logoBox span").animate({"display": "none"});
+
             $('.layui-side.layui-bg-black').animate({'width': '55px'}); // 设置宽度
             // $('.kit-side-fold i').animate({'margin-right': '70%'});  // 修改图标的位置
             // 将footer和body的宽度修改
@@ -92,6 +97,11 @@ $(function() {
             $('body').find("a.level-one-menu cite").addClass("hide");
             isShow = false;
         } else { // 展开
+            // 操作logo部分
+            $("#logoBox").animate({"width": "200px"});
+            $("#searchBox").animate({"left": "200px"});
+            $("#logoBox span").animate({"display": "display"});
+
             $('.layui-side.layui-bg-black').animate({'width': '200px'});
             // $('.kit-side-fold i').animate({'margin-right': '10%'});
             $('.layui-body').animate({'left': '200px'});
