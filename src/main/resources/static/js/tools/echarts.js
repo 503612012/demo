@@ -17,12 +17,15 @@ layui.use('table', function() {
             data: ['销量']
         },
         xAxis: {
+            boundaryGap: false,
             data: []
         },
         yAxis: {},
         series: [{
             name: '销量',
             type: 'line',
+            areaStyle: {},
+            smooth: true,
             data: []
         }]
     });

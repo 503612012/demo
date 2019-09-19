@@ -49,6 +49,15 @@ layui.use(['table', 'laydate'], function() {
                 }
             }
             , {field: 'createName', title: '录入人'}
+            , {
+                field: 'hasPay', title: '是否发放', templet: function(d) {
+                    if (d.hasPay == 1) {
+                        return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked" data-status="' + d.status + '"><span>是</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                    } else if (d.hasPay == 0) {
+                        return '<div><div class="layui-unselect layui-form-checkbox" data-status="' + d.status + '"><span>否</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                    }
+                }
+            }
             , {title: '操作', toolbar: '#workhourListBar'}
         ]]
         , page: true

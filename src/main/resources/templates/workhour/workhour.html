@@ -48,7 +48,9 @@
     </div>
 </script>
 <script type="text/html" id="workhourListBar">
-    <a th:if="${session.menu.contains('B1_02_02')}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  if(d.hasPay == 0){ }}
+        <a th:if="${session.menu.contains('B1_02_02')}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  } }}
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/

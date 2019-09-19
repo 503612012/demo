@@ -31,6 +31,8 @@ public class Workhour implements Serializable {
     private Integer createId;
     @Column(name = "create_time")
     private String createTime;
+    @Column(name = "has_pay")
+    private Integer hasPay; // 是否发薪，0否，1是
 
     // 非数据库属性
     @Column(name = "employee_name")

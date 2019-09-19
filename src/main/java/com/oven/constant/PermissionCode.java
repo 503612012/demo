@@ -38,7 +38,7 @@ public class PermissionCode {
 
     public static final String WORKHOUR_MANAGER   = "B1_02";      // 工时管理
     public static final String WORKHOUR_INSERT    = "B1_02_01";   // 工时录入
-    public static final String WORKHOUR_DELETE    = "B1_02_02";   // 工时录入
+    public static final String WORKHOUR_DELETE    = "B1_02_02";   // 删除工时
 
     public static final String WORKSITE_MANAGER   = "B1_03";      // 工地管理
     public static final String WORKSITE_INSERT    = "B1_03_01";   // 添加工地

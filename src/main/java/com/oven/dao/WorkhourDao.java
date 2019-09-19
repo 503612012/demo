@@ -26,7 +26,7 @@ public class WorkhourDao {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 分页查询工地
+     * 分页查询工时
      */
     public List<Workhour> getByPage(Integer pageNum, Integer pageSize, Workhour workhour) {
         StringBuilder sb = new StringBuilder("select wh.*, e.name as employee_name, ws.name as worksite_name, u.nick_name as create_name from t_workhour wh " +
@@ -34,12 +34,12 @@ public class WorkhourDao {
                 "         left join t_worksite ws on ws.dbid = wh.worksite_id " +
                 "            left join t_user u on u.dbid = wh.create_id");
         addCondition(sb, workhour);
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
+        String sql = sb.append(" order by wh.work_date desc").append(" limit ?,?").toString().replaceFirst("and", "where");
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), (pageNum - 1) * pageSize, pageSize);
     }
 
     /**
-     * 统计工地总数量
+     * 统计工时总数量
      */
     public Integer getTotalNum(Workhour workhour) {
         StringBuilder sb = new StringBuilder("select count(*) from t_workhour wh " +
@@ -87,7 +87,7 @@ public class WorkhourDao {
      * 添加
      */
     public int add(Workhour workhour) {
-        String sql = "insert into t_workhour (dbid, employee_id, worksite_id, work_date, work_hour, hour_salary, create_id) values (null, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into t_workhour (dbid, employee_id, worksite_id, work_date, work_hour, hour_salary, create_id, has_pay) values (null, ?, ?, ?, ?, ?, ?, 0)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
