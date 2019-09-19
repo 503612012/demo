@@ -35,6 +35,7 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_BY_ID = "workhour_getById_{0}";
     public static final String WORKHOUR_GET_TOTAL_NUM = "workhour_getTotalNum_{0}";
     public static final String WORKHOUR_GET_BY_PAGE = "workhour_getByPage_{0}_{1}_{2}";
+    public static final String WORKHOUR_GET_TOTAL_WORKHOUR = "workhour_getTotalWorkhour";
     public static final String WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE = "workhour_getByEmployeeIdAndWorkDate_{0}_{1}";
 
     // 角色实体类缓存key定义

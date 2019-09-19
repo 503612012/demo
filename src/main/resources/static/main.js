@@ -11,4 +11,34 @@ $(function() {
         }
     });
 
+    /**
+     * 加载首页数据
+     */
+    function loadData() {
+        $.ajax({
+            url: '/getMainPageData',
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    $("input[name=vercode]").val("");
+                    layer.open({
+                        title: '系统提示',
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    return;
+                }
+                var data = result.data;
+                $("#totalLog").html(data.totalLog);
+                $("#totalEmployee").html(data.totalEmployee);
+                $("#totalWorkhour").html(data.totalWorkhour);
+                $("#totalWorksite").html(data.totalWorksite);
+            }
+        });
+    }
+
+    loadData(); // 加载首页数据
+
 });

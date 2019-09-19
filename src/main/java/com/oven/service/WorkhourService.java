@@ -119,4 +119,21 @@ public class WorkhourService extends BaseService {
         return workhour;
     }
 
+    /**
+     * 获取总工时
+     */
+    public Double getTotalWorkhour() {
+        Double totalWorkhour = super.get(RedisCacheKey.WORKHOUR_GET_TOTAL_WORKHOUR); // 先读取缓存
+        if (totalWorkhour == null) { // double check
+            synchronized (this) {
+                totalWorkhour = super.get(RedisCacheKey.WORKHOUR_GET_TOTAL_WORKHOUR); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (totalWorkhour == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    totalWorkhour = workhourDao.getTotalWorkhour();
+                    super.set(RedisCacheKey.WORKHOUR_GET_TOTAL_WORKHOUR, totalWorkhour);
+                }
+            }
+        }
+        return totalWorkhour;
+    }
+
 }

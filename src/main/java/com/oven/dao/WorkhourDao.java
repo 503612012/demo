@@ -112,4 +112,12 @@ public class WorkhourDao {
         return list.size() == 0 ? null : list.get(0);
     }
 
+    /**
+     * 获取总工时
+     */
+    public Double getTotalWorkhour() {
+        String sql = "select sum(work_hour) from t_workhour";
+        return this.jdbcTemplate.queryForObject(sql, Double.class);
+    }
+
 }

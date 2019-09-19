@@ -1,18 +1,20 @@
 package com.oven.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.service.LogService;
-import com.oven.service.MenuService;
-import com.oven.service.UserService;
+import com.oven.service.*;
 import com.oven.util.EncryptUtils;
 import com.oven.util.IPUtils;
 import com.oven.vcode.Captcha;
 import com.oven.vcode.GifCaptcha;
+import com.oven.vo.Employee;
+import com.oven.vo.Log;
 import com.oven.vo.User;
+import com.oven.vo.Worksite;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -51,6 +53,12 @@ public class SystemController extends BaseController {
     private UserService userService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private EmployeeService employeeService;
+    @Resource
+    private WorksiteService worksiteService;
+    @Resource
+    private WorkhourService workhourService;
 
     /**
      * 获取验证码（Gif版本）
@@ -203,6 +211,28 @@ public class SystemController extends BaseController {
             return super.success(menus);
         } catch (Exception e) {
             throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", e);
+        }
+    }
+
+    /**
+     * 获取首页数据
+     */
+    @RequestMapping("/getMainPageData")
+    @ResponseBody
+    public Object getMainPageData() throws MyException {
+        try {
+            JSONObject obj = new JSONObject();
+            Integer totalLog = logService.getTotalNum(new Log());
+            Integer totalEmployee = employeeService.getTotalNum(new Employee());
+            Integer totalWorksite = worksiteService.getTotalNum(new Worksite());
+            Double totalWorkhour = workhourService.getTotalWorkhour();
+            obj.put("totalLog", totalLog);
+            obj.put("totalEmployee", totalEmployee);
+            obj.put("totalWorksite", totalWorksite);
+            obj.put("totalWorkhour", totalWorkhour);
+            return super.success(obj);
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
         }
     }
 
