@@ -158,4 +158,38 @@ public class EmployeeService extends BaseService {
         return flag;
     }
 
+    /**
+     * 获取所有员工
+     */
+    public Object getAll() {
+        List<Employee> list = super.get(RedisCacheKey.EMPLOYEE_GET_ALL); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.EMPLOYEE_GET_ALL); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = employeeDao.getAll();
+                    super.set(RedisCacheKey.EMPLOYEE_GET_ALL, list);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取一个员工的时薪
+     */
+    public Double getHourSalaryByEmployeeId(String employeeId) {
+        Double hourSalary = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 先读取缓存
+        if (hourSalary == null) { // double check
+            synchronized (this) {
+                hourSalary = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (hourSalary == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    hourSalary = employeeDao.getHourSalaryByEmployeeId(employeeId);
+                    super.set(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId), hourSalary);
+                }
+            }
+        }
+        return hourSalary;
+    }
+
 }

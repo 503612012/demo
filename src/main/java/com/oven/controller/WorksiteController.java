@@ -161,4 +161,18 @@ public class WorksiteController extends BaseController {
         }
     }
 
+    /**
+     * 获取所有工地
+     */
+    @RequestMapping("/getAll")
+    @RequiresPermissions(PermissionCode.WORKSITE_MANAGER)
+    @ResponseBody
+    public Object getAll() throws MyException {
+        try {
+            return super.success(worksiteService.getAll());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+        }
+    }
+
 }

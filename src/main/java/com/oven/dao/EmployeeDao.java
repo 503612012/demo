@@ -112,6 +112,14 @@ public class EmployeeDao {
     }
 
     /**
+     * 获取所有员工
+     */
+    public List<Employee> getAll() {
+        String sql = "select * from t_employee where `status` = 0";
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class));
+    }
+
+    /**
      * 删除
      */
     public int delete(Integer id) {
@@ -132,6 +140,14 @@ public class EmployeeDao {
         if (employee.getGender() != null) {
             sb.append(" and e.contact = ").append(employee.getGender());
         }
+    }
+
+    /**
+     * 获取一个员工的时薪
+     */
+    public Double getHourSalaryByEmployeeId(String employeeId) {
+        String sql = "select hour_salary from t_employee where dbid = ?";
+        return this.jdbcTemplate.queryForObject(sql, Double.class, employeeId);
     }
 
 }

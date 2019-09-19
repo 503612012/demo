@@ -63,6 +63,23 @@ public class WorksiteService extends BaseService {
     }
 
     /**
+     * 获取所有工地
+     */
+    public Object getAll() {
+        List<Worksite> list = super.get(RedisCacheKey.WORKSITE_GET_ALL); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.WORKSITE_GET_ALL); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = worksiteDao.getAll();
+                    super.set(RedisCacheKey.WORKSITE_GET_ALL, list);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
      * 添加
      */
     public void add(Worksite worksite) {

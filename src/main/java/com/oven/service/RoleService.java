@@ -237,9 +237,9 @@ public class RoleService extends BaseService {
         Role role = this.getById(roleId);
         if (StringUtils.isEmpty(menuIds)) { // 删除了该角色所有的权限
             // 移除缓存
-            super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
-            super.batchRemove(RedisCacheKey.USER_MENU_CODES);
             super.batchRemove(RedisCacheKey.MENU_PREFIX);
+            super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
+            super.batchRemove(RedisCacheKey.USER_MENU_CODES_PREFIX);
             // 记录日志
             super.addLog("分配权限", "删除了角色[" + role.getRoleName() + "]所有的权限！", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
             return;
@@ -263,9 +263,9 @@ public class RoleService extends BaseService {
             content = content.substring(0, content.length() - 1);
         }
         // 移除缓存
-        super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
-        super.batchRemove(RedisCacheKey.USER_MENU_CODES);
         super.batchRemove(RedisCacheKey.MENU_PREFIX);
+        super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
+        super.batchRemove(RedisCacheKey.USER_MENU_CODES_PREFIX);
         // 记录日志
         super.addLog("分配权限", "角色[" + role.getRoleName() + "]分配权限[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }

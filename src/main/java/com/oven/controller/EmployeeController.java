@@ -181,4 +181,32 @@ public class EmployeeController extends BaseController {
         }
     }
 
+    /**
+     * 获取所有员工
+     */
+    @RequestMapping("/getAll")
+    @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
+    @ResponseBody
+    public Object getAll() throws MyException {
+        try {
+            return super.success(employeeService.getAll());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+        }
+    }
+
+    /**
+     * 获取一个员工的时薪
+     */
+    @RequestMapping("/getHourSalaryByEmployeeId")
+    @RequiresPermissions(PermissionCode.EMPLOYEE_SHOWMONEY)
+    @ResponseBody
+    public Object getHourSalaryByEmployeeId(String employeeId) throws MyException {
+        try {
+            return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+        }
+    }
+
 }

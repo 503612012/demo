@@ -121,9 +121,7 @@ layui.use('table', function() {
     // 监听工具条
     table.on('tool(worksite-list)', function(obj) {
         var data = obj.data;
-        if (obj.event == 'detail') {
-            window.parent.mainFrm.location.href = "/worksite/worksiteMenu?worksiteId=" + data.id;
-        } else if (obj.event == 'del') {
+        if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', function(index) {
                 $.ajax({
                     url: '/worksite/delete',

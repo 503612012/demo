@@ -7,7 +7,6 @@ package com.oven.constant;
  */
 public class PermissionCode {
 
-    public static final String SYSTEM_SET         = "A1";         // 系统设置
     public static final String USER_MANAGER       = "A1_01";      // 用户管理
     public static final String USER_INSERT        = "A1_01_01";   // 添加用户
     public static final String USER_UPDATE        = "A1_01_02";   // 修改用户
@@ -28,7 +27,6 @@ public class PermissionCode {
 
     public static final String LOG_MANAGER        = "A1_04";      // 日志管理
 
-    public static final String EMPLOYEE_SET       = "B1";         // 员工管理
     public static final String EMPLOYEE_MANAGER   = "B1_01";      // 员工管理
     public static final String EMPLOYEE_INSERT    = "B1_01_01";   // 添加员工
     public static final String EMPLOYEE_UPDATE    = "B1_01_02";   // 修改员工
@@ -38,9 +36,9 @@ public class PermissionCode {
 
     public static final String ECHARTS_MANAGER    = "D1_01";      // Echarts功能
 
-    public static final String WORKTIME_MANAGER   = "B1_02";      // 工时管理
-    public static final String WORKTIME_SEARCH    = "B1_02_01";   // 工时查询
-    public static final String WORKTIME_INSERT    = "B1_02_02";   // 工时录入
+    public static final String WORKHOUR_MANAGER   = "B1_02";      // 工时管理
+    public static final String WORKHOUR_INSERT    = "B1_02_01";   // 工时录入
+    public static final String WORKHOUR_DELETE    = "B1_02_02";   // 工时录入
 
     public static final String WORKSITE_MANAGER   = "B1_03";      // 工地管理
     public static final String WORKSITE_INSERT    = "B1_03_01";   // 添加工地
