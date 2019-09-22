@@ -78,4 +78,12 @@ public class PayRecordDao {
         }
     }
 
+    /**
+     * 获取总发薪金额
+     */
+    public Double getTotalPay() {
+        String sql = "select sum(total_money) from t_pay_record";
+        return this.jdbcTemplate.queryForObject(sql, Double.class);
+    }
+
 }

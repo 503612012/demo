@@ -62,6 +62,7 @@ public class RedisCacheKey {
 
     // 发薪记录实体类缓存key定义
     public static final String PAYRECORD_PREFIX = "payRecord_";
+    public static final String PAYRECORD_GET_TOTAL_PAY = "payRecord_getTotaPay";
     public static final String PAYRECORD_GET_TOTAL_NUM = "payRecord_getTotalNum_{0}";
     public static final String PAYRECORD_GET_BY_PAGE = "payRecord_getByPage_{0}_{1}_{2}";
 

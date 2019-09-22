@@ -59,6 +59,8 @@ public class SystemController extends BaseController {
     private WorksiteService worksiteService;
     @Resource
     private WorkhourService workhourService;
+    @Resource
+    private PayRecordService payRecordService;
 
     /**
      * 获取验证码（Gif版本）
@@ -222,11 +224,11 @@ public class SystemController extends BaseController {
     public Object getMainPageData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
-            Integer totalLog = logService.getTotalNum(new Log());
+            Double totalPay = payRecordService.getTotalPay();
             Integer totalEmployee = employeeService.getTotalNum(new Employee());
             Integer totalWorksite = worksiteService.getTotalNum(new Worksite());
             Double totalWorkhour = workhourService.getTotalWorkhour();
-            obj.put("totalLog", totalLog);
+            obj.put("totalPay", totalPay);
             obj.put("totalEmployee", totalEmployee);
             obj.put("totalWorksite", totalWorksite);
             obj.put("totalWorkhour", totalWorkhour);

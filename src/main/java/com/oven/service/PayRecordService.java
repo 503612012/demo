@@ -68,4 +68,21 @@ public class PayRecordService extends BaseService {
         return totalNum;
     }
 
+    /**
+     * 获取总发薪金额
+     */
+    public Double getTotalPay() {
+        Double totalPay = super.get(RedisCacheKey.PAYRECORD_GET_TOTAL_PAY); // 先读取缓存
+        if (totalPay == null) { // double check
+            synchronized (this) {
+                totalPay = super.get(RedisCacheKey.PAYRECORD_GET_TOTAL_PAY); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (totalPay == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    totalPay = payRecordDao.getTotalPay();
+                    super.set(RedisCacheKey.PAYRECORD_GET_TOTAL_PAY, totalPay);
+                }
+            }
+        }
+        return totalPay;
+    }
+
 }

@@ -5,10 +5,10 @@ layui.use('table', function() {
     var $ = layui.$;
 
     // 基于准备好的dom，初始化echarts实例
-    var myBar = echarts.init(document.getElementById('barId'));
+    var myLine = echarts.init(document.getElementById('lineId'));
 
     // 显示标题，图例和空的坐标轴
-    myBar.setOption({
+    myLine.setOption({
         title: {
             text: '异步数据加载动态刷新示例'
         },
@@ -36,7 +36,7 @@ layui.use('table', function() {
         $.get('/tools/echarts/getData').done(function(data) {
             // myChart.hideLoading();
             // 填入数据
-            myBar.setOption({
+            myLine.setOption({
                 xAxis: {
                     data: data.categories
                 },
@@ -50,10 +50,10 @@ layui.use('table', function() {
     }, 1000);
 
     // 基于准备好的dom，初始化echarts实例
-    var myLing = echarts.init(document.getElementById('lineId'));
+    var myBar = echarts.init(document.getElementById('barId'));
 
     // 显示标题，图例和空的坐标轴
-    myLing.setOption({
+    myBar.setOption({
         title: {
             text: '异步数据加载动态刷新示例'
         },
@@ -78,7 +78,7 @@ layui.use('table', function() {
         $.get('/tools/echarts/getData').done(function(data) {
             // myChart.hideLoading();
             // 填入数据
-            myLing.setOption({
+            myBar.setOption({
                 xAxis: {
                     data: data.categories
                 },
