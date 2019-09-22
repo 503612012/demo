@@ -32,7 +32,7 @@ public class WorkhourDao {
         StringBuilder sb = new StringBuilder("select wh.*, e.name as employee_name, ws.name as worksite_name, u.nick_name as create_name from t_workhour wh " +
                 "         left join t_employee e on wh.employee_id = e.dbid " +
                 "         left join t_worksite ws on ws.dbid = wh.worksite_id " +
-                "            left join t_user u on u.dbid = wh.create_id");
+                "         left join t_user u on u.dbid = wh.create_id");
         addCondition(sb, workhour);
         String sql = sb.append(" order by wh.work_date desc").append(" limit ?,?").toString().replaceFirst("and", "where");
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), (pageNum - 1) * pageSize, pageSize);
@@ -45,7 +45,7 @@ public class WorkhourDao {
         StringBuilder sb = new StringBuilder("select count(*) from t_workhour wh " +
                 "         left join t_employee e on wh.employee_id = e.dbid " +
                 "         left join t_worksite ws on ws.dbid = wh.worksite_id " +
-                "            left join t_user u on u.dbid = wh.create_id");
+                "         left join t_user u on u.dbid = wh.create_id");
         addCondition(sb, workhour);
         String sql = sb.toString().replaceFirst("and", "where");
         return this.jdbcTemplate.queryForObject(sql, Integer.class);

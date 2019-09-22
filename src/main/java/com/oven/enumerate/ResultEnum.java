@@ -14,6 +14,7 @@ public enum ResultEnum {
 
     UNKNOW_ERROR(3001, "未知错误！"),
     OVER_LIMIT_ERROR(3002, "OVER LIMIT!"),
+    SYSTEM_ERROR(3003, "系统错误！"),
 
     SEARCH_PAGE_ERROR(5000, "分页查询错误！"),
     SEARCH_ERROR(5001, "查询错误！"),

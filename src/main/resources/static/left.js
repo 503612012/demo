@@ -79,7 +79,7 @@ $(function() {
             // 操作logo部分
             $("#logoBox").animate({"width": "55px"});
             $("#searchBox").animate({"left": "55px"});
-            $("#logoBox span").animate({"display": "none"});
+            $("#logoWord").addClass("hide");
 
             $('.layui-side.layui-bg-black').animate({'width': '55px'}); // 设置宽度
             // $('.kit-side-fold i').animate({'margin-right': '70%'});  // 修改图标的位置
@@ -100,7 +100,7 @@ $(function() {
             // 操作logo部分
             $("#logoBox").animate({"width": "200px"});
             $("#searchBox").animate({"left": "200px"});
-            $("#logoBox span").animate({"display": "display"});
+            $("#logoWord").removeClass("hide");
 
             $('.layui-side.layui-bg-black').animate({'width': '200px'});
             // $('.kit-side-fold i').animate({'margin-right': '10%'});

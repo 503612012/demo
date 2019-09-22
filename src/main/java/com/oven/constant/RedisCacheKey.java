@@ -36,6 +36,7 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_TOTAL_NUM = "workhour_getTotalNum_{0}";
     public static final String WORKHOUR_GET_BY_PAGE = "workhour_getByPage_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_TOTAL_WORKHOUR = "workhour_getTotalWorkhour";
+    public static final String WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID = "workhour_getWorkhourByEmployeeId_{0}";
     public static final String WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE = "workhour_getByEmployeeIdAndWorkDate_{0}_{1}";
 
     // 角色实体类缓存key定义
@@ -58,6 +59,11 @@ public class RedisCacheKey {
     public static final String MENU_GET_MENU_TREE_DATLE_DATA = "menu_getMenuTreeTableData";
     public static final String MENU_GET_MENU_TREE_BY_USERID = "menu_getMenuTreeByUserId_{0}";
     public static final String MENU_GET_BY_PID_AND_HASPERMISSION = "menu_getByPidAndHasPermission_{0}_{1}";
+
+    // 发薪记录实体类缓存key定义
+    public static final String PAYRECORD_PREFIX = "payRecord_";
+    public static final String PAYRECORD_GET_TOTAL_NUM = "payRecord_getTotalNum_{0}";
+    public static final String PAYRECORD_GET_BY_PAGE = "payRecord_getByPage_{0}_{1}_{2}";
 
     // 用户角色关系实体类缓存key定义
     public static final String USERROLE_PREFIX = "userRole_";

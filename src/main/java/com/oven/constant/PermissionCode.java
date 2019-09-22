@@ -46,9 +46,8 @@ public class PermissionCode {
     public static final String WORKSITE_DELETE    = "B1_03_03";   // 删除工地
     public static final String WORKSITE_SETSTATUS = "B1_03_04";   // 修改工地状态
 
-    public static final String SALARY_SET         = "C1";         // 工资统计
-    public static final String SALARY_COUNT       = "C1_01";      // 工资统计
-    public static final String SALARY_SEND        = "C1_01_01";   // 工资发放
-    public static final String SALARY_LOG         = "C1_02";      // 发薪记录
+    public static final String SALARY_PAY         = "C1_01";      // 薪资发放
+    public static final String SALARY_PAY_RECORD  = "C1_02";      // 发薪记录
+    public static final String SALARY_COUNT       = "C1_03";      // 工资统计
 
 }
