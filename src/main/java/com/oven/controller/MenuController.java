@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -44,7 +43,7 @@ public class MenuController extends BaseController {
         try {
             return super.success(menuService.getMenuTreeTableData());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -59,7 +58,7 @@ public class MenuController extends BaseController {
             menuService.update(menu);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
     }
 
@@ -79,7 +78,7 @@ public class MenuController extends BaseController {
             menuService.update(menu);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改菜单状态出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
     }
 

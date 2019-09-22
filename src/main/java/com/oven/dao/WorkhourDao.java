@@ -108,7 +108,7 @@ public class WorkhourDao {
      */
     public Workhour isInputed(Integer employeeId, String workDate) {
         String sql = "select * from t_workhour where employee_id = ? and work_date = ?";
-        List<Workhour> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), employeeId, workDate);
+        List<Workhour> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper< >(Workhour.class), employeeId, workDate);
         return list.size() == 0 ? null : list.get(0);
     }
 
@@ -118,6 +118,16 @@ public class WorkhourDao {
     public Double getTotalWorkhour() {
         String sql = "select sum(work_hour) from t_workhour";
         return this.jdbcTemplate.queryForObject(sql, Double.class);
+    }
+
+    /**
+     * 获取已发薪资工时占比
+     */
+    public List<String> getWorkhourProportion() {
+        String sql = "select sum(work_hour) from t_workhour where has_pay=1 " +
+                "union  " +
+                "select sum(work_hour) from t_workhour";
+        return this.jdbcTemplate.queryForList(sql, String.class);
     }
 
 }

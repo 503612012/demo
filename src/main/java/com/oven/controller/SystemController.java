@@ -12,7 +12,6 @@ import com.oven.util.IPUtils;
 import com.oven.vcode.Captcha;
 import com.oven.vcode.GifCaptcha;
 import com.oven.vo.Employee;
-import com.oven.vo.Log;
 import com.oven.vo.User;
 import com.oven.vo.Worksite;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +23,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,10 +33,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 系统控制器
@@ -234,7 +231,50 @@ public class SystemController extends BaseController {
             obj.put("totalWorkhour", totalWorkhour);
             return super.success(obj);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+        }
+    }
+
+    /**
+     * 获取薪资排行前五
+     */
+    @RequestMapping("/getSalaryTopFive")
+    @ResponseBody
+    public Object getSalaryTopFive() throws MyException {
+        try {
+            Map<String, List<String>> result = new HashMap<>();
+            List<Map<String, Object>> list = payRecordService.getSalaryTopFive();
+            List<String> employeeNames = new ArrayList<>();
+            List<String> data = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(list)) {
+                for (Map<String, Object> item : list) {
+                    employeeNames.add(String.valueOf(item.get("employeeName")));
+                    data.add(String.valueOf(item.get("totalMoney")));
+                }
+            }
+            result.put("employeeNames", employeeNames);
+            result.put("data", data);
+            return result;
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+        }
+    }
+
+    /**
+     * 获取首页占比信息
+     */
+    @RequestMapping("/getProportionData")
+    @ResponseBody
+    public Object getProportionData() throws MyException {
+        try {
+            JSONObject obj = new JSONObject();
+            Double salaryProportion = payRecordService.getSalaryProportion();
+            Double workhourProportion = workhourService.getWorkhourProportion();
+            obj.put("salaryProportion", salaryProportion);
+            obj.put("workhourProportion", workhourProportion);
+            return super.success(obj);
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 

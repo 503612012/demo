@@ -1,7 +1,6 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -48,7 +47,7 @@ public class LogController extends BaseController {
         try {
             return super.success(logService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -72,7 +71,7 @@ public class LogController extends BaseController {
             result.put("count", totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 

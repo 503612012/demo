@@ -1,7 +1,6 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -56,7 +55,7 @@ public class WorkhourController extends BaseController {
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -80,7 +79,7 @@ public class WorkhourController extends BaseController {
             workhourService.add(workhour);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加工时出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
         }
     }
 
@@ -97,7 +96,7 @@ public class WorkhourController extends BaseController {
             workhourService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除工时出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
         }
     }
 
@@ -116,7 +115,7 @@ public class WorkhourController extends BaseController {
                 return super.success(true);
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "删除工时出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 

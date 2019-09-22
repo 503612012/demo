@@ -5,10 +5,12 @@ import com.oven.dao.PayRecordDao;
 import com.oven.vo.PayRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 薪资发放记录服务层
@@ -83,6 +85,46 @@ public class PayRecordService extends BaseService {
             }
         }
         return totalPay;
+    }
+
+    /**
+     * 获取薪资排行前五
+     */
+    public List<Map<String, Object>> getSalaryTopFive() {
+        List<Map<String, Object>> list = super.get(RedisCacheKey.PAYRECORD_GET_SALARY_TOP_FIVE); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(RedisCacheKey.PAYRECORD_GET_SALARY_TOP_FIVE); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = payRecordDao.getSalaryTopFive();
+                    super.set(RedisCacheKey.PAYRECORD_GET_SALARY_TOP_FIVE, list);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取已发薪资占比
+     */
+    public Double getSalaryProportion() {
+        Double proportion = super.get(RedisCacheKey.PAYRECORD_GET_SALARY_PROPORTION); // 先读取缓存
+        if (proportion == null) { // double check
+            synchronized (this) {
+                proportion = super.get(RedisCacheKey.PAYRECORD_GET_SALARY_PROPORTION); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (proportion == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    List<String> list = payRecordDao.getSalaryProportion();
+                    if (CollectionUtils.isEmpty(list) || list.size() < 2) {
+                        return 100d;
+                    }
+                    Double payedSalary = Double.parseDouble(list.get(0));
+                    Double totalSalary = Double.parseDouble(list.get(1));
+                    proportion = payedSalary / totalSalary * 100;
+                    super.set(RedisCacheKey.PAYRECORD_GET_SALARY_PROPORTION, proportion);
+                }
+            }
+        }
+        return proportion;
     }
 
 }

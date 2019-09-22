@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -84,6 +85,24 @@ public class PayRecordDao {
     public Double getTotalPay() {
         String sql = "select sum(total_money) from t_pay_record";
         return this.jdbcTemplate.queryForObject(sql, Double.class);
+    }
+
+    /**
+     * 获取薪资排行前五
+     */
+    public List<Map<String, Object>> getSalaryTopFive() {
+        String sql = "select e.name as employeeName, a.totalMoney from (select employee_id, sum(total_money) as totalMoney from t_pay_record group by employee_id) a left join t_employee e on e.dbid = a.employee_id order by totalMoney desc";
+        return this.jdbcTemplate.queryForList(sql);
+    }
+
+    /**
+     * 获取已发薪资占比
+     */
+    public List<String> getSalaryProportion() {
+        String sql = "select sum(total_money) from t_pay_record " +
+                "union " +
+                "select sum(work_hour * hour_salary) from t_workhour";
+        return this.jdbcTemplate.queryForList(sql, String.class);
     }
 
 }

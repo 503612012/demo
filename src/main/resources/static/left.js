@@ -64,6 +64,10 @@ $(function() {
         }
     });
 
+    $("body").on("click", "#logoBox", function() {
+        window.location.href = "/";
+    });
+
     $('.kit-side-fold').click(function() {
         // 选择出所有的span，并判断是不是hidden
         $('.layui-nav-item span').each(function() {

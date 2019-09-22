@@ -6,6 +6,7 @@ import com.oven.vo.Workhour;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -134,6 +135,29 @@ public class WorkhourService extends BaseService {
             }
         }
         return totalWorkhour;
+    }
+
+    /**
+     * 获取已发薪资工时占比
+     */
+    public Double getWorkhourProportion() {
+        Double proportion = super.get(RedisCacheKey.WORKHOUR_GET_WORKHOUR_PROPORTION); // 先读取缓存
+        if (proportion == null) { // double check
+            synchronized (this) {
+                proportion = super.get(RedisCacheKey.WORKHOUR_GET_WORKHOUR_PROPORTION); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (proportion == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    List<String> list = workhourDao.getWorkhourProportion();
+                    if (CollectionUtils.isEmpty(list) || list.size() < 2) {
+                        return 100d;
+                    }
+                    Double payedWorkhour = Double.parseDouble(list.get(0));
+                    Double totalWorkhour = Double.parseDouble(list.get(1));
+                    proportion = payedWorkhour / totalWorkhour * 100;
+                    super.set(RedisCacheKey.WORKHOUR_GET_WORKHOUR_PROPORTION, proportion);
+                }
+            }
+        }
+        return proportion;
     }
 
 }

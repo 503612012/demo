@@ -36,6 +36,7 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_TOTAL_NUM = "workhour_getTotalNum_{0}";
     public static final String WORKHOUR_GET_BY_PAGE = "workhour_getByPage_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_TOTAL_WORKHOUR = "workhour_getTotalWorkhour";
+    public static final String WORKHOUR_GET_WORKHOUR_PROPORTION = "workhour_getWorkhourProportion";
     public static final String WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID = "workhour_getWorkhourByEmployeeId_{0}";
     public static final String WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE = "workhour_getByEmployeeIdAndWorkDate_{0}_{1}";
 
@@ -65,6 +66,8 @@ public class RedisCacheKey {
     public static final String PAYRECORD_GET_TOTAL_PAY = "payRecord_getTotaPay";
     public static final String PAYRECORD_GET_TOTAL_NUM = "payRecord_getTotalNum_{0}";
     public static final String PAYRECORD_GET_BY_PAGE = "payRecord_getByPage_{0}_{1}_{2}";
+    public static final String PAYRECORD_GET_SALARY_TOP_FIVE = "payRecord_getSalaryTopFive";
+    public static final String PAYRECORD_GET_SALARY_PROPORTION = "payRecord_getSalaryProportion";
 
     // 用户角色关系实体类缓存key定义
     public static final String USERROLE_PREFIX = "userRole_";

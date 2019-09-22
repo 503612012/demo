@@ -136,7 +136,7 @@
                 </div>
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">数据概览</div>
+                        <div class="layui-card-header">薪资排行</div>
                         <div class="layui-card-body" style="height: 332px;">
                             <div id="lineId" style="width: 100%; height:400px;"></div>
                         </div>
@@ -191,15 +191,15 @@
                 </div>
             </div>
             <div class="layui-card">
-                <div class="layui-card-header">效果报告</div>
+                <div class="layui-card-header">发薪现状</div>
                 <div class="layui-card-body layadmin-takerates">
-                    <div class="layui-progress" lay-showpercent="yes">
-                        <h3>转化率（日同比 28% <span class="layui-edge layui-edge-top" lay-tips="增长" lay-offset="-15"></span>）</h3>
-                        <div class="layui-progress-bar" lay-percent="65%" style="width: 65%;"><span class="layui-progress-text">65%</span></div>
+                    <div class="layui-progress" lay-filter="salaryProportion" lay-showpercent="yes">
+                        <h3>发薪占比</h3>
+                        <div class="layui-progress-bar" id="salaryProportion"></div>
                     </div>
-                    <div class="layui-progress" lay-showpercent="yes">
-                        <h3>签到率（日同比 11% <span class="layui-edge layui-edge-bottom" lay-tips="下降" lay-offset="-15"></span>）</h3>
-                        <div class="layui-progress-bar" lay-percent="32%" style="width: 32%;"><span class="layui-progress-text">32%</span></div>
+                    <div class="layui-progress" lay-filter="workhourProportion" lay-showpercent="yes">
+                        <h3>工时占比</h3>
+                        <div class="layui-progress-bar" id="workhourProportion"></div>
                     </div>
                 </div>
             </div>

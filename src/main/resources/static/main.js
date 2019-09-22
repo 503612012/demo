@@ -1,5 +1,7 @@
 //@sourceURL=/main.js
-$(function() {
+layui.use(['element'], function() {
+    var $ = layui.jquery;
+    var element = layui.element;
 
     $(".layui-carousel-ind ul li").hover(function() {
         var that = $(this);
@@ -11,7 +13,6 @@ $(function() {
         }
     });
 
-
     /**
      * 参数说明：
      * number：要格式化的数字
@@ -21,15 +22,15 @@ $(function() {
      */
     function number_format(number, decimals, dec_point, thousands_sep) {
         number = (number + '').replace(/[^0-9+-Ee.]/g, '');
-        var n = !isFinite(+number) ? 0 : +number,
-            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-            s = '',
-            toFixedFix = function(n, prec) {
-                var k = Math.pow(10, prec);
-                return '' + Math.ceil(n * k) / k;
-            };
+        var n = !isFinite(+number) ? 0 : +number;
+        var prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+        var sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep;
+        var dec = (typeof dec_point === 'undefined') ? '.' : dec_point;
+        var s;
+        var toFixedFix = function(n, prec) {
+            var k = Math.pow(10, prec);
+            return '' + Math.ceil(n * k) / k;
+        };
 
         s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
         var re = /(-?\d+)(\d{3})/;
@@ -55,7 +56,6 @@ $(function() {
             dataType: 'json',
             success: function(result) {
                 if (result.code != 200) {
-                    $("input[name=vercode]").val("");
                     layer.open({
                         title: '系统提示',
                         content: result.data,
@@ -73,7 +73,7 @@ $(function() {
     }
 
     /**
-     * 加载图标
+     * 加载图表
      */
     function loadCharts() {
         // 基于准备好的dom，初始化echarts实例
@@ -82,47 +82,74 @@ $(function() {
         // 显示标题，图例和空的坐标轴
         myLine.setOption({
             title: {
-                text: '异步数据加载动态刷新示例'
+                text: '薪资TOP5'
             },
             tooltip: {},
             legend: {
-                data: ['销量']
+                data: ['总薪资/元']
             },
             xAxis: {
-                boundaryGap: false,
                 data: []
             },
             yAxis: {},
             series: [{
-                name: '销量',
-                type: 'line',
+                name: '总薪资/元',
+                type: 'bar',
                 areaStyle: {},
                 smooth: true,
                 data: []
             }]
         });
 
-        // 异步加载数据
-        // myChart.showLoading();
-        setInterval(function() {
-            $.get('/tools/echarts/getData').done(function(data) {
-                // myChart.hideLoading();
-                // 填入数据
-                myLine.setOption({
-                    xAxis: {
-                        data: data.categories
-                    },
-                    series: [{
-                        // 根据名字对应到相应的系列
-                        name: '销量',
-                        data: data.data
-                    }]
-                });
+        myLine.showLoading();
+        $.get('/getSalaryTopFive').done(function(data) {
+            myLine.hideLoading();
+            // 填入数据
+            myLine.setOption({
+                xAxis: {
+                    data: data.employeeNames
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '总薪资/元',
+                    data: data.data
+                }]
             });
-        }, 1000);
+        });
+    }
+
+    /**
+     * 获取占比信息
+     */
+    function loadProportion() {
+        $.ajax({
+            url: '/getProportionData',
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    return;
+                }
+                var data = result.data;
+                var salaryProportion = data.salaryProportion + "%";
+                var workhourProportion = data.workhourProportion + "%";
+                element.progress("salaryProportion", salaryProportion);
+                element.progress("workhourProportion", workhourProportion);
+                $("#salaryProportion").attr("lay-percent", ((parseFloat(data.salaryProportion).toFixed(2)) + "%"));
+                $("#workhourProportion").attr("lay-percent", ((parseFloat(data.workhourProportion).toFixed(2)) + "%"));
+                element.init();
+            }
+        });
     }
 
     loadData(); // 加载首页数据
-    loadCharts(); // 加载图标
+    loadCharts(); // 加载图表
+    loadProportion(); // 加载占比信息
 
 });

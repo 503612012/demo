@@ -1,7 +1,6 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
@@ -52,7 +51,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -80,7 +79,7 @@ public class EmployeeController extends BaseController {
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -104,7 +103,7 @@ public class EmployeeController extends BaseController {
             employeeService.add(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), "添加员工出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
         }
     }
 
@@ -121,7 +120,7 @@ public class EmployeeController extends BaseController {
             model.addAttribute("employee", employee);
             return "/employee/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -136,7 +135,7 @@ public class EmployeeController extends BaseController {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改员工出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
     }
 
@@ -157,7 +156,7 @@ public class EmployeeController extends BaseController {
                 return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), "删除员工出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
         }
     }
 
@@ -177,7 +176,7 @@ public class EmployeeController extends BaseController {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), "修改员工状态出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
     }
 
@@ -191,7 +190,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getAll());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
@@ -205,7 +204,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), AppConst.SYSTEM_ERROR, e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
 
