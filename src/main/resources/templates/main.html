@@ -10,184 +10,49 @@
 <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
-            <div class="layui-row layui-col-space15">
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header">快捷导航</div>
-                        <div class="layui-card-body" style="height: 200px;">
-                            <div class="layui-carousel layadmin-carousel layadmin-shortcut" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
-                                <div carousel-item="">
-                                    <ul class="layui-row layui-col-space10 layui-this">
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="home/homepage1">
-                                                <i class="layui-icon layui-icon-user"></i>
-                                                <cite>员工管理</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="home/homepage2">
-                                                <i class="layui-icon layui-icon-log"></i>
-                                                <cite>工时管理</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="component/layer/list">
-                                                <i class="layui-icon layui-icon-home"></i>
-                                                <cite>工地管理</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="/senior/im/">
-                                                <i class="layui-icon layui-icon-rmb"></i>
-                                                <cite>薪资发放</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="component/progress/index">
-                                                <i class="layui-icon layui-icon-chart"></i>
-                                                <cite>工资统计</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="app/workorder/list">
-                                                <i class="layui-icon layui-icon-username"></i>
-                                                <cite>用户管理</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="user/user/list">
-                                                <i class="layui-icon layui-icon-auz"></i>
-                                                <cite>角色管理</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="set/system/website">
-                                                <i class="layui-icon layui-icon-list"></i>
-                                                <cite>系统日志</cite>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <ul class="layui-row layui-col-space10">
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="set/user/info">
-                                                <i class="layui-icon layui-icon-set"></i>
-                                                <cite>我的资料</cite>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs3">
-                                            <a lay-href="set/user/info">
-                                                <i class="layui-icon layui-icon-set"></i>
-                                                <cite>我的资料</cite>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                </div>
-                                <div class="layui-carousel-ind">
-                                    <ul>
-                                        <li class="layui-this"></li>
-                                        <li class=""></li>
-                                    </ul>
-                                </div>
-                                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
-                                <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header">数据概览</div>
-                        <div class="layui-card-body" style="height: 200px;">
-                            <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
-                                <div carousel-item="">
-                                    <ul class="layui-row layui-col-space10 layui-this">
-                                        <li class="layui-col-xs6">
-                                            <a lay-href="app/content/comment" class="layadmin-backlog-body">
-                                                <h3>员工数量</h3>
-                                                <p><cite id="totalEmployee">0</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs6">
-                                            <a lay-href="app/forum/list" class="layadmin-backlog-body">
-                                                <h3>工地数量</h3>
-                                                <p><cite id="totalWorksite">0</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs6">
-                                            <a lay-href="template/goodslist" class="layadmin-backlog-body">
-                                                <h3>累积工时</h3>
-                                                <p><cite id="totalWorkhour">0</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs6">
-                                            <a href="javascript:" class="layadmin-backlog-body">
-                                                <h3>累积发薪</h3>
-                                                <p><cite id="totalPay">0</cite></p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
-                                <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-md12">
-                    <div class="layui-card">
-                        <div class="layui-card-header">薪资排行</div>
-                        <div class="layui-card-body" style="height: 332px;">
-                            <div id="lineId" style="width: 100%; height:400px;"></div>
-                        </div>
-                    </div>
+            <div class="layui-card">
+                <div class="layui-card-header">薪资排行</div>
+                <div class="layui-card-body" style="height: 100%; padding-bottom: 15px;">
+                    <div id="lineId" style="width: 100%; height:400px;"></div>
                 </div>
             </div>
         </div>
         <div class="layui-col-md4">
             <div class="layui-card">
-                <div class="layui-card-header">版本信息</div>
-                <div class="layui-card-body layui-text" style="height:200px;">
-                    <table class="layui-table">
-                        <colgroup>
-                            <col width="100">
-                            <col>
-                        </colgroup>
-                        <tbody>
-                        <tr>
-                            <td>当前版本</td>
-                            <td>
-                                <script type="text/html" template="">
-                                    v{{ layui.admin.v }}
-                                    <a href="http://fly.layui.com/docs/3/" target="_blank" style="padding-left: 15px;">更新日志</a>
-                                </script>
-                                v1.2.1 pro <a href="http://fly.layui.com/docs/3/" target="_blank" style="padding-left: 15px;">更新日志</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>基于框架</td>
-                            <td>
-                                <script type="text/html" template="">
-                                    layui-v{{ layui.v }}
-                                </script>
-                                layui-v2.4.5
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>主要特色</td>
-                            <td>单页面 / 响应式 / 清爽 / 极简</td>
-                        </tr>
-                        <tr>
-                            <td>获取渠道</td>
-                            <td style="padding-bottom: 0;">
-                                <div class="layui-btn-container">
-                                    <a href="#" target="_blank" class="layui-btn layui-btn-danger">获取授权</a>
-                                    <a href="#" target="_blank" class="layui-btn">立即下载</a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="layui-card-header">数据概览</div>
+                <div class="layui-card-body" style="height: 200px;">
+                    <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                        <div carousel-item="">
+                            <ul class="layui-row layui-col-space10 layui-this">
+                                <li class="layui-col-xs6">
+                                    <a lay-href="app/content/comment" class="layadmin-backlog-body">
+                                        <h3>员工数量</h3>
+                                        <p><cite id="totalEmployee">0</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-xs6">
+                                    <a lay-href="app/forum/list" class="layadmin-backlog-body">
+                                        <h3>工地数量</h3>
+                                        <p><cite id="totalWorksite">0</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-xs6">
+                                    <a lay-href="template/goodslist" class="layadmin-backlog-body">
+                                        <h3>累积工时</h3>
+                                        <p><cite id="totalWorkhour">0</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-xs6">
+                                    <a href="javascript:" class="layadmin-backlog-body">
+                                        <h3>累积发薪</h3>
+                                        <p><cite id="totalPay">0</cite></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                        <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+                    </div>
                 </div>
             </div>
             <div class="layui-card">
@@ -200,19 +65,6 @@
                     <div class="layui-progress" lay-filter="workhourProportion" lay-showpercent="yes">
                         <h3>工时占比</h3>
                         <div class="layui-progress-bar" id="workhourProportion"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-card">
-                <div class="layui-card-header">实时监控</div>
-                <div class="layui-card-body layadmin-takerates">
-                    <div class="layui-progress" lay-showpercent="yes">
-                        <h3>CPU使用率</h3>
-                        <div class="layui-progress-bar" lay-percent="58%" style="width: 58%;"><span class="layui-progress-text">58%</span></div>
-                    </div>
-                    <div class="layui-progress" lay-showpercent="yes">
-                        <h3>内存占用率</h3>
-                        <div class="layui-progress-bar layui-bg-red" lay-percent="90%" style="width: 90%;"><span class="layui-progress-text">90%</span></div>
                     </div>
                 </div>
             </div>
