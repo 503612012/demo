@@ -20,14 +20,14 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">工地名称</label>
         <div class="layui-input-inline" style="width: 400px;">
-            <select name="worksiteId" lay-verify="required" id="worksiteSelect"></select>
+            <select name="worksiteId" lay-verify="required" lay-filter="worksiteSelect" id="worksiteSelect"></select>
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">工时日期</label>
         <div class="layui-input-inline" style="width: 400px;">
-            <input type="text" name="workDate" lay-verify="required|isInputedWorkDate" class="layui-input" autocomplete="off" id="workDate">
+            <input type="text" name="workDate" lay-verify="required" class="layui-input" autocomplete="off" id="workDate">
         </div>
     </div>
 
@@ -39,9 +39,16 @@
     </div>
 
     <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-inline" style="width: 400px;">
+            <textarea placeholder="请输入备注内容" name="remark" id="remark" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline" style="width: 400px; display: flex; align-items: center;">
-            <span>该员工当日时薪为</span><input type="number" lay-verify="required" name="hourSalary" style="width: 20%;" class="layui-input" autocomplete="off" disabled id="hourSalary"><span>元</span>
+            <span>该员工当日时薪为</span><input type="number" lay-verify="required" name="hourSalary" style="width: 20%;" class="layui-input" autocomplete="off" id="hourSalary"><span>元</span>
         </div>
     </div>
 

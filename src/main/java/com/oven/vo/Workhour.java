@@ -33,6 +33,8 @@ public class Workhour implements Serializable {
     private String createTime;
     @Column(name = "has_pay")
     private Integer hasPay; // 是否发薪，0否，1是
+    @Column(name = "remark")
+    private String remark; // 备注
 
     // 非数据库属性
     @Column(name = "employee_name")

@@ -65,7 +65,7 @@ public class PayController extends BaseController {
     @RequestMapping("/doPay")
     @RequiresPermissions(PermissionCode.SALARY_PAY)
     @ResponseBody
-    public Object doPay(String workhourIds, Integer employeeId, Integer totalHour, Double totalMoney) throws MyException {
+    public Object doPay(String workhourIds, Integer employeeId, Integer totalHour, Double totalMoney, String remark) throws MyException {
         try {
             payService.doPay(workhourIds);
             // 保存发薪记录
@@ -76,6 +76,7 @@ public class PayController extends BaseController {
             payRecord.setTotalHour(totalHour);
             payRecord.setTotalMoney(totalMoney);
             payRecord.setWorkhourIds(workhourIds);
+            payRecord.setRemark(remark);
             payRecordService.add(payRecord);
             return super.success("发薪成功！");
         } catch (Exception e) {

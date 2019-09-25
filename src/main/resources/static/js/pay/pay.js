@@ -85,32 +85,56 @@ layui.use(['table', 'form', 'layedit'], function() {
                 totalMoney += (workhour * hourSalary);
             }
         }
-        var notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】发放薪资共计【<span style='color: red;'>" + totalWorkhour + "</span>】工时，合计【<span style='color: red;'>" + totalMoney + "</span>】元，核对无误后点击确认！";
-        layer.confirm(notice, function(index) {
-            $.ajax({
-                url: '/pay/doPay',
-                type: 'POST',
-                data: {
-                    "workhourIds": workhourIds.join(','),
-                    "employeeId": list[0].employeeId,
-                    "totalMoney": totalMoney,
-                    "totalHour": totalWorkhour
-                },
-                dataType: 'json',
-                success: function(result) {
-                    if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
-                        return;
+        var notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】发放薪资共计【<span style='color: red;'>" + totalWorkhour + "</span>】工时，合计【<span style='color: red;'>" + totalMoney + "</span>】元，核对无误后点击确定！";
+        $("#payNoticeText").html(notice);
+        layer.open({
+            title: '系统提示！',
+            type: 1,
+            content: $('#payRemarkBox'),
+            btn: ['确定', '取消'],
+            area: ['500px', '300px'],
+            resize: false,
+            yes: function(index) {
+                var remark = $('#payRemark').val();
+                $.ajax({
+                    url: '/pay/doPay',
+                    type: 'POST',
+                    data: {
+                        "workhourIds": workhourIds.join(','),
+                        "employeeId": list[0].employeeId,
+                        "totalMoney": totalMoney,
+                        "totalHour": totalWorkhour,
+                        "remark": remark
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.code != 200) {
+                            layer.open({
+                                title: '系统提示',
+                                content: result.data,
+                                btnAlign: 'c'
+                            });
+                            return;
+                        }
+                        layer.close(index);
+                        $('.pay-btn').addClass('hide');
+                        $("#payNoticeText").html('');
+                        $("#payRemarkBox").addClass("hide");
+                        $("#payRemarkBox").css("display", "none");
+                        reload();
                     }
-                    layer.close(index);
-                    $('.pay-btn').addClass('hide');
-                    reload();
-                }
-            });
+                });
+            },
+            btn2: function() {
+                $("#payNoticeText").html('');
+                $("#payRemarkBox").addClass("hide");
+                $("#payRemarkBox").css("display", "none");
+            },
+            cancel: function() {
+                $("#payNoticeText").html('');
+                $("#payRemarkBox").addClass("hide");
+                $("#payRemarkBox").css("display", "none");
+            }
         });
     });
 

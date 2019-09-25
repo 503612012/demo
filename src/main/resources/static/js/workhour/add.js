@@ -1,52 +1,31 @@
 //@sourceURL=/js/workhour/add.js
 
+var worksiteName = '';
 layui.use(['form', 'layedit', 'laydate'], function() {
     var form = layui.form;
     var layer = layui.layer;
     var laydate = layui.laydate;
 
+    form.on('select(worksiteSelect)', function(data) {
+        worksiteName = data.elem[data.elem.selectedIndex].text;
+    });
+
     // 自定义验证规则
     form.verify({
         isInputedEmployee: function() {
-            // 判断该员工该日期是否有录入过
+            // 判断该员工该日期该工地是否有录入过
             var isInputed = false;
             var employeeId = $("#employeeSelect").val();
             var workDate = $("#workDate").val();
+            var worksiteId = $("#worksiteSelect").val();
             if (employeeId == null || employeeId == '' || employeeId == undefined) {
                 return '请选择员工！';
             }
-            $.ajax({
-                url: '/workhour/isInputed',
-                type: 'POST',
-                async: false,
-                data: {
-                    "employeeId": employeeId,
-                    "workDate": workDate
-                },
-                dataType: 'json',
-                success: function(result) {
-                    if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
-                        return;
-                    }
-                    isInputed = result.data;
-                }
-            });
-            if (isInputed) {
-                return '该员工[' + workDate + ']的工时已经录入过，请删除后重新录入！';
-            }
-        },
-        isInputedWorkDate: function() {
-            // 判断该员工该日期是否有录入过
-            var isInputed = false;
-            var employeeId = $("#employeeSelect").val();
-            var workDate = $("#workDate").val();
             if (workDate == null || workDate == '' || workDate == undefined) {
-                return '请选择工时日期！';
+                return;
+            }
+            if (worksiteId == null || worksiteId == '' || worksiteId == undefined) {
+                return;
             }
             $.ajax({
                 url: '/workhour/isInputed',
@@ -54,7 +33,8 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                 async: false,
                 data: {
                     "employeeId": employeeId,
-                    "workDate": workDate
+                    "workDate": workDate,
+                    "worksiteId": worksiteId
                 },
                 dataType: 'json',
                 success: function(result) {
@@ -70,37 +50,16 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                 }
             });
             if (isInputed) {
-                return '该员工[' + workDate + ']的工时已经录入过，请删除后重新录入！';
+                return '该员工在[' + worksiteName + ']工地[' + workDate + ']的工时已经录入过，请删除后重新录入！';
             }
         }
-    });
-
-    // 监听提交
-    form.on('submit(workhour-add-submit)', function(data) {
-        $.ajax({
-            url: '/worksite/doAdd',
-            type: 'POST',
-            data: data.field,
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                window.parent.mainFrm.location.href = "/workhour/index";
-            }
-        });
-        return false;
     });
 
     form.on('select(employeeSelect)', function(data) {
         var employeeId = data.value;
         if (employeeId == '') {
             $("#hourSalary").val('');
+            return;
         }
         $.ajax({
             url: '/employee/getHourSalaryByEmployeeId',

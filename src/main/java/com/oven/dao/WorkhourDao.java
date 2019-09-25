@@ -87,7 +87,7 @@ public class WorkhourDao {
      * 添加
      */
     public int add(Workhour workhour) {
-        String sql = "insert into t_workhour (dbid, employee_id, worksite_id, work_date, work_hour, hour_salary, create_id, has_pay) values (null, ?, ?, ?, ?, ?, ?, 0)";
+        String sql = "insert into t_workhour (dbid, employee_id, worksite_id, work_date, work_hour, hour_salary, create_id, has_pay, remark) values (null, ?, ?, ?, ?, ?, ?, 0, ?)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
@@ -97,6 +97,7 @@ public class WorkhourDao {
             ps.setInt(4, workhour.getWorkhour());
             ps.setDouble(5, workhour.getHourSalary());
             ps.setInt(6, workhour.getCreateId());
+            ps.setString(7, workhour.getRemark());
             return ps;
         };
         this.jdbcTemplate.update(creator, key);
@@ -106,9 +107,9 @@ public class WorkhourDao {
     /**
      * 判断该员工该日期是否有录入过
      */
-    public Workhour isInputed(Integer employeeId, String workDate) {
-        String sql = "select * from t_workhour where employee_id = ? and work_date = ?";
-        List<Workhour> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper< >(Workhour.class), employeeId, workDate);
+    public Workhour isInputed(Integer employeeId, String workDate, Integer worksiteId) {
+        String sql = "select * from t_workhour where employee_id = ? and work_date = ? and worksite_id = ?";
+        List<Workhour> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), employeeId, workDate, worksiteId);
         return list.size() == 0 ? null : list.get(0);
     }
 

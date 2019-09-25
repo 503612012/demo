@@ -41,10 +41,10 @@ layui.use(['table', 'laydate'], function() {
             {type: 'numbers'}
             , {field: 'employeeName', title: '员工名称', sort: true}
             , {field: 'worksiteName', title: '工地名称'}
-            , {field: 'workDate', title: '工时日期', sort: true}
+            , {field: 'workDate', title: '工时日期'}
             , {field: 'workhour', title: '录入工时'}
             , {
-                field: 'hourSalary', title: '当日时薪', sort: true, templet: function(d) {
+                field: 'hourSalary', title: '当日时薪', templet: function(d) {
                     return '<span class="hourSalary" data-value="' + d.hourSalary + '" style="cursor: pointer;">***</span>';
                 }
             }
@@ -101,7 +101,7 @@ layui.use(['table', 'laydate'], function() {
     table.on('tool(workhour-list)', function(obj) {
         var data = obj.data;
         if (obj.event == 'del') {
-            layer.confirm('真的删除此条记录么？', function(index) {
+            layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
                 $.ajax({
                     url: '/workhour/delete',
                     type: 'POST',

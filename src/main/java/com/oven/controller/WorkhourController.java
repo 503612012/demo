@@ -106,9 +106,9 @@ public class WorkhourController extends BaseController {
     @RequestMapping("/isInputed")
     @RequiresPermissions(PermissionCode.WORKHOUR_INSERT)
     @ResponseBody
-    public Object isInputed(Integer employeeId, String workDate) throws MyException {
+    public Object isInputed(Integer employeeId, String workDate, Integer worksiteId) throws MyException {
         try {
-            Workhour workhour = workhourService.isInputed(employeeId, workDate);
+            Workhour workhour = workhourService.isInputed(employeeId, workDate, worksiteId);
             if (workhour == null) {
                 return super.success(false);
             } else {

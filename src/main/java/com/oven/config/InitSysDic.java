@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author Oven
  */
 @Slf4j
-@Component
+//@Component
 public class InitSysDic implements CommandLineRunner {
 
     @Resource

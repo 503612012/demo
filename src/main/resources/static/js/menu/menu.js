@@ -189,13 +189,13 @@ layui.use(['treetable', 'form'], function() {
                 status = 0;
             }
             if (status == 1) { // 锁定
-                layer.confirm('确认锁定该菜单吗？', function(index) {
+                layer.confirm('确认锁定该菜单吗？', {anim: 6}, function(index) {
                     updateUserStatus(id, 1);
                     layer.close(index);
                 });
             }
             if (status == 0) { // 取消锁定
-                layer.confirm('确认取消锁定该菜单吗？', function(index) {
+                layer.confirm('确认取消锁定该菜单吗？', {anim: 6}, function(index) {
                     updateUserStatus(id, 0);
                     layer.close(index);
                 });

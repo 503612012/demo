@@ -26,6 +26,8 @@ public class PayRecord {
     private Integer totalHour; // 总工时
     @Column(name = "workhour_ids")
     private String workhourIds; // 工时ID列表
+    @Column(name = "remark")
+    private String remark;
 
     // 非数据库属性
     @Column(name = "employee_name")

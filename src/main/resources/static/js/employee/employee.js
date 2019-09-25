@@ -35,19 +35,19 @@ layui.use('table', function() {
             , {field: 'age', title: '年龄', sort: true}
             , {field: 'contact', title: '手机号'}
             , {
-                field: 'gender', title: '性别', sort: true, templet: function(d) {
+                field: 'gender', title: '性别', templet: function(d) {
                     return d.gender == 1 ? '男' : '<span style="color: #F581B1;">女</span>';
                 }
             }
             , {
-                field: 'hourSalary', title: '时薪', sort: true, templet: function(d) {
+                field: 'hourSalary', title: '时薪', templet: function(d) {
                     return '<span class="hourSalary" data-value="' + d.hourSalary + '" style="cursor: pointer;">***</span>';
                 }
             }
             , {field: 'address', title: '住址'}
-            , {field: 'createTime', title: '创建时间', sort: true}
+            , {field: 'createTime', title: '创建时间'}
             , {field: 'createName', title: '创建人'}
-            , {field: 'lastModifyTime', title: '最后修改时间', sort: true}
+            , {field: 'lastModifyTime', title: '最后修改时间'}
             , {field: 'lastModifyName', title: '最后修改人'}
             , {
                 field: 'status', title: '状态', templet: function(d) {
@@ -118,13 +118,13 @@ layui.use('table', function() {
                 status = 0;
             }
             if (status == 1) { // 锁定
-                layer.confirm('确认锁定该员工吗？', function(index) {
+                layer.confirm('确认锁定该员工吗？', {anim: 6}, function(index) {
                     updateUserStatus(id, 1);
                     layer.close(index);
                 });
             }
             if (status == 0) { // 取消锁定
-                layer.confirm('确认取消锁定该员工吗？', function(index) {
+                layer.confirm('确认取消锁定该员工吗？', {anim: 6}, function(index) {
                     updateUserStatus(id, 0);
                     layer.close(index);
                 });
@@ -136,7 +136,7 @@ layui.use('table', function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.hourSalary", function() {
-        if(hasPermission("B1_01_05")) {
+        if (hasPermission("B1_01_05")) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -151,7 +151,7 @@ layui.use('table', function() {
     table.on('tool(employee-list)', function(obj) {
         var data = obj.data;
         if (obj.event == 'del') {
-            layer.confirm('真的删除此条记录么？', function(index) {
+            layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
                 $.ajax({
                     url: '/employee/delete',
                     type: 'POST',

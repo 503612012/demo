@@ -38,7 +38,7 @@ layui.use('table', function() {
             , {field: 'content', title: '内容'}
             , {field: 'operatorName', title: '操作人', sort: true}
             , {field: 'operatorTime', title: '操作时间', sort: true}
-            , {field: 'operatorIp', title: '操作IP', sort: true}
+            , {field: 'operatorIp', title: '操作IP'}
         ]]
         , page: true
     });

@@ -30,7 +30,7 @@ public class PayRecordDao {
      * 添加
      */
     public int add(PayRecord payRecord) {
-        String sql = "insert into t_pay_record (dbid, payer_id, employee_id, pay_date, total_money, total_hour, workhour_ids) values (null, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into t_pay_record (dbid, payer_id, employee_id, pay_date, total_money, total_hour, workhour_ids, remark) values (null, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
@@ -40,6 +40,7 @@ public class PayRecordDao {
             ps.setDouble(4, payRecord.getTotalMoney());
             ps.setInt(5, payRecord.getTotalHour());
             ps.setString(6, payRecord.getWorkhourIds());
+            ps.setString(7, payRecord.getRemark());
             return ps;
         };
         this.jdbcTemplate.update(creator, key);

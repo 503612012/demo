@@ -106,14 +106,14 @@ public class WorkhourService extends BaseService {
     /**
      * 判断该员工该日期是否有录入过
      */
-    public Workhour isInputed(Integer employeeId, String workDate) {
-        Workhour workhour = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE, employeeId, workDate)); // 先读取缓存
+    public Workhour isInputed(Integer employeeId, String workDate, Integer worksiteId) {
+        Workhour workhour = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE_AND_WORKSITEID, employeeId, workDate, worksiteId)); // 先读取缓存
         if (workhour == null) { // double check
             synchronized (this) {
-                workhour = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE, employeeId, workDate)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                workhour = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE_AND_WORKSITEID, employeeId, workDate, worksiteId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (workhour == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    workhour = workhourDao.isInputed(employeeId, workDate);
-                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE, employeeId, workDate), workhour);
+                    workhour = workhourDao.isInputed(employeeId, workDate, worksiteId);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE_AND_WORKSITEID, employeeId, workDate, worksiteId), workhour);
                 }
             }
         }

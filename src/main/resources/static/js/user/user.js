@@ -36,17 +36,17 @@ layui.use(['table', 'jquery'], function() {
             {type: 'numbers'}
             , {field: 'userName', title: '用户名', sort: true}
             , {field: 'nickName', title: '昵称'}
-            , {field: 'age', title: '年龄', sort: true}
+            , {field: 'age', title: '年龄'}
             , {field: 'email', title: '邮箱'}
             , {field: 'phone', title: '手机号'}
             , {
-                field: 'gender', title: '性别', sort: true, templet: function(d) {
+                field: 'gender', title: '性别', templet: function(d) {
                     return d.gender == 1 ? '男' : '<span style="color: #F581B1;">女</span>';
                 }
             }
-            , {field: 'createTime', title: '创建时间', sort: true}
+            , {field: 'createTime', title: '创建时间'}
             , {field: 'createName', title: '创建人'}
-            , {field: 'lastModifyTime', title: '最后修改时间', sort: true}
+            , {field: 'lastModifyTime', title: '最后修改时间'}
             , {field: 'lastModifyName', title: '最后修改人'}
             , {
                 field: 'status', title: '状态', templet: function(d) {
@@ -118,13 +118,13 @@ layui.use(['table', 'jquery'], function() {
                 status = 0;
             }
             if (status == 1) { // 锁定
-                layer.confirm('确认锁定该用户吗？', function(index) {
+                layer.confirm('确认锁定该用户吗？', {anim: 6}, function(index) {
                     updateUserStatus(id, 1);
                     layer.close(index);
                 });
             }
             if (status == 0) { // 取消锁定
-                layer.confirm('确认取消锁定该用户吗？', function(index) {
+                layer.confirm('确认取消锁定该用户吗？', {anim: 6}, function(index) {
                     updateUserStatus(id, 0);
                     layer.close(index);
                 });
@@ -214,7 +214,7 @@ layui.use(['table', 'jquery'], function() {
                 }
             });
         } else if (obj.event == 'del') {
-            layer.confirm('真的删除此条记录么？', function(index) {
+            layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
                 $.ajax({
                     url: '/user/delete',
                     type: 'POST',

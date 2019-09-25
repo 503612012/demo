@@ -31,6 +31,19 @@
     </div>
 </div>
 
+<div id="payRemarkBox" class="hide" style="margin: 25px;">
+    <div style="margin: 20px;">
+        <i class="layui-icon layui-icon-tips" style="font-size: 30px; color: red;"></i>
+        <span id="payNoticeText"></span>
+    </div>
+    <div>
+        <label>备注：</label>
+        <div style="width: 400px; float: right;">
+            <textarea placeholder="请输入备注内容" name="payRemark" id="payRemark" class="layui-textarea"></textarea>
+        </div>
+    </div>
+</div>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
