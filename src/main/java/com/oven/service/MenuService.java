@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 菜单服务层
@@ -125,6 +122,7 @@ public class MenuService extends BaseService {
                 menus.add(menu);
             }
         }
+        Collections.sort(menus);
         for (Menu menu : menus) {
             if (menu.getPid() == 0 && menu.getStatus() == 0) { // 是一级菜单，直接放入map，并添加其子菜单
                 Map<String, Object> item = new HashMap<>();

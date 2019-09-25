@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Oven
  */
 @Data
-public class Menu implements Serializable {
+public class Menu implements Serializable, Comparable<Menu> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,5 +45,10 @@ public class Menu implements Serializable {
     // 非数据库属性
     @Column(name = "title")
     private String title;
+
+    @Override
+    public int compareTo(Menu menu) {
+        return this.getSort() - menu.getSort();
+    }
 
 }

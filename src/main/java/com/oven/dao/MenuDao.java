@@ -79,7 +79,7 @@ public class MenuDao {
      * 分页菜单树形表格内容
      */
     public List<Menu> getMenuTreeTableData() {
-        String sql = "select dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_time, last_modify_id, status, menu_name as title from t_menu";
+        String sql = "select dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_time, last_modify_id, status, menu_name as title from t_menu order by sort";
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class));
     }
 
