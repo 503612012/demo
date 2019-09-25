@@ -159,6 +159,7 @@ public class MenuService extends BaseService {
                         }
                     }
                     list = menuDao.getByPidAndHasPermission(pid, menuIds);
+                    Collections.sort(list);
                     super.set(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid), list);
                 }
             }

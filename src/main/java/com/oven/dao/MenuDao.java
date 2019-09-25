@@ -49,7 +49,7 @@ public class MenuDao {
      */
     public List<Menu> getByPidAndHasPermission(Integer pid, List<Integer> menuIds) {
         String in = StringUtils.collectionToDelimitedString(menuIds, ",");
-        String sql = "select * from t_menu where pid = ? and `status` = 0 and dbid in (" + in + ")";
+        String sql = "select * from t_menu where pid = ? and `status` = 0 and dbid in (" + in + ") order by sort";
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class), pid);
     }
 
