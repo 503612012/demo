@@ -86,6 +86,7 @@ layui.use(['table', 'form', 'layedit'], function() {
      * 薪资发放按钮点击事件绑定
      */
     $('.payTable .pay-btn').on('click', function() {
+        $('#payRemark').val('');
         var list = table.cache.payReload;
         var workhourIds = [];
         var totalWorkhour = 0;

@@ -36,6 +36,7 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_TOTAL_NUM = "workhour_getTotalNum_{0}";
     public static final String WORKHOUR_GET_BY_PAGE = "workhour_getByPage_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_TOTAL_WORKHOUR = "workhour_getTotalWorkhour";
+    public static final String WORKHOUR_GET_UN_PAY_BY_EMPLOYEEID = "getUnPayByEmployeeId_{0}";
     public static final String WORKHOUR_GET_WORKHOUR_PROPORTION = "workhour_getWorkhourProportion";
     public static final String WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID_AND_WORKSITEID = "workhour_getWorkhourByEmployeeIdAndWorksiteId_{0}_{1}";
     public static final String WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE_AND_WORKSITEID = "workhour_getByEmployeeIdAndWorkDateAndWorksiteId_{0}_{1}_{2}";

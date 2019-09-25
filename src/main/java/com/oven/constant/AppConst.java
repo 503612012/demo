@@ -33,4 +33,34 @@ public class AppConst {
 
     public static final String DELETE_LIMIT = "删除操作太快，请稍后重试！";
 
+    public static final String EMPLOYEE_INSERT_LIMIT_KEY = "employee.insert.limit.key";
+    public static final String EMPLOYEE_UPDATE_LIMIT_KEY = "employee.update.limit.key";
+    public static final String EMPLOYEE_DELETE_LIMIT_KEY = "employee.delete.limit.key";
+    public static final String EMPLOYEE_UPDATE_STATUS_LIMIT_KEY = "employee.update.status.limit.key";
+
+    public static final String MENU_UPDATE_LIMIT_KEY = "menu.update.limit.key";
+    public static final String MENU_UPDATE_STATUS_LIMIT_KEY = "menu.update.status.limit.key";
+
+    public static final String PAY_DOPAY_LIMIT_KEY = "pay.doPay.limit.key";
+
+    public static final String USER_INSERT_LIMIT_KEY = "user.insert.limit.key";
+    public static final String USER_UPDATE_LIMIT_KEY = "user.update.limit.key";
+    public static final String USER_DELETE_LIMIT_KEY = "user.delete.limit.key";
+    public static final String USER_UPDATE_STATUS_LIMIT_KEY = "user.update.status.limit.key";
+    public static final String USER_SET_USER_ROLE_LIMIT_KEY = "user.set.user.role.limit.key";
+
+    public static final String ROLE_INSERT_LIMIT_KEY = "role.insert.limit.key";
+    public static final String ROLE_UPDATE_LIMIT_KEY = "role.update.limit.key";
+    public static final String ROLE_DELETE_LIMIT_KEY = "role.delete.limit.key";
+    public static final String ROLE_UPDATE_STATUS_LIMIT_KEY = "role.update.status.limit.key";
+    public static final String ROLE_SET_ROLE_MENU_LIMIT_KEY = "role.set.role.menu.limit.key";
+
+    public static final String WORKHOUR_INSERT_LIMIT_KEY = "workhour.insert.limit.key";
+    public static final String WORKHOUR_DELETE_LIMIT_KEY = "workhour.delete.limit.key";
+
+    public static final String WORKSITE_INSERT_LIMIT_KEY = "worksite.insert.limit.key";
+    public static final String WORKSITE_UPDATE_LIMIT_KEY = "worksite.update.limit.key";
+    public static final String WORKSITE_DELETE_LIMIT_KEY = "worksite.delete.limit.key";
+    public static final String WORKSITE_UPDATE_STATUS_LIMIT_KEY = "worksite.update.status.limit.key";
+
 }

@@ -283,7 +283,7 @@ public class SystemController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/limit")
-    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP)
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.CUSTOMER)
     public Object limit() {
         return UUID.randomUUID().toString();
     }

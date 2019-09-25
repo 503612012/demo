@@ -40,9 +40,9 @@ public class LogController extends BaseController {
      *
      * @param id 日志ID
      */
+    @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
-    @ResponseBody
     public Object getById(Integer id) throws MyException {
         try {
             return super.success(logService.getById(id));
@@ -57,9 +57,9 @@ public class LogController extends BaseController {
      * @param page  页码
      * @param limit 每页显示数量
      */
+    @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
-    @ResponseBody
     public Object getByPage(Integer page, Integer limit, Log logVo) throws MyException {
         try {
             JSONObject result = new JSONObject();

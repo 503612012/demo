@@ -94,6 +94,12 @@ layui.use(['element'], function() {
             yAxis: {},
             series: [{
                 name: '总薪资/元',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
                 type: 'bar',
                 areaStyle: {},
                 smooth: true,

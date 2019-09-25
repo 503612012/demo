@@ -14,7 +14,8 @@ public enum ResultEnum {
 
     UNKNOW_ERROR(3001, "未知错误！"),
     OVER_LIMIT_ERROR(3002, "OVER LIMIT!"),
-    SYSTEM_ERROR(3003, "系统错误！"),
+    DELETE_EMPLOYEE_ERROR(3003, "该员工存在未发薪资的工时，请核对后再删除！"),
+    SYSTEM_ERROR(3004, "系统错误！"),
 
     NO_THIS_USER(4001, "该用户不存在！"),
     PASSWORD_WRONG(4002, "密码错误！"),

@@ -56,7 +56,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.MENU_UPDATE)
-    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
+    @Limit(key = AppConst.MENU_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
     public Object doUpdate(Menu menu) throws MyException {
         try {
             menuService.update(menu);
@@ -75,7 +75,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.MENU_SETSTATUS)
-    @Limit(key = "limit", period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
+    @Limit(key = AppConst.MENU_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
     public Object updateStatus(Integer menuId, Integer status) throws MyException {
         try {
             Menu menu = menuService.getById(menuId);

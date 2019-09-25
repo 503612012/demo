@@ -41,7 +41,7 @@ layui.use(['table', 'laydate'], function() {
             {type: 'numbers'}
             , {field: 'employeeName', title: '员工名称', sort: true}
             , {field: 'worksiteName', title: '工地名称'}
-            , {field: 'workDate', title: '工时日期'}
+            , {field: 'workDate', title: '工时日期', sort: true}
             , {field: 'workhour', title: '录入工时'}
             , {
                 field: 'hourSalary', title: '当日时薪', templet: function(d) {
@@ -49,6 +49,7 @@ layui.use(['table', 'laydate'], function() {
                 }
             }
             , {field: 'createName', title: '录入人'}
+            , {field: 'createTime', title: '录入时间', sort: true}
             , {
                 field: 'remark', title: '备注', templet: function(d) {
                     if (d.remark == '' || d.remark == null) {
@@ -59,7 +60,7 @@ layui.use(['table', 'laydate'], function() {
                 }
             }
             , {
-                field: 'hasPay', title: '是否发放', templet: function(d) {
+                field: 'hasPay', title: '是否发放', sort: true, templet: function(d) {
                     if (d.hasPay == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked" data-status="' + d.status + '"><span>是</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     } else if (d.hasPay == 0) {

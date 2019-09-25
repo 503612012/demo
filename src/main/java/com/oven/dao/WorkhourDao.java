@@ -34,7 +34,7 @@ public class WorkhourDao {
                 "         left join t_worksite ws on ws.dbid = wh.worksite_id " +
                 "         left join t_user u on u.dbid = wh.create_id");
         addCondition(sb, workhour);
-        String sql = sb.append(" order by wh.work_date desc").append(" limit ?,?").toString().replaceFirst("and", "where");
+        String sql = sb.append(" order by wh.create_time desc").append(" limit ?,?").toString().replaceFirst("and", "where");
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), (pageNum - 1) * pageSize, pageSize);
     }
 
@@ -87,7 +87,7 @@ public class WorkhourDao {
      * 添加
      */
     public int add(Workhour workhour) {
-        String sql = "insert into t_workhour (dbid, employee_id, worksite_id, work_date, work_hour, hour_salary, create_id, has_pay, remark) values (null, ?, ?, ?, ?, ?, ?, 0, ?)";
+        String sql = "insert into t_workhour (dbid, employee_id, worksite_id, work_date, work_hour, hour_salary, create_id, create_time, has_pay, remark) values (null, ?, ?, ?, ?, ?, ?, ?, 0, ?)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
@@ -97,7 +97,8 @@ public class WorkhourDao {
             ps.setInt(4, workhour.getWorkhour());
             ps.setDouble(5, workhour.getHourSalary());
             ps.setInt(6, workhour.getCreateId());
-            ps.setString(7, workhour.getRemark());
+            ps.setString(7, workhour.getCreateTime());
+            ps.setString(8, workhour.getRemark());
             return ps;
         };
         this.jdbcTemplate.update(creator, key);
@@ -129,6 +130,14 @@ public class WorkhourDao {
                 "union  " +
                 "select sum(work_hour) from t_workhour";
         return this.jdbcTemplate.queryForList(sql, String.class);
+    }
+
+    /**
+     * 获取一个员工未发薪资的所有工时
+     */
+    public List<Workhour> getUnPayByEmployeeId(Integer employeeId) {
+        String sql = "select * from t_workhour where employee_id = ? and has_pay = 0";
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), employeeId);
     }
 
 }

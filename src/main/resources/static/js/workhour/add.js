@@ -56,7 +56,7 @@ layui.use(['form', 'layedit', 'laydate'], function() {
     });
 
     form.on('select(employeeSelect)', function(data) {
-        if (hasPermission('B1_02_03')) {
+        if (hasPermission('B1_01_05')) {
             var employeeId = data.value;
             if (employeeId == '') {
                 $("#hourSalary").val('');

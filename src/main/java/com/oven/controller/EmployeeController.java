@@ -9,7 +9,9 @@ import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
 import com.oven.service.EmployeeService;
 import com.oven.service.UserService;
+import com.oven.service.WorkhourService;
 import com.oven.vo.Employee;
+import com.oven.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,8 @@ public class EmployeeController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private WorkhourService workhourService;
     @Resource
     private EmployeeService employeeService;
 
@@ -101,7 +105,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
-    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP)
+    @Limit(key = AppConst.EMPLOYEE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.CUSTOMER)
     public Object doAdd(Employee employee) throws MyException {
         try {
             employeeService.add(employee);
@@ -134,7 +138,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
-    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
+    @Limit(key = AppConst.EMPLOYEE_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
     public Object doUpdate(Employee employee) throws MyException {
         try {
             employeeService.update(employee);
@@ -152,9 +156,14 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.EMPLOYEE_DELETE)
-    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP)
+    @Limit(key = AppConst.EMPLOYEE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.CUSTOMER)
     public Object delete(Integer id) throws MyException {
         try {
+            // 判断该员工有没有未发的薪资
+            List<Workhour> workhours = workhourService.getUnPayByEmployeeId(id);
+            if (workhours != null && workhours.size() > 0) {
+                return super.fail(ResultEnum.DELETE_EMPLOYEE_ERROR.getCode(), ResultEnum.DELETE_EMPLOYEE_ERROR.getValue());
+            }
             boolean result = employeeService.delete(id);
             if (result) {
                 return super.success(ResultEnum.DELETE_SUCCESS.getValue());
@@ -175,7 +184,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SETSTATUS)
-    @Limit(key = "limit", period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
+    @Limit(key = AppConst.EMPLOYEE_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
     public Object updateStatus(Integer employeeId, Integer status) throws MyException {
         try {
             Employee employee = employeeService.getById(employeeId);

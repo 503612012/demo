@@ -54,10 +54,7 @@ public class GlobalExceptionHandle {
             return "";
         } else if (e instanceof LimitException) {
             LimitException limitException = (LimitException) e;
-            JSONObject result = new JSONObject();
-            result.put("code", limitException.getCode());
-            result.put("msg", limitException.getMsg());
-            return result;
+            return new ResultInfo<>(limitException.getCode(), limitException.getMsg());
         } else {
             log.error(AppConst.ERROR_LOG_PREFIX + "错误信息：", e);
         }

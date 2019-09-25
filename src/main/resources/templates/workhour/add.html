@@ -63,5 +63,20 @@
 <script th:src="@{/jquery.min.js}"></script>
 <script th:src="@{/layui.all.js}"></script>
 <script th:src="@{/js/workhour/add.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var menu = [[${session.menu}]];
+
+    function hasPermission(code) {
+        for (var i = 0; i < menu.length; i++) {
+            if (code == menu[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*]]>*/
+</script>
 </body>
 </html>
