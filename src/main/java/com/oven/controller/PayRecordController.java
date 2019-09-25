@@ -41,9 +41,9 @@ public class PayRecordController extends BaseController {
      * @param page  页码
      * @param limit 每页显示数量
      */
+    @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.SALARY_PAY_RECORD)
-    @ResponseBody
     public Object getByPage(Integer page, Integer limit, String employeeName) throws MyException {
         JSONObject result = new JSONObject();
         try {

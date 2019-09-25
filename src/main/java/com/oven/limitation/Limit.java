@@ -44,6 +44,11 @@ public @interface Limit {
     int count();
 
     /**
+     * 限流后返回的描述信息
+     */
+    String errMsg();
+
+    /**
      * 类型
      */
     LimitType limitType() default LimitType.CUSTOMER;

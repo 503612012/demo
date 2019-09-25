@@ -6,6 +6,8 @@ import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitType;
 import com.oven.service.MenuService;
 import com.oven.service.RoleService;
 import com.oven.service.UserRoleService;
@@ -57,9 +59,9 @@ public class RoleController extends BaseController {
      *
      * @param id 角色ID
      */
+    @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
-    @ResponseBody
     public Object getById(Integer id) throws MyException {
         try {
             return super.success(roleService.getById(id));
@@ -74,9 +76,9 @@ public class RoleController extends BaseController {
      * @param page  页码
      * @param limit 每页显示数量
      */
+    @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
-    @ResponseBody
     public Object getByPage(Integer page, Integer limit, Role role) throws MyException {
         try {
             JSONObject result = new JSONObject();
@@ -110,9 +112,10 @@ public class RoleController extends BaseController {
     /**
      * 添加角色
      */
+    @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP)
     public Object doAdd(Role role) throws MyException {
         try {
             roleService.add(role);
@@ -142,9 +145,10 @@ public class RoleController extends BaseController {
     /**
      * 修改角色
      */
+    @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
     public Object doUpdate(Role role) throws MyException {
         try {
             roleService.update(role);
@@ -159,9 +163,10 @@ public class RoleController extends BaseController {
      *
      * @param id 角色ID
      */
+    @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.ROLE_DELETE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP)
     public Object delete(Integer id) throws MyException {
         try {
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
@@ -181,9 +186,10 @@ public class RoleController extends BaseController {
      * @param roleId 角色ID
      * @param status 状态编码
      */
+    @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
-    @ResponseBody
+    @Limit(key = "limit", period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
     public Object updateStatus(Integer roleId, Integer status) throws MyException {
         try {
             Role role = roleService.getById(roleId);
@@ -211,9 +217,10 @@ public class RoleController extends BaseController {
      *
      * @param roleId 角色ID
      */
+    @ResponseBody
     @RequestMapping("/getRoleMenuTree")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP)
     public JSONArray getRoleMenuTree(Integer roleId) throws MyException {
         try {
             return roleService.getMenuTreeByRoleId(roleId);
@@ -228,9 +235,10 @@ public class RoleController extends BaseController {
      * @param roleId  角色ID
      * @param menuIds 菜单ID列表
      */
+    @ResponseBody
     @RequestMapping("/setRoleMenu")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP)
     public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             roleService.setRoleMenu(roleId, menuIds);

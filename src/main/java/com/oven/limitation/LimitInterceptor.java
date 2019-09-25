@@ -48,6 +48,7 @@ public class LimitInterceptor {
         String key;
         int limitPeriod = limitAnnotation.period();
         int limitCount = limitAnnotation.count();
+        String errMsg = limitAnnotation.errMsg();
         switch (limitType) {
             case IP:
                 @SuppressWarnings("ConstantConditions")
@@ -68,13 +69,13 @@ public class LimitInterceptor {
             if (count != null && count.intValue() <= limitCount) {
                 return pjp.proceed();
             } else {
-                throw new RuntimeException(ResultEnum.OVER_LIMIT_ERROR.getValue());
+                throw new RuntimeException(errMsg);
             }
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
                 log.error(AppConst.ERROR_LOG_PREFIX + "{}请求{}超过次数限制！", key, method.toString());
             }
-            throw new LimitException(ResultEnum.OVER_LIMIT_ERROR.getCode(), ResultEnum.OVER_LIMIT_ERROR.getValue());
+            throw new LimitException(ResultEnum.OVER_LIMIT_ERROR.getCode(), errMsg);
         }
     }
 

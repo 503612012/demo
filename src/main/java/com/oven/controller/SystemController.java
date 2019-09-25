@@ -114,8 +114,8 @@ public class SystemController extends BaseController {
      * @param userName 用户名
      * @param pwd      密码
      */
-    @RequestMapping("/doLogin")
     @ResponseBody
+    @RequestMapping("/doLogin")
     public Object doLogin(String userName, String pwd, String inputCode, HttpServletRequest req) throws MyException {
         try {
             // 校验验证码
@@ -199,8 +199,8 @@ public class SystemController extends BaseController {
     /**
      * 获取当前登录用户的菜单
      */
-    @RequestMapping("/getMenus")
     @ResponseBody
+    @RequestMapping("/getMenus")
     public Object getMenus(HttpServletRequest req) throws MyException {
         try {
             List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
@@ -216,8 +216,8 @@ public class SystemController extends BaseController {
     /**
      * 获取首页数据
      */
-    @RequestMapping("/getMainPageData")
     @ResponseBody
+    @RequestMapping("/getMainPageData")
     public Object getMainPageData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
@@ -238,8 +238,8 @@ public class SystemController extends BaseController {
     /**
      * 获取薪资排行前五
      */
-    @RequestMapping("/getSalaryTopFive")
     @ResponseBody
+    @RequestMapping("/getSalaryTopFive")
     public Object getSalaryTopFive() throws MyException {
         try {
             Map<String, List<String>> result = new HashMap<>();
@@ -263,8 +263,8 @@ public class SystemController extends BaseController {
     /**
      * 获取首页占比信息
      */
-    @RequestMapping("/getProportionData")
     @ResponseBody
+    @RequestMapping("/getProportionData")
     public Object getProportionData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
@@ -283,7 +283,7 @@ public class SystemController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/limit")
-    @Limit(key = "limit", period = 10, count = 5, limitType = LimitType.IP)
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP)
     public Object limit() {
         return UUID.randomUUID().toString();
     }

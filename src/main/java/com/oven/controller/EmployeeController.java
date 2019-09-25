@@ -1,9 +1,12 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitType;
 import com.oven.service.EmployeeService;
 import com.oven.service.UserService;
 import com.oven.vo.Employee;
@@ -44,9 +47,9 @@ public class EmployeeController extends BaseController {
      *
      * @param id 员工ID
      */
+    @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    @ResponseBody
     public Object getById(Integer id) throws MyException {
         try {
             return super.success(employeeService.getById(id));
@@ -61,9 +64,9 @@ public class EmployeeController extends BaseController {
      * @param page  页码
      * @param limit 每页显示数量
      */
+    @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    @ResponseBody
     public Object getByPage(Integer page, Integer limit, Employee employee) throws MyException {
         try {
             JSONObject result = new JSONObject();
@@ -95,9 +98,10 @@ public class EmployeeController extends BaseController {
     /**
      * 添加员工
      */
+    @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP)
     public Object doAdd(Employee employee) throws MyException {
         try {
             employeeService.add(employee);
@@ -127,9 +131,10 @@ public class EmployeeController extends BaseController {
     /**
      * 修改员工
      */
+    @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
     public Object doUpdate(Employee employee) throws MyException {
         try {
             employeeService.update(employee);
@@ -144,9 +149,10 @@ public class EmployeeController extends BaseController {
      *
      * @param id 员工ID
      */
+    @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.EMPLOYEE_DELETE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP)
     public Object delete(Integer id) throws MyException {
         try {
             boolean result = employeeService.delete(id);
@@ -166,9 +172,10 @@ public class EmployeeController extends BaseController {
      * @param employeeId 员工ID
      * @param status     状态编码
      */
+    @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SETSTATUS)
-    @ResponseBody
+    @Limit(key = "limit", period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
     public Object updateStatus(Integer employeeId, Integer status) throws MyException {
         try {
             Employee employee = employeeService.getById(employeeId);
@@ -183,9 +190,9 @@ public class EmployeeController extends BaseController {
     /**
      * 获取所有员工
      */
+    @ResponseBody
     @RequestMapping("/getAll")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    @ResponseBody
     public Object getAll() throws MyException {
         try {
             return super.success(employeeService.getAll());
@@ -197,9 +204,9 @@ public class EmployeeController extends BaseController {
     /**
      * 获取一个员工的时薪
      */
+    @ResponseBody
     @RequestMapping("/getHourSalaryByEmployeeId")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SHOWMONEY)
-    @ResponseBody
     public Object getHourSalaryByEmployeeId(String employeeId) throws MyException {
         try {
             return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));

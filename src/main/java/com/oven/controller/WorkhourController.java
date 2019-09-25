@@ -1,9 +1,12 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitType;
 import com.oven.service.WorkhourService;
 import com.oven.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -41,9 +44,9 @@ public class WorkhourController extends BaseController {
      * @param page  页码
      * @param limit 每页显示数量
      */
+    @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.WORKHOUR_MANAGER)
-    @ResponseBody
     public Object getByPage(Integer page, Integer limit, Workhour workhour) throws MyException {
         JSONObject result = new JSONObject();
         try {
@@ -71,11 +74,16 @@ public class WorkhourController extends BaseController {
     /**
      * 添加工时
      */
+    @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.WORKHOUR_INSERT)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP)
     public Object doAdd(Workhour workhour) throws MyException {
         try {
+            Workhour workhourInDeb = workhourService.isInputed(workhour.getEmployeeId(), workhour.getWorkDate(), workhour.getWorksiteId());
+            if (workhourInDeb != null) {
+                return super.success(true);
+            }
             workhourService.add(workhour);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
@@ -88,9 +96,10 @@ public class WorkhourController extends BaseController {
      *
      * @param id 工时ID
      */
+    @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.WORKHOUR_DELETE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP)
     public Object delete(Integer id) throws MyException {
         try {
             workhourService.delete(id);
@@ -103,9 +112,9 @@ public class WorkhourController extends BaseController {
     /**
      * 判断该员工该日期是否有录入过
      */
+    @ResponseBody
     @RequestMapping("/isInputed")
     @RequiresPermissions(PermissionCode.WORKHOUR_INSERT)
-    @ResponseBody
     public Object isInputed(Integer employeeId, String workDate, Integer worksiteId) throws MyException {
         try {
             Workhour workhour = workhourService.isInputed(employeeId, workDate, worksiteId);

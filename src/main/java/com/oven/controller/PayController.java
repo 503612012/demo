@@ -1,9 +1,12 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitType;
 import com.oven.service.PayRecordService;
 import com.oven.service.PayService;
 import com.oven.vo.PayRecord;
@@ -43,9 +46,9 @@ public class PayController extends BaseController {
     /**
      * 获取员工未发放的薪资的工时
      */
+    @ResponseBody
     @RequestMapping("/getWorkhourData")
     @RequiresPermissions(PermissionCode.SALARY_PAY)
-    @ResponseBody
     public Object getWorkhourData(Integer employeeId, Integer worksiteId) throws MyException {
         JSONObject result = new JSONObject();
         try {
@@ -62,9 +65,10 @@ public class PayController extends BaseController {
     /**
      * 下发薪资
      */
+    @ResponseBody
     @RequestMapping("/doPay")
     @RequiresPermissions(PermissionCode.SALARY_PAY)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP)
     public Object doPay(String workhourIds, Integer employeeId, Integer totalHour, Double totalMoney, String remark) throws MyException {
         try {
             payService.doPay(workhourIds);

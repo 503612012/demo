@@ -1,9 +1,12 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
+import com.oven.limitation.Limit;
+import com.oven.limitation.LimitType;
 import com.oven.service.UserService;
 import com.oven.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -41,9 +44,9 @@ public class UserController extends com.oven.controller.BaseController {
      *
      * @param id 用户ID
      */
+    @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    @ResponseBody
     public Object getById(Integer id) throws MyException {
         try {
             return super.success(userService.getById(id));
@@ -58,9 +61,9 @@ public class UserController extends com.oven.controller.BaseController {
      * @param page  页码
      * @param limit 每页显示数量
      */
+    @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    @ResponseBody
     public Object getByPage(Integer page, Integer limit, User user) throws MyException {
         try {
             JSONObject result = new JSONObject();
@@ -92,11 +95,16 @@ public class UserController extends com.oven.controller.BaseController {
     /**
      * 添加用户
      */
+    @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.USER_INSERT)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP)
     public Object doAdd(User user) throws MyException {
         try {
+            User userInDb = userService.getByUserName(user.getUserName());
+            if (userInDb != null) {
+                return super.success(true);
+            }
             userService.add(user);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
@@ -107,9 +115,9 @@ public class UserController extends com.oven.controller.BaseController {
     /**
      * 判断用户名是否存在
      */
+    @ResponseBody
     @RequestMapping("isExist")
     @RequiresPermissions(PermissionCode.USER_INSERT)
-    @ResponseBody
     public Object isExist(String userName) throws MyException {
         try {
             User user = userService.getByUserName(userName);
@@ -143,9 +151,10 @@ public class UserController extends com.oven.controller.BaseController {
     /**
      * 修改用户
      */
+    @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
     public Object doUpdate(User user) throws MyException {
         try {
             userService.update(user);
@@ -160,9 +169,10 @@ public class UserController extends com.oven.controller.BaseController {
      *
      * @param id 用户ID
      */
+    @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.USER_DELETE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP)
     public Object delete(Integer id) throws MyException {
         try {
             userService.delete(id);
@@ -178,9 +188,10 @@ public class UserController extends com.oven.controller.BaseController {
      * @param userId 用户ID
      * @param status 状态编码
      */
+    @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.USER_SETSTATUS)
-    @ResponseBody
+    @Limit(key = "limit", period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP)
     public Object updateStatus(Integer userId, Integer status) throws MyException {
         try {
             User user = userService.getById(userId);
@@ -197,9 +208,9 @@ public class UserController extends com.oven.controller.BaseController {
      *
      * @param id 用户ID
      */
+    @ResponseBody
     @RequestMapping("/getRoleByUserId")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
-    @ResponseBody
     public Object getRoleByUserId(Integer id) throws MyException {
         try {
             List<JSONObject> list = userService.getRoleByUserId(id);
@@ -215,9 +226,10 @@ public class UserController extends com.oven.controller.BaseController {
      * @param userId  用户ID
      * @param roleIds 角色ID列表
      */
+    @ResponseBody
     @RequestMapping("/setUserRole")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
-    @ResponseBody
+    @Limit(key = "limit", period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP)
     public Object setUserRole(Integer userId, String roleIds) throws MyException {
         try {
             userService.setUserRole(userId, roleIds);
@@ -230,9 +242,9 @@ public class UserController extends com.oven.controller.BaseController {
     /**
      * 获取所有用户
      */
+    @ResponseBody
     @RequestMapping("/getAll")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    @ResponseBody
     public Object getAll() throws MyException {
         try {
             return super.success(userService.getAll());
