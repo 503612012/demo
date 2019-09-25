@@ -11,6 +11,7 @@ layui.use(['table', 'form', 'layedit'], function() {
     $('.payTable .pay-search').on('click', function() {
         $('.pay-btn').addClass('hide');
         var employeeId = $('#employeeSelect').val();
+        var worksiteId = $('#worksiteSelect').val();
         table.render({
             elem: '#pay-list'
             , url: '/pay/getWorkhourData/'
@@ -28,7 +29,8 @@ layui.use(['table', 'form', 'layedit'], function() {
             ]]
             , page: false
             , where: {
-                employeeId: employeeId
+                employeeId: employeeId,
+                worksiteId: worksiteId
             }
         });
     });
@@ -51,6 +53,7 @@ layui.use(['table', 'form', 'layedit'], function() {
     $('.payTable .pay-reset').on('click', function() {
         $('.pay-btn').addClass('hide');
         $('#employeeSelect').val('');
+        $('#worksiteSelect').val('');
         loadSelectBox();
         reload();
     });
@@ -60,10 +63,12 @@ layui.use(['table', 'form', 'layedit'], function() {
      */
     var reload = function() {
         var employeeId = $('#employeeSelect');
+        var worksiteId = $('#worksiteSelect');
         // 执行重载
         table.reload('payReload', {
             where: {
-                employeeId: employeeId.val()
+                employeeId: employeeId.val(),
+                worksiteId: worksiteId.val()
             }
         });
     };
@@ -160,6 +165,31 @@ layui.use(['table', 'form', 'layedit'], function() {
                     html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
                 }
                 $("#employeeSelect").html(html);
+                form.render("select");
+            }
+        });
+
+        // 初始化下工地拉框
+        $.ajax({
+            url: '/worksite/getAll',
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    return;
+                }
+                var data = result.data;
+                var html = '<option value="">请选择工地</option>';
+                for (var i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+                $("#worksiteSelect").html(html);
                 form.render("select");
             }
         });

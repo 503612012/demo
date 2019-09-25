@@ -46,10 +46,10 @@ public class PayController extends BaseController {
     @RequestMapping("/getWorkhourData")
     @RequiresPermissions(PermissionCode.SALARY_PAY)
     @ResponseBody
-    public Object getWorkhourData(String employeeId) throws MyException {
+    public Object getWorkhourData(Integer employeeId, Integer worksiteId) throws MyException {
         JSONObject result = new JSONObject();
         try {
-            List<Workhour> list = payService.getWorkhourData(employeeId);
+            List<Workhour> list = payService.getWorkhourData(employeeId, worksiteId);
             result.put("code", 0);
             result.put("msg", "");
             result.put("data", list);

@@ -25,14 +25,14 @@ public class PayService extends BaseService {
     /**
      * 获取员工未发放的薪资的工时
      */
-    public List<Workhour> getWorkhourData(String employeeId) {
-        List<Workhour> list = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID, employeeId)); // 先读取缓存
+    public List<Workhour> getWorkhourData(Integer employeeId, Integer worksiteId) {
+        List<Workhour> list = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID_AND_WORKSITEID, employeeId, worksiteId)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID, employeeId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID_AND_WORKSITEID, employeeId, worksiteId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = payDao.getWorkhourData(employeeId);
-                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID, employeeId), list);
+                    list = payDao.getWorkhourData(employeeId, worksiteId);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID_AND_WORKSITEID, employeeId, worksiteId), list);
                 }
             }
         }
