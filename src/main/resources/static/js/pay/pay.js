@@ -26,6 +26,15 @@ layui.use(['table', 'form', 'layedit'], function() {
                 , {field: 'workhour', title: '录入工时'}
                 , {field: 'hourSalary', title: '当日时薪'}
                 , {field: 'createName', title: '录入人'}
+                , {
+                    field: 'remark', title: '备注', templet: function(d) {
+                        if (d.remark == '' || d.remark == null) {
+                            return '无';
+                        } else {
+                            return d.remark;
+                        }
+                    }
+                }
             ]]
             , page: false
             , where: {

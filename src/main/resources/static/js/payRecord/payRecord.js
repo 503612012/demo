@@ -41,6 +41,15 @@ layui.use(['table'], function() {
                 }
             }
             , {field: 'payerName', title: '发薪人'}
+            , {
+                field: 'remark', title: '备注', templet: function(d) {
+                    if (d.remark == '' || d.remark == null) {
+                        return '无';
+                    } else {
+                        return d.remark;
+                    }
+                }
+            }
         ]]
         , page: true
     });

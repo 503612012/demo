@@ -56,30 +56,32 @@ layui.use(['form', 'layedit', 'laydate'], function() {
     });
 
     form.on('select(employeeSelect)', function(data) {
-        var employeeId = data.value;
-        if (employeeId == '') {
-            $("#hourSalary").val('');
-            return;
-        }
-        $.ajax({
-            url: '/employee/getHourSalaryByEmployeeId',
-            type: 'POST',
-            data: {
-                "employeeId": employeeId
-            },
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                $("#hourSalary").val(result.data);
+        if (hasPermission('B1_02_03')) {
+            var employeeId = data.value;
+            if (employeeId == '') {
+                $("#hourSalary").val('');
+                return;
             }
-        });
+            $.ajax({
+                url: '/employee/getHourSalaryByEmployeeId',
+                type: 'POST',
+                data: {
+                    "employeeId": employeeId
+                },
+                dataType: 'json',
+                success: function(result) {
+                    if (result.code != 200) {
+                        layer.open({
+                            title: '系统提示',
+                            content: result.data,
+                            btnAlign: 'c'
+                        });
+                        return;
+                    }
+                    $("#hourSalary").val(result.data);
+                }
+            });
+        }
     });
 
     // 初始化日期选择框
