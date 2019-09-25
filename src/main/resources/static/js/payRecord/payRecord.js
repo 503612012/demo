@@ -49,7 +49,7 @@ layui.use(['table'], function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.totalMoney", function() {
-        if (hasPermission("C1_01_01")) {
+        if (hasPermission("C1_02_01")) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");

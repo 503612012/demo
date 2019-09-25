@@ -90,57 +90,133 @@ layui.use(['table', 'form', 'layedit'], function() {
                 totalMoney += (workhour * hourSalary);
             }
         }
-        var notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】发放薪资共计【<span style='color: red;'>" + totalWorkhour + "</span>】工时，合计【<span style='color: red;'>" + totalMoney + "</span>】元，核对无误后点击确定！";
+        var notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】发放薪资共计【<span style='color: red;'>" + totalWorkhour + "</span>】工时，合计【<span style='color: red;' class='auctualPayMoneySpan'>" + totalMoney + "</span>】元，核对无误后点击确定！";
         $("#payNoticeText").html(notice);
-        layer.open({
-            title: '系统提示！',
-            type: 1,
-            content: $('#payRemarkBox'),
-            btn: ['确定', '取消'],
-            area: ['500px', '300px'],
-            resize: false,
-            yes: function(index) {
-                var remark = $('#payRemark').val();
-                $.ajax({
-                    url: '/pay/doPay',
-                    type: 'POST',
-                    data: {
-                        "workhourIds": workhourIds.join(','),
-                        "employeeId": list[0].employeeId,
-                        "totalMoney": totalMoney,
-                        "totalHour": totalWorkhour,
-                        "remark": remark
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.code != 200) {
+        if (hasPermission('C1_01_01')) {
+            layer.open({
+                title: '系统提示！',
+                skin: 'pay-confirm-box-class',
+                type: 1,
+                content: $('#payRemarkBox'),
+                btn: ['修改金额', '确定', '取消'],
+                area: ['500px', '300px'],
+                resize: false,
+                yes: function() {
+                    var actualPayMoney = $(".auctualPayMoneySpan").html();
+                    var actualPayMoneyWidth = $(".auctualPayMoneySpan").css('width');
+                    var actualPayMoneyInput = "<input type='number' style='color: red; width: " + ((parseInt(actualPayMoneyWidth.replace('px', '')) + 13) + 'px') + ";' name='actualPayMoney' value='" + actualPayMoney + "'>";
+                    $(".auctualPayMoneySpan").replaceWith(actualPayMoneyInput);
+                },
+                btn2: function(index) {
+                    var isModifyPayMoney = false;
+                    var actualPayMoney = $("input[name=actualPayMoney]").val();
+                    if (!(actualPayMoney == null || actualPayMoney == '')) { // 修改过金额
+                        totalMoney = actualPayMoney;
+                        isModifyPayMoney = true;
+                    }
+                    var remark = $('#payRemark').val();
+                    if (isModifyPayMoney) {
+                        if (remark == '' || remark == undefined) {
                             layer.open({
+                                anim: 6,
                                 title: '系统提示',
-                                content: result.data,
+                                content: '修改过金额后必须填写备注信息！',
                                 btnAlign: 'c'
                             });
-                            return;
+                            return false;
                         }
-                        layer.close(index);
-                        $('.pay-btn').addClass('hide');
-                        $("#payNoticeText").html('');
-                        $("#payRemarkBox").addClass("hide");
-                        $("#payRemarkBox").css("display", "none");
-                        reload();
                     }
-                });
-            },
-            btn2: function() {
-                $("#payNoticeText").html('');
-                $("#payRemarkBox").addClass("hide");
-                $("#payRemarkBox").css("display", "none");
-            },
-            cancel: function() {
-                $("#payNoticeText").html('');
-                $("#payRemarkBox").addClass("hide");
-                $("#payRemarkBox").css("display", "none");
-            }
-        });
+                    $.ajax({
+                        url: '/pay/doPay',
+                        type: 'POST',
+                        data: {
+                            "workhourIds": workhourIds.join(','),
+                            "employeeId": list[0].employeeId,
+                            "totalMoney": totalMoney,
+                            "totalHour": totalWorkhour,
+                            "remark": remark
+                        },
+                        dataType: 'json',
+                        success: function(result) {
+                            if (result.code != 200) {
+                                layer.open({
+                                    title: '系统提示',
+                                    content: result.data,
+                                    btnAlign: 'c'
+                                });
+                                return;
+                            }
+                            layer.close(index);
+                            $('.pay-btn').addClass('hide');
+                            $("#payNoticeText").html('');
+                            $("#payRemarkBox").addClass("hide");
+                            $("#payRemarkBox").css("display", "none");
+                            reload();
+                        }
+                    });
+                },
+                btn3: function() {
+                    $("#payNoticeText").html('');
+                    $("#payRemarkBox").addClass("hide");
+                    $("#payRemarkBox").css("display", "none");
+                },
+                cancel: function() {
+                    $("#payNoticeText").html('');
+                    $("#payRemarkBox").addClass("hide");
+                    $("#payRemarkBox").css("display", "none");
+                }
+            });
+        } else {
+            layer.open({
+                title: '系统提示！',
+                type: 1,
+                content: $('#payRemarkBox'),
+                btn: ['确定', '取消'],
+                area: ['500px', '300px'],
+                resize: false,
+                yes: function(index) {
+                    var remark = $('#payRemark').val();
+                    $.ajax({
+                        url: '/pay/doPay',
+                        type: 'POST',
+                        data: {
+                            "workhourIds": workhourIds.join(','),
+                            "employeeId": list[0].employeeId,
+                            "totalMoney": totalMoney,
+                            "totalHour": totalWorkhour,
+                            "remark": remark
+                        },
+                        dataType: 'json',
+                        success: function(result) {
+                            if (result.code != 200) {
+                                layer.open({
+                                    title: '系统提示',
+                                    content: result.data,
+                                    btnAlign: 'c'
+                                });
+                                return;
+                            }
+                            layer.close(index);
+                            $('.pay-btn').addClass('hide');
+                            $("#payNoticeText").html('');
+                            $("#payRemarkBox").addClass("hide");
+                            $("#payRemarkBox").css("display", "none");
+                            reload();
+                        }
+                    });
+                },
+                btn2: function() {
+                    $("#payNoticeText").html('');
+                    $("#payRemarkBox").addClass("hide");
+                    $("#payRemarkBox").css("display", "none");
+                },
+                cancel: function() {
+                    $("#payNoticeText").html('');
+                    $("#payRemarkBox").addClass("hide");
+                    $("#payRemarkBox").css("display", "none");
+                }
+            });
+        }
     });
 
     function loadSelectBox() {

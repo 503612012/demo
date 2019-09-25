@@ -3,6 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/layui.css}">
+    <style>
+        body .pay-confirm-box-class .layui-layer-btn0{
+            border-color: #E6E3E6;
+            background-color: #FFF;
+            color: black;
+        }
+        body .pay-confirm-box-class .layui-layer-btn1{
+            border-color: #4898d5;
+            background-color: #2e8ded;
+            color: #fff;
+        }
+        body .pay-confirm-box-class .layui-layer-btn2{
+            border-color: #E6E3E6;
+            background-color: #FFF;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
@@ -45,7 +62,7 @@
     <div>
         <label>备注：</label>
         <div style="width: 400px; float: right;">
-            <textarea placeholder="请输入备注内容" name="payRemark" id="payRemark" class="layui-textarea"></textarea>
+            <textarea placeholder="请输入备注内容" autofocus name="payRemark" id="payRemark" class="layui-textarea"></textarea>
         </div>
     </div>
 </div>
