@@ -34,8 +34,6 @@ public class PermissionCode {
     public static final String EMPLOYEE_SETSTATUS = "B1_01_04";   // 修改员工状态
     public static final String EMPLOYEE_SHOWMONEY = "B1_01_05";   // 显示金额
 
-    public static final String ECHARTS_MANAGER    = "D1_01";      // Echarts功能
-
     public static final String WORKHOUR_MANAGER   = "B1_02";      // 工时管理
     public static final String WORKHOUR_INSERT    = "B1_02_01";   // 工时录入
     public static final String WORKHOUR_DELETE    = "B1_02_02";   // 删除工时
@@ -48,6 +46,7 @@ public class PermissionCode {
 
     public static final String SALARY_PAY         = "C1_01";      // 薪资发放
     public static final String SALARY_PAY_RECORD  = "C1_02";      // 发薪记录
-    public static final String SALARY_COUNT       = "C1_03";      // 工资统计
+    public static final String FINANCE_MANAGE     = "C1_03";      // 财务管理
+    public static final String SALARY_COUNT       = "C1_04";      // 工资统计
 
 }
