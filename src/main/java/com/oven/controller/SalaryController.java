@@ -45,6 +45,7 @@ public class SalaryController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/getSalaryData")
+    @RequiresPermissions(PermissionCode.SALARY_COUNT)
     public Object getSalaryData(String date, Integer dateType) throws MyException {
         try {
             // 获取X轴信息
@@ -83,6 +84,7 @@ public class SalaryController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/getUpData")
+    @RequiresPermissions(PermissionCode.SALARY_COUNT)
     public Object getUpData(String date, Integer dateType) throws MyException {
         try {
             Map<String, Double> result = new HashMap<>();
