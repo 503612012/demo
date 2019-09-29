@@ -105,7 +105,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
-    @Limit(key = AppConst.EMPLOYEE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.EMPLOYEE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Employee employee) throws MyException {
         try {
             employeeService.add(employee);
@@ -138,7 +138,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
-    @Limit(key = AppConst.EMPLOYEE_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.EMPLOYEE_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(Employee employee) throws MyException {
         try {
             employeeService.update(employee);
@@ -156,7 +156,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.EMPLOYEE_DELETE)
-    @Limit(key = AppConst.EMPLOYEE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.EMPLOYEE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             // 判断该员工有没有未发的薪资
@@ -184,7 +184,7 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SETSTATUS)
-    @Limit(key = AppConst.EMPLOYEE_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.EMPLOYEE_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer employeeId, Integer status) throws MyException {
         try {
             Employee employee = employeeService.getById(employeeId);

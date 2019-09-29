@@ -98,7 +98,7 @@ public class UserController extends com.oven.controller.BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.USER_INSERT)
-    @Limit(key = AppConst.USER_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.USER_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(User user) throws MyException {
         try {
             User userInDb = userService.getByUserName(user.getUserName());
@@ -154,7 +154,7 @@ public class UserController extends com.oven.controller.BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
-    @Limit(key = AppConst.USER_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.USER_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(User user) throws MyException {
         try {
             userService.update(user);
@@ -172,7 +172,7 @@ public class UserController extends com.oven.controller.BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.USER_DELETE)
-    @Limit(key = AppConst.USER_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.USER_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             userService.delete(id);
@@ -191,7 +191,7 @@ public class UserController extends com.oven.controller.BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.USER_SETSTATUS)
-    @Limit(key = AppConst.USER_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.USER_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer userId, Integer status) throws MyException {
         try {
             User user = userService.getById(userId);
@@ -229,7 +229,7 @@ public class UserController extends com.oven.controller.BaseController {
     @ResponseBody
     @RequestMapping("/setUserRole")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
-    @Limit(key = AppConst.USER_SET_USER_ROLE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.USER_SET_USER_ROLE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object setUserRole(Integer userId, String roleIds) throws MyException {
         try {
             userService.setUserRole(userId, roleIds);

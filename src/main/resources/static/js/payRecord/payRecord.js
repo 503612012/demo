@@ -52,6 +52,32 @@ layui.use(['table'], function() {
             }
         ]]
         , page: true
+        , done: function(res) {
+            if (hasPermission("C1_02_02")) {
+                $('#layui-table-page1').css("display", "flex");
+                var totalSalary = 0;
+                for (var i = 0; i < res.data.length; i++) {
+                    totalSalary += res.data[i].totalMoney;
+                }
+                var html = "<div style='margin-left: 20px; font-weight: bold; color: red;'>本页发薪总额为：<span style='cursor: pointer;' data-value='" + totalSalary + "元' class='totalSalary'>***</span></div>";
+                $('#layui-table-page1').append(html);
+            }
+        }
+    });
+
+    /**
+     * 显示/隐藏总金额
+     */
+    $("body").on("click", "span.totalSalary", function() {
+        if (hasPermission("C1_02_02")) {
+            if ($(this).hasClass("red")) { // 隐藏
+                $(this).removeClass("red");
+                $(this).html("***");
+            } else {
+                $(this).addClass("red");
+                $(this).html($(this).attr("data-value"));
+            }
+        }
     });
 
     /**

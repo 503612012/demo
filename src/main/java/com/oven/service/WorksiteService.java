@@ -19,7 +19,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class WorksiteService extends BaseService {
 
     @Resource
@@ -82,6 +81,7 @@ public class WorksiteService extends BaseService {
     /**
      * 添加
      */
+    @Transactional(rollbackFor = Exception.class)
     public void add(Worksite worksite) {
         worksite.setCreateId(super.getCurrentUser().getId());
         worksite.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
@@ -114,6 +114,7 @@ public class WorksiteService extends BaseService {
     /**
      * 更新
      */
+    @Transactional(rollbackFor = Exception.class)
     public void update(Worksite worksite) {
         Worksite worksiteInDb = worksiteDao.getById(worksite.getId());
         String name = worksiteInDb.getName();
@@ -149,6 +150,7 @@ public class WorksiteService extends BaseService {
     /**
      * 删除
      */
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
         Worksite worksite = this.getById(id);
         worksiteDao.delete(id);

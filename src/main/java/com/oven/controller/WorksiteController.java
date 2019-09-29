@@ -85,7 +85,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.WORKSITE_INSERT)
-    @Limit(key = AppConst.WORKSITE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.WORKSITE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Worksite worksite) throws MyException {
         try {
             worksiteService.add(worksite);
@@ -118,7 +118,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.WORKSITE_UPDATE)
-    @Limit(key = AppConst.WORKSITE_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.WORKSITE_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(Worksite worksite) throws MyException {
         try {
             worksiteService.update(worksite);
@@ -136,7 +136,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.WORKSITE_DELETE)
-    @Limit(key = AppConst.WORKSITE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.WORKSITE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             worksiteService.delete(id);
@@ -155,7 +155,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.WORKSITE_SETSTATUS)
-    @Limit(key = AppConst.WORKSITE_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.WORKSITE_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer worksiteId, Integer status) throws MyException {
         try {
             Worksite worksite = worksiteService.getById(worksiteId);

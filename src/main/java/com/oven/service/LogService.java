@@ -5,7 +5,6 @@ import com.oven.dao.LogDao;
 import com.oven.vo.Log;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -17,7 +16,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class LogService extends BaseService {
 
     @Resource

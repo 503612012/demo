@@ -36,8 +36,10 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_TOTAL_NUM = "workhour_getTotalNum_{0}";
     public static final String WORKHOUR_GET_BY_PAGE = "workhour_getByPage_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_TOTAL_WORKHOUR = "workhour_getTotalWorkhour";
-    public static final String WORKHOUR_GET_UN_PAY_BY_EMPLOYEEID = "getUnPayByEmployeeId_{0}";
     public static final String WORKHOUR_GET_WORKHOUR_PROPORTION = "workhour_getWorkhourProportion";
+    public static final String WORKHOUR_GET_UN_PAY_BY_EMPLOYEEID = "workhour_getUnPayByEmployeeId_{0}";
+    public static final String WORKHOUR_GET_SALARY_COMPARE_PROPORTION = "workhour_getSalaryCompareProportion_{0}_{1}_{2}";
+    public static final String WORKHOUR_GET_SALARY_BY_DATE_AND_DATETYPE = "workhour_getSalaryByDateAndDateType_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID_AND_WORKSITEID = "workhour_getWorkhourByEmployeeIdAndWorksiteId_{0}_{1}";
     public static final String WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE_AND_WORKSITEID = "workhour_getByEmployeeIdAndWorkDateAndWorksiteId_{0}_{1}_{2}";
 
@@ -47,6 +49,22 @@ public class RedisCacheKey {
     public static final String ROLE_GET_BY_ID = "role_getById_{0}";
     public static final String ROLE_GET_TOTAL_NUM = "role_getTotalNum_{0}";
     public static final String ROLE_GET_BY_PAGE = "role_getByPage_{0}_{1}_{2}";
+
+    // 预支薪资实体类缓存key定义
+    public static final String ADVANCESALARY_PREFIX = "advanceSalary_";
+    public static final String ADVANCESALARY_GET_BY_ID = "advanceSalary_getById_{0}";
+    public static final String ADVANCESALARY_GET_TOTAL_NUM = "advanceSalary_getTotalNum_{0}";
+    public static final String ADVANCESALARY_GET_BY_PAGE = "advanceSalary_getByPage_{0}_{1}_{2}";
+    public static final String ADVANCESALARY_GET_TOTAL_ADVANCE_SALARY_BY_EMPLOYEEID = "advanceSalary_getTotalAdvanceSalaryByEmployeeId_{0}";
+    public static final String ADVANCESALARY_GET_ADVANCE_SALARY_BY_DATE_DATETYPE = "advanceSalary_getAdvanceSalaryByDateAndDateType_{0}_{1}";
+    public static final String ADVANCESALARY_GET_ADVANCE_SALARY_COMPARE_PROPORTION = "advanceSalary_getAdvanceSalaryCompareProportion_{0}_{1}";
+
+    // 财务登记实体类缓存key定义
+    public static final String FINANCE_PREFIX = "finance_";
+    public static final String FINANCE_GET_BY_ID = "finance_getById_{0}";
+    public static final String FINANCE_GET_TOTAL_NUM = "finance_getTotalNum_{0}";
+    public static final String FINANCE_GET_BY_PAGE = "finance_getByPage_{0}_{1}_{2}";
+    public static final String FINANCE_GET_BY_WORKSITEID = "finance_getByWorksiteId_{0}";
 
     // 日志实体类缓存key定义
     public static final String LOG_PREFIX = "log_";

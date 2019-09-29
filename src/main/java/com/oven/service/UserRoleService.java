@@ -4,7 +4,6 @@ import com.oven.constant.RedisCacheKey;
 import com.oven.dao.UserRoleDao;
 import com.oven.vo.UserRole;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -16,7 +15,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class UserRoleService extends BaseService {
 
     @Resource

@@ -77,7 +77,7 @@ public class WorkhourController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.WORKHOUR_INSERT)
-    @Limit(key = AppConst.WORKHOUR_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.WORKHOUR_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Workhour workhour) throws MyException {
         try {
             Workhour workhourInDeb = workhourService.isInputed(workhour.getEmployeeId(), workhour.getWorkDate(), workhour.getWorksiteId());
@@ -99,7 +99,7 @@ public class WorkhourController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.WORKHOUR_DELETE)
-    @Limit(key = AppConst.WORKHOUR_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.CUSTOMER)
+    @Limit(key = AppConst.WORKHOUR_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             workhourService.delete(id);

@@ -23,7 +23,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class RoleService extends BaseService {
 
     @Resource
@@ -92,6 +91,7 @@ public class RoleService extends BaseService {
     /**
      * 添加角色
      */
+    @Transactional(rollbackFor = Exception.class)
     public void add(Role role) {
         role.setCreateId(super.getCurrentUser().getId());
         role.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
@@ -108,6 +108,7 @@ public class RoleService extends BaseService {
     /**
      * 修改角色
      */
+    @Transactional(rollbackFor = Exception.class)
     public void update(Role role) {
         Role roleInDb = this.getById(role.getId());
         String roleName = roleInDb.getRoleName();
@@ -140,6 +141,7 @@ public class RoleService extends BaseService {
     /**
      * 删除角色
      */
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
         Role role = this.getById(id);
         roleDao.delete(id);
@@ -231,6 +233,7 @@ public class RoleService extends BaseService {
      * @param roleId  角色ID
      * @param menuIds 菜单ID列表
      */
+    @Transactional(rollbackFor = Exception.class)
     public void setRoleMenu(Integer roleId, String menuIds) {
         // 删除用户原有的所有角色
         roleMenuService.deleteByRoleId(roleId);

@@ -50,13 +50,18 @@ public class LimitInterceptor {
         int limitCount = limitAnnotation.count();
         String errMsg = limitAnnotation.errMsg();
         switch (limitType) {
-            case IP:
-                @SuppressWarnings("ConstantConditions")
-                HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-                key = AppConst.LIMIT_KEY_PREFIX + IPUtils.getClientIPAddr(req);
-                break;
+//            case IP:
+//                @SuppressWarnings("ConstantConditions")
+//                HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//                key = AppConst.LIMIT_KEY_PREFIX + IPUtils.getClientIPAddr(req);
+//                break;
             case CUSTOMER:
                 key = limitAnnotation.key();
+                break;
+            case IP_AND_METHOD:
+                @SuppressWarnings("ConstantConditions")
+                HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+                key = AppConst.LIMIT_KEY_PREFIX + IPUtils.getClientIPAddr(req) + "_" + limitAnnotation.key();
                 break;
             default:
                 key = StringUtils.upperCase(method.getName());

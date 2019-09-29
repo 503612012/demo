@@ -18,7 +18,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class WorkhourService extends BaseService {
 
     @Resource
@@ -64,6 +63,7 @@ public class WorkhourService extends BaseService {
     /**
      * 添加
      */
+    @Transactional(rollbackFor = Exception.class)
     public void add(Workhour workhour) {
         workhour.setCreateId(super.getCurrentUser().getId());
         workhour.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
@@ -94,6 +94,7 @@ public class WorkhourService extends BaseService {
     /**
      * 删除
      */
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
         Workhour workhour = this.getById(id);
         workhourDao.delete(id);
@@ -150,8 +151,11 @@ public class WorkhourService extends BaseService {
                     if (CollectionUtils.isEmpty(list) || list.size() < 2) {
                         return 100d;
                     }
-                    Double payedWorkhour = Double.parseDouble(list.get(0));
-                    Double totalWorkhour = Double.parseDouble(list.get(1));
+                    Double payedWorkhour = list.get(0) == null ? 0d : Double.parseDouble(list.get(0));
+                    Double totalWorkhour = list.get(1) == null ? 0d : Double.parseDouble(list.get(1));
+                    if (totalWorkhour == 0) {
+                        return 100d;
+                    }
                     proportion = payedWorkhour / totalWorkhour * 100;
                     super.set(RedisCacheKey.WORKHOUR_GET_WORKHOUR_PROPORTION, proportion);
                 }
@@ -175,6 +179,68 @@ public class WorkhourService extends BaseService {
             }
         }
         return list;
+    }
+
+    /**
+     * 获取同比增长数据
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年，2传入的是年月，3传入的是年月日
+     * @param dataType 获取数据类型，in获取录入薪资，out获取发放薪资
+     */
+    public Double getSalaryCompareProportion(String date, Integer dateType, String dataType) {
+        Double proportion = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_SALARY_COMPARE_PROPORTION, date, dateType, dataType)); // 先读取缓存
+        if (proportion == null) { // double check
+            synchronized (this) {
+                proportion = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_SALARY_COMPARE_PROPORTION, date, dateType, dataType)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (proportion == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    Double thisSalary = workhourDao.getSalaryByDateAndDateType(date, dateType, dataType); // 本期薪资
+                    if (dateType == 1) {
+                        date = String.valueOf((Integer.parseInt(date) - 1));
+                    } else if (dateType == 2) {
+                        date = DateTime.parse(date).plusMonths(-1).toString("yyyy-MM");
+                    }
+                    Double preSalary = workhourDao.getSalaryByDateAndDateType(date, dateType, dataType); // 上期薪资
+                    thisSalary = (thisSalary == null ? 0d : thisSalary);
+                    preSalary = (preSalary == null ? 0d : preSalary);
+                    if (preSalary == 0) {
+                        proportion = 0d;
+                    } else {
+                        proportion = ((thisSalary - preSalary) / preSalary) * 100;
+                    }
+                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_SALARY_COMPARE_PROPORTION, date, dateType, dataType), proportion);
+                }
+            }
+        }
+        return proportion;
+    }
+
+    /**
+     * 获取薪资统计图表X轴数据
+     */
+    public List<String> getCategories(String date, Integer dateType) {
+        return workhourDao.getCategories(date, dateType);
+    }
+
+    /**
+     * 获取薪资信息
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年，2传入的是年月，3传入的是年月日
+     * @param dataType 获取数据类型，in获取录入薪资，out获取发放薪资
+     */
+    public Double getSalaryByDateAndDateType(String date, Integer dateType, String dataType) {
+        Double salary = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_SALARY_BY_DATE_AND_DATETYPE, date, dateType, dataType)); // 先读取缓存
+        if (salary == null) { // double check
+            synchronized (this) {
+                salary = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_SALARY_BY_DATE_AND_DATETYPE, date, dateType, dataType)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (salary == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    salary = workhourDao.getSalaryByDateAndDateType(date, dateType, dataType);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_SALARY_BY_DATE_AND_DATETYPE, date, dateType, dataType), salary);
+                }
+            }
+        }
+        return salary;
     }
 
 }

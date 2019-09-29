@@ -4,7 +4,6 @@ import com.oven.constant.RedisCacheKey;
 import com.oven.dao.PayRecordDao;
 import com.oven.vo.PayRecord;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -18,20 +17,10 @@ import java.util.Map;
  * @author Oven
  */
 @Service
-@Transactional
 public class PayRecordService extends BaseService {
 
     @Resource
     private PayRecordDao payRecordDao;
-
-    /**
-     * 添加
-     */
-    public void add(PayRecord payRecord) {
-        payRecordDao.add(payRecord);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.PAYRECORD_PREFIX);
-    }
 
     /**
      * 分页查询发薪记录
@@ -117,8 +106,11 @@ public class PayRecordService extends BaseService {
                     if (CollectionUtils.isEmpty(list) || list.size() < 2) {
                         return 100d;
                     }
-                    Double payedSalary = Double.parseDouble(list.get(0));
-                    Double totalSalary = Double.parseDouble(list.get(1));
+                    Double payedSalary = list.get(0) == null ? 0d : Double.parseDouble(list.get(0));
+                    Double totalSalary = list.get(1) == null ? 0d : Double.parseDouble(list.get(1));
+                    if (totalSalary == 0) {
+                        return 100d;
+                    }
                     proportion = payedSalary / totalSalary * 100;
                     super.set(RedisCacheKey.PAYRECORD_GET_SALARY_PROPORTION, proportion);
                 }

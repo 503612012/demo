@@ -24,7 +24,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class UserService extends BaseService {
 
     @Resource
@@ -112,6 +111,7 @@ public class UserService extends BaseService {
     /**
      * 添加用户
      */
+    @Transactional(rollbackFor = Exception.class)
     public void add(User user) {
         user.setCreateId(super.getCurrentUser().getId());
         user.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
@@ -129,6 +129,7 @@ public class UserService extends BaseService {
     /**
      * 修改用户
      */
+    @Transactional(rollbackFor = Exception.class)
     public void update(User user) {
         User userInDb = this.getById(user.getId());
         String nickName = userInDb.getNickName();
@@ -183,6 +184,7 @@ public class UserService extends BaseService {
     /**
      * 删除用户
      */
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
         User user = this.getById(id);
         // 删除该用户的所有角色信息
@@ -231,6 +233,7 @@ public class UserService extends BaseService {
      * @param userId  用户ID
      * @param roleIds 角色ID列表
      */
+    @Transactional(rollbackFor = Exception.class)
     public void setUserRole(Integer userId, String roleIds) {
         // 删除用户原有的所有角色
         userRoleService.deleteByUserId(userId);

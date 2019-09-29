@@ -15,7 +15,10 @@ public enum ResultEnum {
     UNKNOW_ERROR(3001, "未知错误！"),
     OVER_LIMIT_ERROR(3002, "OVER LIMIT!"),
     DELETE_EMPLOYEE_ERROR(3003, "该员工存在未发薪资的工时，请核对后再删除！"),
-    SYSTEM_ERROR(3004, "系统错误！"),
+    DELETE_FINANCE_ERROR(3004, "该笔财务已经完结，禁止删除！"),
+    INSERT_FINANCE_ERROR(3005, "该工地财务已经录入，禁止重复登记！"),
+    DELETE_ADVANCE_SALARY_ERROR(3006, "该员工预支薪资已经归还，禁止删除！"),
+    SYSTEM_ERROR(3007, "系统错误！"),
 
     NO_THIS_USER(4001, "该用户不存在！"),
     PASSWORD_WRONG(4002, "密码错误！"),
@@ -26,12 +29,16 @@ public enum ResultEnum {
     CAPTCHA_ERROR(4007, "验证码错误，请重新输入！"),
     CAPTCHA_IS_NONE(4008, "请输入验证码！"),
 
-    SEARCH_PAGE_ERROR(5000, "分页查询错误！"),
-    SEARCH_ERROR(5001, "查询错误！"),
-    INSERT_ERROR(5002, "添加错误！"),
-    DELETE_ERROR(5003, "删除错误！"),
-    UPDATE_ERROR(5004, "修改错误！"),
-    ERROR_PAGE(5005, "去到错误页面！");
+    DOPAY_ADVANCE_SALARY_OVER_PAY_SALARY(5001, "预支总金额大于所发薪资，本次发薪无效！"),
+    DOPAY_NO_WORKSITE_SALARY(5002, "该工地还未录入薪资，请录入后再进行发放操作！"),
+    DOPAY_TOTAL_SALARY_OVER_PAY_SALARY(5003, "该工地仅剩余{0}元，不够本次薪资发放，本次薪资发放无效！"),
+
+    SEARCH_PAGE_ERROR(6000, "分页查询错误！"),
+    SEARCH_ERROR(6001, "查询错误！"),
+    INSERT_ERROR(6002, "添加错误！"),
+    DELETE_ERROR(6003, "删除错误！"),
+    UPDATE_ERROR(6004, "修改错误！"),
+    ERROR_PAGE(6005, "去到错误页面！");
 
     private Integer code;
     private String value;

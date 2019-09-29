@@ -28,6 +28,10 @@ public class PayRecord {
     private String workhourIds; // 工时ID列表
     @Column(name = "remark")
     private String remark;
+    @Column(name = "has_modify_money")
+    private Integer hasModifyMoney; // 是否修改了金额，1是，0否
+    @Column(name = "change_money")
+    private Double changeMoney;
 
     // 非数据库属性
     @Column(name = "employee_name")

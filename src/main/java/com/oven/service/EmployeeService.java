@@ -17,7 +17,6 @@ import java.util.List;
  * @author Oven
  */
 @Service
-@Transactional
 public class EmployeeService extends BaseService {
 
     @Resource
@@ -26,6 +25,7 @@ public class EmployeeService extends BaseService {
     /**
      * 添加员工
      */
+    @Transactional(rollbackFor = Exception.class)
     public void add(Employee employee) {
         employee.setCreateId(super.getCurrentUser().getId());
         employee.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
@@ -41,6 +41,7 @@ public class EmployeeService extends BaseService {
     /**
      * 更新
      */
+    @Transactional(rollbackFor = Exception.class)
     public void update(Employee employee) {
         Employee employeeInDb = this.getById(employee.getId());
         String employeeName = employeeInDb.getName();
@@ -146,6 +147,7 @@ public class EmployeeService extends BaseService {
     /**
      * 删除员工
      */
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer id) {
         Employee employee = this.getById(id);
         boolean flag = employeeDao.delete(id) > 0;

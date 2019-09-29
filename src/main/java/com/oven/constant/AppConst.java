@@ -63,4 +63,10 @@ public class AppConst {
     public static final String WORKSITE_DELETE_LIMIT_KEY = "worksite.delete.limit.key";
     public static final String WORKSITE_UPDATE_STATUS_LIMIT_KEY = "worksite.update.status.limit.key";
 
+    public static final String ADVANCESALARY_INSERT_LIMIT_KEY = "advanceSalary.insert.limit.key";
+    public static final String ADVANCESALARY_DELETE_LIMIT_KEY = "advanceSalary.delete.limit.key";
+
+    public static final String FINANCE_INSERT_LIMIT_KEY = "finance.insert.limit.key";
+    public static final String FINANCE_DELETE_LIMIT_KEY = "finance.delete.limit.key";
+
 }

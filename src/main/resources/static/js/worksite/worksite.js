@@ -29,7 +29,15 @@ layui.use('table', function() {
         , cols: [[
             {type: 'numbers'}
             , {field: 'name', title: '工地名称', sort: true}
-            , {field: 'desc', title: '工地描述'}
+            , {
+                field: 'desc', title: '工地描述', templet: function(d) {
+                    if (d.desc == '' || d.desc == null) {
+                        return '-';
+                    } else {
+                        return d.desc;
+                    }
+                }
+            }
             , {field: 'createTime', title: '创建时间'}
             , {field: 'createName', title: '创建人'}
             , {field: 'lastModifyTime', title: '最后修改时间'}

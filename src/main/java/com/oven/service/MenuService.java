@@ -19,7 +19,6 @@ import java.util.*;
  * @author Oven
  */
 @Service
-@Transactional
 public class MenuService extends BaseService {
 
     @Resource
@@ -51,6 +50,7 @@ public class MenuService extends BaseService {
     /**
      * 修改菜单
      */
+    @Transactional(rollbackFor = Exception.class)
     public void update(Menu menu) {
         Menu menuInDb = this.getById(menu.getId());
         String menuName = menuInDb.getMenuName();
@@ -142,7 +142,7 @@ public class MenuService extends BaseService {
      * @param userId 用户ID
      * @param pid    菜单ID
      */
-    public List<Menu> getByPidAndHasPermission(Integer userId, Integer pid) {
+    private List<Menu> getByPidAndHasPermission(Integer userId, Integer pid) {
         List<Menu> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {

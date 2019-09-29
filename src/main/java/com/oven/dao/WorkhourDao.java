@@ -140,4 +140,74 @@ public class WorkhourDao {
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), employeeId);
     }
 
+    /**
+     * 获取薪资统计图表X轴数据
+     */
+    public List<String> getCategories(String date, Integer dateType) {
+        String sql;
+        if (dateType == 1) {
+            sql = "select * " +
+                    "from (select distinct substr(work_date, 1, 7) as date " +
+                    "      from t_workhour " +
+                    "      where substr(work_date, 1, 4) = ? " +
+                    "      union " +
+                    "      select distinct substr(advance_time, 1, 7) as date " +
+                    "      from t_advance_salary " +
+                    "      where substr(advance_time, 1, 4) = ?) a " +
+                    "order by date";
+        } else if (dateType == 2) {
+            sql = "select * " +
+                    "from (select distinct substr(work_date, 1, 10) as date " +
+                    "      from t_workhour " +
+                    "      where substr(work_date, 1, 7) = ? " +
+                    "      union " +
+                    "      select distinct substr(advance_time, 1, 10) as date " +
+                    "      from t_advance_salary " +
+                    "      where substr(advance_time, 1, 7) = ?) a " +
+                    "order by date";
+        } else {
+            return null;
+        }
+        return this.jdbcTemplate.queryForList(sql, String.class, date, date);
+    }
+
+    /**
+     * 获取薪资信息
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年，2传入的是年月，3传入的是年月日
+     * @param dataType 获取数据类型，in获取录入薪资，out获取发放薪资
+     */
+    public Double getSalaryByDateAndDateType(String date, Integer dateType, String dataType) {
+        String sql;
+        if (dateType == 1) { // 传入的年
+            if ("in".equals(dataType)) { // 录入
+                sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 4) = ?";
+            } else if ("out".equals(dataType)) { // 发放
+                sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 4) = ? and has_pay = 1";
+            } else {
+                return null;
+            }
+        } else if (dateType == 2) { // 传入的是年月
+            if ("in".equals(dataType)) { // 录入
+                sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 7) = ?";
+            } else if ("out".equals(dataType)) { // 发放
+                sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 7) = ? and has_pay = 1";
+            } else {
+                return null;
+            }
+        } else if (dateType == 3) {
+            if ("in".equals(dataType)) { // 录入
+                sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 10) = ?";
+            } else if ("out".equals(dataType)) { // 发放
+                sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 10) = ? and has_pay = 1";
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+        return this.jdbcTemplate.queryForObject(sql, Double.class, date);
+    }
+
 }

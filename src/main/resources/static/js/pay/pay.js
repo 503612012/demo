@@ -36,12 +36,40 @@ layui.use(['table', 'form', 'layedit'], function() {
                     }
                 }
             ]]
-            , page: false
+            , page: {
+                layout: []
+            }
             , where: {
                 employeeId: employeeId,
                 worksiteId: worksiteId
+            },
+            done: function(res) {
+                if (hasPermission("C1_01_02")) {
+                    $('#layui-table-page1').css("display", "flex");
+                    var totalSalary = 0;
+                    for (var i = 0; i < res.data.length; i++) {
+                        totalSalary += (res.data[i].workhour * res.data[i].hourSalary);
+                    }
+                    var html = "<div style='margin-left: 20px; font-weight: bold; color: red;'>本页薪资总额为：<span style='cursor: pointer;' data-value='" + totalSalary + "元' class='totalSalary'>***</span></div>";
+                    $('#layui-table-page1').append(html);
+                }
             }
         });
+    });
+
+    /**
+     * 显示/隐藏薪资
+     */
+    $("body").on("click", "span.totalSalary", function() {
+        if (hasPermission("C1_01_02")) {
+            if ($(this).hasClass("red")) { // 隐藏
+                $(this).removeClass("red");
+                $(this).html("***");
+            } else {
+                $(this).addClass("red");
+                $(this).html($(this).attr("data-value"));
+            }
+        }
     });
 
     /**
@@ -100,7 +128,42 @@ layui.use(['table', 'form', 'layedit'], function() {
                 totalMoney += (workhour * hourSalary);
             }
         }
-        var notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】发放薪资共计【<span style='color: red;'>" + totalWorkhour + "</span>】工时，合计【<span style='color: red;' class='auctualPayMoneySpan'>" + totalMoney + "</span>】元，核对无误后点击确定！";
+        var advanceSalary;
+        $.ajax({
+            url: '/advanceSalary/getTotalAdvanceSalaryByEmployeeId',
+            type: 'POST',
+            data: {
+                "employeeId": list[0].employeeId
+            },
+            async: false,
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    $("#payNoticeText").html('');
+                    $("#payRemarkBox").addClass("hide");
+                    $("#payRemarkBox").css("display", "none");
+                    return;
+                }
+                advanceSalary = result.data;
+            }
+        });
+        var notice;
+        if (advanceSalary) {
+            notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】" +
+                "发放薪资共计【<span style='color: red;'>" + totalWorkhour + "</span>】工时，" +
+                "合计【<span style='color: red;' class='auctualPayMoneySpan'>" + totalMoney + "</span>】元，" +
+                "该员工曾预支薪资【<span style='color: red;'>" + advanceSalary + "</span>】元，" +
+                "将从本次发薪中扣除，扣除后的总发薪金额为【<span style='color: red;'>" + (totalMoney - advanceSalary) + "</span>】元，核对无误后点击确定！";
+        } else {
+            notice = "本次给【<span style='color: red;'>" + list[0].employeeName + "</span>】发放薪资共计" +
+                "【<span style='color: red;'>" + totalWorkhour + "</span>】工时，合计" +
+                "【<span style='color: red;' class='auctualPayMoneySpan'>" + totalMoney + "</span>】元，核对无误后点击确定！";
+        }
         $("#payNoticeText").html(notice);
         if (hasPermission('C1_01_01')) {
             layer.open({
@@ -120,11 +183,14 @@ layui.use(['table', 'form', 'layedit'], function() {
                 btn2: function(index) {
                     var isModifyPayMoney = false;
                     var actualPayMoney = $("input[name=actualPayMoney]").val();
+                    var diffMoney = 0;
                     if (!(actualPayMoney == null || actualPayMoney == '')) { // 修改过金额
+                        diffMoney = totalMoney - actualPayMoney;
                         totalMoney = actualPayMoney;
                         isModifyPayMoney = true;
                     }
                     var remark = $('#payRemark').val();
+                    var worksiteId = $('#worksiteSelect').val();
                     if (isModifyPayMoney) {
                         if (remark == '' || remark == undefined) {
                             layer.open({
@@ -136,6 +202,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                             return false;
                         }
                     }
+
                     $.ajax({
                         url: '/pay/doPay',
                         type: 'POST',
@@ -144,6 +211,9 @@ layui.use(['table', 'form', 'layedit'], function() {
                             "employeeId": list[0].employeeId,
                             "totalMoney": totalMoney,
                             "totalHour": totalWorkhour,
+                            "hasModifyMoney": isModifyPayMoney ? 1 : 0,
+                            "changeMoney": diffMoney,
+                            "worksiteId": worksiteId,
                             "remark": remark
                         },
                         dataType: 'json',
@@ -154,6 +224,9 @@ layui.use(['table', 'form', 'layedit'], function() {
                                     content: result.data,
                                     btnAlign: 'c'
                                 });
+                                $("#payNoticeText").html('');
+                                $("#payRemarkBox").addClass("hide");
+                                $("#payRemarkBox").css("display", "none");
                                 return;
                             }
                             layer.close(index);
@@ -186,6 +259,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 resize: false,
                 yes: function(index) {
                     var remark = $('#payRemark').val();
+                    var worksiteId = $('#worksiteSelect').val();
                     $.ajax({
                         url: '/pay/doPay',
                         type: 'POST',
@@ -194,6 +268,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                             "employeeId": list[0].employeeId,
                             "totalMoney": totalMoney,
                             "totalHour": totalWorkhour,
+                            "worksiteId": worksiteId,
                             "remark": remark
                         },
                         dataType: 'json',
@@ -204,6 +279,9 @@ layui.use(['table', 'form', 'layedit'], function() {
                                     content: result.data,
                                     btnAlign: 'c'
                                 });
+                                $("#payNoticeText").html('');
+                                $("#payRemarkBox").addClass("hide");
+                                $("#payRemarkBox").css("display", "none");
                                 return;
                             }
                             layer.close(index);

@@ -4,16 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
+import com.oven.exception.DoPayException;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.service.PayRecordService;
 import com.oven.service.PayService;
-import com.oven.vo.PayRecord;
 import com.oven.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,8 +30,6 @@ public class PayController extends BaseController {
 
     @Resource
     private PayService payService;
-    @Resource
-    private PayRecordService payRecordService;
 
     /**
      * 去到薪资发放页面
@@ -68,22 +65,19 @@ public class PayController extends BaseController {
     @ResponseBody
     @RequestMapping("/doPay")
     @RequiresPermissions(PermissionCode.SALARY_PAY)
-    @Limit(key = AppConst.PAY_DOPAY_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.CUSTOMER)
-    public Object doPay(String workhourIds, Integer employeeId, Integer totalHour, Double totalMoney, String remark) throws MyException {
+    @Limit(key = AppConst.PAY_DOPAY_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    public Object doPay(String workhourIds, Integer employeeId, Integer totalHour, Double totalMoney, String remark, Integer worksiteId, Integer hasModifyMoney, Double changeMoney) throws MyException {
         try {
-            payService.doPay(workhourIds);
-            // 保存发薪记录
-            PayRecord payRecord = new PayRecord();
-            payRecord.setPayerId(super.getCurrentUser().getId());
-            payRecord.setEmployeeId(employeeId);
-            payRecord.setPayDate(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-            payRecord.setTotalHour(totalHour);
-            payRecord.setTotalMoney(totalMoney);
-            payRecord.setWorkhourIds(workhourIds);
-            payRecord.setRemark(remark);
-            payRecordService.add(payRecord);
-            return super.success("发薪成功！");
+            String result = payService.doPay(workhourIds, employeeId, totalHour, totalMoney, remark, worksiteId, hasModifyMoney, changeMoney);
+            if (StringUtils.isEmpty(result)) {
+                return super.success("发薪成功！");
+            } else {
+                return super.fail(ResultEnum.SYSTEM_ERROR.getCode(), result);
+            }
         } catch (Exception e) {
+            if (e instanceof DoPayException) {
+                return super.fail(((DoPayException) e).getCode(), ((DoPayException) e).getMsg());
+            }
             throw new MyException(ResultEnum.SYSTEM_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
     }
