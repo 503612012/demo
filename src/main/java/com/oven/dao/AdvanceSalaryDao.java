@@ -109,7 +109,7 @@ public class AdvanceSalaryDao {
             sql = "select sum(money) as money from t_advance_salary where substr(advance_time, 1, 4) = ?";
         } else if (dateType == 2) { // 传入的是年月
             sql = "select sum(money) as money from t_advance_salary where substr(advance_time, 1, 7) = ?";
-        } else if (dateType == 3) {
+        } else if (dateType == 3) { // 传入的是年月日
             sql = "select sum(money) as money from t_advance_salary where substr(advance_time, 1, 10) = ?";
         } else {
             return null;

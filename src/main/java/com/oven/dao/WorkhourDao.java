@@ -196,7 +196,7 @@ public class WorkhourDao {
             } else {
                 return null;
             }
-        } else if (dateType == 3) {
+        } else if (dateType == 3) { // 传入的是年月日
             if ("in".equals(dataType)) { // 录入
                 sql = "select sum(work_hour * hour_salary) as money from t_workhour where substr(work_date, 1, 10) = ?";
             } else if ("out".equals(dataType)) { // 发放
@@ -208,6 +208,53 @@ public class WorkhourDao {
             return null;
         }
         return this.jdbcTemplate.queryForObject(sql, Double.class, date);
+    }
+
+    /**
+     * 获取薪资统计图表X轴数据-工时报表
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年，2传入的是年月
+     */
+    public List<String> getCategoriesForWorkhour(String date, Integer dateType, Integer employeeId) {
+        StringBuilder sql = new StringBuilder();
+        if (dateType == 1) {
+            sql.append("select distinct substr(work_date, 1, 7) as date from t_workhour where substr(work_date, 1, 4) = ?");
+            if (employeeId != null) {
+                sql.append(" and employee_id = ").append(employeeId);
+            }
+            sql.append(" order by date");
+        } else if (dateType == 2) {
+            sql.append("select distinct substr(work_date, 1, 10) as date from t_workhour where substr(work_date, 1, 7) = ?");
+            if (employeeId != null) {
+                sql.append(" and employee_id = ").append(employeeId);
+            }
+            sql.append(" order by date");
+        } else {
+            return null;
+        }
+        return this.jdbcTemplate.queryForList(sql.toString(), String.class, date);
+    }
+
+    /**
+     * 获取薪资信息
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年月，2传入的是年月日
+     */
+    public Double getWorkhourByDateAndDateType(String date, Integer dateType, Integer employeeId) {
+        StringBuilder sql = new StringBuilder();
+        if (dateType == 1) { // 传入的年月
+            sql.append("select sum(work_hour) as totalWorkhour from t_workhour where substr(work_date, 1, 7) = ?");
+        } else if (dateType == 2) { // 传入的是年月日
+            sql.append("select sum(work_hour) as totalWorkhour from t_workhour where substr(work_date, 1, 10) = ?");
+        } else {
+            return null;
+        }
+        if (employeeId != null) {
+            sql.append(" and employee_id = ").append(employeeId);
+        }
+        return this.jdbcTemplate.queryForObject(sql.toString(), Double.class, date);
     }
 
 }

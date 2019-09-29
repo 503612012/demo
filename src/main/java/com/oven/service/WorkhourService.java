@@ -243,4 +243,34 @@ public class WorkhourService extends BaseService {
         return salary;
     }
 
+    /**
+     * 获取薪资统计图表X轴数据-工时报表
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年，2传入的是年月
+     */
+    public List<String> getCategoriesForWorkhour(String date, Integer dateType, Integer employeeId) {
+        return workhourDao.getCategoriesForWorkhour(date, dateType, employeeId);
+    }
+
+    /**
+     * 获取薪资信息
+     *
+     * @param date     查询数据日期
+     * @param dateType 日期类型，1传入的年月，2传入的是年月日
+     */
+    public Double getWorkhourByDateAndDateType(String date, Integer dateType, Integer employeeId) {
+        Double workhour = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_DATE_AND_DATETYPE, date, dateType, employeeId)); // 先读取缓存
+        if (workhour == null) { // double check
+            synchronized (this) {
+                workhour = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_DATE_AND_DATETYPE, date, dateType, employeeId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (workhour == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    workhour = workhourDao.getWorkhourByDateAndDateType(date, dateType, employeeId);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKHOUR_BY_DATE_AND_DATETYPE, date, dateType, employeeId), workhour);
+                }
+            }
+        }
+        return workhour;
+    }
+
 }

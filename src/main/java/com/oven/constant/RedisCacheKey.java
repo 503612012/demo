@@ -40,6 +40,7 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_UN_PAY_BY_EMPLOYEEID = "workhour_getUnPayByEmployeeId_{0}";
     public static final String WORKHOUR_GET_SALARY_COMPARE_PROPORTION = "workhour_getSalaryCompareProportion_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_SALARY_BY_DATE_AND_DATETYPE = "workhour_getSalaryByDateAndDateType_{0}_{1}_{2}";
+    public static final String WORKHOUR_GET_WORKHOUR_BY_DATE_AND_DATETYPE = "workhour_getWorkhourByDateAndDateType_{0}_{1}_{2}";
     public static final String WORKHOUR_GET_WORKHOUR_BY_EMPLOYEEID_AND_WORKSITEID = "workhour_getWorkhourByEmployeeIdAndWorksiteId_{0}_{1}";
     public static final String WORKHOUR_GET_BY_EMPLOYEEID_AND_WORKDATE_AND_WORKSITEID = "workhour_getByEmployeeIdAndWorkDateAndWorksiteId_{0}_{1}_{2}";
 
