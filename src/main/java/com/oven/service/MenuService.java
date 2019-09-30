@@ -95,10 +95,11 @@ public class MenuService extends BaseService {
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     List<List<RoleMenu>> menus = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
-                    for (UserRole role : roles) {
-                        List<RoleMenu> item = roleMenuService.getByRoleId(role.getRoleId());
-                        menus.add(item);
-                    }
+//                    for (UserRole role : roles) {
+//                        List<RoleMenu> item = roleMenuService.getByRoleId(role.getRoleId());
+//                        menus.add(item);
+//                    }
+                    roles.forEach(role -> menus.add(roleMenuService.getByRoleId(role.getRoleId())));
                     list = installMenu(userId, menus);
                     super.set(MessageFormat.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId), list);
                 }
@@ -116,12 +117,13 @@ public class MenuService extends BaseService {
     private List<Map<String, Object>> installMenu(Integer userId, List<List<RoleMenu>> list) {
         List<Map<String, Object>> result = new ArrayList<>();
         List<Menu> menus = new ArrayList<>();
-        for (List<RoleMenu> item : list) {
-            for (RoleMenu mid : item) {
-                Menu menu = menuDao.getById(mid.getMenuId());
-                menus.add(menu);
-            }
-        }
+//        for (List<RoleMenu> item : list) {
+//            for (RoleMenu mid : item) {
+//                Menu menu = menuDao.getById(mid.getMenuId());
+//                menus.add(menu);
+//            }
+//        }
+        list.forEach(item -> item.forEach(mid -> menus.add(menuDao.getById(mid.getMenuId()))));
         Collections.sort(menus);
         for (Menu menu : menus) {
             if (menu.getPid() == 0 && menu.getStatus() == 0) { // 是一级菜单，直接放入map，并添加其子菜单
@@ -153,9 +155,10 @@ public class MenuService extends BaseService {
                     for (UserRole role : roles) {
                         List<RoleMenu> roleMenus = roleMenuService.getByRoleId(role.getRoleId());
                         if (roleMenus != null && roleMenus.size() > 0) {
-                            for (RoleMenu roleMenu : roleMenus) {
-                                menuIds.add(roleMenu.getMenuId());
-                            }
+//                            for (RoleMenu roleMenu : roleMenus) {
+//                                menuIds.add(roleMenu.getMenuId());
+//                            }
+                            roleMenus.forEach(roleMenu -> menuIds.add(roleMenu.getMenuId()));
                         }
                     }
                     list = menuDao.getByPidAndHasPermission(pid, menuIds);

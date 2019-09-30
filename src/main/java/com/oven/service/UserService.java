@@ -249,9 +249,10 @@ public class UserService extends BaseService {
         }
         User user = this.getById(userId);
         StringBuilder roleNames = new StringBuilder();
-        for (UserRole item : userRoles) {
-            roleNames.append(roleService.getById(item.getRoleId()).getRoleName()).append("，");
-        }
+//        for (UserRole item : userRoles) {
+//            roleNames.append(roleService.getById(item.getRoleId()).getRoleName()).append("，");
+//        }
+        userRoles.forEach(item -> roleNames.append(roleNames.append(roleService.getById(item.getRoleId()).getRoleName()).append("，")));
         String content = roleNames.toString();
         if (content.length() > 0) {
             content = content.substring(0, content.length() - 1);

@@ -1,7 +1,5 @@
 package com.oven.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.RedisCacheKey;
 import com.oven.dao.WorksiteDao;
 import com.oven.vo.Worksite;
@@ -158,24 +156,6 @@ public class WorksiteService extends BaseService {
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
         super.addLog("删除工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
-    }
-
-    /**
-     * 查询所有工地
-     */
-    public JSONArray findAll() {
-        List<Worksite> list = worksiteDao.getAll();
-        JSONArray result = new JSONArray();
-        for (int i = 0; i < list.size(); i++) {
-            JSONObject obj = new JSONObject();
-            obj.put("id", list.get(i).getId());
-            obj.put("text", list.get(i).getName());
-            if (i == 0) {
-                obj.put("selected", true);
-            }
-            result.add(obj);
-        }
-        return result;
     }
 
 }

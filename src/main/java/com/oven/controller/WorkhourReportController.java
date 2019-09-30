@@ -56,7 +56,7 @@ public class WorkhourReportController extends BaseController {
                     Double workhour = workhourService.getWorkhourByDateAndDateType(category, dateType, employeeId);
                     workhours.add(workhour == null ? 0d : workhour);
                     if (dateType == 1) { // 年月
-                        preCategories.add(DateTime.parse(category).plusYears(-1).toString("yyy  y-MM"));
+                        preCategories.add(DateTime.parse(category).plusYears(-1).toString("yyyy-MM"));
                     } else if (dateType == 2) { // 年月日
                         preCategories.add(DateTime.parse(category).plusMonths(-1).toString("yyyy-MM-dd"));
                     }
