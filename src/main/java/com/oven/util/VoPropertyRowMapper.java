@@ -67,7 +67,6 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
                 this.mappedProperties.add(pd.getName());
             }
         }
-
     }
 
     private Column getClassFieldColumnInfo(Class<T> mappedClass, String propertyName) {

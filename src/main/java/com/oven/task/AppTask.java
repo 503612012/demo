@@ -1,5 +1,6 @@
 package com.oven.task;
 
+import com.oven.constant.AppConst;
 import com.oven.dao.CrontabDao;
 import com.oven.util.QueueUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.Random;
  * @author Oven
  */
 @Slf4j
-//@Component
+@Component
 public class AppTask implements SchedulingConfigurer {
 
     @Resource
@@ -30,7 +31,7 @@ public class AppTask implements SchedulingConfigurer {
         taskRegistrar.addTriggerTask(this::doSomething, triggerContext -> {
             String cron = crontabDao.getCron("cronKey");
             if (StringUtils.isEmpty(cron)) {
-                System.out.println("cron is null...");
+                log.error(AppConst.ERROR_LOG_PREFIX + "cron is null...");
             }
             return new CronTrigger(cron).nextExecutionTime(triggerContext);
         });
