@@ -30,7 +30,7 @@ public class Finance implements Serializable {
     @Column(name = "out_money")
     private Double outMoney;
     @Column(name = "del_flag")
-    private Integer delFlag; // '正常，1删除
+    private Integer delFlag; // 0正常，1删除
     @Column(name = "del_id")
     private Integer delId;
     @Column(name = "del_time")

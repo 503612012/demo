@@ -7,9 +7,11 @@ import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
+import com.oven.service.AdvanceSalaryService;
 import com.oven.service.EmployeeService;
 import com.oven.service.UserService;
 import com.oven.service.WorkhourService;
+import com.oven.vo.AdvanceSalary;
 import com.oven.vo.Employee;
 import com.oven.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,6 +38,8 @@ public class EmployeeController extends BaseController {
     private WorkhourService workhourService;
     @Resource
     private EmployeeService employeeService;
+    @Resource
+    private AdvanceSalaryService advanceSalaryService;
 
     /**
      * 去到员工管理页面
@@ -162,7 +166,12 @@ public class EmployeeController extends BaseController {
             // 判断该员工有没有未发的薪资
             List<Workhour> workhours = workhourService.getUnPayByEmployeeId(id);
             if (workhours != null && workhours.size() > 0) {
-                return super.fail(ResultEnum.DELETE_EMPLOYEE_ERROR.getCode(), ResultEnum.DELETE_EMPLOYEE_ERROR.getValue());
+                return super.fail(ResultEnum.DELETE_EMPLOYEE_ERROR_UNPAY_SALARY.getCode(), ResultEnum.DELETE_EMPLOYEE_ERROR_UNPAY_SALARY.getValue());
+            }
+            // 判断该员工有没有未归还的预支薪资
+            List<AdvanceSalary> advanceSalaries = advanceSalaryService.getByEmployeeId(id, 1);
+            if (advanceSalaries != null && advanceSalaries.size() > 0) {
+                return super.fail(ResultEnum.DELETE_EMPLOYEE_ERROR_UNBACK_ADVANCE_SALARY.getCode(), ResultEnum.DELETE_EMPLOYEE_ERROR_UNBACK_ADVANCE_SALARY.getValue());
             }
             boolean result = employeeService.delete(id);
             if (result) {

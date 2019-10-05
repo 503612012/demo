@@ -103,7 +103,7 @@ layui.use('table', function() {
      * 绑定工地状态更改点击事件
      */
     $("body").on("click", ".worksite-status", function() {
-        if (hasPermission("B1_03_04")) {
+        if (hasPermission(hasChangeWorksiteStatusPermission)) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {

@@ -42,19 +42,21 @@
 
 <script type="text/html" id="userListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains('A1_01_01')}" class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">
+        <button th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).USER_INSERT)}" class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加用户</i>
         </button>
     </div>
 </script>
 <script type="text/html" id="userListBar">
-    <a th:if="${session.menu.contains('A1_01_05')}" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">分配角色</a>
-    <a th:if="${session.menu.contains('A1_01_02')}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a th:if="${session.menu.contains('A1_01_03')}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).USER_SETROLE)}" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">分配角色</a>
+    <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).USER_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).USER_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
+
+    var hasChangeUserStatusPermission = /*[[${T(com.oven.constant.PermissionCode).USER_SETSTATUS}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

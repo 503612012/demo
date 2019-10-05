@@ -109,7 +109,7 @@ layui.use('table', function() {
      * 绑定员工状态更改点击事件
      */
     $("body").on("click", ".employee-status", function() {
-        if (hasPermission("B1_01_04")) {
+        if (hasPermission(hasChangeEmployeeStatusPermission)) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {
@@ -136,7 +136,7 @@ layui.use('table', function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.hourSalary", function() {
-        if (hasPermission("B1_01_05")) {
+        if (hasPermission(hasShowEmployeeMoneyStatusPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");

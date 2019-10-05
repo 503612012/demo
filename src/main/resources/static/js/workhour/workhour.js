@@ -72,7 +72,7 @@ layui.use(['table', 'laydate'], function() {
         ]]
         , page: true
         , done: function(res) {
-            if (hasPermission("B1_02_03")) {
+            if (hasPermission(hasShowWorkhourMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
                 var totalWorkhour = 0;
                 for (var i = 0; i < res.data.length; i++) {
@@ -90,7 +90,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.hourSalary", function() {
-        if (hasPermission("B1_02_03")) {
+        if (hasPermission(hasShowWorkhourMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -105,7 +105,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏总工时
      */
     $("body").on("click", "span.totalWorkhour", function() {
-        if (hasPermission("B1_02_04")) {
+        if (hasPermission(hasShowWorkhourTotalWorkhourPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");

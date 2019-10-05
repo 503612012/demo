@@ -109,7 +109,7 @@ layui.use(['table', 'jquery'], function() {
      * 绑定用户状态更改点击事件
      */
     $("body").on("click", ".user-status", function() {
-        if (hasPermission("A1_01_04")) {
+        if (hasPermission(hasChangeUserStatusPermission)) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {

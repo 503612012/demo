@@ -44,7 +44,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 worksiteId: worksiteId
             },
             done: function(res) {
-                if (hasPermission("C1_01_02")) {
+                if (hasPermission(hasShowSalaryPayTotalMoneyPermission)) {
                     $('#layui-table-page1').css("display", "flex");
                     var totalSalary = 0;
                     for (var i = 0; i < res.data.length; i++) {
@@ -61,7 +61,7 @@ layui.use(['table', 'form', 'layedit'], function() {
      * 显示/隐藏薪资
      */
     $("body").on("click", "span.totalSalary", function() {
-        if (hasPermission("C1_01_02")) {
+        if (hasPermission(hasShowSalaryPayTotalMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -165,7 +165,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 "【<span style='color: red;' class='auctualPayMoneySpan'>" + totalMoney + "</span>】元，核对无误后点击确定！";
         }
         $("#payNoticeText").html(notice);
-        if (hasPermission('C1_01_01')) {
+        if (hasPermission(hasChangeSalaryPayMoneyPermission)) {
             layer.open({
                 title: '系统提示！',
                 skin: 'pay-confirm-box-class',

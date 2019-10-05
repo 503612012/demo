@@ -71,6 +71,9 @@
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
 
+    var hasChangeSalaryPayMoneyPermission = /*[[${T(com.oven.constant.PermissionCode).SALARY_PAY_CHANGE_MONEY}]]*/ '';
+    var hasShowSalaryPayTotalMoneyPermission = /*[[${T(com.oven.constant.PermissionCode).SALARY_PAY_SHOW_TOTAL_MONEY}]]*/ '';
+
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {
             if (code == menu[i]) {

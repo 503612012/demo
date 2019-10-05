@@ -7,8 +7,12 @@ import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
+import com.oven.service.FinanceService;
 import com.oven.service.UserService;
+import com.oven.service.WorkhourService;
 import com.oven.service.WorksiteService;
+import com.oven.vo.Finance;
+import com.oven.vo.Workhour;
 import com.oven.vo.Worksite;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -31,7 +35,11 @@ public class WorksiteController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
+    private FinanceService financeService;
+    @Resource
     private WorksiteService worksiteService;
+    @Resource
+    private WorkhourService workhourService;
 
     /**
      * 去到工地管理页面
@@ -139,6 +147,16 @@ public class WorksiteController extends BaseController {
     @Limit(key = AppConst.WORKSITE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
+            // 判断该工地下有没有未发放薪资的工时
+            List<Workhour> worksites = workhourService.getByWorksiteId(id);
+            if (worksites != null && worksites.size() > 0) {
+                return super.fail(ResultEnum.DELETE_WORKHOUR_ERROR_HAS_UNPAY_WORKHOUR.getCode(), ResultEnum.DELETE_WORKHOUR_ERROR_HAS_UNPAY_WORKHOUR.getValue());
+            }
+            // 判断该工地下有没有登记的财务
+            Finance finance = financeService.getByWorksiteId(id);
+            if (finance != null) {
+                return super.fail(ResultEnum.DELETE_WORKHOUR_ERROR_HAS_FINANCE.getCode(), ResultEnum.DELETE_WORKHOUR_ERROR_HAS_FINANCE.getValue());
+            }
             worksiteService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {

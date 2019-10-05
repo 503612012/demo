@@ -273,4 +273,21 @@ public class WorkhourService extends BaseService {
         return workhour;
     }
 
+    /**
+     * 通过工地获取
+     */
+    public List<Workhour> getByWorksiteId(Integer worksiteId) {
+        List<Workhour> list = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKSITEID, worksiteId)); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKSITEID, worksiteId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = workhourDao.getByWorksiteId(worksiteId);
+                    super.set(MessageFormat.format(RedisCacheKey.WORKHOUR_GET_WORKSITEID, worksiteId), list);
+                }
+            }
+        }
+        return list;
+    }
+
 }

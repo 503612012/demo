@@ -64,7 +64,7 @@ layui.use(['table', 'laydate'], function() {
         , page: true
         , done: function(res) {
             var html = "<div style='margin-left: 20px; font-weight: bold; color: red;'>本页";
-            if (hasPermission("C1_04_04")) {
+            if (hasPermission(hasShowFinanceTotalInMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
                 var totalInFinance = 0;
                 for (var i = 0; i < res.data.length; i++) {
@@ -72,13 +72,13 @@ layui.use(['table', 'laydate'], function() {
                 }
                 html += "总登记金额为：<span style='cursor: pointer;' data-value='" + totalInFinance + "元' class='in_finance'>***</span>";
             }
-            if (hasPermission("C1_04_05")) {
+            if (hasPermission(hasShowFinanceTotalOutMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
                 var totalOutFinance = 0;
                 for (var n = 0; n < res.data.length; n++) {
                     totalOutFinance += res.data[n].outMoney;
                 }
-                if (hasPermission("C1_04_04")) {
+                if (hasPermission(hasShowFinanceTotalInMoneyPermission)) {
                     html += "<span style='margin-left: 20px;'>总支出金额为：<span style='cursor: pointer;' data-value='" + totalOutFinance + "元' class='out_finance'>***</span></span>";
                 } else {
                     html += "总支出薪资为：<span style='cursor: pointer;' data-value='" + totalOutFinance + "元' class='out_finance'>***</span>";
@@ -95,7 +95,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏总登记金额
      */
     $("body").on("click", "span.in_finance", function() {
-        if (hasPermission("C1_04_04")) {
+        if (hasPermission(hasShowFinanceTotalInMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -110,7 +110,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏总登记金额
      */
     $("body").on("click", "span.out_finance", function() {
-        if (hasPermission("C1_04_05")) {
+        if (hasPermission(hasShowFinanceTotalOutMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -125,7 +125,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.money", function() {
-        if (hasPermission("C1_04_02")) {
+        if (hasPermission(hasShowFinanceMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -140,7 +140,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.outMoney", function() {
-        if (hasPermission("C1_04_02")) {
+        if (hasPermission(hasShowFinanceMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");

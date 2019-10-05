@@ -175,4 +175,21 @@ public class AdvanceSalaryService extends BaseService {
         return totalAdvanceSalary;
     }
 
+    /**
+     * 根据员工ID获取
+     */
+    public List<AdvanceSalary> getByEmployeeId(Integer employeeId, Integer hasRepay) {
+        List<AdvanceSalary> list = super.get(MessageFormat.format(RedisCacheKey.ADVANCESALARY_GET_BY_EMPLOYEEID_AND_HASREPAY, employeeId, hasRepay)); // 先读取缓存
+        if (list == null) { // double check
+            synchronized (this) {
+                list = super.get(MessageFormat.format(RedisCacheKey.ADVANCESALARY_GET_BY_EMPLOYEEID_AND_HASREPAY, employeeId, hasRepay)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    list = advanceSalaryDao.getByEmployeeId(employeeId, hasRepay);
+                    super.set(MessageFormat.format(RedisCacheKey.ADVANCESALARY_GET_BY_EMPLOYEEID_AND_HASREPAY, employeeId, hasRepay), list);
+                }
+            }
+        }
+        return list;
+    }
+
 }

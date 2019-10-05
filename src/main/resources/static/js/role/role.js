@@ -94,7 +94,7 @@ layui.use('table', function() {
      * 绑定角色状态更改点击事件
      */
     $("body").on("click", ".role-status", function() {
-        if (hasPermission("A1_03_04")) {
+        if (hasPermission(hasChangeRoleStatusPermission)) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {

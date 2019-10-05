@@ -56,13 +56,9 @@ public class FinanceController extends BaseController {
     @Limit(key = AppConst.FINANCE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Finance finance) throws MyException {
         try {
-            List<Finance> list = financeService.getByWorksiteId(finance.getWorksiteId());
-            if (list != null && list.size() > 0) {
-                for (Finance item : list) {
-                    if (item.getDelFlag() == 0) {
-                        return super.fail(ResultEnum.INSERT_FINANCE_ERROR.getCode(), ResultEnum.INSERT_FINANCE_ERROR.getValue());
-                    }
-                }
+            Finance financeInDb = financeService.getByWorksiteId(finance.getWorksiteId());
+            if (financeInDb != null) {
+                return super.fail(ResultEnum.INSERT_FINANCE_ERROR.getCode(), ResultEnum.INSERT_FINANCE_ERROR.getValue());
             }
             financeService.add(finance);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());

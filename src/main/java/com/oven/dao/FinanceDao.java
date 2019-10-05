@@ -101,9 +101,10 @@ public class FinanceDao {
     /**
      * 通过工地获取
      */
-    public List<Finance> getByWorksiteId(Integer worksiteId) {
-        String sql = "select * from t_finance where worksite_id = ?";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Finance.class), worksiteId);
+    public Finance getByWorksiteId(Integer worksiteId) {
+        String sql = "select * from t_finance where worksite_id = ? and del_flag = 0";
+        List<Finance> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Finance.class), worksiteId);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

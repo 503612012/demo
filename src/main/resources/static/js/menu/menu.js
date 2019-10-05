@@ -76,7 +76,7 @@ layui.use(['treetable', 'form'], function() {
                     title: '操作',
                     template: function(item) {
                         if (item.type == 1) {
-                            if (hasPermission("A1_02_01")) {
+                            if (hasPermission(hasUpdateMenuPermission)) {
                                 return '<a lay-filter="edit" class="layui-btn layui-btn-xs">编辑</a>';
                             } else {
                                 return '';
@@ -180,7 +180,7 @@ layui.use(['treetable', 'form'], function() {
      * 绑定菜单状态更改点击事件
      */
     $("body").on("click", ".menu-status", function() {
-        if (hasPermission("A1_02_02")) {
+        if (hasPermission(hasChangeMenuStatusPermission)) {
             var id = $(this).attr("data-id");
             var status = $(this).attr("data-status");
             if (status == 0) {

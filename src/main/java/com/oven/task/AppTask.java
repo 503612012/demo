@@ -4,7 +4,6 @@ import com.oven.constant.AppConst;
 import com.oven.dao.CrontabDao;
 import com.oven.util.QueueUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
@@ -40,7 +39,7 @@ public class AppTask implements SchedulingConfigurer {
     private void doSomething() {
         String info = "" + new Random().nextInt(10);
         QueueUtils.getInstance().offer(info);
-        System.out.println("do something..." + new DateTime().getSecondOfMinute());
+        System.out.println("生产消息: " + info);
     }
 
 }

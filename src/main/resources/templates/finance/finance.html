@@ -31,19 +31,23 @@
 
 <script type="text/html" id="financeListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains('C1_04_01')}" class="layui-btn layui-btn-sm" id="finance-add-btn" lay-event="finance-add-btn">
+        <button th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FINANCE_INSERT)}" class="layui-btn layui-btn-sm" id="finance-add-btn" lay-event="finance-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">财务登记</i>
         </button>
     </div>
 </script>
 <script type="text/html" id="financeListBar">
     {{#  if(d.finishFlag == 1){ }}
-    <a th:if="${session.menu.contains('C1_04_03')}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FINANCE_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     {{#  } }}
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
+
+    var hasShowFinanceMoneyPermission = /*[[${T(com.oven.constant.PermissionCode).FINANCE_SHOW_MONEY}]]*/ '';
+    var hasShowFinanceTotalInMoneyPermission = /*[[${T(com.oven.constant.PermissionCode).FINANCE_SHOW_TOTAL_IN_MONEY}]]*/ '';
+    var hasShowFinanceTotalOutMoneyPermission = /*[[${T(com.oven.constant.PermissionCode).FINANCE_SHOW_TOTAL_OUT_MONEY}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

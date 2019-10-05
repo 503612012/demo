@@ -35,6 +35,7 @@ public class RedisCacheKey {
     public static final String WORKHOUR_GET_BY_ID = "workhour_getById_{0}";
     public static final String WORKHOUR_GET_TOTAL_NUM = "workhour_getTotalNum_{0}";
     public static final String WORKHOUR_GET_BY_PAGE = "workhour_getByPage_{0}_{1}_{2}";
+    public static final String WORKHOUR_GET_WORKSITEID = "workhour_getByWorksiteId_{0}";
     public static final String WORKHOUR_GET_TOTAL_WORKHOUR = "workhour_getTotalWorkhour";
     public static final String WORKHOUR_GET_WORKHOUR_PROPORTION = "workhour_getWorkhourProportion";
     public static final String WORKHOUR_GET_UN_PAY_BY_EMPLOYEEID = "workhour_getUnPayByEmployeeId_{0}";
@@ -56,6 +57,7 @@ public class RedisCacheKey {
     public static final String ADVANCESALARY_GET_BY_ID = "advanceSalary_getById_{0}";
     public static final String ADVANCESALARY_GET_TOTAL_NUM = "advanceSalary_getTotalNum_{0}";
     public static final String ADVANCESALARY_GET_BY_PAGE = "advanceSalary_getByPage_{0}_{1}_{2}";
+    public static final String ADVANCESALARY_GET_BY_EMPLOYEEID_AND_HASREPAY = "advanceSalary_getByEmployeeId_{0}_{1}";
     public static final String ADVANCESALARY_GET_TOTAL_ADVANCE_SALARY_BY_EMPLOYEEID = "advanceSalary_getTotalAdvanceSalaryByEmployeeId_{0}";
     public static final String ADVANCESALARY_GET_ADVANCE_SALARY_BY_DATE_DATETYPE = "advanceSalary_getAdvanceSalaryByDateAndDateType_{0}_{1}";
     public static final String ADVANCESALARY_GET_ADVANCE_SALARY_COMPARE_PROPORTION = "advanceSalary_getAdvanceSalaryCompareProportion_{0}_{1}";

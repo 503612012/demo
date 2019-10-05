@@ -114,18 +114,18 @@ public class FinanceService extends BaseService {
     /**
      * 通过工地获取
      */
-    public List<Finance> getByWorksiteId(Integer worksiteId) {
-        List<Finance> list = super.get(MessageFormat.format(RedisCacheKey.FINANCE_GET_BY_WORKSITEID, worksiteId)); // 先读取缓存
-        if (list == null) { // double check
+    public Finance getByWorksiteId(Integer worksiteId) {
+        Finance finance = super.get(MessageFormat.format(RedisCacheKey.FINANCE_GET_BY_WORKSITEID, worksiteId)); // 先读取缓存
+        if (finance == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.FINANCE_GET_BY_WORKSITEID, worksiteId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = financeDao.getByWorksiteId(worksiteId);
-                    super.set(MessageFormat.format(RedisCacheKey.FINANCE_GET_BY_WORKSITEID, worksiteId), list);
+                finance = super.get(MessageFormat.format(RedisCacheKey.FINANCE_GET_BY_WORKSITEID, worksiteId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (finance == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    finance = financeDao.getByWorksiteId(worksiteId);
+                    super.set(MessageFormat.format(RedisCacheKey.FINANCE_GET_BY_WORKSITEID, worksiteId), finance);
                 }
             }
         }
-        return list;
+        return finance;
     }
 
 }

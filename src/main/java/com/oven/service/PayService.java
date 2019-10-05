@@ -65,7 +65,7 @@ public class PayService extends BaseService {
         super.addLog("工时标记为已发薪", workhourIds, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
 
         // 发放金额中扣除预支薪资
-        List<AdvanceSalary> advanceSalaries = advanceSalaryDao.getByEmployeeId(employeeId);
+        List<AdvanceSalary> advanceSalaries = advanceSalaryDao.getByEmployeeId(employeeId, null);
         Double totalAdvanceSalary = 0d; // 总预支金额
         if (advanceSalaries != null && advanceSalaries.size() > 0) {
             for (AdvanceSalary advanceSalary : advanceSalaries) {
@@ -85,15 +85,7 @@ public class PayService extends BaseService {
         super.addLog("预支薪资标记为已归还", "员工ID" + employeeId, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
 
         // 从工地资金中扣除
-        Finance finance = null;
-        List<Finance> list = financeDao.getByWorksiteId(worksiteId);
-        if (list != null && list.size() > 0) {
-            for (Finance item : list) {
-                if (item.getDelFlag() == 0) {
-                    finance = item;
-                }
-            }
-        }
+        Finance finance = financeDao.getByWorksiteId(worksiteId);
         if (finance == null) {
             throw new DoPayException(ResultEnum.DOPAY_NO_WORKSITE_SALARY.getCode(), ResultEnum.DOPAY_NO_WORKSITE_SALARY.getValue(), new Exception());
         }

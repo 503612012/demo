@@ -257,4 +257,12 @@ public class WorkhourDao {
         return this.jdbcTemplate.queryForObject(sql.toString(), Double.class, date);
     }
 
+    /**
+     * 通过工地获取
+     */
+    public List<Workhour> getByWorksiteId(Integer worksiteId) {
+        String sql = "select * from t_workhour where worksite_id = ? and has_pay = 0";
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), worksiteId);
+    }
+
 }

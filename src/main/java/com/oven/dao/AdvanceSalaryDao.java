@@ -120,9 +120,12 @@ public class AdvanceSalaryDao {
     /**
      * 根据员工ID获取
      */
-    public List<AdvanceSalary> getByEmployeeId(Integer employeeId) {
-        String sql = "select * from t_advance_salary where employee_id = ?";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(AdvanceSalary.class), employeeId);
+    public List<AdvanceSalary> getByEmployeeId(Integer employeeId, Integer hasRepay) {
+        StringBuilder sql = new StringBuilder("select * from t_advance_salary where employee_id = ?");
+        if (hasRepay != null) {
+            sql.append(" and has_repay = ").append(hasRepay);
+        }
+        return this.jdbcTemplate.query(sql.toString(), new VoPropertyRowMapper<>(AdvanceSalary.class), employeeId);
     }
 
     /**

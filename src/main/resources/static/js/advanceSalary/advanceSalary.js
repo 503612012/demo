@@ -67,7 +67,7 @@ layui.use(['table', 'laydate'], function() {
         ]]
         , page: true
         , done: function(res) {
-            if (hasPermission("C1_03_04")) {
+            if (hasPermission(hasShowAdvanceSalaryTotalMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
                 var totalAdvanceSalary = 0;
                 for (var i = 0; i < res.data.length; i++) {
@@ -85,7 +85,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏总金额
      */
     $("body").on("click", "span.totalAdvanceSalary", function() {
-        if (hasPermission("C1_03_04")) {
+        if (hasPermission(hasShowAdvanceSalaryTotalMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
@@ -100,7 +100,7 @@ layui.use(['table', 'laydate'], function() {
      * 显示/隐藏金额
      */
     $("body").on("click", "span.money", function() {
-        if (hasPermission("C1_03_03")) {
+        if (hasPermission(hasShowAdvanceSalaryMoneyPermission)) {
             if ($(this).hasClass("red")) { // 隐藏
                 $(this).removeClass("red");
                 $(this).html("***");
