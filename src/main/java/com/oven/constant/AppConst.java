@@ -22,6 +22,7 @@ public class AppConst {
     public static final String USER_MENU = "menu"; // 用户菜单
 
     public static final String CAPTCHA = "_captcha";
+    public static final String PERCENTAGE_MARK = "\\\\%";
 
     public static final String LIMIT_KEY_PREFIX = "limit_key_prefix_";
 

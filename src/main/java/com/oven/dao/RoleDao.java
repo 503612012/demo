@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,9 +46,12 @@ public class RoleDao {
      */
     public List<Role> getByPage(Integer pageNum, Integer pageSize, Role role) {
         StringBuilder sb = new StringBuilder("select * from t_role");
-        addCondition(sb, role);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, role);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Role.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Role.class));
     }
 
     /**
@@ -54,9 +59,10 @@ public class RoleDao {
      */
     public Integer getTotalNum(Role role) {
         StringBuilder sb = new StringBuilder("select count(*) from t_role");
-        addCondition(sb, role);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, role);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
@@ -119,9 +125,10 @@ public class RoleDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, Role role) {
+    private void addCondition(StringBuilder sb, List<Object> params, Role role) {
         if (!StringUtils.isEmpty(role.getRoleName())) {
-            sb.append(" and role_name like '%").append(role.getRoleName()).append("%'");
+            sb.append(" and role_name like ?");
+            params.add("%" + role.getRoleName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
     }
 

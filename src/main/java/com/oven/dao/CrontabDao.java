@@ -21,8 +21,8 @@ public class CrontabDao {
      * 根据key获取cron表达式
      */
     public String getCron(String key) {
-        String sql = "select cron from t_crontab where _key='" + key + "'";
-        List<String> list = this.jdbcTemplate.queryForList(sql, String.class);
+        String sql = "select cron from t_crontab where _key = ?";
+        List<String> list = this.jdbcTemplate.queryForList(sql, String.class, key);
         return list.size() == 0 ? null : list.get(0);
     }
 

@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.AdvanceSalary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,9 +53,12 @@ public class AdvanceSalaryDao {
         StringBuilder sb = new StringBuilder("select a.*, e.name as employee_name, u.nick_name as create_name from t_advance_salary a " +
                 "left join t_employee e on e.dbid = a.employee_id " +
                 "left join t_user u on u.dbid = a.create_id");
-        addCondition(sb, advanceSalary);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, advanceSalary);
         String sql = sb.append(" order by a.advance_time desc limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(AdvanceSalary.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(AdvanceSalary.class));
     }
 
     /**
@@ -63,9 +68,10 @@ public class AdvanceSalaryDao {
         StringBuilder sb = new StringBuilder("select count(*) from t_advance_salary a " +
                 "left join t_employee e on e.dbid = a.employee_id " +
                 "left join t_user u on u.dbid = a.create_id");
-        addCondition(sb, advanceSalary);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, advanceSalary);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
@@ -88,12 +94,14 @@ public class AdvanceSalaryDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, AdvanceSalary advanceSalary) {
+    private void addCondition(StringBuilder sb, List<Object> params, AdvanceSalary advanceSalary) {
         if (!StringUtils.isEmpty(advanceSalary.getAdvanceTime())) {
-            sb.append(" and a.`advance_time` = '").append(advanceSalary.getAdvanceTime()).append("'");
+            sb.append(" and a.`advance_time` = ?");
+            params.add(advanceSalary.getAdvanceTime());
         }
         if (!StringUtils.isEmpty(advanceSalary.getEmployeeName())) {
-            sb.append(" and e.name like '%").append(advanceSalary.getEmployeeName()).append("%'");
+            sb.append(" and e.name like ?");
+            params.add("%" + advanceSalary.getEmployeeName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
     }
 

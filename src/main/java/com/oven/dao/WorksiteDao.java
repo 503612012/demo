@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Worksite;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,9 +32,12 @@ public class WorksiteDao {
      */
     public List<Worksite> getByPage(Integer pageNum, Integer pageSize, Worksite worksite) {
         StringBuilder sb = new StringBuilder("select * from t_worksite ws");
-        addCondition(sb, worksite);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, worksite);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Worksite.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Worksite.class));
     }
 
     /**
@@ -40,9 +45,10 @@ public class WorksiteDao {
      */
     public Integer getTotalNum(Worksite worksite) {
         StringBuilder sb = new StringBuilder("select count(*) from t_worksite ws");
-        addCondition(sb, worksite);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, worksite);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
@@ -117,9 +123,10 @@ public class WorksiteDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, Worksite worksite) {
+    private void addCondition(StringBuilder sb, List<Object> params, Worksite worksite) {
         if (!StringUtils.isEmpty(worksite.getName())) {
-            sb.append(" and ws.`name` like '%").append(worksite.getName()).append("%'");
+            sb.append(" and ws.`name` like ?");
+            params.add("%" + worksite.getName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.PayRecord;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -56,9 +58,12 @@ public class PayRecordDao {
         StringBuilder sb = new StringBuilder("select pr.*, e.name as employee_name, u.nickName as payer_name from t_pay_record pr");
         sb.append(" left join t_employee e on e.dbid = pr.employee_id");
         sb.append(" left join db_blog.t_user u on u.dbid = pr.payer_id");
-        addCondition(sb, employeeName);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, employeeName);
         String sql = sb.append(" order by pr.pay_date desc").append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(PayRecord.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(PayRecord.class));
     }
 
     /**
@@ -68,17 +73,19 @@ public class PayRecordDao {
         StringBuilder sb = new StringBuilder("select count(*) from t_pay_record pr");
         sb.append(" left join t_employee e on e.dbid = pr.employee_id");
         sb.append(" left join db_blog.t_user u on u.dbid = pr.payer_id");
-        addCondition(sb, employeeName);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, employeeName);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, String employeeName) {
+    private void addCondition(StringBuilder sb, List<Object> params, String employeeName) {
         if (!StringUtils.isEmpty(employeeName)) {
-            sb.append(" and e.`name` like '%").append(employeeName).append("%'");
+            sb.append(" and e.`name` like ?");
+            params.add("%" + employeeName.replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
     }
 

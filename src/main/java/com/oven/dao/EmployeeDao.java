@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Employee;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,9 +98,12 @@ public class EmployeeDao {
      */
     public List<Employee> getByPage(Integer pageNum, Integer pageSize, Employee employee) {
         StringBuilder sb = new StringBuilder("select * from t_employee e");
-        addCondition(sb, employee);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, employee);
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Employee.class));
     }
 
     /**
@@ -106,9 +111,10 @@ public class EmployeeDao {
      */
     public Integer getTotalNum(Employee employee) {
         StringBuilder sb = new StringBuilder("select count(*) from t_employee e");
-        addCondition(sb, employee);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, employee);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
@@ -130,15 +136,18 @@ public class EmployeeDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, Employee employee) {
+    private void addCondition(StringBuilder sb, List<Object> params, Employee employee) {
         if (!StringUtils.isEmpty(employee.getName())) {
-            sb.append(" and e.`name` like '%").append(employee.getName()).append("%'");
+            sb.append(" and e.`name` like ?");
+            params.add("%" + employee.getName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(employee.getContact())) {
-            sb.append(" and e.contact like '%").append(employee.getContact()).append("%'");
+            sb.append(" and e.contact like ?");
+            params.add("%" + employee.getContact().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (employee.getGender() != null) {
-            sb.append(" and e.contact = ").append(employee.getGender());
+            sb.append(" and e.gender = ?");
+            params.add(employee.getGender());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,10 +46,13 @@ public class LogDao {
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
         StringBuilder sb = new StringBuilder("select * from t_log");
-        addCondition(sb, log);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, log);
         sb.append(" order by operator_time desc");
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Log.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Log.class));
     }
 
     /**
@@ -55,9 +60,10 @@ public class LogDao {
      */
     public Integer getTotalNum(Log log) {
         StringBuilder sb = new StringBuilder("select count(*) from t_log");
-        addCondition(sb, log);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, log);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
@@ -83,15 +89,18 @@ public class LogDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, Log log) {
+    private void addCondition(StringBuilder sb, List<Object> params, Log log) {
         if (!StringUtils.isEmpty(log.getTitle())) {
-            sb.append(" and title like '%").append(log.getTitle()).append("%'");
+            sb.append(" and title like ?");
+            params.add("%" + log.getTitle().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(log.getContent())) {
-            sb.append(" and content like '%").append(log.getContent()).append("%'");
+            sb.append(" and content like ?");
+            params.add("%" + log.getContent().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (log.getOperatorId() != null) {
-            sb.append(" and operator_id = ").append(log.getOperatorId());
+            sb.append(" and operator_id = ?");
+            params.add(log.getOperatorId());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Workhour;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,9 +35,12 @@ public class WorkhourDao {
                 "         left join t_employee e on wh.employee_id = e.dbid " +
                 "         left join t_worksite ws on ws.dbid = wh.worksite_id " +
                 "         left join t_user u on u.dbid = wh.create_id");
-        addCondition(sb, workhour);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, workhour);
         String sql = sb.append(" order by wh.create_time desc").append(" limit ?,?").toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Workhour.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Workhour.class));
     }
 
     /**
@@ -46,23 +51,27 @@ public class WorkhourDao {
                 "         left join t_employee e on wh.employee_id = e.dbid " +
                 "         left join t_worksite ws on ws.dbid = wh.worksite_id " +
                 "         left join t_user u on u.dbid = wh.create_id");
-        addCondition(sb, workhour);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, workhour);
         String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, Workhour workhour) {
+    private void addCondition(StringBuilder sb, List<Object> params, Workhour workhour) {
         if (!StringUtils.isEmpty(workhour.getEmployeeName())) {
-            sb.append(" and e.`name` like '%").append(workhour.getEmployeeName()).append("%'");
+            sb.append(" and e.`name` like ?");
+            params.add("%" + workhour.getEmployeeName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(workhour.getWorksiteName())) {
-            sb.append(" and ws.`name` like '%").append(workhour.getWorksiteName()).append("%'");
+            sb.append(" and ws.`name` like ?");
+            params.add("%" + workhour.getWorksiteName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(workhour.getWorkDate())) {
-            sb.append(" and wh.`work_date` = '").append(workhour.getWorkDate()).append("'");
+            sb.append(" and wh.`work_date` = ?");
+            params.add(workhour.getWorkDate());
         }
     }
 

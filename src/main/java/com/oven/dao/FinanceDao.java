@@ -1,5 +1,6 @@
 package com.oven.dao;
 
+import com.oven.constant.AppConst;
 import com.oven.util.VoPropertyRowMapper;
 import com.oven.vo.Finance;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,9 +69,12 @@ public class FinanceDao {
                 "       left join t_user du on du.dbid = f.del_id " +
                 "       left join t_user fu on fu.dbid = f.finish_id");
         sb.append(" where f.del_flag=0");
-        addCondition(sb, finance);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, finance);
         String sql = sb.append(" order by f.create_time desc limit ?,?").toString();
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Finance.class), (pageNum - 1) * pageSize, pageSize);
+        params.add((pageNum - 1) * pageSize);
+        params.add(pageSize);
+        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Finance.class));
     }
 
     /**
@@ -84,9 +89,10 @@ public class FinanceDao {
                 "       left join t_user du on du.dbid = f.del_id " +
                 "       left join t_user fu on fu.dbid = f.finish_id");
         sb.append(" where f.del_flag=0");
-        addCondition(sb, finance);
+        List<Object> params = new ArrayList<>();
+        addCondition(sb, params, finance);
         String sql = sb.toString();
-        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
     }
 
     /**
@@ -118,9 +124,10 @@ public class FinanceDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, Finance finance) {
+    private void addCondition(StringBuilder sb, List<Object> params, Finance finance) {
         if (!StringUtils.isEmpty(finance.getWorksiteName())) {
-            sb.append(" and w.name like '%").append(finance.getWorksiteName()).append("%'");
+            sb.append(" and w.name like ?");
+            params.add("%" + finance.getWorksiteName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
     }
 
