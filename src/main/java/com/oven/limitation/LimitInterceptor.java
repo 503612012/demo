@@ -3,6 +3,7 @@ package com.oven.limitation;
 import com.google.common.collect.ImmutableList;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
+import com.oven.exception.MyException;
 import com.oven.util.IPUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +41,7 @@ public class LimitInterceptor {
     }
 
     @Around("execution(public * *(..)) && @annotation(com.oven.limitation.Limit)")
-    public Object interceptor(ProceedingJoinPoint pjp) {
+    public Object interceptor(ProceedingJoinPoint pjp) throws MyException {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod();
         Limit limitAnnotation = method.getAnnotation(Limit.class);
@@ -77,6 +78,9 @@ public class LimitInterceptor {
                 throw new RuntimeException(errMsg);
             }
         } catch (Throwable e) {
+            if (e instanceof MyException) {
+                throw new MyException(((MyException) e).getCode(), ((MyException) e).getMsg(), new Exception());
+            }
             if (e instanceof RuntimeException) {
                 log.error(AppConst.ERROR_LOG_PREFIX + "{}请求{}超过次数限制！", key, method.toString());
             }
