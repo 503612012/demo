@@ -25,7 +25,6 @@ layui.use('table', function() {
         , toolbar: '#worksiteListToolBar'
         , id: 'worksiteReload'
         , even: true
-        , title: '工地数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'name', title: '工地名称', sort: true}

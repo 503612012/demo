@@ -31,7 +31,6 @@ layui.use(['table', 'jquery'], function() {
         , toolbar: '#userListToolBar'
         , id: 'userReload'
         , even: true
-        , title: '用户数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'userName', title: '用户名', sort: true}

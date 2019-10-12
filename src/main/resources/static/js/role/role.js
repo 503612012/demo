@@ -25,7 +25,6 @@ layui.use('table', function() {
         , toolbar: '#roleListToolBar'
         , id: 'roleReload'
         , even: true
-        , title: '角色数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'roleName', title: '角色名', sort: true}

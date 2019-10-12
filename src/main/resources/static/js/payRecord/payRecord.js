@@ -29,7 +29,6 @@ layui.use(['table'], function() {
         , url: '/payRecord/getByPage/'
         , id: 'payRecordReload'
         , even: true
-        , title: '发薪记录数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'employeeName', title: '员工名称'}

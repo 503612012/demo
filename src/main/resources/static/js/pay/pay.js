@@ -17,7 +17,6 @@ layui.use(['table', 'form', 'layedit'], function() {
             , url: '/pay/getWorkhourData/'
             , id: 'payReload'
             , even: true
-            , title: '工时数据'
             , cols: [[
                 {type: 'checkbox'}
                 , {field: 'employeeName', title: '员工名称'}

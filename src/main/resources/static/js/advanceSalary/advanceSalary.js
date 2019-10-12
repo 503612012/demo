@@ -34,7 +34,6 @@ layui.use(['table', 'laydate'], function() {
         , toolbar: '#advanceSalaryListToolBar'
         , id: 'advanceSalaryReload'
         , even: true
-        , title: '预支薪资数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'employeeName', title: '员工名称', sort: true}

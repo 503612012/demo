@@ -41,7 +41,7 @@ public class GlobalExceptionHandle {
             if (myException.getCode().equals(ResultEnum.SEARCH_PAGE_ERROR.getCode())) {
                 JSONObject result = new JSONObject();
                 result.put("code", myException.getCode());
-                result.put("msg", myException.getMsg());
+                result.put("data", myException.getMsg());
                 return result;
             } else if (myException.getCode().equals(ResultEnum.ERROR_PAGE.getCode())) {
                 resp.sendRedirect("/err");

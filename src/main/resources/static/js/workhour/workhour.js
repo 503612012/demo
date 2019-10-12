@@ -36,7 +36,6 @@ layui.use(['table', 'laydate'], function() {
         , toolbar: '#workhourListToolBar'
         , id: 'workhourReload'
         , even: true
-        , title: '工时数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'employeeName', title: '员工名称', sort: true}

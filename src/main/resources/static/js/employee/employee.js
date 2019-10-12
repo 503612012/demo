@@ -28,7 +28,6 @@ layui.use('table', function() {
         , toolbar: '#employeeListToolBar'
         , id: 'employeeReload'
         , even: true
-        , title: '员工数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'name', title: '员工姓名', sort: true}

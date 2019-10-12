@@ -31,7 +31,6 @@ layui.use('table', function() {
         , toolbar: '#logListToolBar'
         , id: 'logReload'
         , even: true
-        , title: '日志数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'title', title: '标题', sort: true}

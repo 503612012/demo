@@ -25,7 +25,6 @@ layui.use(['table', 'laydate'], function() {
         , toolbar: '#financeListToolBar'
         , id: 'financeReload'
         , even: true
-        , title: '预支薪资数据表'
         , cols: [[
             {type: 'numbers'}
             , {field: 'worksiteName', title: '工地名称', sort: true}
