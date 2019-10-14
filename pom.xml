@@ -16,8 +16,14 @@
     </parent>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdbctemplatetool.version>1.0.4-RELEASE</jdbctemplatetool.version>
+        <main.class.path>com.oven.app.Application</main.class.path>
+        <shiro-spring.versoin>1.4.0</shiro-spring.versoin>
+        <fastjson.version>1.2.46</fastjson.version>
+        <druid.version>1.1.5</druid.version>
+        <guava.version>23.0</guava.version>
         <java.version>1.8</java.version>
     </properties>
 
@@ -57,21 +63,21 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.1.5</version>
+            <version>${druid.version}</version>
         </dependency>
 
         <!-- guava支持 -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>23.0</version>
+            <version>${guava.version}</version>
         </dependency>
 
         <!-- shiro支持 -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>1.4.0</version>
+            <version>${shiro-spring.versoin}</version>
         </dependency>
 
         <!-- thymeleaf启动器 -->
@@ -84,21 +90,20 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.46</version>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <!-- joda-time依赖 -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.9.9</version>
         </dependency>
 
         <!-- 实体操作数据库,只需要column注解与数据库字段相同即可 -->
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>jdbctemplatetool</artifactId>
-            <version>1.0.4-RELEASE</version>
+            <version>${jdbctemplatetool.version}</version>
         </dependency>
 
         <!-- AOP支持 -->
@@ -124,8 +129,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
@@ -138,7 +143,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>com.oven.app.Application</mainClass>
+                            <mainClass>${main.class.path}</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>./resources/</Class-Path>
