@@ -33,7 +33,8 @@ $(function() {
         var srcs = CryptoJS.enc.Utf8.parse(password);
         var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
         password = encrypted.toString();
-
+        var that = $(this);
+        that.addClass('layui-btn-disabled'); // 禁用提交按钮
         $.ajax({
             url: "/doLogin",
             type: "POST",
@@ -45,6 +46,7 @@ $(function() {
             },
             dataType: "json",
             success: function(result) {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
                 if (result.code != 200) {
                     $("input[name=vercode]").val("");
                     layer.open({

@@ -110,12 +110,15 @@ layui.use(['form', 'layedit', 'laydate'], function() {
 
     // 监听提交
     form.on('submit(workhour-add-submit)', function(data) {
+        var that = $(this);
+        that.addClass('layui-btn-disabled'); // 禁用提交按钮
         $.ajax({
             url: '/workhour/doAdd',
             type: 'POST',
             data: data.field,
             dataType: 'json',
             success: function(result) {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
                 if (result.code != 200) {
                     layer.open({
                         title: '系统提示',

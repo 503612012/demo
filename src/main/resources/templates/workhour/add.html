@@ -67,6 +67,8 @@
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
 
+    var hasShowEmployeeMoneyStatusPermission = /*[[${T(com.oven.constant.PermissionCode).EMPLOYEE_SHOWMONEY}]]*/ '';
+
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {
             if (code == menu[i]) {

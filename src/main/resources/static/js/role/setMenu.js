@@ -79,6 +79,8 @@ $(function() {
                 data.push(menuId);
             }
         }
+        var that = $(this);
+        that.addClass('layui-btn-disabled'); // 禁用提交按钮
         $.ajax({
             url: '/role/setRoleMenu',
             type: 'POST',
@@ -89,6 +91,7 @@ $(function() {
             },
             dataType: "json",
             success: function(result) {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
                 if (result.code != 200) {
                     layer.open({
                         title: '系统提示',
