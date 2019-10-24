@@ -31,6 +31,7 @@ public enum ResultEnum {
     OTHER_LOGINED(4006, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！"),
     CAPTCHA_ERROR(4007, "验证码错误，请重新输入！"),
     CAPTCHA_IS_NONE(4008, "请输入验证码！"),
+    OLD_PASSWORD_WRONG(4009, "原始密码错误！"),
 
     DOPAY_ADVANCE_SALARY_OVER_PAY_SALARY(5001, "预支总金额大于所发薪资，本次发薪无效！"),
     DOPAY_NO_WORKSITE_SALARY(5002, "该工地还未录入薪资，请录入后再进行发放操作！"),

@@ -8,8 +8,10 @@ import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
 import com.oven.service.UserService;
+import com.oven.util.EncryptUtils;
 import com.oven.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -250,6 +252,30 @@ public class UserController extends com.oven.controller.BaseController {
             return super.success(userService.getAll());
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+        }
+    }
+
+
+    /**
+     * 修改密码
+     */
+    @ResponseBody
+    @RequestMapping("/changePwd")
+    public Object changePwd(String oldPwd, String newPwd) throws MyException {
+        try {
+            String oldPwdDecode = EncryptUtils.aesDecrypt(oldPwd, EncryptUtils.KEY);
+            User user = userService.getByUserName(super.getCurrentUser().getUserName());
+            Md5Hash md5 = new Md5Hash(oldPwdDecode, AppConst.MD5_SALT, 2);
+            // 密码错误
+            if (!md5.toString().equals(user.getPassword())) {
+                return super.fail(ResultEnum.OLD_PASSWORD_WRONG.getCode(), ResultEnum.OLD_PASSWORD_WRONG.getValue());
+            }
+            newPwd = EncryptUtils.aesDecrypt(newPwd, EncryptUtils.KEY);
+            user.setPassword(newPwd);
+            userService.update(user);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
         }
     }
 

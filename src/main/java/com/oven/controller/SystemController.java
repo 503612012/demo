@@ -94,7 +94,8 @@ public class SystemController extends BaseController {
      * 默认页面(系统主页面)
      */
     @RequestMapping("/")
-    public String index() {
+    public String index(HttpServletRequest req) {
+        req.getSession().setAttribute("key", EncryptUtils.KEY);
         return "index";
     }
 

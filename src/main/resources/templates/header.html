@@ -1,13 +1,7 @@
 <div class="layui-header" style="background-color: #393D49;" xmlns:th="http://www.thymeleaf.org">
     <div class="layui-logo" id="logoBox" style="cursor: pointer; background-color: #20222A; display: flex; justify-content: center; align-items: center;"><i style="margin: 10px; font-size: 27px;" class="layui-icon layui-icon-star-fill"></i><span id="logoWord">财务管理系统</span></div>
     <ul id="searchBox" class="layui-nav layui-layout-left" style="height: 100%; display: flex; align-items: center">
-<!--        <li class="layui-nav-item layadmin-flexible" lay-unselect="">-->
-<!--            <a href="javascript:" layadmin-event="flexible" title="侧边伸缩">-->
-<!--                <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>-->
-<!--            </a>-->
-<!--        </li>-->
         <li class="layui-nav-item layui-hide-xs" lay-unselect="">
-<!--            <div ><i class="layui-icon layui-icon-shrink-right" style="font-size: 16px; margin: 0 20px 0 0;" aria-hidden="true"></i></div>-->
             <div title="菜单缩放" class="kit-side-fold"><i class="layui-icon layui-icon-shrink-right" style="font-size: 16px;" aria-hidden="true"></i></div>
         </li>
         <li class="layui-nav-item layui-hide-xs" lay-unselect="" style="margin-left: 20px;">
@@ -20,10 +14,43 @@
                 <img src="http://t.cn/RCzsdCq" class="layui-nav-img" alt=""><span th:text="${session.current_user.nickName}">dd</span>
             </a>
             <dl class="layui-nav-child">
-                <dd><a href="">基本资料</a></dd>
-                <dd><a href="">安全设置</a></dd>
+                <dd><a href="javascript:" id="baseInfoBtn">基本资料</a></dd>
+                <dd><a href="javascript:" id="changePwdBtn">修改密码</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item"><a href="/logout">退出</a></li>
     </ul>
+
+    <script th:src="@{/jquery.min.js}"></script>
+    <script th:src="@{/layui.all.js}"></script>
+    <script th:src="@{/crypto-js.js}"></script>
+    <script th:src="@{/header.js}"></script>
+</div>
+
+<div id="changePwdTips" class="hide" xmlns:th="http://www.thymeleaf.org">
+    <div class='layui-form'>
+        <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
+            <label class='layui-form-label'>原始密码</label>
+            <div class='layui-input-inline' style="width: 400px;">
+                <input type="hidden" name="key" th:value="${session.key}">
+                <input type="password" name="oldPwd" lay-filter="required" placeholder="请输入原始密码" class='layui-input'>
+            </div>
+        </div>
+        <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
+            <label class='layui-form-label'>新密码</label>
+            <div class='layui-input-inline' style="width: 400px;">
+                <input type="password" name="newPwd" lay-filter="required" placeholder="请输入新密码" class='layui-input'>
+            </div>
+        </div>
+        <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
+            <label class='layui-form-label'>确认新密码</label>
+            <div class='layui-input-inline' style="width: 400px;">
+                <input type="password" name="confirmPwd" lay-filter="required" placeholder="请再次输入新密码" class='layui-input'>
+            </div>
+        </div>
+        <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
+            <button class="layui-btn" id="changePwd-submit">立即提交</button>
+            <button type="reset" id="changePwd-reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
 </div>
