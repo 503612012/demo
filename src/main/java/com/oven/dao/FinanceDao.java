@@ -31,8 +31,8 @@ public class FinanceDao {
      * 添加
      */
     public int add(Finance finance) {
-        String sql = "INSERT INTO db_demo.t_finance (dbid, worksite_id, create_id, create_time, last_modify_id, last_modify_time, money, out_money, del_flag, finish_flag, remark)" +
-                " VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "insert into t_finance (dbid, worksite_id, create_id, create_time, last_modify_id, last_modify_time, money, out_money, del_flag, finish_flag, remark)" +
+                " values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});

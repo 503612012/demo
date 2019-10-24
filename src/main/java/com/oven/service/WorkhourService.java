@@ -70,6 +70,7 @@ public class WorkhourService extends BaseService {
         workhourDao.add(workhour);
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKHOUR_PREFIX);
+        super.batchRemove(RedisCacheKey.PAYRECORD_PREFIX);
         // 记录日志
         super.addLog("录入工时", workhour.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }

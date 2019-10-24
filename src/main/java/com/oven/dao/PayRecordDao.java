@@ -57,7 +57,7 @@ public class PayRecordDao {
     public List<PayRecord> getByPage(Integer pageNum, Integer pageSize, String employeeName) {
         StringBuilder sb = new StringBuilder("select pr.*, e.name as employee_name, u.nickName as payer_name from t_pay_record pr");
         sb.append(" left join t_employee e on e.dbid = pr.employee_id");
-        sb.append(" left join db_blog.t_user u on u.dbid = pr.payer_id");
+        sb.append(" left join t_user u on u.dbid = pr.payer_id");
         List<Object> params = new ArrayList<>();
         addCondition(sb, params, employeeName);
         String sql = sb.append(" order by pr.pay_date desc").append(" limit ?,?").toString().replaceFirst("and", "where");
@@ -72,7 +72,7 @@ public class PayRecordDao {
     public Integer getTotalNum(String employeeName) {
         StringBuilder sb = new StringBuilder("select count(*) from t_pay_record pr");
         sb.append(" left join t_employee e on e.dbid = pr.employee_id");
-        sb.append(" left join db_blog.t_user u on u.dbid = pr.payer_id");
+        sb.append(" left join t_user u on u.dbid = pr.payer_id");
         List<Object> params = new ArrayList<>();
         addCondition(sb, params, employeeName);
         String sql = sb.toString().replaceFirst("and", "where");
