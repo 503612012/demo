@@ -140,6 +140,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 if (result.code != 200) {
                     layer.open({
                         title: '系统提示',
+                        anim: 6,
                         content: result.data,
                         btnAlign: 'c'
                     });
@@ -193,8 +194,8 @@ layui.use(['table', 'form', 'layedit'], function() {
                     if (isModifyPayMoney) {
                         if (remark == '' || remark == undefined) {
                             layer.open({
-                                anim: 6,
                                 title: '系统提示',
+                                anim: 6,
                                 content: '修改过金额后必须填写备注信息！',
                                 btnAlign: 'c'
                             });
@@ -220,6 +221,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                             if (result.code != 200) {
                                 layer.open({
                                     title: '系统提示',
+                                    anim: 6,
                                     content: result.data,
                                     btnAlign: 'c'
                                 });
@@ -275,6 +277,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                             if (result.code != 200) {
                                 layer.open({
                                     title: '系统提示',
+                                    anim: 6,
                                     content: result.data,
                                     btnAlign: 'c'
                                 });
@@ -317,6 +320,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 if (result.code != 200) {
                     layer.open({
                         title: '系统提示',
+                        anim: 6,
                         content: result.data,
                         btnAlign: 'c'
                     });
@@ -342,6 +346,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 if (result.code != 200) {
                     layer.open({
                         title: '系统提示',
+                        anim: 6,
                         content: result.data,
                         btnAlign: 'c'
                     });

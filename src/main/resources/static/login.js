@@ -51,6 +51,7 @@ $(function() {
                     $("input[name=vercode]").val("");
                     layer.open({
                         title: '系统提示',
+                        anim: 6,
                         content: result.data,
                         btnAlign: 'c'
                     });

@@ -222,6 +222,7 @@ layui.use(['laydate', 'element', 'form'], function() {
                 if (result.code != 200) {
                     layer.open({
                         title: '系统提示',
+                        anim: 6,
                         content: result.data,
                         btnAlign: 'c'
                     });
