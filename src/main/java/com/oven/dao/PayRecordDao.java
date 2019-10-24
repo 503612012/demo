@@ -55,7 +55,7 @@ public class PayRecordDao {
      * 分页查询发薪记录
      */
     public List<PayRecord> getByPage(Integer pageNum, Integer pageSize, String employeeName) {
-        StringBuilder sb = new StringBuilder("select pr.*, e.name as employee_name, u.nickName as payer_name from t_pay_record pr");
+        StringBuilder sb = new StringBuilder("select pr.*, e.name as employee_name, u.nick_name as payer_name from t_pay_record pr");
         sb.append(" left join t_employee e on e.dbid = pr.employee_id");
         sb.append(" left join t_user u on u.dbid = pr.payer_id");
         List<Object> params = new ArrayList<>();
