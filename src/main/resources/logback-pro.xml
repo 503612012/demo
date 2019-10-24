@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOG_HOME" value="/usr/local/log/demo"/>
+    <property name="LOG_HOME" value="/usr/local/app/demo/logs"/>
     <!-- INFO日志定义 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_HOME}/demo.info.log</File>
