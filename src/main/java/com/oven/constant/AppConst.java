@@ -34,7 +34,7 @@ public class AppConst {
 
     public static final String DELETE_LIMIT = "删除操作太快，请稍后重试！";
 
-    public static final Integer LIMIT_TIME = 5;
+    public static final int LIMIT_TIME = 5;
 
     public static final String EMPLOYEE_INSERT_LIMIT_KEY = "employee.insert.limit.key";
     public static final String EMPLOYEE_UPDATE_LIMIT_KEY = "employee.update.limit.key";
