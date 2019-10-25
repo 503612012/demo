@@ -53,7 +53,7 @@ public class FinanceController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.FINANCE_INSERT)
-    @Limit(key = AppConst.FINANCE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.FINANCE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Finance finance) throws MyException {
         try {
             Finance financeInDb = financeService.getByWorksiteId(finance.getWorksiteId());
@@ -75,7 +75,7 @@ public class FinanceController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.FINANCE_DELETE)
-    @Limit(key = AppConst.FINANCE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.FINANCE_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             // 判断该财务登记是否已经完结

@@ -65,7 +65,7 @@ public class PayController extends BaseController {
     @ResponseBody
     @RequestMapping("/doPay")
     @RequiresPermissions(PermissionCode.SALARY_PAY)
-    @Limit(key = AppConst.PAY_DOPAY_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.PAY_DOPAY_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doPay(String workhourIds, Integer employeeId, Integer totalHour, Double totalMoney, String remark, Integer worksiteId, Integer hasModifyMoney, Double changeMoney) throws MyException {
         try {
             String result = payService.doPay(workhourIds, employeeId, totalHour, totalMoney, remark, worksiteId, hasModifyMoney, changeMoney);

@@ -115,7 +115,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
-    @Limit(key = AppConst.ROLE_INSERT_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.ROLE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Role role) throws MyException {
         try {
             roleService.add(role);
@@ -148,7 +148,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
-    @Limit(key = AppConst.ROLE_UPDATE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.ROLE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(Role role) throws MyException {
         try {
             roleService.update(role);
@@ -166,7 +166,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.ROLE_DELETE)
-    @Limit(key = AppConst.ROLE_DELETE_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.ROLE_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
@@ -189,7 +189,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
-    @Limit(key = AppConst.ROLE_UPDATE_STATUS_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.ROLE_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer roleId, Integer status) throws MyException {
         try {
             Role role = roleService.getById(roleId);
@@ -237,7 +237,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/setRoleMenu")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
-    @Limit(key = AppConst.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = 10, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = AppConst.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             roleService.setRoleMenu(roleId, menuIds);
