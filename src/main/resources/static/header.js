@@ -2,13 +2,50 @@
 layui.use(['form'], function() {
 
     var layer = layui.layer;
+    var form = layui.form;
     var $ = layui.jquery;
 
     /**
      * 基本资料
      */
     $("#baseInfoBtn").on("click", function() {
+        $.ajax({
+            url: '/user/getCurrentUserInfo',
+            type: 'POST',
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        anim: 6,
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    return;
+                }
+                var data = result.data;
+                $('input[name=id]').val(data.id);
+                $('input[name=userName]').val(data.userName);
+                $('input[name=nickName]').val(data.nickName);
+                $('input[name=age]').val(data.age);
+                $('input[name=email]').val(data.email);
+                $('input[name=phone]').val(data.phone);
 
+                if (data.gender == 1) { // 男
+                    $("input[name='gender'][value='1']").prop('checked', true);
+                } else if (data.gender == 0) { // 女
+                    $("input[name='gender'][value='0']").prop('checked', true);
+                }
+                form.render();
+                layer.open({
+                    id: 'updateBaseInfoFrm',
+                    type: 1,
+                    title: '修改基本资料',
+                    area: ['500px', 'auto'],
+                    content: $('#baseInffoBtnFrm')
+                });
+            }
+        });
     });
 
     /**
@@ -118,6 +155,37 @@ layui.use(['form'], function() {
             }
         });
         return false;
+    });
+
+    $('body').on('click', '#baseInffoBtnFrmSubmitBtn', function() {
+        var that = $(this);
+        that.addClass('layui-btn-disabled'); // 禁用提交按钮
+        var data = form.val("updateBaseInfoForm");
+        $.ajax({
+            url: '/user/doUpdate',
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(result) {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        anim: 6,
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    return;
+                }
+                layer.open({
+                    title: '系统提示',
+                    content: '保存成功！',
+                    yes: function() {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
     });
 
 });

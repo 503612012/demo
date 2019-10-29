@@ -1,6 +1,6 @@
 #!/bin/bash
 
-env_args="-Xms128m -Xmx128m"
+env_args="-Xms128M -Xmx128M -XX:NewRatio=2 -Xverify:none"
 sleeptime=0
 arglen=$#
 

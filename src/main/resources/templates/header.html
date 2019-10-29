@@ -20,7 +20,6 @@
         </li>
         <li class="layui-nav-item"><a href="/logout">退出</a></li>
     </ul>
-
     <script th:src="@{/jquery.min.js}"></script>
     <script th:src="@{/layui.all.js}"></script>
     <script th:src="@{/crypto-js.js}"></script>
@@ -53,4 +52,64 @@
             <button type="reset" id="changePwd-reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
+</div>
+
+<div id="baseInffoBtnFrm" class="hide">
+    <form class="layui-form" lay-filter="updateBaseInfoForm" action="" style="padding: 20px 77px 20px 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id">
+                <input type="text" name="userName" disabled lay-verify="title" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-block">
+                <input type="text" name="nickName" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-block">
+                <input type="number" name="age" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="email" name="email" lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="gender" value="1" title="男">
+                <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
+                    <div>男</div>
+                </div>
+                <input type="radio" name="gender" value="0" title="女">
+                <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                    <div>女</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block">
+                <input type="number" name="phone" lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <span class="layui-btn" id="baseInffoBtnFrmSubmitBtn">保存</span>
+            </div>
+        </div>
+    </form>
 </div>

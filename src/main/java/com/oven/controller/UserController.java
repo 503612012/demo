@@ -58,6 +58,19 @@ public class UserController extends com.oven.controller.BaseController {
     }
 
     /**
+     * 通过当前登录用户
+     */
+    @ResponseBody
+    @RequestMapping("/getCurrentUserInfo")
+    public Object getCurrentUserInfo() throws MyException {
+        try {
+            return super.success(userService.getByUserName(super.getCurrentUser().getUserName()));
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+        }
+    }
+
+    /**
      * 分页获取用户
      *
      * @param page  页码
