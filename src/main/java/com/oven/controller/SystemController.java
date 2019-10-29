@@ -117,7 +117,7 @@ public class SystemController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/doLogin")
-    public Object doLogin(String userName, String pwd, String inputCode, HttpServletRequest req) throws MyException {
+    public Object doLogin(String userName, String pwd, String inputCode, boolean rememberMe, HttpServletRequest req) throws MyException {
         try {
             // 校验验证码
             String code = (String) req.getSession().getAttribute(AppConst.CAPTCHA);
@@ -131,7 +131,7 @@ public class SystemController extends BaseController {
 
             Subject subject = SecurityUtils.getSubject();
             pwd = EncryptUtils.aesDecrypt(pwd, EncryptUtils.KEY);
-            UsernamePasswordToken token = new UsernamePasswordToken(userName, pwd);
+            UsernamePasswordToken token = new UsernamePasswordToken(userName, pwd, rememberMe);
             subject.login(token);
 
             User userInDb = userService.getByUserName(userName);
@@ -175,6 +175,7 @@ public class SystemController extends BaseController {
             req.setAttribute("key", EncryptUtils.KEY);
             req.getSession().removeAttribute(AppConst.CURRENT_USER);
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
+            SecurityUtils.getSubject().logout();
         } catch (Exception e) {
             log.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，请联系网站管理人员。：", e);
         }

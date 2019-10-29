@@ -21,6 +21,9 @@ public class AppConst {
 
     public static final String USER_MENU = "menu"; // 用户菜单
 
+    public static final String SHIRO_COOKIE_KEY = "demo_shiro_cookie_key";
+    public static final String SHIRO_CACHE_KEY_PROFIX = "demo_";
+
     public static final String CAPTCHA = "_captcha";
     public static final String PERCENTAGE_MARK = "\\\\%";
 

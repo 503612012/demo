@@ -5,6 +5,8 @@ import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.util.ResultInfo;
 import com.oven.vo.User;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -12,6 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -37,6 +40,24 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         // 获取当前登录用户
         User user = (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
+
+        // 判断记住我功能
+        if (user == null) {
+            Subject subject = SecurityUtils.getSubject();
+            if (subject != null) {
+                user = (User) subject.getPrincipal();
+                ServletContext application = req.getServletContext();
+                @SuppressWarnings("unchecked")
+                Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+                if (loginedMap == null) {
+                    loginedMap = new HashMap<>();
+                    application.setAttribute(AppConst.LOGINEDUSERS, loginedMap);
+                }
+                loginedMap.put(user.getUserName(), req.getSession().getId());
+
+                req.getSession().setAttribute(AppConst.CURRENT_USER, user);
+            }
+        }
 
         // 没有登录状态下访问系统主页面，都跳转到登录页，不提示任何信息
         if (servletPath.startsWith("/")) {
