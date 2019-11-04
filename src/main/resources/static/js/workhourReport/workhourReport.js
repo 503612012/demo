@@ -5,6 +5,10 @@ layui.use(['laydate', 'element', 'form'], function() {
     var laydate = layui.laydate;
     var form = layui.form;
 
+    if ($(window).width() < 750) {
+        $(".countDateLabel").hide();
+    }
+
     // 初始化日期选择框
     laydate.render({
         elem: '#workhourReportDateMonth',
@@ -71,84 +75,86 @@ layui.use(['laydate', 'element', 'form'], function() {
 
         // 显示标题，图例和空的坐标轴
         myLine.setOption({
-            "tooltip": {
-                "trigger": "axis",
-                "axisPointer": {
-                    "label": {
-                        "formatter": "总工时"
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    label: {
+                        formatter: "总工时"
                     }
                 }
             },
-            "legend": {
-                "data": ["本期总工时", "上期总工时"]
+            legend: {
+                data: ["本期总工时", "上期总工时"]
             },
-            "xAxis": [
+            xAxis: [
                 {
-                    "type": "category",
-                    "boundaryGap": false,
-                    "data": []
+                    type: "category",
+                    boundaryGap: false,
+                    data: []
                 }
             ],
-            "yAxis": {
-                "axisLabel": {
-                    "formatter": "{value} "
+            yAxis: {
+                axisLabel: {
+                    formatter: "{value} "
                 }
             },
-            "series": [
+            series: [
                 {
-                    "name": "本期总工时",
-                    "type": "line",
-                    "smooth": true,
-                    "itemStyle": {
-                        "normal": {
-                            "areaStyle": {
-                                "color": "#83bcb5"
+                    name: "本期总工时",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#83bcb5"
                             },
-                            "lineStyle": {
-                                "color": "#029688"
+                            lineStyle: {
+                                color: "#029688"
                             }
                         }
                     },
-                    "data": []
+                    data: []
                 },
                 {
-                    "name": "上期总工时",
-                    "type": "line",
-                    "smooth": true,
-                    "itemStyle": {
-                        "normal": {
-                            "areaStyle": {
-                                "color": "#58b2c2"
+                    name: "上期总工时",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#58b2c2"
                             },
-                            "lineStyle": {
-                                "color": "#0d9ac3"
+                            lineStyle: {
+                                color: "#0d9ac3"
                             }
                         }
                     },
-                    "data": []
+                    data: []
                 }
             ]
         });
+        myLine.resize();
 
         myLine.showLoading();
         $.get('/workhourReport/getWorkhourReportData?employeeId=' + employeeId + '&date=' + date + '&dateType=' + dateType).done(function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
-                "xAxis": [
+                xAxis: [
                     {
-                        "data": data.categories
+                        data: data.categories
                     }
                 ],
-                "series": [
+                series: [
                     {
-                        "data": data.workhours
+                        data: data.workhours
                     },
                     {
-                        "data": data.preWorkhours
+                        data: data.preWorkhours
                     }
                 ]
             });
+            myLine.resize();
         });
     }
 

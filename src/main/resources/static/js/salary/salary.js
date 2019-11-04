@@ -5,6 +5,10 @@ layui.use(['laydate', 'element'], function() {
     var laydate = layui.laydate;
     var element = layui.element;
 
+    if ($(window).width() < 750) {
+        $(".countDateLabel").hide();
+    }
+
     // 初始化日期选择框
     laydate.render({
         elem: '#salaryDateMonth',
@@ -71,100 +75,104 @@ layui.use(['laydate', 'element'], function() {
 
         // 显示标题，图例和空的坐标轴
         myLine.setOption({
-            "tooltip": {
-                "trigger": "axis"
+            tooltip: {
+                trigger: "axis"
             },
-            "color": ["#029688", "#0d9ac3", "#1f13dc"],
-            "legend": {
-                "data": ["录入薪资", "发放薪资", "预支薪资"]
+            color: ["#029688", "#0d9ac3", "#1f13dc"],
+            legend: {
+                data: ["录入薪资", "发放薪资", "预支薪资"]
             },
-            "xAxis": [
+            xAxis: [
                 {
-                    "type": "category",
-                    "boundaryGap": false,
-                    "data": []
+                    type: "category",
+                    boundaryGap: false,
+                    data: []
                 }
             ],
-            "yAxis": {
-                "type": "value",
-                "axisLabel": {
-                    "formatter": "{value} 元"
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} 元",
+                    rotate: 30,
+                    showMinLabel: false
                 }
             },
-            "series": [
+            series: [
                 {
-                    "name": "录入薪资",
-                    "type": "line",
-                    "smooth": true,
-                    "itemStyle": {
-                        "normal": {
-                            "areaStyle": {
-                                "color": "#83bcb5"
+                    name: "录入薪资",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#83bcb5"
                             },
-                            "lineStyle": {
-                                "color": "#029688"
+                            lineStyle: {
+                                color: "#029688"
                             }
                         }
                     },
-                    "data": []
+                    data: []
                 },
                 {
-                    "name": "发放薪资",
-                    "type": "line",
-                    "smooth": true,
-                    "itemStyle": {
-                        "normal": {
-                            "areaStyle": {
-                                "color": "#58b2c2"
+                    name: "发放薪资",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#58b2c2"
                             },
-                            "lineStyle": {
-                                "color": "#0d9ac3"
+                            lineStyle: {
+                                color: "#0d9ac3"
                             }
                         }
                     },
-                    "data": []
+                    data: []
                 },
                 {
-                    "name": "预支薪资",
-                    "type": "line",
-                    "smooth": true,
-                    "itemStyle": {
-                        "normal": {
-                            "areaStyle": {
-                                "color": "#1f179e"
+                    name: "预支薪资",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#1f179e"
                             },
-                            "lineStyle": {
-                                "color": "#1f13dc"
+                            lineStyle: {
+                                color: "#1f13dc"
                             }
                         }
                     },
-                    "data": []
+                    data: []
                 }
             ]
         });
+        myLine.resize();
 
         myLine.showLoading();
         $.get('/salary/getSalaryData?date=' + date + '&dateType=' + dateType).done(function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
-                "xAxis": [
+                xAxis: [
                     {
-                        "data": data.categories
+                        data: data.categories
                     }
                 ],
-                "series": [
+                series: [
                     {
-                        "data": data.salaryIn
+                        data: data.salaryIn
                     },
                     {
-                        "data": data.salaryOut
+                        data: data.salaryOut
                     },
                     {
-                        "data": data.advanceSalary
+                        data: data.advanceSalary
                     }
                 ]
             });
+            myLine.resize();
         });
     }
 

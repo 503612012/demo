@@ -165,6 +165,11 @@ layui.use(['table', 'form', 'layedit'], function() {
                 "【<span style='color: red;' class='auctualPayMoneySpan'>" + totalMoney + "</span>】元，核对无误后点击确定！";
         }
         $("#payNoticeText").html(notice);
+        if ($(window).width() < 750) {
+            $("#remarkBox").css("width", "80%");
+        } else {
+            $("#remarkBox").css("width", "400px");
+        }
         if (hasPermission(hasChangeSalaryPayMoneyPermission)) {
             layer.open({
                 title: '系统提示！',
@@ -172,7 +177,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 type: 1,
                 content: $('#payRemarkBox'),
                 btn: ['修改金额', '确定', '取消'],
-                area: [$(window).width() <= 750 ? '60%' : '500px', '300px'],
+                area: [$(window).width() <= 750 ? '80%' : '500px', '360px'],
                 resize: false,
                 yes: function() {
                     var actualPayMoney = $(".auctualPayMoneySpan").html();

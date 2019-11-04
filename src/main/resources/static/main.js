@@ -107,6 +107,7 @@ layui.use(['element'], function() {
                 data: []
             }]
         });
+        myLine.resize();
 
         myLine.showLoading();
         $.get('/getSalaryTopFive').done(function(data) {
@@ -122,6 +123,7 @@ layui.use(['element'], function() {
                     data: data.data
                 }]
             });
+            myLine.resize();
         });
     }
 

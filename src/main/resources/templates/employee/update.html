@@ -12,7 +12,7 @@
 <form lay-filter="user-update-from" class="layui-form" action="" style="width: 80%;">
     <div class="layui-form-item">
         <label class="layui-form-label">员工姓名</label>
-        <div class="layui-input-inline" style="width: 400px;">
+        <div class="layui-input-block">
             <input type="hidden" name="id" th:value="${employee.id}">
             <input type="text" name="name" th:value="${employee.name}" lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
         </div>
@@ -20,14 +20,14 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">年龄</label>
-        <div class="layui-input-inline" style="width: 400px;">
+        <div class="layui-input-block">
             <input type="number" name="age" th:value="${employee.age}" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">手机号</label>
-        <div class="layui-input-inline" style="width: 400px;">
+        <div class="layui-input-block">
             <input type="tel" name="contact" th:value="${employee.contact}" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input layui-form-danger">
         </div>
     </div>
@@ -48,14 +48,14 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">时薪</label>
-        <div class="layui-input-block" style="width: 400px;">
+        <div class="layui-input-block">
             <input type="number" name="hourSalary" th:value="${employee.hourSalary}" placeholder="￥" lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">住址</label>
-        <div class="layui-input-block" style="width: 400px;">
+        <div class="layui-input-block">
             <textarea name="address" th:text="${employee.address}" placeholder="请输入住址" class="layui-textarea"></textarea>
         </div>
     </div>
