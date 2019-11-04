@@ -44,9 +44,12 @@ public abstract class BaseController {
     /**
      * 获取当前登录人信息
      */
-    @SuppressWarnings("all")
     User getCurrentUser() {
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        }
+        HttpServletRequest req = attributes.getRequest();
         return (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
     }
 

@@ -65,6 +65,7 @@ public class SystemController extends BaseController {
     @RequestMapping("/getGifCode")
     public void getGifCode(HttpServletResponse response, HttpServletRequest request) throws MyException {
         try {
+            HttpSession session = request.getSession(true);
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
@@ -75,7 +76,6 @@ public class SystemController extends BaseController {
              */
             Captcha captcha = new GifCaptcha(146, 33, 4);
             captcha.out(response.getOutputStream());
-            HttpSession session = request.getSession(true);
             session.setAttribute(AppConst.CAPTCHA, captcha.text().toLowerCase());
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", e);

@@ -4,11 +4,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 自定义异常
  *
+ * @author Oven
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MyException extends Exception {
+
+    private static final long serialVersionUID = -2511799915640286981L;
 
     private Integer code;
     private String msg;

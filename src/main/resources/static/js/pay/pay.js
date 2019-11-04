@@ -172,7 +172,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 type: 1,
                 content: $('#payRemarkBox'),
                 btn: ['修改金额', '确定', '取消'],
-                area: ['500px', '300px'],
+                area: [$(window).width() <= 750 ? '60%' : '500px', '300px'],
                 resize: false,
                 yes: function() {
                     var actualPayMoney = $(".auctualPayMoneySpan").html();
@@ -256,7 +256,7 @@ layui.use(['table', 'form', 'layedit'], function() {
                 type: 1,
                 content: $('#payRemarkBox'),
                 btn: ['确定', '取消'],
-                area: ['500px', '300px'],
+                area: [$(window).width() <= 750 ? '60%' : '500px', '300px'],
                 resize: false,
                 yes: function(index) {
                     var remark = $('#payRemark').val();

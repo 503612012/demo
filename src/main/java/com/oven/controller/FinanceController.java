@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -8,6 +7,7 @@ import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
 import com.oven.service.FinanceService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.Finance;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -109,13 +109,13 @@ public class FinanceController extends BaseController {
     @RequiresPermissions(PermissionCode.FINANCE_MANAGE)
     public Object getByPage(Integer page, Integer limit, Finance finance) throws MyException {
         try {
-            JSONObject result = new JSONObject();
+            LayuiPager<Finance> result = new LayuiPager<>();
             List<Finance> list = financeService.getByPage(page, limit, finance);
             Integer totalNum = financeService.getTotalNum(finance);
-            result.put("code", 0);
-            result.put("msg", "");
-            result.put("count", totalNum);
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

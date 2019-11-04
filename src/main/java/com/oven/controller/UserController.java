@@ -9,6 +9,7 @@ import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
 import com.oven.service.UserService;
 import com.oven.util.EncryptUtils;
+import com.oven.util.LayuiPager;
 import com.oven.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -81,17 +82,17 @@ public class UserController extends com.oven.controller.BaseController {
     @RequiresPermissions(PermissionCode.USER_MANAGER)
     public Object getByPage(Integer page, Integer limit, User user) throws MyException {
         try {
-            JSONObject result = new JSONObject();
+            LayuiPager<User> result = new LayuiPager<>();
             List<User> list = userService.getByPage(page, limit, user);
             for (User item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
             }
             Integer totalNum = userService.getTotalNum(user);
-            result.put("msg", "");
-            result.put("code", 0);
-            result.put("count", totalNum);
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

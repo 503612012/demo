@@ -32,7 +32,11 @@ public class WebLogAspect {
     public void doBefore() {
         // 获取请求
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        @SuppressWarnings("ConstantConditions") HttpServletRequest request = attributes.getRequest();
+        if (attributes == null) {
+            log.info(AppConst.ERROR_LOG_PREFIX + "全局请求参数记录类异常，获取attributes为null！");
+            return;
+        }
+        HttpServletRequest request = attributes.getRequest();
         // 记录请求内容
         log.info(AppConst.INFO_LOG_PREFIX + "请求地址：" + request.getRequestURL().toString());
         log.info(AppConst.INFO_LOG_PREFIX + "请求方法：" + request.getMethod());

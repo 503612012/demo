@@ -41,7 +41,7 @@ layui.use('table', function() {
                     }
                 }
             }
-            , {title: '操作', toolbar: '#roleListBar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#roleListBar'}
         ]]
         , page: true
     });

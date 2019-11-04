@@ -62,7 +62,7 @@ layui.use(['table', 'laydate'], function() {
                     }
                 }
             }
-            , {title: '操作', toolbar: '#advanceSalaryListBar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#advanceSalaryListBar'}
         ]]
         , page: true
         , done: function(res) {

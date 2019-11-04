@@ -24,6 +24,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * shiro配置类
+ *
+ * @author Oven
+ */
 @Configuration
 public class ShiroConfig {
 
@@ -43,11 +48,11 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/font/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/*.js", "anon");
+        filterChainDefinitionMap.put("/layui/**", "anon");
+        filterChainDefinitionMap.put("/easyui/**", "anon");
         filterChainDefinitionMap.put("/*.woff", "anon");
         filterChainDefinitionMap.put("/*.woff2", "anon");
         filterChainDefinitionMap.put("/*.ico", "anon");
@@ -137,14 +142,14 @@ public class ShiroConfig {
     @Bean(name = "simpleMappingExceptionResolver")
     public SimpleMappingExceptionResolver
     createSimpleMappingExceptionResolver() {
-        SimpleMappingExceptionResolver r = new SimpleMappingExceptionResolver();
+        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
         Properties mappings = new Properties();
         mappings.setProperty("DatabaseException", "databaseError");
         mappings.setProperty("UnauthorizedException", "403");
-        r.setExceptionMappings(mappings);
-        r.setDefaultErrorView("error");
-        r.setExceptionAttribute("ex");
-        return r;
+        resolver.setExceptionMappings(mappings);
+        resolver.setDefaultErrorView("error");
+        resolver.setExceptionAttribute("ex");
+        return resolver;
     }
 
 }

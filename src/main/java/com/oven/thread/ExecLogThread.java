@@ -15,14 +15,12 @@ public class ExecLogThread implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        String info = QueueUtils.getInstance().poll();
+        while (StringUtils.isNotEmpty(info)) {
             try {
-                String info = QueueUtils.getInstance().poll();
-                if (StringUtils.isEmpty(info)) {
-                    Thread.sleep(1000);
-                    continue;
-                }
                 log.info(AppConst.INFO_LOG_PREFIX + "从队列中获取到的信息：{}", info);
+                // do somthing
+                info = QueueUtils.getInstance().poll();
             } catch (Exception e) {
                 log.error(AppConst.ERROR_LOG_PREFIX + "异步记录日志线程异常，异常信息：", e);
             }

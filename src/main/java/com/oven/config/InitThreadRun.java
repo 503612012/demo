@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @author Oven
  */
 @Slf4j
-//@Component
+@Component
 public class InitThreadRun implements CommandLineRunner {
 
     @Override

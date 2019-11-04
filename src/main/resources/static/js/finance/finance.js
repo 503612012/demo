@@ -58,7 +58,7 @@ layui.use(['table', 'laydate'], function() {
                     }
                 }
             }
-            , {title: '操作', toolbar: '#financeListBar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#financeListBar'}
         ]]
         , page: true
         , done: function(res) {

@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 系统级字典Dao层
+ * 系统级字典dao层
  *
  * @author Oven
  */

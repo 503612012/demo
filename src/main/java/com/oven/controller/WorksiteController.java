@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -11,6 +10,7 @@ import com.oven.service.FinanceService;
 import com.oven.service.UserService;
 import com.oven.service.WorkhourService;
 import com.oven.service.WorksiteService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.Finance;
 import com.oven.vo.Workhour;
 import com.oven.vo.Worksite;
@@ -60,18 +60,18 @@ public class WorksiteController extends BaseController {
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.WORKSITE_MANAGER)
     public Object getByPage(Integer page, Integer limit, Worksite worksite) throws MyException {
-        JSONObject result = new JSONObject();
         try {
+            LayuiPager<Worksite> result = new LayuiPager<>();
             List<Worksite> list = worksiteService.getByPage(page, limit, worksite);
             for (Worksite item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
             }
             Integer totalNum = worksiteService.getTotalNum(worksite);
-            result.put("code", 0);
-            result.put("count", totalNum);
-            result.put("msg", "");
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

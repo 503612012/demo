@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author Oven
  */
 @Slf4j
-//@Component
+@Component
 public class InitSysDic implements CommandLineRunner {
 
     @Resource
@@ -32,8 +32,9 @@ public class InitSysDic implements CommandLineRunner {
         for (SysDicVo item : list) {
             map.put(item.getKey(), item.getValue());
             log.info(AppConst.INFO_LOG_PREFIX + " {} --- {}", item.getKey(), item.getValue());
-            SysDic.setSysDic(map);
         }
+        SysDic.setSysDic(map);
+        log.info(AppConst.INFO_LOG_PREFIX + "系统字典加载完毕！");
     }
 
 }

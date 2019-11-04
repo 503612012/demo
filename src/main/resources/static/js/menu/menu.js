@@ -108,7 +108,7 @@ layui.use(['treetable', 'form'], function() {
         html += '</div>';
         layer.open({
             title: '修改菜单',
-            area: ['500px', '300px'],
+            area: [$(window).width() <= 750 ? '60%' : '500px', '300px'],
             btn: ['保存', '关闭'],
             type: 1,
             content: html,

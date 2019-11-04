@@ -1,7 +1,6 @@
 package com.oven.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -12,6 +11,7 @@ import com.oven.service.MenuService;
 import com.oven.service.RoleService;
 import com.oven.service.UserRoleService;
 import com.oven.service.UserService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.Role;
 import com.oven.vo.User;
 import com.oven.vo.UserRole;
@@ -81,7 +81,7 @@ public class RoleController extends BaseController {
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     public Object getByPage(Integer page, Integer limit, Role role) throws MyException {
         try {
-            JSONObject result = new JSONObject();
+            LayuiPager<Role> result = new LayuiPager<>();
             List<Role> list = roleService.getByPage(page, limit, role);
             for (Role item : list) {
                 User createUser = userService.getById(item.getCreateId());
@@ -90,10 +90,10 @@ public class RoleController extends BaseController {
                 item.setLastModifyName(lastModifyUser == null ? "" : lastModifyUser.getNickName());
             }
             Integer totalNum = roleService.getTotalNum(role);
-            result.put("code", 0);
-            result.put("msg", "");
-            result.put("data", list);
-            result.put("count", totalNum);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

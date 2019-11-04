@@ -1,6 +1,36 @@
 //@sourceURL=/left.js
 $(function() {
 
+    var isShow = true;  // 定义一个标志位
+
+    /**
+     * 手机端缩回菜单栏
+     */
+    function mobileDownMenu() {
+        // 操作logo部分
+        $("#logoBox i,.mobile-shadow").hide();
+        $("#logoutBtn,#currentUserSpan").show();
+        $("#logoWord").addClass("hide");
+
+        $('.layui-side.layui-bg-black,#logoBox').animate({'width': '0'}); // 设置宽度
+        $('.layui-body,.layui-footer,#searchBox,.mobile-shadow').animate({'left': '0'});
+        // 将二级导航栏隐藏
+        $('dd span').each(function() {
+            $(this).hide();
+        });
+        $('body').find(".layui-icon-shrink-right").removeClass("layui-icon-shrink-right").addClass("layui-icon-spread-left");
+        $('body').find("li.layui-nav-itemed a.level-one-menu").click();
+        $('body').find("a.level-one-menu cite").addClass("hide");
+        isShow = false;
+    }
+
+    if ($(window).width() < 750) {
+        mobileDownMenu();
+        $("body").on("click", ".mobile-shadow", function() {
+            mobileDownMenu();
+        });
+    }
+
     /**
      * 填充菜单
      */
@@ -28,6 +58,9 @@ $(function() {
             $(this).addClass("menu-border-left");
         });
         $("#user-menus").find(".level-two-menu").on("click", function() {
+            if ($(window).width() < 750) {
+                mobileDownMenu();
+            }
             $(".layui-this").removeClass("layui-this");
             $(this).addClass("layui-this");
             $(".menu-border-left").removeClass("menu-border-left");
@@ -57,7 +90,6 @@ $(function() {
         }
     });
 
-    var isShow = true;  // 定义一个标志位
     // 点击一级标题的时候打开缩回去的边栏
     $("body").on("click", ".level-one-menu", function() {
         if (!isShow) {
@@ -81,36 +113,31 @@ $(function() {
         });
         // 判断isshow的状态
         if (isShow) { // 缩回去
-            // 操作logo部分
-            $("#logoBox").animate({"width": "55px"});
-            $("#searchBox").animate({"left": "55px"});
-            $("#logoWord").addClass("hide");
-
-            $('.layui-side.layui-bg-black').animate({'width': '55px'}); // 设置宽度
-            // $('.kit-side-fold i').animate({'margin-right': '70%'});  // 修改图标的位置
-            // 将footer和body的宽度修改
-            $('.layui-body').animate({'left': '55px'});
-            $('.layui-footer').animate({'left': '55px'});
-            // 将二级导航栏隐藏
-            $('dd span').each(function() {
-                $(this).hide();
-            });
-            // 修改标志位
-            // $('body').find(".layui-nav-itemed").removeClass("layui-nav-iteme");
-            $('body').find(".layui-icon-shrink-right").removeClass("layui-icon-shrink-right").addClass("layui-icon-spread-left");
-            $('body').find("li.layui-nav-itemed a.level-one-menu").click();
-            $('body').find("a.level-one-menu cite").addClass("hide");
-            isShow = false;
+            if ($(window).width() < 750) {
+                mobileDownMenu();
+            } else {
+                $("#logoWord").addClass("hide");
+                $('.layui-side.layui-bg-black,#logoBox').animate({'width': '55px'}); // 设置宽度
+                $('.layui-footer,.layui-body,#searchBox').animate({'left': '55px'});
+                // 将二级导航栏隐藏
+                $('dd span').each(function() {
+                    $(this).hide();
+                });
+                $('body').find(".layui-icon-shrink-right").removeClass("layui-icon-shrink-right").addClass("layui-icon-spread-left");
+                $('body').find("li.layui-nav-itemed a.level-one-menu").click();
+                $('body').find("a.level-one-menu cite").addClass("hide");
+                isShow = false;
+            }
         } else { // 展开
-            // 操作logo部分
-            $("#logoBox").animate({"width": "200px"});
-            $("#searchBox").animate({"left": "200px"});
+            if ($(window).width() < 750) {
+                $("#logoutBtn,#currentUserSpan").hide();
+                $(".layui-side-scroll .layui-nav-more,.mobile-shadow").show();
+            }
+            $("#logoBox i").show();
             $("#logoWord").removeClass("hide");
 
-            $('.layui-side.layui-bg-black').animate({'width': '200px'});
-            // $('.kit-side-fold i').animate({'margin-right': '10%'});
-            $('.layui-body').animate({'left': '200px'});
-            $('.layui-footer').animate({'left': '200px'});
+            $('.layui-side.layui-bg-black,#logoBox').animate({'width': '200px'});
+            $('.layui-body,.mobile-shadow,#searchBox,.layui-footer').animate({'left': '200px'});
             $('dd span').each(function() {
                 $(this).show();
             });

@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -8,6 +7,7 @@ import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
 import com.oven.service.WorkhourService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -48,14 +48,14 @@ public class WorkhourController extends BaseController {
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.WORKHOUR_MANAGER)
     public Object getByPage(Integer page, Integer limit, Workhour workhour) throws MyException {
-        JSONObject result = new JSONObject();
         try {
+            LayuiPager<Workhour> result = new LayuiPager<>();
             List<Workhour> list = workhourService.getByPage(page, limit, workhour);
             Integer totalNum = workhourService.getTotalNum(workhour);
-            result.put("code", 0);
-            result.put("count", totalNum);
-            result.put("msg", "");
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

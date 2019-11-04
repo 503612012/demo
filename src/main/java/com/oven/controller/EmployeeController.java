@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -11,6 +10,7 @@ import com.oven.service.AdvanceSalaryService;
 import com.oven.service.EmployeeService;
 import com.oven.service.UserService;
 import com.oven.service.WorkhourService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.AdvanceSalary;
 import com.oven.vo.Employee;
 import com.oven.vo.Workhour;
@@ -77,17 +77,17 @@ public class EmployeeController extends BaseController {
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     public Object getByPage(Integer page, Integer limit, Employee employee) throws MyException {
         try {
-            JSONObject result = new JSONObject();
+            LayuiPager<Employee> result = new LayuiPager<>();
             List<Employee> list = employeeService.getByPage(page, limit, employee);
             for (Employee item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
             }
             Integer totalNum = employeeService.getTotalNum(employee);
-            result.put("code", 0);
-            result.put("msg", "");
-            result.put("count", totalNum);
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

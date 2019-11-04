@@ -57,7 +57,7 @@ layui.use('table', function() {
                     }
                 }
             }
-            , {title: '操作', toolbar: '#employeeListBar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#employeeListBar'}
         ]]
         , page: true
     });

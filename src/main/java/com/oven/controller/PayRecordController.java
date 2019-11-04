@@ -1,10 +1,10 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.PayRecordService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.PayRecord;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -45,14 +45,14 @@ public class PayRecordController extends BaseController {
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.SALARY_PAY_RECORD)
     public Object getByPage(Integer page, Integer limit, String employeeName) throws MyException {
-        JSONObject result = new JSONObject();
         try {
+            LayuiPager<PayRecord> result = new LayuiPager<>();
             List<PayRecord> list = payRecordService.getByPage(page, limit, employeeName);
             Integer totalNum = payRecordService.getTotalNum(employeeName);
-            result.put("code", 0);
-            result.put("msg", "");
-            result.put("count", totalNum);
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

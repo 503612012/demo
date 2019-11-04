@@ -1,10 +1,10 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.service.LogService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.Log;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -62,13 +62,13 @@ public class LogController extends BaseController {
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
     public Object getByPage(Integer page, Integer limit, Log logVo) throws MyException {
         try {
-            JSONObject result = new JSONObject();
+            LayuiPager<Log> result = new LayuiPager<>();
             List<Log> list = logService.getByPage(page, limit, logVo);
             Integer totalNum = logService.getTotalNum(logVo);
-            result.put("code", 0);
-            result.put("data", list);
-            result.put("msg", "");
-            result.put("count", totalNum);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);

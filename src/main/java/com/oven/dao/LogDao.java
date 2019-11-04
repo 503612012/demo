@@ -35,7 +35,7 @@ public class LogDao {
     public Log getById(Integer id) {
         String sql = "select * from t_log where dbid = ?";
         List<Log> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Log.class), id);
-        return list == null || list.size() == 0 ? null : list.get(0);
+        return list.size() == 0 ? null : list.get(0);
     }
 
     /**

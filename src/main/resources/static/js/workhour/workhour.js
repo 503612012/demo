@@ -67,7 +67,7 @@ layui.use(['table', 'laydate'], function() {
                     }
                 }
             }
-            , {title: '操作', toolbar: '#workhourListBar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#workhourListBar'}
         ]]
         , page: true
         , done: function(res) {

@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 定时任务Dao层
+ * 定时任务dao层
  *
  * @author Oven
  */

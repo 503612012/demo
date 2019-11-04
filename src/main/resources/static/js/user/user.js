@@ -56,7 +56,7 @@ layui.use(['table', 'jquery'], function() {
                     }
                 }
             }
-            , {title: '操作', toolbar: '#userListBar'}
+            , {title: '操作', width: 200, align: 'center', toolbar: '#userListBar'}
         ]]
         , page: true
     });
@@ -198,7 +198,7 @@ layui.use(['table', 'jquery'], function() {
                     html += '</div>';
                     layer.open({
                         title: '分配角色',
-                        area: ['600px', '450px'],
+                        area: [$(window).width() <= 750 ? '60%' : '600px', '450px'],
                         btn: ['保存', '关闭'],
                         type: 1,
                         content: html,

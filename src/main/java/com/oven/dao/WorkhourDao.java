@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * WorkhourDao
+ * 工时dao层
  *
  * @author Oven
  */

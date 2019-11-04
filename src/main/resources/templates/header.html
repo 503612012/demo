@@ -1,29 +1,26 @@
 <div class="layui-header" style="background-color: #393D49;" xmlns:th="http://www.thymeleaf.org">
     <div class="layui-logo" id="logoBox" style="cursor: pointer; background-color: #20222A; display: flex; justify-content: center; align-items: center;"><i style="margin: 10px; font-size: 27px;" class="layui-icon layui-icon-star-fill"></i><span id="logoWord">财务管理系统</span></div>
     <ul id="searchBox" class="layui-nav layui-layout-left" style="height: 100%; display: flex; align-items: center">
-        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+        <li class="layui-nav-item" lay-unselect="">
             <div title="菜单缩放" class="kit-side-fold"><i class="layui-icon layui-icon-shrink-right" style="font-size: 16px;" aria-hidden="true"></i></div>
-        </li>
-        <li class="layui-nav-item layui-hide-xs" lay-unselect="" style="margin-left: 20px;">
-            <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search/keywords=">
         </li>
     </ul>
     <ul class="layui-nav layui-layout-right">
         <li class="layui-nav-item">
             <a href="javascript:">
-                <img src="http://t.cn/RCzsdCq" class="layui-nav-img" alt=""><span th:text="${session.current_user.nickName}">dd</span>
+                <img src="http://t.cn/RCzsdCq" class="layui-nav-img" alt=""><span id="currentUserSpan" th:text="${session.current_user.nickName}"></span>
             </a>
             <dl class="layui-nav-child">
                 <dd><a href="javascript:" id="baseInfoBtn">基本资料</a></dd>
                 <dd><a href="javascript:" id="changePwdBtn">修改密码</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item"><a href="/logout">退出</a></li>
+        <li class="layui-nav-item" id="logoutBtn"><a href="/logout">退出</a></li>
     </ul>
-    <script th:src="@{/jquery.min.js}"></script>
-    <script th:src="@{/layui.all.js}"></script>
-    <script th:src="@{/crypto-js.js}"></script>
-    <script th:src="@{/header.js}"></script>
+    <script type="application/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="application/javascript" th:src="@{/layui/layui.all.js}"></script>
+    <script type="application/javascript" th:src="@{/js/lib/crypto-js.js}"></script>
+    <script type="application/javascript" th:src="@{/header.js}"></script>
 </div>
 
 <div id="changePwdTips" class="hide" xmlns:th="http://www.thymeleaf.org">

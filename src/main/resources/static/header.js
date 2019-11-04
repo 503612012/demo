@@ -41,7 +41,7 @@ layui.use(['form'], function() {
                     id: 'updateBaseInfoFrm',
                     type: 1,
                     title: '修改基本资料',
-                    area: ['500px', 'auto'],
+                    area: [$(window).width() <= 750 ? '60%' : '500px', 'auto'],
                     content: $('#baseInffoBtnFrm')
                 });
             }
@@ -57,7 +57,7 @@ layui.use(['form'], function() {
             id: 'changePwd',
             type: 1,
             content: $('#changePwdTips'),
-            area: ['680px', '320px'],
+            area: [$(window).width() <= 750 ? '60%' : '680px', '320px'],
             resize: false,
             cancel: function() {
                 $(document).off("click");

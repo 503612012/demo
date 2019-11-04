@@ -1,6 +1,5 @@
 package com.oven.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -8,6 +7,7 @@ import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
 import com.oven.service.AdvanceSalaryService;
+import com.oven.util.LayuiPager;
 import com.oven.vo.AdvanceSalary;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -49,13 +49,13 @@ public class AdvanceSalaryController extends BaseController {
     @RequiresPermissions(PermissionCode.ADVANCE_SALARY)
     public Object getByPage(Integer page, Integer limit, AdvanceSalary advanceSalary) throws MyException {
         try {
-            JSONObject result = new JSONObject();
+            LayuiPager<AdvanceSalary> result = new LayuiPager<>();
             List<AdvanceSalary> list = advanceSalaryService.getByPage(page, limit, advanceSalary);
             Integer totalNum = advanceSalaryService.getTotalNum(advanceSalary);
-            result.put("code", 0);
-            result.put("msg", "");
-            result.put("count", totalNum);
-            result.put("data", list);
+            result.setCode(0);
+            result.setMsg("");
+            result.setData(list);
+            result.setCount(totalNum);
             return result;
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
