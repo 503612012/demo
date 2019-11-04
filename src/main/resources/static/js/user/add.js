@@ -41,6 +41,9 @@ layui.use(['form', 'layedit', 'laydate'], function() {
             if (isExist) {
                 return '该用户已存在！';
             }
+            if (value == null || value == '' || value == undefined) {
+                return "用户名不能为空！";
+            }
         }
     });
 

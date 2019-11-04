@@ -9,8 +9,8 @@
 </head>
 <body class="layui-layout-body">
 
-<div id="LAY_app">
-    <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+<div id="Oven_app">
+    <div class="layadmin-user-login layadmin-user-display-show" id="user-login" style="display: none;">
         <div class="layadmin-user-login-main">
             <div class="layadmin-user-login-box layadmin-user-login-header">
                 <h2>OVEN</h2>
@@ -18,23 +18,23 @@
             </div>
             <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
                 <div class="layui-form-item">
-                    <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="user-login-username"></label>
                     <input type="hidden" name="key" th:value="${key}">
-                    <input type="text" name="userName" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
+                    <input type="text" name="userName" id="user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
-                    <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="user-login-password"></label>
+                    <input type="password" name="password" id="user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-row">
                         <div class="layui-col-xs7">
-                            <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
-                            <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
+                            <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="user-login-vercode"></label>
+                            <input type="text" name="vercode" id="user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
                         </div>
                         <div class="layui-col-xs5">
                             <div style="margin-left: 10px;">
-                                <img th:src="@{/getGifCode}" onclick="changeCode();" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode" alt="">
+                                <img th:src="@{/getGifCode}" onclick="changeCode();" class="layadmin-user-login-codeimg" id="user-get-vercode" alt="">
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                     <a th:href="@{#}" class="layadmin-user-jump-change" style="margin-top: 7px; color: #029789 !important;">忘记密码？</a>
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn-fluid" id="login-submit" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+                    <button class="layui-btn layui-btn-fluid" id="login-submit" lay-submit lay-filter="user-login-submit">登 入</button>
                 </div>
             </div>
         </div>

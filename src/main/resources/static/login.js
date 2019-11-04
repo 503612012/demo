@@ -79,5 +79,5 @@ $(function() {
 });
 
 function changeCode() {
-    document.getElementById("LAY-user-get-vercode").src = "/getGifCode?" + Math.random();
+    document.getElementById("user-get-vercode").src = "/getGifCode?" + Math.random();
 }
