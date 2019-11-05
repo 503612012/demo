@@ -44,7 +44,14 @@
     <!-- 定义控制台日志信息 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{10}) - %black(%msg%n)</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 定义控制台打印JDBC信息 -->
+    <appender name="JDBC" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger{10}) - %yellow(%msg%n)</pattern>
         </encoder>
     </appender>
 
@@ -67,8 +74,7 @@
         <appender-ref ref="ERROR"/>
     </logger>
     <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="DEBUG"/>
+        <appender-ref ref="JDBC"/>
     </logger>
 
 </configuration>
