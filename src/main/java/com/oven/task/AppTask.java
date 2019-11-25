@@ -25,6 +25,9 @@ public class AppTask implements SchedulingConfigurer {
     @Resource
     private CrontabDao crontabDao;
 
+    /**
+     * 模拟生产消息
+     */
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(this::doSomething, triggerContext -> {
