@@ -89,6 +89,7 @@ public class LogService extends BaseService {
     /**
      * 添加日志
      */
+    @Override
     public void addLog(String title, String content, Integer operatorId, String operatorName, String operatorIp) {
         Log log = new Log();
         log.setTitle(title);

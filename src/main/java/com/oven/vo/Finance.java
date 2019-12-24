@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 /**
  * 财务管理实体类
+ *
+ * @author Oven
  */
 @Data
 public class Finance implements Serializable {

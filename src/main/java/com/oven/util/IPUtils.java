@@ -65,7 +65,8 @@ public class IPUtils {
         boolean retVal = false;
         try {
             if (ipAddress != null && !"".equals(ipAddress)) {
-                Pattern pattern = Pattern.compile("([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}");
+                String regex = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+                Pattern pattern = Pattern.compile(regex);
                 retVal = pattern.matcher(ipAddress).matches();
             }
         } catch (Exception e) {

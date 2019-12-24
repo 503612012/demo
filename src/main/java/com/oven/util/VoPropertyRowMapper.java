@@ -108,6 +108,7 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
         return false;
     }
 
+    @Override
     public T mapRow(ResultSet rs, int rowNumber) throws SQLException {
         Assert.state(this.mappedClass != null, "Mapped class was not specified");
         T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
