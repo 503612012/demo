@@ -67,4 +67,17 @@ public class PermissionCode {
     public static final String FINANCE_SHOW_TOTAL_OUT_MONEY       = "C1_04_05";   // 显示总支出金额
     public static final String SALARY_COUNT                       = "C1_05";      // 薪资统计
 
+    public static final String FUND_MANAGER                       = "D1_01";      // 基金管理
+    public static final String FUND_INSERT                        = "D1_01_01";   // 添加基金
+    public static final String FUND_UPDATE                        = "D1_01_02";   // 修改基金
+    public static final String FUND_DELETE                        = "D1_01_03";   // 删除基金
+    public static final String FUND_SETSTATUS                     = "D1_01_04";   // 修改基金状态
+
+    public static final String FUNDBILLCHARTS_MANAGER             = "D1_02";      // 收益报表
+
+    public static final String FUNDBILL_MANAGER                   = "D1_03";      // 收益报表
+    public static final String FUNDBILL_INSERT                    = "D1_03_01";   // 录入收益
+    public static final String FUNDBILL_UPDATE                    = "D1_03_02";   // 修改收益
+    public static final String FUNDBILL_DELETE                    = "D1_03_03";   // 删除收益
+
 }

@@ -1,14 +1,15 @@
 package com.oven.cache.impl;
 
 import com.oven.cache.CacheService;
-import com.oven.constant.AppConst;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -31,7 +32,7 @@ public class CacheServiceImpl implements CacheService {
      */
     @Override
     public <T> T get(String key) {
-        return get(key, null, null, AppConst.CACHE_MINUTE);
+        return get(key, null, null, null);
     }
 
     /**
@@ -42,7 +43,7 @@ public class CacheServiceImpl implements CacheService {
      */
     @Override
     public <T> T get(String key, Function<String, T> function) {
-        return get(key, function, key, AppConst.CACHE_MINUTE);
+        return get(key, function, key, null);
     }
 
     /**
@@ -54,7 +55,7 @@ public class CacheServiceImpl implements CacheService {
      */
     @Override
     public <T, M> T get(String key, Function<M, T> function, M funcParm) {
-        return get(key, function, funcParm, AppConst.CACHE_MINUTE);
+        return get(key, function, funcParm, null);
     }
 
     /**
@@ -84,7 +85,6 @@ public class CacheServiceImpl implements CacheService {
         if (StringUtils.isEmpty(key)) {
             return null;
         }
-        expireTime = getExpireTime(expireTime);
         try {
             ValueOperations<String, Object> operations = redisTemplate.opsForValue();
             obj = (T) operations.get(key);
@@ -108,7 +108,7 @@ public class CacheServiceImpl implements CacheService {
      */
     @Override
     public <T> void set(String key, T obj) {
-        set(key, obj, AppConst.CACHE_MINUTE);
+        set(key, obj, null);
     }
 
     /**
@@ -126,11 +126,12 @@ public class CacheServiceImpl implements CacheService {
         if (obj == null) {
             return;
         }
-        expireTime = getExpireTime(expireTime);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         ValueOperations<String, Object> operations = redisTemplate.opsForValue();
         operations.set(key, obj);
-        redisTemplate.expire(key, expireTime, TimeUnit.MILLISECONDS);
+        if (null != expireTime) {
+            redisTemplate.expire(key, expireTime, TimeUnit.MILLISECONDS);
+        }
     }
 
     /**
@@ -165,25 +166,26 @@ public class CacheServiceImpl implements CacheService {
     }
 
     /**
-     * 获取过期时间 单位：毫秒
-     *
-     * @param expireTime 传人的过期时间 单位毫秒 如小于1分钟，默认为10分钟
-     */
-    private Long getExpireTime(Long expireTime) {
-        Long result = expireTime;
-        if (expireTime == null || expireTime < AppConst.CACHE_MINUTE / 10) {
-            result = AppConst.CACHE_MINUTE;
-        }
-        return result;
-    }
-
-    /**
      * 批量移除缓存
      *
      * @param key 缓存键 不可为空
      */
     @Override
-    public void batchRemove(String key) {
+    public void batchRemove(String... key) {
+        if (key != null && key.length > 0) {
+            if (key.length == 1) {
+                this.localBatchRemove(key[0]);
+            } else {
+                @SuppressWarnings("rawtypes") List keys = CollectionUtils.arrayToList(key);
+                for (Object item : keys) {
+                    this.localBatchRemove((String) item);
+                }
+            }
+        }
+
+    }
+
+    private void localBatchRemove(String key) {
         Set<String> set = redisTemplate.keys(key + "*");
         if (set != null) {
             for (String item : set) {

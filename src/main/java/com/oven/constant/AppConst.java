@@ -11,8 +11,6 @@ public class AppConst {
 
     public static final String INFO_LOG_PREFIX = "***************************"; // INFO日志前缀
 
-    public static final Long CACHE_MINUTE = 600 * 1000L; // 缓存时效时间，单位：毫秒
-
     public static final String CURRENT_USER = "current_user"; // 当前登录用户
 
     public static final String LOGINEDUSERS = "loginedUsers"; // 已经登录到系统用户，是一个map
@@ -74,5 +72,13 @@ public class AppConst {
 
     public static final String FINANCE_INSERT_LIMIT_KEY = "finance.insert.limit.key";
     public static final String FINANCE_DELETE_LIMIT_KEY = "finance.delete.limit.key";
+
+    public static final String FUND_INSERT_LIMIT_KEY = "fund.insert.limit.key";
+    public static final String FUND_UPDATE_LIMIT_KEY = "fund.update.limit.key";
+    public static final String FUND_DELETE_LIMIT_KEY = "fund.delete.limit.key";
+    public static final String FUND_INPUT_PROFIT_LIMIT_KEY = "fund.input.profit.limit.key";
+    public static final String FUND_INPUT_UPDATE_PROFIT_LIMIT_KEY = "fund.input.update.profit.limit.key";
+    public static final String FUND_INPUT_DELETE_PROFIT_LIMIT_KEY = "fund.input.delete.profit.limit.key";
+    public static final String FUND_UPDATE_STATUS_LIMIT_KEY = "fund.update.status.limit.key";
 
 }

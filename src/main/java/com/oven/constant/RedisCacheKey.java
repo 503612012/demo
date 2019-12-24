@@ -108,4 +108,21 @@ public class RedisCacheKey {
     public static final String USER_MENU_CODES = PREFIX + "userMenuCodes_{0}";
     public static final String USER_MENU_CODES_PREFIX = PREFIX + "userMenuCodes_";
 
+    // 基金实体类缓存key定义
+    public static final String FUND_PREFIX = PREFIX + "fund_";
+    public static final String FUND_GET_ALL = PREFIX + "fund_getAll";
+    public static final String FUND_GET_BY_ID = PREFIX + "fund_getById_{0}";
+    public static final String FUND_GET_TOTAL_NUM = PREFIX + "fund_getTotalNum_{0}";
+    public static final String FUND_GET_BY_PAGE = PREFIX + "fund_getByPage_{0}_{1}_{2}";
+
+    // 基金账单实体类缓存key定义
+    public static final String FUNDBILL_PREFIX = PREFIX + "fundBill_";
+    public static final String FUNDBILL_GET_TOTAL = PREFIX + "fundBill_getTotal";
+    public static final String FUNDBILL_GET_BY_ID = PREFIX + "fundBill_getById_{0}";
+    public static final String FUNDBILL_GET_TOTAL_NUM = PREFIX + "fundBill_getTotalNum_{0}_{1}";
+    public static final String FUNDBILL_GET_BY_PAGE = PREFIX + "fundBill_getByPage_{0}_{1}_{2}_{3}";
+    public static final String FUNDBILL_GET_TOTAL_BY_DATE = PREFIX + "fundBill_getTotalByDate_{0}_{1}";
+    public static final String FUNDBILL_GET_CHARTS_DATA = PREFIX + "fundBill_getChartsData_{0}_{1}_{2}";
+    public static final String FUNDBILL_GET_CURRENT_DAY_TOTAL_BY_DATE = PREFIX + "fundBill_getCurrentDayTotalByDate_{0}_{1}";
+
 }

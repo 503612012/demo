@@ -88,6 +88,6 @@ public interface CacheService {
      *
      * @param key 缓存键 不可为空
      */
-    void batchRemove(String key);
+    void batchRemove(String... key);
 
 }

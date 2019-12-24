@@ -17,10 +17,10 @@ CREATE TABLE `t_advance_salary` (
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Table structure for t_config_dev
+-- Table structure for t_config
 -- ----------------------------
-DROP TABLE IF EXISTS `t_config_dev`;
-CREATE TABLE `t_config_dev` (
+DROP TABLE IF EXISTS t_config;
+CREATE TABLE `t_config` (
                                 `dbid` int(11) NOT NULL AUTO_INCREMENT,
                                 `key` varchar(255) DEFAULT NULL,
                                 `value` varchar(255) DEFAULT NULL,
@@ -29,31 +29,31 @@ CREATE TABLE `t_config_dev` (
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
--- Records of t_config_dev
+-- Records of t_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_config_dev` VALUES (1, 'server.port', '45678', NULL);
-INSERT INTO `t_config_dev` VALUES (2, 'server.context-path', '/', NULL);
-INSERT INTO `t_config_dev` VALUES (3, 'spring.thymeleaf.suffix', '.html', NULL);
-INSERT INTO `t_config_dev` VALUES (4, 'spring.thymeleaf.cache', 'false', NULL);
-INSERT INTO `t_config_dev` VALUES (5, 'spring.datasource.type', 'com.alibaba.druid.pool.DruidDataSource', NULL);
-INSERT INTO `t_config_dev` VALUES (6, 'spring.datasource.druid.max-wait', '60000', NULL);
-INSERT INTO `t_config_dev` VALUES (7, 'spring.datasource.druid.min-idle', '1', NULL);
-INSERT INTO `t_config_dev` VALUES (8, 'spring.datasource.druid.max-active', '100', NULL);
-INSERT INTO `t_config_dev` VALUES (9, 'spring.datasource.druid.initial-size', '100', NULL);
-INSERT INTO `t_config_dev` VALUES (10, 'spring.redis.database', '0', NULL);
-INSERT INTO `t_config_dev` VALUES (11, 'spring.redis.host', '127.0.0.1', NULL);
-INSERT INTO `t_config_dev` VALUES (12, 'spring.redis.port', '6379', NULL);
-INSERT INTO `t_config_dev` VALUES (13, 'spring.redis.password', '5217', NULL);
-INSERT INTO `t_config_dev` VALUES (14, 'spring.redis.timeout', '30000', NULL);
-INSERT INTO `t_config_dev` VALUES (15, 'spring.redis.pool.max-active', '20', NULL);
-INSERT INTO `t_config_dev` VALUES (16, 'spring.redis.jedis.pool.max-wait', '-1', NULL);
-INSERT INTO `t_config_dev` VALUES (17, 'spring.redis.jedis.pool.max-idle', '8', NULL);
-INSERT INTO `t_config_dev` VALUES (18, 'spring.redis.pool.min-idle', '0', NULL);
-INSERT INTO `t_config_dev` VALUES (19, 'logging.config', 'classpath:logback-dev.xml', NULL);
-INSERT INTO `t_config_dev` VALUES (29, 'spring.data.redis.repositories.enabled', 'false', NULL);
-INSERT INTO `t_config_dev` VALUES (30, 'spring.data.jpa.repositories.enabled', 'false', NULL);
-INSERT INTO `t_config_dev` VALUES (31, 'spring.transaction.rollback-on-commit-failure', 'true', NULL);
+INSERT INTO t_config VALUES (1, 'server.port', '45678', NULL);
+INSERT INTO t_config VALUES (2, 'server.context-path', '/', NULL);
+INSERT INTO t_config VALUES (3, 'spring.thymeleaf.suffix', '.html', NULL);
+INSERT INTO t_config VALUES (4, 'spring.thymeleaf.cache', 'false', NULL);
+INSERT INTO t_config VALUES (5, 'spring.datasource.type', 'com.alibaba.druid.pool.DruidDataSource', NULL);
+INSERT INTO t_config VALUES (6, 'spring.datasource.druid.max-wait', '60000', NULL);
+INSERT INTO t_config VALUES (7, 'spring.datasource.druid.min-idle', '1', NULL);
+INSERT INTO t_config VALUES (8, 'spring.datasource.druid.max-active', '100', NULL);
+INSERT INTO t_config VALUES (9, 'spring.datasource.druid.initial-size', '100', NULL);
+INSERT INTO t_config VALUES (10, 'spring.redis.database', '0', NULL);
+INSERT INTO t_config VALUES (11, 'spring.redis.host', '127.0.0.1', NULL);
+INSERT INTO t_config VALUES (12, 'spring.redis.port', '6379', NULL);
+INSERT INTO t_config VALUES (13, 'spring.redis.password', '5217', NULL);
+INSERT INTO t_config VALUES (14, 'spring.redis.timeout', '30000', NULL);
+INSERT INTO t_config VALUES (15, 'spring.redis.pool.max-active', '20', NULL);
+INSERT INTO t_config VALUES (16, 'spring.redis.jedis.pool.max-wait', '-1', NULL);
+INSERT INTO t_config VALUES (17, 'spring.redis.jedis.pool.max-idle', '8', NULL);
+INSERT INTO t_config VALUES (18, 'spring.redis.pool.min-idle', '0', NULL);
+INSERT INTO t_config VALUES (19, 'logging.config', 'classpath:logback-dev.xml', NULL);
+INSERT INTO t_config VALUES (29, 'spring.data.redis.repositories.enabled', 'false', NULL);
+INSERT INTO t_config VALUES (30, 'spring.data.jpa.repositories.enabled', 'false', NULL);
+INSERT INTO t_config VALUES (31, 'spring.transaction.rollback-on-commit-failure', 'true', NULL);
 COMMIT;
 
 -- ----------------------------

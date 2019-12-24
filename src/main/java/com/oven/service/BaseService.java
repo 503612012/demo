@@ -66,7 +66,7 @@ public class BaseService {
     /**
      * 批量移除缓存
      */
-    public void batchRemove(String key) {
+    public void batchRemove(String... key) {
         cacheService.batchRemove(key);
     }
 

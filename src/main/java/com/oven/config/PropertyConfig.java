@@ -37,7 +37,6 @@ public class PropertyConfig {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String profile = properties.getProperty("profile");
         String driverClassName = properties.getProperty("spring.datasource.driver-class-name");
         String url = properties.getProperty("spring.datasource.url");
         String userName = properties.getProperty("spring.datasource.username");
@@ -48,10 +47,7 @@ public class PropertyConfig {
         ResultSet rs = null;
         try {
             Class.forName(driverClassName);
-            String tableName = "t_config_dev";
-            if ("pro".equals(profile)) {
-                tableName = "t_config_pro";
-            }
+            String tableName = "t_config";
             String sql = "select * from " + tableName;
             conn = DriverManager.getConnection(url, userName, password);
             pstmt = conn.prepareStatement(sql);

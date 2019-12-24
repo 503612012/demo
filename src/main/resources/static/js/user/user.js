@@ -1,4 +1,4 @@
-//@sourceURL=/js/user/employee.js
+//@sourceURL=/js/user/user.js
 
 layui.use(['table', 'jquery'], function() {
 
