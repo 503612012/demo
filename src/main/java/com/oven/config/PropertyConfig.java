@@ -20,6 +20,8 @@ public class PropertyConfig {
 
     private final static String DEV_PROFILE = "dev"; // 开发环境
     private final static String PRO_PROFILE = "pro"; // 生产环境
+    private final static String PROFILE = "@profile@"; // 由于IDEA开发环境无法进行变量替换，故这里识别到占位符时，默认为开发环境
+
 
     /**
      * 生成Properties对象
@@ -41,6 +43,9 @@ public class PropertyConfig {
             return null;
         }
         String profile = properties.getProperty("spring.profiles.active");
+        if (PROFILE.equals(profile)) {
+            profile = DEV_PROFILE;
+        }
         log.info(AppConst.INFO_LOG_PREFIX + "active profile is {}", profile);
         if (DEV_PROFILE.equals(profile)) {
             in = PropertyConfig.class.getClassLoader().getResourceAsStream("application-dev.properties");
