@@ -18,24 +18,43 @@ import java.util.Properties;
 @Slf4j
 public class PropertyConfig {
 
+    private final static String DEV_PROFILE = "dev"; // 开发环境
+    private final static String PRO_PROFILE = "pro"; // 生产环境
+
     /**
      * 生成Properties对象
      */
     public static Properties loadProperties() {
-        Properties properties = new Properties();
-        loadPropertiesFromDb(properties);
-        return properties;
+        return loadPropertiesFromDb();
     }
 
     /**
      * 从数据库中加载配置信息
      */
-    private static void loadPropertiesFromDb(Properties properties) {
+    private static Properties loadPropertiesFromDb() {
+        Properties properties = new Properties();
         InputStream in = PropertyConfig.class.getClassLoader().getResourceAsStream("application.properties");
         try {
             properties.load(in);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(AppConst.ERROR_LOG_PREFIX + "加载配置文件异常，异常信息：", e);
+            return null;
+        }
+        String profile = properties.getProperty("spring.profiles.active");
+        log.info(AppConst.INFO_LOG_PREFIX + "active profile is {}", profile);
+        if (DEV_PROFILE.equals(profile)) {
+            in = PropertyConfig.class.getClassLoader().getResourceAsStream("application-dev.properties");
+        } else if (PRO_PROFILE.equals(profile)) {
+            in = PropertyConfig.class.getClassLoader().getResourceAsStream("application-pro.properties");
+        } else {
+            log.error(AppConst.ERROR_LOG_PREFIX + "profile must be dev or pro!");
+            return null;
+        }
+        try {
+            properties.load(in);
+        } catch (Exception e) {
+            log.error(AppConst.ERROR_LOG_PREFIX + "加载配置文件异常，异常信息：", e);
+            return null;
         }
         String driverClassName = properties.getProperty("spring.datasource.driver-class-name");
         String url = properties.getProperty("spring.datasource.url");
@@ -59,8 +78,10 @@ public class PropertyConfig {
                 log.info(AppConst.INFO_LOG_PREFIX + " {} --- {}", key, value);
                 properties.put(key, value);
             }
+            return properties;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(AppConst.ERROR_LOG_PREFIX + "加载系统配置表异常，异常信息：", e);
+            return null;
         } finally {
             try {
                 if (conn != null) {

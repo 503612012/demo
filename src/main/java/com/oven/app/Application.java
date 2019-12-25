@@ -1,6 +1,8 @@
 package com.oven.app;
 
 import com.oven.config.PropertyConfig;
+import com.oven.constant.AppConst;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,6 +15,7 @@ import java.util.Properties;
  *
  * @author Oven
  */
+@Slf4j
 @EnableScheduling
 @EnableTransactionManagement
 @SpringBootApplication(scanBasePackages = "com.oven")
@@ -23,6 +26,10 @@ public class Application {
      */
     public static void main(String[] args) {
         Properties properties = PropertyConfig.loadProperties();
+        if (properties == null) {
+            log.error(AppConst.ERROR_LOG_PREFIX + "load properties error...");
+            return;
+        }
         SpringApplication application = new SpringApplication(Application.class);
         application.setDefaultProperties(properties);
         System.setProperty("net.sf.ehcache.enableShutdownHook", "true");
