@@ -217,6 +217,14 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <!-- 开启filtering功能后，打包时会破坏二进制内容的文件，因此这里将其排除 -->
+                            <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>svg</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                            </nonFilteredFileExtensions>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
