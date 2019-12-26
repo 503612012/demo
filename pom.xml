@@ -16,11 +16,13 @@
     </parent>
 
     <properties>
+        <yuicompressor-maven-plugin.version>1.5.1</yuicompressor-maven-plugin.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdbctemplatetool.version>1.0.4-RELEASE</jdbctemplatetool.version>
         <main.class.path>com.oven.app.Application</main.class.path>
         <shiro-spring.versoin>1.4.0</shiro-spring.versoin>
+        <shiro-redis.version>3.2.2</shiro-redis.version>
         <fastjson.version>1.2.46</fastjson.version>
         <druid.version>1.1.5</druid.version>
         <guava.version>23.0</guava.version>
@@ -130,7 +132,7 @@
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
-            <version>3.2.2</version>
+            <version>${shiro-redis.version}</version>
         </dependency>
     </dependencies>
 
@@ -284,7 +286,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>1.5.1</version>
+                <version>${yuicompressor-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>prepare-package</phase>
