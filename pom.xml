@@ -219,6 +219,7 @@
                         <configuration>
                             <!-- 开启filtering功能后，打包时会破坏二进制内容的文件，因此这里将其排除 -->
                             <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>eot</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>svg</nonFilteredFileExtension>
@@ -229,6 +230,30 @@
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <filtering>true</filtering>
+                                    <excludes>
+                                        <!-- 不拷贝js和css文件，由下边的插件进行压缩拷贝 -->
+                                        <exclude>**/*.js</exclude>
+                                        <exclude>**/*.css</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-min-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*min.js</include>
+                                        <include>**/*min.css</include>
+                                    </includes>
                                 </resource>
                             </resources>
                             <outputDirectory>${project.build.directory}/resources</outputDirectory>
@@ -253,6 +278,45 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- 压缩拷贝js和css文件 -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 读取js,css文件采用UTF-8编码 -->
+                    <encoding>UTF-8</encoding>
+                    <!-- 若存在已压缩的文件，会先对比源文件是否有改动，有改动便压缩，无改动就不压缩 -->
+                    <force>true</force>
+                    <!-- 不显示js可能的错误 -->
+                    <jswarn>false</jswarn>
+                    <!-- 压缩之前先执行聚合文件操作 -->
+                    <preProcessAggregates>true</preProcessAggregates>
+                    <!-- 是否不添加min后缀 -->
+                    <nosuffix>true</nosuffix>
+                    <!-- 在指定的列号后插入新行 -->
+                    <linebreakpos>-1</linebreakpos>
+                    <sourceDirectory>src/main/resources</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                    <includes>
+                        <include>**/*.js</include>
+                        <include>**/*.css</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*min.js</exclude>
+                        <exclude>**/*min.css</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
