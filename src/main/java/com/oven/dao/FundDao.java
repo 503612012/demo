@@ -75,6 +75,7 @@ public class FundDao {
         StringBuilder sb = new StringBuilder("select f.*, u.nick_name as create_name from t_fund f left join t_user u on u.dbid = f.create_id");
         List<Object> params = new ArrayList<>();
         addCondition(sb, params, fundName);
+        sb.append(" order by status, _order");
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
         params.add((pageNum - 1) * pageSize);
         params.add(pageSize);
@@ -96,7 +97,7 @@ public class FundDao {
      * 获取所有基金
      */
     public List<Fund> getAll() {
-        String sql = "select * from t_fund where `status` = 0";
+        String sql = "select * from t_fund where `status` = 0 order by _order";
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Fund.class));
     }
 
@@ -116,6 +117,14 @@ public class FundDao {
             sb.append(" and f.`fund_name` like ?");
             params.add("%" + fundName.replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
+    }
+
+    /**
+     * 修改基金排序
+     */
+    public void updateOrder(Integer fundId, Integer order) {
+        String sql = "update t_fund set _order = ? where dbid = ?";
+        this.jdbcTemplate.update(sql, order, fundId);
     }
 
 }

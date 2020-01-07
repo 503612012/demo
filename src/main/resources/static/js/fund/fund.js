@@ -21,6 +21,11 @@ layui.use(['table'], function() {
         });
     };
 
+    var orderColumn = {field: 'order', title: '排序值'};
+    if (hasPermission(hasChangeFundOrderPermission)) {
+        orderColumn = {field: 'order', title: '排序值', edit: 'text'};
+    }
+
     table.render({
         elem: '#fund-list'
         , url: '/fund/getByPage/'
@@ -32,6 +37,7 @@ layui.use(['table'], function() {
             , {field: 'fundName', title: '基金名称', sort: true}
             , {field: 'createTime', title: '创建时间'}
             , {field: 'createName', title: '创建人'}
+            , orderColumn
             , {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
@@ -113,6 +119,31 @@ layui.use(['table'], function() {
                 });
             }
         }
+    });
+
+    //监听单元格编辑
+    table.on('edit(fund-list)', function(obj) {
+        $.ajax({
+            url: '/fund/updateOrder',
+            type: 'POST',
+            data: {
+                order: obj.value,
+                fundId: obj.data.id
+            },
+            dataType: 'json',
+            success: function(result) {
+                if (result.code != 200) {
+                    layer.open({
+                        title: '系统提示',
+                        anim: 6,
+                        content: result.data,
+                        btnAlign: 'c'
+                    });
+                    return;
+                }
+                reload();
+            }
+        });
     });
 
     // 监听工具条

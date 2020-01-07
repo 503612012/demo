@@ -44,6 +44,7 @@
     var menu = [[${session.menu}]];
 
     var hasChangeFundStatusPermission = /*[[${T(com.oven.constant.PermissionCode).FUND_SETSTATUS}]]*/ '';
+    var hasChangeFundOrderPermission = /*[[${T(com.oven.constant.PermissionCode).FUND_UPDATE_ORDER}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

@@ -76,7 +76,7 @@ public class FundBillDao {
         StringBuilder sb = new StringBuilder("select fb.*, f.fund_name from t_fund_bill fb left join t_fund f on f.dbid = fb.fund_id");
         List<Object> params = new ArrayList<>();
         addCondition(sb, params, fundName, date);
-        sb.append(" order by fb.data_date desc, fb.fund_id");
+        sb.append(" order by fb.data_date desc, f._order desc");
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
         params.add((pageNum - 1) * pageSize);
         params.add(pageSize);
@@ -174,7 +174,7 @@ public class FundBillDao {
      * 获取全部累计
      */
     public Double getTotal() {
-        String sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill";
+        String sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where status = 0";
         return this.jdbcTemplate.queryForObject(sql, Double.class);
     }
 

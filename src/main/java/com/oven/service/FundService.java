@@ -153,4 +153,17 @@ public class FundService extends BaseService {
         return list;
     }
 
+    /**
+     * 修改基金排序
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOrder(Integer fundId, Integer order) {
+        Fund fund = this.getById(fundId);
+        fundDao.updateOrder(fundId, order);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.FUND_PREFIX);
+        // 记录日志
+        super.addLog("修改基金排序", fund.getFundName() + "的排序值由【" + fund.getOrder() + "】改为【" + order + "】", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+    }
+
 }

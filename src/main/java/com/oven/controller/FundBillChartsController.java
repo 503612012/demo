@@ -82,7 +82,7 @@ public class FundBillChartsController extends BaseController {
             if (CollectionUtils.isEmpty(fundsList)) {
                 return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
             }
-            for (int i = 0; i < fundsList.size() + 2; i++) {
+            for (int i = 0; i < fundsList.size() + 1; i++) {
                 JSONObject seriesItem = new JSONObject();
                 seriesItem.put("type", "line");
                 seriesItem.put("smooth", true);
@@ -101,7 +101,7 @@ public class FundBillChartsController extends BaseController {
             } else {
                 firstLine.add("当月累计");
             }
-            firstLine.add("平均收益累计");
+//            firstLine.add("平均收益累计");
             source.add(firstLine);
             for (int i = 1; i <= categoryNum; i++) {
                 JSONArray lineItem = new JSONArray();
@@ -120,9 +120,9 @@ public class FundBillChartsController extends BaseController {
                     lineItem.add(fundData == null ? 0 : (fundData.get("money") == null ? 0 : fundData.get("money")));
                 }
                 Double currentDayTotal = fundBillService.getCurrentDayTotalByDate(category, dateType); // 当日累计
-                Double total = fundBillService.getTotalByDate(category, dateType); // 持有累计
+//                Double total = fundBillService.getTotalByDate(category, dateType); // 持有累计
                 lineItem.add(currentDayTotal == null ? 0 : currentDayTotal);
-                lineItem.add(total == null ? 0 : (total / fundsList.size()));
+//                lineItem.add(total == null ? 0 : (total / fundsList.size()));
                 source.add(lineItem);
             }
             result.put("source", source);

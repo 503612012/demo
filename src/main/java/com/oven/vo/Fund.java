@@ -22,6 +22,8 @@ public class Fund {
     private Integer createId;
     @Column(name = "create_time")
     private String createTime;
+    @Column(name = "_order")
+    private Integer order;
 
     // 非数据库属性
     @Column(name = "create_name")

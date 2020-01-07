@@ -138,6 +138,21 @@ public class FundController extends BaseController {
     }
 
     /**
+     * 修改基金排序
+     */
+    @ResponseBody
+    @RequestMapping("/updateOrder")
+    @RequiresPermissions(PermissionCode.FUND_UPDATE_ORDER)
+    public Object updateOrder(Integer fundId, Integer order) throws MyException {
+        try {
+            fundService.updateOrder(fundId, order);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+        }
+    }
+
+    /**
      * 删除基金
      *
      * @param id 基金ID

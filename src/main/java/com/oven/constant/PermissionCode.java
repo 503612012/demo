@@ -72,6 +72,7 @@ public class PermissionCode {
     public static final String FUND_UPDATE                        = "D1_01_02";   // 修改基金
     public static final String FUND_DELETE                        = "D1_01_03";   // 删除基金
     public static final String FUND_SETSTATUS                     = "D1_01_04";   // 修改基金状态
+    public static final String FUND_UPDATE_ORDER                  = "D1_01_05";   // 修改基金排序值
 
     public static final String FUNDBILLCHARTS_MANAGER             = "D1_02";      // 收益报表
 
