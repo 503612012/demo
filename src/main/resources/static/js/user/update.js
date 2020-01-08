@@ -1,32 +1,29 @@
 //@sourceURL=/js/user/update.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
 
-layui.use(['form', 'layedit', 'laydate'], function() {
+requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
+
     var form = layui.form;
-    var layer = layui.layer;
 
     // 监听提交
     form.on('submit(user-update-submit)', function(data) {
         var that = $(this);
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        $.ajax({
-            url: '/user/doUpdate',
-            type: 'POST',
-            data: data.field,
-            dataType: 'json',
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                window.location.href = "/user/index";
-            }
+        http.post('/user/doUpdate', data.field, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            window.location.href = "/user/index";
         });
         return false;
     });
+
 });

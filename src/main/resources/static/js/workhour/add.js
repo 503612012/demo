@@ -1,7 +1,20 @@
 //@sourceURL=/js/workhour/add.js
-
 var worksiteName = '';
-layui.use(['form', 'layedit', 'laydate'], function() {
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
+
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
+
     var form = layui.form;
     var layer = layui.layer;
     var laydate = layui.laydate;
@@ -63,25 +76,8 @@ layui.use(['form', 'layedit', 'laydate'], function() {
                 $("#hourSalary").val('');
                 return;
             }
-            $.ajax({
-                url: '/employee/getHourSalaryByEmployeeId',
-                type: 'POST',
-                data: {
-                    "employeeId": employeeId
-                },
-                dataType: 'json',
-                success: function(result) {
-                    if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            anim: 6,
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
-                        return;
-                    }
-                    $("#hourSalary").val(result.data);
-                }
+            http.post('/employee/getHourSalaryByEmployeeId', {"employeeId": employeeId}, function(data) {
+                $("#hourSalary").val(data);
             });
         }
     });
@@ -90,107 +86,30 @@ layui.use(['form', 'layedit', 'laydate'], function() {
     laydate.render({
         elem: '#workDate',
         format: 'yyyy-MM-dd',
-        max: getNowFormatDate()
+        max: common.getNowFormatDate()
     });
-
-    function getNowFormatDate() {
-        var date = new Date();
-        var seperator1 = "-";
-        var seperator2 = ":";
-        var month = date.getMonth() + 1;
-        var strDate = date.getDate();
-        if (month >= 1 && month <= 9) {
-            month = "0" + month;
-        }
-        if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
-        }
-        return date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + " " + date.getHours() + seperator2 + date.getMinutes()
-            + seperator2 + date.getSeconds();
-    }
 
     // 监听提交
     form.on('submit(workhour-add-submit)', function(data) {
         var that = $(this);
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        $.ajax({
-            url: '/workhour/doAdd',
-            type: 'POST',
-            data: data.field,
-            dataType: 'json',
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                window.parent.mainFrm.location.href = "/workhour/index";
-            }
+        http.post('/workhour/doAdd', data.field, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            window.parent.mainFrm.location.href = "/workhour/index";
         });
         return false;
     });
 
-    function loadSelectBox() {
-        // 初始化员工下拉框
-        $.ajax({
-            url: '/employee/getAll',
-            type: 'GET',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                var html = '<option value="">请选择员工</option>';
-                for (var i = 0; i < data.length; i++) {
-                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-                $("#employeeSelect").html(html);
-                form.render("select");
-            }
-        });
+    // 初始化员工下拉框
+    http.get('/employee/getAll', {}, function(data) {
+        common.initEmployeeSelectBox(data, $("#employeeSelect"), form);
+    });
 
-        // 初始化下工地拉框
-        $.ajax({
-            url: '/worksite/getAll',
-            type: 'GET',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                var html = '<option value="">请选择工地</option>';
-                for (var i = 0; i < data.length; i++) {
-                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-                $("#worksiteSelect").html(html);
-                form.render("select");
-            }
-        });
-    }
+    // 初始化下工地拉框
+    http.get('/worksite/getAll', {}, function(data) {
+        common.initWorksiteSelectBox(data, $("#worksiteSelect"), form);
+    });
 
-    loadSelectBox();
 });
 
 function checkNum() {

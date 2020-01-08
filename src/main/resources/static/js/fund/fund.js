@@ -1,9 +1,21 @@
 //@sourceURL=/js/fund/fund.js
-layui.use(['table'], function() {
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
+
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
     var layer = layui.layer;
     var table = layui.table;
-    var $ = layui.$;
 
     /**
      * 重新加载表格
@@ -70,27 +82,13 @@ layui.use(['table'], function() {
     /**
      * 更改基金状态
      */
-    var updateUserStatus = function(fundId, status) {
-        $.ajax({
-            url: "/fund/updateStatus",
-            type: "POST",
-            data: {
-                "fundId": fundId,
-                "status": status
-            },
-            dataType: "json",
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                reload();
-            }
+    var updateFundStatus = function(fundId, status) {
+        var params = {
+            "fundId": fundId,
+            "status": status
+        };
+        http.post('/fund/updateStatus', params, function() {
+            reload();
         });
     };
 
@@ -108,13 +106,13 @@ layui.use(['table'], function() {
             }
             if (status == 1) { // 锁定
                 layer.confirm('确认锁定该基金吗？', {anim: 6}, function(index) {
-                    updateUserStatus(id, 1);
+                    updateFundStatus(id, 1);
                     layer.close(index);
                 });
             }
             if (status == 0) { // 取消锁定
                 layer.confirm('确认取消锁定该基金吗？', {anim: 6}, function(index) {
-                    updateUserStatus(id, 0);
+                    updateFundStatus(id, 0);
                     layer.close(index);
                 });
             }
@@ -123,26 +121,12 @@ layui.use(['table'], function() {
 
     //监听单元格编辑
     table.on('edit(fund-list)', function(obj) {
-        $.ajax({
-            url: '/fund/updateOrder',
-            type: 'POST',
-            data: {
-                order: obj.value,
-                fundId: obj.data.id
-            },
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                reload();
-            }
+        var params = {
+            order: obj.value,
+            fundId: obj.data.id
+        };
+        http.post('/fund/updateOrder', params, function() {
+            reload();
         });
     });
 
@@ -151,26 +135,9 @@ layui.use(['table'], function() {
         var data = obj.data;
         if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
-                $.ajax({
-                    url: '/fund/delete',
-                    type: 'POST',
-                    data: {
-                        id: data.id
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.code != 200) {
-                            layer.open({
-                                title: '系统提示',
-                                anim: 6,
-                                content: result.data,
-                                btnAlign: 'c'
-                            });
-                            return;
-                        }
-                        layer.close(index);
-                        reload();
-                    }
+                http.post('/fund/delete', {id: data.id}, function() {
+                    layer.close(index);
+                    reload();
                 });
             });
         } else if (obj.event == 'edit') {
@@ -185,21 +152,6 @@ layui.use(['table'], function() {
         }
     });
 
-    // 缓存当前操作的是哪个表格的哪个tr的哪个td
-    $(document).off('mousedown', '.layui-table-grid-down').on('mousedown', '.layui-table-grid-down', function() {
-        table._tableTrCurr = $(this).closest('td');
-    });
-
-    $(document).off('click', '.layui-table-tips-main [lay-event]').on('click', '.layui-table-tips-main [lay-event]', function() {
-        var elem = $(this);
-        var tableTrCurr = table._tableTrCurr;
-        if (!tableTrCurr) {
-            return;
-        }
-        var layerIndex = elem.closest('.layui-table-tips').attr('times');
-        // 关闭当前这个显示更多的tip
-        layer.close(layerIndex);
-        table._tableTrCurr.find('[lay-event="' + elem.attr('lay-event') + '"]')[0].click();
-    });
+    common.cacheMousedown();
 
 });

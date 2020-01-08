@@ -1,8 +1,19 @@
 //@sourceURL=/js/payRecord/payRecord.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
 
-layui.use(['table'], function() {
+requirejs(['jquery', 'layui', 'common'], function($, layui, common) {
+
     var table = layui.table;
-    var $ = layui.$;
 
     /**
      * 重新加载表格
@@ -68,30 +79,14 @@ layui.use(['table'], function() {
      * 显示/隐藏总金额
      */
     $("body").on("click", "span.totalSalary", function() {
-        if (hasPermission(hasShowSalaryPayRecordTotalMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowSalaryPayRecordTotalMoneyPermission);
     });
 
     /**
      * 显示/隐藏金额
      */
     $("body").on("click", "span.totalMoney", function() {
-        if (hasPermission(hasShowSalaryPayRecordMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowSalaryPayRecordMoneyPermission);
     });
 
     /**
@@ -111,21 +106,6 @@ layui.use(['table'], function() {
         reload();
     });
 
-    // 缓存当前操作的是哪个表格的哪个tr的哪个td
-    $(document).off('mousedown', '.layui-table-grid-down').on('mousedown', '.layui-table-grid-down', function() {
-        table._tableTrCurr = $(this).closest('td');
-    });
-
-    $(document).off('click', '.layui-table-tips-main [lay-event]').on('click', '.layui-table-tips-main [lay-event]', function() {
-        var elem = $(this);
-        var tableTrCurr = table._tableTrCurr;
-        if (!tableTrCurr) {
-            return;
-        }
-        var layerIndex = elem.closest('.layui-table-tips').attr('times');
-        // 关闭当前这个显示更多的tip
-        layer.close(layerIndex);
-        table._tableTrCurr.find('[lay-event="' + elem.attr('lay-event') + '"]')[0].click();
-    });
+    common.cacheMousedown();
 
 });

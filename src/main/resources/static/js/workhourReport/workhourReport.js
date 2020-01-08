@@ -1,6 +1,20 @@
 //@sourceURL=/js/workhourReport/workhourReport.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common',
+        echarts: 'js/lib/echarts.min'
+    },
+    shim: {
+        "layui": {exports: "layui"},
+        "echarts": {exports: "echarts"}
+    }
+});
 
-layui.use(['laydate', 'element', 'form'], function() {
+requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, echarts, http, common) {
 
     var laydate = layui.laydate;
     var form = layui.form;
@@ -12,59 +26,28 @@ layui.use(['laydate', 'element', 'form'], function() {
     // 初始化日期选择框
     laydate.render({
         elem: '#workhourReportDateMonth',
-        value: getCurrentDate(1),
+        value: common.getCurrentDate(1),
         type: 'year',
         format: 'yyyy',
         done: function(value) {
             var employeeId = $("#employeeSelect").val();
             loadCharts(value, 1, employeeId);
         },
-        max: getNowFormatDate()
+        max: common.getNowFormatDate()
     });
 
     // 初始化日期选择框
     laydate.render({
         elem: '#workhourReportDateDay',
-        value: getCurrentDate(2),
+        value: common.getCurrentDate(2),
         type: 'month',
         format: 'yyyy-MM',
         done: function(value) {
             var employeeId = $("#employeeSelect").val();
             loadCharts(value, 2, employeeId);
         },
-        max: getNowFormatDate()
+        max: common.getNowFormatDate()
     });
-
-    function getCurrentDate(type) {
-        var date = new Date();
-        if (type == 1) {
-            return date.getFullYear();
-        } else if (type == 2) {
-            var seperator = "-";
-            var month = date.getMonth() + 1;
-            if (month >= 1 && month <= 9) {
-                month = "0" + month;
-            }
-            return date.getFullYear() + seperator + month;
-        }
-    }
-
-    function getNowFormatDate() {
-        var date = new Date();
-        var seperator1 = "-";
-        var seperator2 = ":";
-        var month = date.getMonth() + 1;
-        var strDate = date.getDate();
-        if (month >= 1 && month <= 9) {
-            month = "0" + month;
-        }
-        if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
-        }
-        return date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + " " + date.getHours() + seperator2 + date.getMinutes()
-            + seperator2 + date.getSeconds();
-    }
 
     /**
      * 加载图表
@@ -158,8 +141,7 @@ layui.use(['laydate', 'element', 'form'], function() {
         });
     }
 
-    loadCharts(getCurrentDate(1), 1, '');
-    loadSelectBox();
+    loadCharts(common.getCurrentDate(1), 1, '');
 
     /**
      * 绑定数据类型切换事件
@@ -171,36 +153,36 @@ layui.use(['laydate', 'element', 'form'], function() {
         if (dateType == 1) {
             $("#workhourReportDateDay").addClass('hide');
             $("#workhourReportDateMonth").removeClass('hide');
-            loadCharts(getCurrentDate(1), dateType, employeeId);
+            loadCharts(common.getCurrentDate(1), dateType, employeeId);
 
             // 初始化日期选择框
             laydate.render({
                 elem: '#workhourReportDateMonth',
-                value: getCurrentDate(1),
+                value: common.getCurrentDate(1),
                 type: 'year',
                 format: 'yyyy',
                 done: function(value) {
                     var employeeId = $("#employeeSelect").val();
                     loadCharts(value, 1, employeeId);
                 },
-                max: getNowFormatDate()
+                max: common.getNowFormatDate()
             });
         } else if (dateType == 2) {
             $("#workhourReportDateMonth").addClass('hide');
             $("#workhourReportDateDay").removeClass('hide');
-            loadCharts(getCurrentDate(2), dateType, employeeId);
+            loadCharts(common.getCurrentDate(2), dateType, employeeId);
 
             // 初始化日期选择框
             laydate.render({
                 elem: '#workhourReportDateDay',
-                value: getCurrentDate(2),
+                value: common.getCurrentDate(2),
                 type: 'month',
                 format: 'yyyy-MM',
                 done: function(value) {
                     var employeeId = $("#employeeSelect").val();
                     loadCharts(value, 2, employeeId);
                 },
-                max: getNowFormatDate()
+                max: common.getNowFormatDate()
             });
         }
     });
@@ -217,32 +199,9 @@ layui.use(['laydate', 'element', 'form'], function() {
         loadCharts(date, dateType, employeeId)
     });
 
-    function loadSelectBox() {
-        // 初始化员工下拉框
-        $.ajax({
-            url: '/employee/getAll',
-            type: 'GET',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                var html = '<option value="">请选择员工</option>';
-                for (var i = 0; i < data.length; i++) {
-                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-                $("#employeeSelect").html(html);
-                form.render("select");
-            }
-        });
-    }
+    // 初始化员工下拉框
+    http.get('/employee/getAll', {}, function(data) {
+        common.initEmployeeSelectBox(data, $("#employeeSelect"), form);
+    });
 
 });

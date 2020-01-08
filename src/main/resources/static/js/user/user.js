@@ -1,9 +1,20 @@
 //@sourceURL=/js/user/user.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
 
-layui.use(['table', 'jquery'], function() {
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
     var table = layui.table;
-    var $ = layui.jquery;
 
     /**
      * 重新加载表格
@@ -82,26 +93,12 @@ layui.use(['table', 'jquery'], function() {
      * 更改用户状态
      */
     var updateUserStatus = function(userId, status) {
-        $.ajax({
-            url: "/user/updateStatus",
-            type: "POST",
-            data: {
-                userId: userId,
-                status: status
-            },
-            dataType: "json",
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                reload();
-            }
+        var params = {
+            userId: userId,
+            status: status
+        };
+        http.post('/user/updateStatus', params, function() {
+            reload();
         });
     };
 
@@ -146,25 +143,12 @@ layui.use(['table', 'jquery'], function() {
      * @param roleIds 角色ID列表
      */
     var setUserRole = function(userId, roleIds) {
-        $.ajax({
-            url: '/user/setUserRole',
-            type: 'POST',
-            data: {
-                'userId': userId,
-                'roleIds': roleIds
-            },
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                }
-                layer.closeAll();
-            }
+        var params = {
+            'userId': userId,
+            'roleIds': roleIds
+        };
+        http.post('/user/setUserRole', params, function() {
+            layer.closeAll();
         });
     };
 
@@ -173,70 +157,35 @@ layui.use(['table', 'jquery'], function() {
         var data = obj.data;
         var userid = data.id;
         if (obj.event == 'detail') {
-            $.ajax({
-                url: '/user/getRoleByUserId',
-                type: 'POST',
-                data: {
-                    id: userid
-                },
-                dataType: 'json',
-                success: function(result) {
-                    if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            anim: 6,
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
-                        return;
-                    }
-                    var data = result.data;
-                    var html = '<div style="padding: 15px;">';
-                    for (var i = 0; i < data.length; i++) {
-                        html += '<div style="margin-top: 7px;" data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
-                    }
-                    html += '</div>';
-                    layer.open({
-                        title: '分配角色',
-                        area: [$(window).width() <= 750 ? '60%' : '600px', '450px'],
-                        btn: ['保存', '关闭'],
-                        type: 1,
-                        content: html,
-                        yes: function() {
-                            var roleIds = [];
-                            $("body .layui-form-checked").each(function() {
-                                roleIds.push($(this).attr("data-role-id"));
-                            });
-                            setUserRole(userid, roleIds.toString());
-                        },
-                        btn2: function() {
-                            layer.closeAll();
-                        }
-                    });
+            http.post('/user/getRoleByUserId', {id: userid}, function(data) {
+                var html = '<div style="padding: 15px;">';
+                for (var i = 0; i < data.length; i++) {
+                    html += '<div style="margin-top: 7px;" data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
                 }
+                html += '</div>';
+                layer.open({
+                    title: '分配角色',
+                    area: [$(window).width() <= 750 ? '60%' : '600px', '450px'],
+                    btn: ['保存', '关闭'],
+                    type: 1,
+                    content: html,
+                    yes: function() {
+                        var roleIds = [];
+                        $("body .layui-form-checked").each(function() {
+                            roleIds.push($(this).attr("data-role-id"));
+                        });
+                        setUserRole(userid, roleIds.toString());
+                    },
+                    btn2: function() {
+                        layer.closeAll();
+                    }
+                });
             });
         } else if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
-                $.ajax({
-                    url: '/user/delete',
-                    type: 'POST',
-                    data: {
-                        id: data.id
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.code != 200) {
-                            layer.open({
-                                title: '系统提示',
-                                anim: 6,
-                                content: result.data,
-                                btnAlign: 'c'
-                            });
-                            return;
-                        }
-                        layer.close(index);
-                        reload();
-                    }
+                http.post('/user/delete', {id: data.id}, function() {
+                    layer.close(index);
+                    reload();
                 });
             });
         } else if (obj.event == 'edit') {
@@ -244,28 +193,6 @@ layui.use(['table', 'jquery'], function() {
         }
     });
 
-    // 头工具栏事件
-    table.on('toolbar(user-list)', function(obj) {
-        if (obj.event == 'user-add-btn') {
-            window.parent.mainFrm.location.href = "/user/add";
-        }
-    });
-
-    // 缓存当前操作的是哪个表格的哪个tr的哪个td
-    $(document).off('mousedown', '.layui-table-grid-down').on('mousedown', '.layui-table-grid-down', function() {
-        table._tableTrCurr = $(this).closest('td');
-    });
-
-    $(document).off('click', '.layui-table-tips-main [lay-event]').on('click', '.layui-table-tips-main [lay-event]', function() {
-        var elem = $(this);
-        var tableTrCurr = table._tableTrCurr;
-        if (!tableTrCurr) {
-            return;
-        }
-        var layerIndex = elem.closest('.layui-table-tips').attr('times');
-        // 关闭当前这个显示更多的tip
-        layer.close(layerIndex);
-        table._tableTrCurr.find('[lay-event="' + elem.attr('lay-event') + '"]')[0].click();
-    });
+    common.cacheMousedown();
 
 });

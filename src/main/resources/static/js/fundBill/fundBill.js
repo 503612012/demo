@@ -1,11 +1,23 @@
 //@sourceURL=/js/fundBill/fundBill.js
-layui.use(['table', 'form', 'laydate'], function() {
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
+
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
     var laydate = layui.laydate;
     var layer = layui.layer;
     var table = layui.table;
     var form = layui.form;
-    var $ = layui.$;
 
     // 初始化日期选择框
     laydate.render({
@@ -13,7 +25,7 @@ layui.use(['table', 'form', 'laydate'], function() {
         ready: function(value) {
             disabled_date(value, '7,1')
         },
-        change: function(value, date, endDate) {
+        change: function(value) {
             disabled_date(value, '7,1')
         },
         trigger: 'click',
@@ -83,60 +95,44 @@ layui.use(['table', 'form', 'laydate'], function() {
      */
     function openUpdateTips(fundBill) {
         // 初始化基金下拉框
-        $.ajax({
-            url: '/fund/getAll',
-            type: 'GET',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                var html = '<option value="">请选择基金</option>';
-                for (var i = 0; i < data.length; i++) {
-                    html += '<option value="' + data[i].id + '">' + data[i].fundName + '</option>';
-                }
-                $("#updateFundSelect").html(html);
-                form.val('updateProfitForm', {
-                    'id': fundBill.id,
-                    'fundId': fundBill.fundId,
-                    'money': fundBill.money
-                });
-                form.render("select");
-
-                // 初始化日期选择框
-                laydate.render({
-                    elem: '#updateDataDate',
-                    value: fundBill.dataDate,
-                    ready: function(value) {
-                        disabled_date(value, '7,1')
-                    },
-                    change: function(value, date, endDate) {
-                        disabled_date(value, '7,1')
-                    },
-                    trigger: 'click',
-                    format: 'yyyy-MM-dd'
-                });
-
-                layer.open({
-                    title: '修改收益',
-                    id: 'updateProfit',
-                    type: 1,
-                    content: $('#update-profit-box'),
-                    area: [$(window).width() <= 750 ? '80%' : '400px', '280px'],
-                    resize: false,
-                    cancel: function() {
-                        $(document).off("click");
-                    }
-                });
+        http.get('/fund/getAll', {}, function(data) {
+            var html = '<option value="">请选择基金</option>';
+            for (var i = 0; i < data.length; i++) {
+                html += '<option value="' + data[i].id + '">' + data[i].fundName + '</option>';
             }
+            $("#updateFundSelect").html(html);
+            form.val('updateProfitForm', {
+                'id': fundBill.id,
+                'fundId': fundBill.fundId,
+                'money': fundBill.money
+            });
+            form.render("select");
+
+            // 初始化日期选择框
+            laydate.render({
+                elem: '#updateDataDate',
+                value: fundBill.dataDate,
+                ready: function(value) {
+                    disabled_date(value, '7,1')
+                },
+                change: function(value) {
+                    disabled_date(value, '7,1')
+                },
+                trigger: 'click',
+                format: 'yyyy-MM-dd'
+            });
+
+            layer.open({
+                title: '修改收益',
+                id: 'updateProfit',
+                type: 1,
+                content: $('#update-profit-box'),
+                area: [$(window).width() <= 750 ? '80%' : '400px', '280px'],
+                resize: false,
+                cancel: function() {
+                    $(document).off("click");
+                }
+            });
         });
     }
 
@@ -145,48 +141,14 @@ layui.use(['table', 'form', 'laydate'], function() {
         var data = obj.data;
         if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
-                $.ajax({
-                    url: '/fundBill/delete',
-                    type: 'POST',
-                    data: {
-                        id: data.id
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.code != 200) {
-                            layer.open({
-                                title: '系统提示',
-                                anim: 6,
-                                content: result.data,
-                                btnAlign: 'c'
-                            });
-                            return;
-                        }
-                        layer.close(index);
-                        reload();
-                    }
+                http.post('/fundBill/delete', {id: data.id}, function() {
+                    layer.close(index);
+                    reload();
                 });
             });
         } else if (obj.event == 'edit') {
-            $.ajax({
-                url: '/fundBill/getById',
-                type: 'GET',
-                data: {
-                    id: data.id
-                },
-                dataType: 'json',
-                success: function(result) {
-                    if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            anim: 6,
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
-                        return;
-                    }
-                    openUpdateTips(result.data);
-                }
+            http.get('/fundBill/getById', {id: data.id}, function(data) {
+                openUpdateTips(data);
             });
         }
     });
@@ -195,55 +157,39 @@ layui.use(['table', 'form', 'laydate'], function() {
     table.on('toolbar(fundBill-list)', function(obj) {
         if (obj.event == 'fundBill-input-profit') {
             // 初始化基金下拉框
-            $.ajax({
-                url: '/fund/getAll',
-                type: 'GET',
-                data: {},
-                dataType: 'json',
-                success: function(result) {
-                    if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            anim: 6,
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
-                        return;
-                    }
-                    var data = result.data;
-                    var html = '<option value="">请选择基金</option>';
-                    for (var i = 0; i < data.length; i++) {
-                        html += '<option value="' + data[i].id + '">' + data[i].fundName + '</option>';
-                    }
-                    $("#fundSelect").html(html);
-                    form.render("select");
-
-                    // 初始化日期选择框
-                    laydate.render({
-                        elem: '#dataDate',
-                        value: new Date(),
-                        ready: function(value) {
-                            disabled_date(value, '7,1')
-                        },
-                        change: function(value, date, endDate) {
-                            disabled_date(value, '7,1')
-                        },
-                        trigger: 'click',
-                        format: 'yyyy-MM-dd'
-                    });
-
-                    layer.open({
-                        title: '录入收益',
-                        id: 'inputProfit',
-                        type: 1,
-                        content: $('#input-profit-box'),
-                        area: [$(window).width() <= 750 ? '80%' : '400px', '280px'],
-                        resize: false,
-                        cancel: function() {
-                            $(document).off("click");
-                        }
-                    });
+            http.get('/fund/getAll', {}, function(data) {
+                var html = '<option value="">请选择基金</option>';
+                for (var i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].id + '">' + data[i].fundName + '</option>';
                 }
+                $("#fundSelect").html(html);
+                form.render("select");
+
+                // 初始化日期选择框
+                laydate.render({
+                    elem: '#dataDate',
+                    value: new Date(),
+                    ready: function(value) {
+                        disabled_date(value, '7,1')
+                    },
+                    change: function(value) {
+                        disabled_date(value, '7,1')
+                    },
+                    trigger: 'click',
+                    format: 'yyyy-MM-dd'
+                });
+
+                layer.open({
+                    title: '录入收益',
+                    id: 'inputProfit',
+                    type: 1,
+                    content: $('#input-profit-box'),
+                    area: [$(window).width() <= 750 ? '80%' : '400px', '280px'],
+                    resize: false,
+                    cancel: function() {
+                        $(document).off("click");
+                    }
+                });
             });
         }
     });
@@ -252,24 +198,9 @@ layui.use(['table', 'form', 'laydate'], function() {
     form.on('submit(updateProfit-submit)', function(data) {
         var that = $(this);
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        $.ajax({
-            url: '/fundBill/doUpdate',
-            type: 'POST',
-            data: data.field,
-            dataType: 'json',
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                window.parent.mainFrm.location.href = "/fundBill/index";
-            }
+        http.post('/fundBill/doUpdate', data.field, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            window.parent.mainFrm.location.href = "/fundBill/index";
         });
         return false;
     });
@@ -278,44 +209,14 @@ layui.use(['table', 'form', 'laydate'], function() {
     form.on('submit(inputProfit-submit)', function(data) {
         var that = $(this);
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        $.ajax({
-            url: '/fundBill/doAdd',
-            type: 'POST',
-            data: data.field,
-            dataType: 'json',
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                window.parent.mainFrm.location.href = "/fundBill/index";
-            }
+        http.post('/fundBill/doAdd', data.field, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            window.parent.mainFrm.location.href = "/fundBill/index";
         });
         return false;
     });
 
-    // 缓存当前操作的是哪个表格的哪个tr的哪个td
-    $(document).off('mousedown', '.layui-table-grid-down').on('mousedown', '.layui-table-grid-down', function() {
-        table._tableTrCurr = $(this).closest('td');
-    });
-
-    $(document).off('click', '.layui-table-tips-main [lay-event]').on('click', '.layui-table-tips-main [lay-event]', function() {
-        var elem = $(this);
-        var tableTrCurr = table._tableTrCurr;
-        if (!tableTrCurr) {
-            return;
-        }
-        var layerIndex = elem.closest('.layui-table-tips').attr('times');
-        // 关闭当前这个显示更多的tip
-        layer.close(layerIndex);
-        table._tableTrCurr.find('[lay-event="' + elem.attr('lay-event') + '"]')[0].click();
-    });
+    common.cacheMousedown();
 
     /**
      *设置不可选择的星期

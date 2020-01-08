@@ -45,9 +45,8 @@
     <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FUNDBILL_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FUNDBILL_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script type="application/javascript" th:src="@{/easyui/jquery.min.js}"></script>
-<script type="application/javascript" th:src="@{/layui/layui.all.js}"></script>
-<script type="application/javascript" th:src="@{/js/fundBill/fundBill.js}"></script>
+
+<script data-main="/js/fundBill/fundBill.js" th:src="@{/js/lib/require.js}"></script>
 </body>
 
 <div id="input-profit-box" class="hide" xmlns:th="http://www.thymeleaf.org">

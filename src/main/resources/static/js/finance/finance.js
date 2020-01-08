@@ -1,6 +1,19 @@
 //@sourceURL=/js/finance/finance.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
 
-layui.use(['table', 'laydate'], function() {
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
+
     var table = layui.table;
 
     /**
@@ -88,66 +101,32 @@ layui.use(['table', 'laydate'], function() {
         }
     });
 
-    var $ = layui.$;
-
     /**
      * 显示/隐藏总登记金额
      */
     $("body").on("click", "span.in_finance", function() {
-        if (hasPermission(hasShowFinanceTotalInMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowFinanceTotalInMoneyPermission);
     });
 
     /**
      * 显示/隐藏总登记金额
      */
     $("body").on("click", "span.out_finance", function() {
-        if (hasPermission(hasShowFinanceTotalOutMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowFinanceTotalOutMoneyPermission);
     });
 
     /**
      * 显示/隐藏金额
      */
     $("body").on("click", "span.money", function() {
-        if (hasPermission(hasShowFinanceMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowFinanceMoneyPermission);
     });
 
     /**
      * 显示/隐藏金额
      */
     $("body").on("click", "span.outMoney", function() {
-        if (hasPermission(hasShowFinanceMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowFinanceMoneyPermission);
     });
 
     /**
@@ -170,26 +149,9 @@ layui.use(['table', 'laydate'], function() {
         var data = obj.data;
         if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
-                $.ajax({
-                    url: '/finance/delete',
-                    type: 'POST',
-                    data: {
-                        id: data.id
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.code != 200) {
-                            layer.open({
-                                title: '系统提示',
-                                anim: 6,
-                                content: result.data,
-                                btnAlign: 'c'
-                            });
-                            return;
-                        }
-                        layer.close(index);
-                        reload();
-                    }
+                http.post('/finance/delete', {id: data.id}, function() {
+                    layer.close(index);
+                    reload();
                 });
             });
         }
@@ -202,21 +164,6 @@ layui.use(['table', 'laydate'], function() {
         }
     });
 
-    // 缓存当前操作的是哪个表格的哪个tr的哪个td
-    $(document).off('mousedown', '.layui-table-grid-down').on('mousedown', '.layui-table-grid-down', function() {
-        table._tableTrCurr = $(this).closest('td');
-    });
-
-    $(document).off('click', '.layui-table-tips-main [lay-event]').on('click', '.layui-table-tips-main [lay-event]', function() {
-        var elem = $(this);
-        var tableTrCurr = table._tableTrCurr;
-        if (!tableTrCurr) {
-            return;
-        }
-        var layerIndex = elem.closest('.layui-table-tips').attr('times');
-        // 关闭当前这个显示更多的tip
-        layer.close(layerIndex);
-        table._tableTrCurr.find('[lay-event="' + elem.attr('lay-event') + '"]')[0].click();
-    });
+    common.cacheMousedown();
 
 });

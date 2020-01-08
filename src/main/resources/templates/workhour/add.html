@@ -60,9 +60,6 @@
     </div>
 </form>
 
-<script type="application/javascript" th:src="@{/easyui/jquery.min.js}"></script>
-<script type="application/javascript" th:src="@{/layui/layui.all.js}"></script>
-<script type="application/javascript" th:src="@{/js/workhour/add.js}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
@@ -80,5 +77,6 @@
 
     /*]]>*/
 </script>
+<script data-main="/js/workhour/add.js" th:src="@{/js/lib/require.js}"></script>
 </body>
 </html>

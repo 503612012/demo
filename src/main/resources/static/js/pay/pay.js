@@ -1,6 +1,19 @@
 //@sourceURL=/js/pay/add.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http',
+        common: 'js/common/common'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
 
-layui.use(['table', 'form', 'layedit'], function() {
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
+
     var table = layui.table;
     var form = layui.form;
     var layer = layui.layer;
@@ -60,15 +73,7 @@ layui.use(['table', 'form', 'layedit'], function() {
      * 显示/隐藏薪资
      */
     $("body").on("click", "span.totalSalary", function() {
-        if (hasPermission(hasShowSalaryPayTotalMoneyPermission)) {
-            if ($(this).hasClass("red")) { // 隐藏
-                $(this).removeClass("red");
-                $(this).html("***");
-            } else {
-                $(this).addClass("red");
-                $(this).html($(this).attr("data-value"));
-            }
-        }
+        common.showOrHide($(this), hasShowSalaryPayTotalMoneyPermission);
     });
 
     /**
@@ -315,58 +320,15 @@ layui.use(['table', 'form', 'layedit'], function() {
     });
 
     function loadSelectBox() {
-        // 初始化员工下拉框
-        $.ajax({
-            url: '/employee/getAll',
-            type: 'GET',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                var html = '<option value="">请选择员工</option>';
-                for (var i = 0; i < data.length; i++) {
-                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-                $("#employeeSelect").html(html);
-                form.render("select");
-            }
+        http.get('/employee/getAll', {}, function(data) {
+            common.initEmployeeSelectBox(data, $("#employeeSelect"), form);
         });
 
-        // 初始化下工地拉框
-        $.ajax({
-            url: '/worksite/getAll',
-            type: 'GET',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                var html = '<option value="">请选择工地</option>';
-                for (var i = 0; i < data.length; i++) {
-                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-                $("#worksiteSelect").html(html);
-                form.render("select");
-            }
+        http.get('/worksite/getAll', {}, function(data) {
+            common.initWorksiteSelectBox(data, $('#worksiteSelect'), form);
         });
     }
 
     loadSelectBox();
+
 });

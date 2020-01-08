@@ -1,6 +1,17 @@
 //@sourceURL=/js/log/log.js
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
 
-layui.use('table', function() {
+requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
 
     var table = layui.table;
     var form = layui.form;
@@ -42,8 +53,6 @@ layui.use('table', function() {
         , page: true
     });
 
-    var $ = layui.$;
-
     /**
      * 查询按钮点击事件绑定
      */
@@ -63,29 +72,13 @@ layui.use('table', function() {
     });
 
     // 初始化下拉框
-    $.ajax({
-        url: '/user/getAll',
-        type: 'GET',
-        data: {},
-        dataType: 'json',
-        success: function(result) {
-            if (result.code != 200) {
-                layer.open({
-                    title: '系统提示',
-                    anim: 6,
-                    content: result.data,
-                    btnAlign: 'c'
-                });
-                return;
-            }
-            var data = result.data;
-            var html = '<option value="">请选择操作人</option>';
-            for (var i = 0; i < data.length; i++) {
-                html += '<option value="' + data[i].id + '">' + data[i].nickName + '</option>';
-            }
-            $("#logSearchSelect").html(html);
-            form.render("select");
+    http.get('/user/getAll', {}, function(data) {
+        var html = '<option value="">请选择操作人</option>';
+        for (var i = 0; i < data.length; i++) {
+            html += '<option value="' + data[i].id + '">' + data[i].nickName + '</option>';
         }
+        $("#logSearchSelect").html(html);
+        form.render("select");
     });
 
 });
