@@ -1,50 +1,48 @@
 //@sourceURL=/header.js
-layui.use(['form'], function() {
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        layui: 'layui/layui.all',
+        crypto: 'js/lib/crypto-js',
+        http: 'js/common/http'
+    },
+    shim: {
+        "layui": {exports: "layui"},
+        "crypto": {exports: "crypto"}
+    }
+});
+
+requirejs(['jquery', 'crypto', 'layui', 'http'], function($, crypto, layui, http,) {
 
     var layer = layui.layer;
     var form = layui.form;
-    var $ = layui.jquery;
 
     /**
      * 基本资料
      */
     $("#baseInfoBtn").on("click", function() {
-        $.ajax({
-            url: '/user/getCurrentUserInfo',
-            type: 'POST',
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                var data = result.data;
-                $('input[name=id]').val(data.id);
-                $('input[name=userName]').val(data.userName);
-                $('input[name=nickName]').val(data.nickName);
-                $('input[name=age]').val(data.age);
-                $('input[name=email]').val(data.email);
-                $('input[name=phone]').val(data.phone);
+        http.post('/user/getCurrentUserInfo', {}, function(data) {
+            $('input[name=id]').val(data.id);
+            $('input[name=userName]').val(data.userName);
+            $('input[name=nickName]').val(data.nickName);
+            $('input[name=age]').val(data.age);
+            $('input[name=email]').val(data.email);
+            $('input[name=phone]').val(data.phone);
 
-                if (data.gender == 1) { // 男
-                    $("input[name='gender'][value='1']").prop('checked', true);
-                } else if (data.gender == 0) { // 女
-                    $("input[name='gender'][value='0']").prop('checked', true);
-                }
-                form.render();
-                layer.open({
-                    id: 'updateBaseInfoFrm',
-                    type: 1,
-                    title: '修改基本资料',
-                    area: [$(window).width() <= 750 ? '80%' : '500px', 'auto'],
-                    content: $('#baseInffoBtnFrm')
-                });
+            if (data.gender == 1) { // 男
+                $("input[name='gender'][value='1']").prop('checked', true);
+            } else if (data.gender == 0) { // 女
+                $("input[name='gender'][value='0']").prop('checked', true);
             }
+            form.render();
+            layer.open({
+                id: 'updateBaseInfoFrm',
+                type: 1,
+                title: '修改基本资料',
+                area: [$(window).width() <= 750 ? '80%' : '500px', 'auto'],
+                content: $('#baseInffoBtnFrm')
+            });
         });
     });
 
@@ -115,44 +113,30 @@ layui.use(['form'], function() {
         var that = $("#changePwd-submit");
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
         var key = $("input[name=key]").val();
-        key = CryptoJS.enc.Utf8.parse(key);
+        key = crypto.enc.Utf8.parse(key);
 
-        var srcs = CryptoJS.enc.Utf8.parse(oldPwd);
-        var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
+        var srcs = crypto.enc.Utf8.parse(oldPwd);
+        var encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
         oldPwd = encrypted.toString();
 
-        srcs = CryptoJS.enc.Utf8.parse(newPwd);
-        encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
+        srcs = crypto.enc.Utf8.parse(newPwd);
+        encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
         newPwd = encrypted.toString();
 
-        $.ajax({
-            url: '/user/changePwd',
-            type: 'POST',
-            data: {
-                'oldPwd': oldPwd,
-                'newPwd': newPwd
-            },
-            dataType: 'json',
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
+        var params = {
+            'oldPwd': oldPwd,
+            'newPwd': newPwd
+        };
+        http.post('/user/changePwd', params, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            layer.open({
+                title: '系统提示',
+                content: '修改成功，请重新登录！',
+                yes: function() {
+                    layer.closeAll();
+                    window.parent.mainFrm.location.href = "/logout";
                 }
-                layer.open({
-                    title: '系统提示',
-                    content: '修改成功，请重新登录！',
-                    yes: function() {
-                        layer.closeAll();
-                        window.parent.mainFrm.location.href = "/logout";
-                    }
-                });
-            }
+            });
         });
         return false;
     });
@@ -161,30 +145,15 @@ layui.use(['form'], function() {
         var that = $(this);
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
         var data = form.val("updateBaseInfoForm");
-        $.ajax({
-            url: '/user/doUpdate',
-            type: 'POST',
-            data: data,
-            dataType: 'json',
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
+        http.post('/user/doUpdate', data, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            layer.open({
+                title: '系统提示',
+                content: '保存成功！',
+                yes: function() {
+                    layer.closeAll();
                 }
-                layer.open({
-                    title: '系统提示',
-                    content: '保存成功！',
-                    yes: function() {
-                        layer.closeAll();
-                    }
-                });
-            }
+            });
         });
     });
 

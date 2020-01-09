@@ -17,10 +17,8 @@
         </li>
         <li class="layui-nav-item" id="logoutBtn"><a href="/logout">退出</a></li>
     </ul>
-    <script type="application/javascript" th:src="@{/easyui/jquery.min.js}"></script>
-    <script type="application/javascript" th:src="@{/layui/layui.all.js}"></script>
-    <script type="application/javascript" th:src="@{/js/lib/crypto-js.js}"></script>
-    <script type="application/javascript" th:src="@{/header.js}"></script>
+
+    <script data-main="/header.js" th:src="@{/js/lib/require.js}"></script>
 </div>
 
 <div id="changePwdTips" class="hide" xmlns:th="http://www.thymeleaf.org">
