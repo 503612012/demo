@@ -63,9 +63,9 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             , {
                 field: 'money', title: '收益金额', templet: function(d) {
                     if (d.money > 0) {
-                        return '<span style="color: green;">' + d.money + '</span>';
-                    } else {
                         return '<span style="color: red;">' + d.money + '</span>';
+                    } else {
+                        return '<span style="color: green;">' + d.money + '</span>';
                     }
                 }
             }
