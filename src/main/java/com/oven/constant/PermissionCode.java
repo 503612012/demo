@@ -81,4 +81,7 @@ public class PermissionCode {
     public static final String FUNDBILL_UPDATE                    = "D1_03_02";   // 修改收益
     public static final String FUNDBILL_DELETE                    = "D1_03_03";   // 删除收益
 
+    public static final String WECHAT_FUND_MANAGER                = "D1_04";      // 微信基金
+    public static final String WECHAT_FUND_INSERT                 = "D1_04_01";   // 录入收益
+
 }

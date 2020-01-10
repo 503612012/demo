@@ -129,11 +129,32 @@ define(['jquery'], function($) {
         form.render("select");
     }
 
+    /**
+     *设置不可选择的星期
+     *value:选中的值
+     *appointmentDate星期：如1,2,3,4,5,6,7
+     */
+    function disabledDate(value, appointmentDate) {
+        var mm = value.year + '-' + value.month + '-' + value.date;
+        $('.laydate-theme-grid table tbody').find('[lay-ymd="' + mm + '"]').removeClass('layui-this');
+
+        if (appointmentDate != null && appointmentDate != '') {
+            var dates = appointmentDate.split(",");
+            for (var i = 0; i < dates.length; i++) {
+                if (dates[i] == "7") {
+                    dates[i] = 0;
+                }
+                $("table>tbody>tr").find("td:eq(" + dates[i] + ")").addClass('ng-laydate-disabled').addClass('laydate-disabled');
+            }
+        }
+    }
+
     return {
         getCurrentDate: getCurrentDate,
         getNowFormatDate: getNowFormatDate,
         cacheMousedown: cacheMousedown,
         showOrHide: showOrHide,
+        disabledDate: disabledDate,
         numberFormat: numberFormat,
         initEmployeeSelectBox: initEmployeeSelectBox,
         initWorksiteSelectBox: initWorksiteSelectBox

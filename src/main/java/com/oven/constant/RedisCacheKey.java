@@ -125,4 +125,8 @@ public class RedisCacheKey {
     public static final String FUNDBILL_GET_CHARTS_DATA = PREFIX + "fundBill_getChartsData_{0}_{1}_{2}";
     public static final String FUNDBILL_GET_CURRENT_DAY_TOTAL_BY_DATE = PREFIX + "fundBill_getCurrentDayTotalByDate_{0}_{1}";
 
+    // 微信基金实体类缓存key定义
+    public static final String WECHAT_FUND_PREFIX = PREFIX + "wechatFund_";
+    public static final String WECHAT_FUND_GET_CHARTS_DATA = PREFIX + "wechatFund_getChartsData_{0}";
+
 }

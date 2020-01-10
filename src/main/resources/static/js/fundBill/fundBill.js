@@ -23,10 +23,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     laydate.render({
         elem: '#dataDateReload',
         ready: function(value) {
-            disabled_date(value, '7,1')
+            common.disabledDate(value, '7,1')
         },
         change: function(value) {
-            disabled_date(value, '7,1')
+            common.disabledDate(value, '7,1')
         },
         trigger: 'click',
         format: 'yyyy-MM-dd'
@@ -113,10 +113,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 elem: '#updateDataDate',
                 value: fundBill.dataDate,
                 ready: function(value) {
-                    disabled_date(value, '7,1')
+                    common.disabledDate(value, '7,1')
                 },
                 change: function(value) {
-                    disabled_date(value, '7,1')
+                    common.disabledDate(value, '7,1')
                 },
                 trigger: 'click',
                 format: 'yyyy-MM-dd'
@@ -170,10 +170,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     elem: '#dataDate',
                     value: new Date(),
                     ready: function(value) {
-                        disabled_date(value, '7,1')
+                        common.disabledDate(value, '7,1')
                     },
                     change: function(value) {
-                        disabled_date(value, '7,1')
+                        common.disabledDate(value, '7,1')
                     },
                     trigger: 'click',
                     format: 'yyyy-MM-dd'
@@ -217,25 +217,5 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     });
 
     common.cacheMousedown();
-
-    /**
-     *设置不可选择的星期
-     *value:选中的值
-     *appointmentDate星期：如1,2,3,4,5,6,7
-     */
-    function disabled_date(value, appointmentDate) {
-        var mm = value.year + '-' + value.month + '-' + value.date;
-        $('.laydate-theme-grid table tbody').find('[lay-ymd="' + mm + '"]').removeClass('layui-this');
-
-        if (appointmentDate != null && appointmentDate != '') {
-            var dates = appointmentDate.split(",");
-            for (var i = 0; i < dates.length; i++) {
-                if (dates[i] == "7") {
-                    dates[i] = 0;
-                }
-                $("table>tbody>tr").find("td:eq(" + dates[i] + ")").addClass('ng-laydate-disabled').addClass('laydate-disabled');
-            }
-        }
-    }
 
 });
