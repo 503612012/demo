@@ -35,6 +35,18 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         max: common.getNowFormatDate()
     });
 
+    // 初始化日期选择框
+    laydate.render({
+        elem: '#totalWechatFundDateMonth',
+        value: new Date(),
+        type: 'month',
+        format: 'yyyy-MM',
+        done: function(value) {
+            loadTotalCharts(value);
+        },
+        max: common.getNowFormatDate()
+    });
+
     $("#wechat-fund-add-btn").on('click', function() {
         // 初始化日期选择框
         laydate.render({
@@ -147,6 +159,76 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         });
     }
 
+    /**
+     * 加载图表
+     */
+    function loadTotalCharts(date) {
+        var myLine = echarts.init(document.getElementById('totalWechatFundLine'));
+        myLine.setOption({
+            tooltip: {
+                trigger: "axis"
+            },
+            color: ["#1f13dc"],
+            legend: {
+                data: ["累计收益"]
+            },
+            xAxis: [
+                {
+                    type: "category",
+                    boundaryGap: false,
+                    data: []
+                }
+            ],
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} 元",
+                    rotate: 30,
+                    showMinLabel: false
+                }
+            },
+            series: [
+                {
+                    name: "累计收益",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#1f179e"
+                            },
+                            lineStyle: {
+                                color: "#1f13dc"
+                            }
+                        }
+                    },
+                    data: []
+                }
+            ]
+        });
+        myLine.resize();
+
+        myLine.showLoading();
+        $.get('/wechatFund/getTotalChartsData?date=' + date).done(function(data) {
+            myLine.hideLoading();
+            // 填入数据
+            myLine.setOption({
+                xAxis: [
+                    {
+                        data: data.data.categories
+                    }
+                ],
+                series: [
+                    {
+                        data: data.data.data
+                    }
+                ]
+            });
+            myLine.resize();
+        });
+    }
+
     loadCharts(common.getCurrentDate(2));
+    loadTotalCharts(common.getCurrentDate(2));
 
 });

@@ -35,8 +35,7 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         type: 'year',
         format: 'yyyy',
         done: function(value) {
-            var employeeId = $("#employeeSelect").val();
-            loadCharts(value, 1, employeeId);
+            loadCharts(value, 1);
         },
         max: common.getNowFormatDate()
     });
@@ -48,8 +47,31 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         type: 'month',
         format: 'yyyy-MM',
         done: function(value) {
-            var employeeId = $("#employeeSelect").val();
             loadCharts(value, 2, employeeId);
+        },
+        max: common.getNowFormatDate()
+    });
+
+    // 初始化日期选择框
+    laydate.render({
+        elem: '#totalFundBillChartsDateYear',
+        value: new Date(),
+        type: 'year',
+        format: 'yyyy',
+        done: function(value) {
+            loadTotalCharts(value, 1);
+        },
+        max: common.getNowFormatDate()
+    });
+
+    // 初始化日期选择框
+    laydate.render({
+        elem: '#totalFundBillChartsDateMonth',
+        value: new Date(),
+        type: 'month',
+        format: 'yyyy-MM',
+        done: function(value) {
+            loadTotalCharts(value, 2);
         },
         max: common.getNowFormatDate()
     });
@@ -89,7 +111,77 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         });
     }
 
-    loadCharts(common.getCurrentDate(2), 2, '');
+    /**
+     * 加载全部累计
+     */
+    function loadTotalCharts(date, dataType) {
+        var myLine = echarts.init(document.getElementById('totalFundBillChartsLine'));
+        myLine.setOption({
+            tooltip: {
+                trigger: "axis"
+            },
+            color: ["#029688"],
+            legend: {
+                data: ["累计收益"]
+            },
+            xAxis: [
+                {
+                    type: "category",
+                    boundaryGap: false,
+                    data: []
+                }
+            ],
+            yAxis: {
+                type: "value",
+                axisLabel: {
+                    formatter: "{value} 元",
+                    rotate: 30,
+                    showMinLabel: false
+                }
+            },
+            series: [
+                {
+                    name: "累计收益",
+                    type: "line",
+                    smooth: true,
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: "#83bcb5"
+                            },
+                            lineStyle: {
+                                color: "#029688"
+                            }
+                        }
+                    },
+                    data: []
+                }
+            ]
+        });
+        myLine.resize();
+
+        myLine.showLoading();
+        $.get('/fundBillCharts/getTotalChartsData?date=' + date + '&dateType=' + dataType).done(function(data) {
+            myLine.hideLoading();
+            // 填入数据
+            myLine.setOption({
+                xAxis: [
+                    {
+                        data: data.data.categories
+                    }
+                ],
+                series: [
+                    {
+                        data: data.data.data
+                    }
+                ]
+            });
+            myLine.resize();
+        });
+    }
+
+    loadCharts(common.getCurrentDate(2), 2);
+    loadTotalCharts(common.getCurrentDate(2), 2);
 
     /**
      * 绑定数据类型切换事件
@@ -126,6 +218,47 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
                 format: 'yyyy-MM',
                 done: function(value) {
                     loadCharts(value, 2);
+                },
+                max: common.getNowFormatDate()
+            });
+        }
+    });
+
+    /**
+     * 绑定数据类型切换事件
+     */
+    $("#totalFundBillChartsDataType button").on('click', function() {
+        $("#totalFundBillChartsDataType button").toggleClass("active");
+        var dateType = $("#totalFundBillChartsDataType .active").attr("data-type");
+        if (dateType == 1) {
+            $("#totalFundBillChartsDateMonth").addClass('hide');
+            $("#totalFundBillChartsDateYear").removeClass('hide');
+            loadTotalCharts(common.getCurrentDate(1), dateType);
+
+            // 初始化日期选择框
+            laydate.render({
+                elem: '#totalFundBillChartsDateYear',
+                value: common.getCurrentDate(1),
+                type: 'year',
+                format: 'yyyy',
+                done: function(value) {
+                    loadTotalCharts(value, 1);
+                },
+                max: common.getNowFormatDate()
+            });
+        } else if (dateType == 2) {
+            $("#totalFundBillChartsDateYear").addClass('hide');
+            $("#totalFundBillChartsDateMonth").removeClass('hide');
+            loadTotalCharts(common.getCurrentDate(2), dateType);
+
+            // 初始化日期选择框
+            laydate.render({
+                elem: '#totalFundBillChartsDateMonth',
+                value: common.getCurrentDate(2),
+                type: 'month',
+                format: 'yyyy-MM',
+                done: function(value) {
+                    loadTotalCharts(value, 2);
                 },
                 max: common.getNowFormatDate()
             });

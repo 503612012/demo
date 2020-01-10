@@ -162,7 +162,7 @@ public class FundBillDao {
         if (dateType == 1) { // 传入的是月
             sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 7) <= ?";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where str_to_date(data_date, '%Y-%m-%d') <= str_to_date(?, '%Y-%m-%d')";
+            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 10) <= ?";
         } else {
             return null;
         }

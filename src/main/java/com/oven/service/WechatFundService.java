@@ -50,4 +50,21 @@ public class WechatFundService extends BaseService {
         return result;
     }
 
+    /**
+     * 获取微信累计基金报表
+     */
+    public Map<String, Object> getTotalChartsData(String date) {
+        Map<String, Object> result = super.get(MessageFormat.format(RedisCacheKey.WECHAT_FUND_GET_TOTAL_CHARTS_DATA, date)); // 先读取缓存
+        if (result == null) { // double check
+            synchronized (this) {
+                result = super.get(MessageFormat.format(RedisCacheKey.WECHAT_FUND_GET_TOTAL_CHARTS_DATA, date)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                if (result == null) { // 缓存中没有，再从数据库中读取，并写入缓存
+                    result = wechatFundDao.getTotalChartsData(date);
+                    super.set(MessageFormat.format(RedisCacheKey.WECHAT_FUND_GET_TOTAL_CHARTS_DATA, date), result);
+                }
+            }
+        }
+        return result;
+    }
+
 }

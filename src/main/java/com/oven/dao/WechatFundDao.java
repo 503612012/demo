@@ -52,4 +52,13 @@ public class WechatFundDao {
         return list.size() > 0 ? list.get(0) : null;
     }
 
+    /**
+     * 获取微信累计基金报表
+     */
+    public Map<String, Object> getTotalChartsData(String date) {
+        String sql = "select sum(cast(money as decimal(27, 2))) as money from t_wechat_fund where substr(data_date, 1, 10) <= ?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, date);
+        return list.size() > 0 ? list.get(0) : null;
+    }
+
 }
