@@ -1,6 +1,6 @@
 define(['jquery'], function($) {
 
-    function get(url, params, callback) {
+    function get(url, params, callback, failCallback) {
         $.ajax({
             url: url,
             type: "GET",
@@ -14,6 +14,7 @@ define(['jquery'], function($) {
                         content: result.data,
                         btnAlign: 'c'
                     });
+                    failCallback();
                     return;
                 }
                 callback(result.data);
@@ -29,7 +30,7 @@ define(['jquery'], function($) {
         });
     }
 
-    function post(url, params, callback) {
+    function post(url, params, callback, failCallback) {
         $.ajax({
             url: url,
             type: "POST",
@@ -43,6 +44,7 @@ define(['jquery'], function($) {
                         content: result.data,
                         btnAlign: 'c'
                     });
+                    failCallback();
                     return;
                 }
                 callback(result.data);

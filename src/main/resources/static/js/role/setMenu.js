@@ -85,15 +85,19 @@ requirejs(['jquery', 'easyui', 'layui', 'http'], function($, easyui, layui, http
             }
         }
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        var params = {
-            "menuIds": data.toString(),
-            "roleId": roleId
-        };
-        http.post('/role/setRoleMenu', params, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.parent.mainFrm.location.href = "/role/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            var params = {
+                "menuIds": data.toString(),
+                "roleId": roleId
+            };
+            http.post('/role/setRoleMenu', params, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.parent.mainFrm.location.href = "/role/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     })
 

@@ -17,6 +17,7 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
     var layer = layui.layer;
 
     // 自定义验证规则
+    // noinspection JSUnusedGlobalSymbols
     form.verify({
         pass: [/(.+){6,16}$/, '密码必须6到16位'],
         confirmPass: function() {
@@ -62,11 +63,15 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
     // 监听提交
     form.on('submit(user-add-submit)', function(data) {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        http.post('/user/doAdd', data.field, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.parent.mainFrm.location.href = "/user/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post('/user/doAdd', data.field, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.parent.mainFrm.location.href = "/user/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     });
 

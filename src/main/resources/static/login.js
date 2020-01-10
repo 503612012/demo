@@ -34,32 +34,34 @@ $(function() {
         var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
         password = encrypted.toString();
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        $.ajax({
-            url: "/doLogin",
-            type: "POST",
-            data: {
-                "userName": userName,
-                "pwd": password,
-                "inputCode": vercode,
-                "rememberMe": rememberMe
-            },
-            dataType: "json",
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    $("input[name=vercode]").val("");
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            $.ajax({
+                url: "/doLogin",
+                type: "POST",
+                data: {
+                    "userName": userName,
+                    "pwd": password,
+                    "inputCode": vercode,
+                    "rememberMe": rememberMe
+                },
+                dataType: "json",
+                success: function(result) {
+                    that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                    if (result.code != 200) {
+                        $("input[name=vercode]").val("");
+                        layer.open({
+                            title: '系统提示',
+                            anim: 6,
+                            content: result.data,
+                            btnAlign: 'c'
+                        });
+                        return;
+                    }
+                    window.location.href = "/";
                 }
-                window.location.href = "/";
-            }
-        });
+            });
+        }
     }
 
     document.onkeydown = function(event) {

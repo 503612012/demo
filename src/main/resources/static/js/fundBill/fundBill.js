@@ -197,22 +197,30 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     // 监听提交
     form.on('submit(updateProfit-submit)', function(data) {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        http.post('/fundBill/doUpdate', data.field, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.parent.mainFrm.location.href = "/fundBill/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post('/fundBill/doUpdate', data.field, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.parent.mainFrm.location.href = "/fundBill/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     });
 
     // 监听提交
     form.on('submit(inputProfit-submit)', function(data) {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        http.post('/fundBill/doAdd', data.field, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.parent.mainFrm.location.href = "/fundBill/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post('/fundBill/doAdd', data.field, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.parent.mainFrm.location.href = "/fundBill/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     });
 

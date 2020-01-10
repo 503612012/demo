@@ -66,11 +66,15 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
     // 监听提交
     form.on('submit(input-wechat-fund-submit)', function(data) {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        http.post('/wechatFund/doAdd', data.field, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.parent.mainFrm.location.href = "/wechatFund/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post('/wechatFund/doAdd', data.field, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.parent.mainFrm.location.href = "/wechatFund/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     });
 

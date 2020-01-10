@@ -18,11 +18,15 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
     // 监听提交
     form.on('submit(user-update-submit)', function(data) {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        http.post('/user/doUpdate', data.field, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.location.href = "/user/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post('/user/doUpdate', data.field, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.location.href = "/user/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     });
 

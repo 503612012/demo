@@ -112,50 +112,59 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
             return;
         }
         var that = $("#changePwd-submit");
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        var key = $("input[name=key]").val();
-        key = crypto.enc.Utf8.parse(key);
 
-        var srcs = crypto.enc.Utf8.parse(oldPwd);
-        var encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
-        oldPwd = encrypted.toString();
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            var key = $("input[name=key]").val();
+            key = crypto.enc.Utf8.parse(key);
 
-        srcs = crypto.enc.Utf8.parse(newPwd);
-        encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
-        newPwd = encrypted.toString();
+            var srcs = crypto.enc.Utf8.parse(oldPwd);
+            var encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
+            oldPwd = encrypted.toString();
 
-        var params = {
-            'oldPwd': oldPwd,
-            'newPwd': newPwd
-        };
-        http.post('/user/changePwd', params, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            layer.open({
-                title: '系统提示',
-                content: '修改成功，请重新登录！',
-                yes: function() {
-                    layer.closeAll();
-                    window.parent.mainFrm.location.href = "/logout";
-                }
+            srcs = crypto.enc.Utf8.parse(newPwd);
+            encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
+            newPwd = encrypted.toString();
+
+            var params = {
+                'oldPwd': oldPwd,
+                'newPwd': newPwd
+            };
+            http.post('/user/changePwd', params, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                layer.open({
+                    title: '系统提示',
+                    content: '修改成功，请重新登录！',
+                    yes: function() {
+                        layer.closeAll();
+                        window.parent.mainFrm.location.href = "/logout";
+                    }
+                });
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
             });
-        });
+        }
         return false;
     });
 
     $('body').on('click', '#baseInffoBtnFrmSubmitBtn', function() {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        var data = form.val("updateBaseInfoForm");
-        http.post('/user/doUpdate', data, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            layer.open({
-                title: '系统提示',
-                content: '保存成功！',
-                yes: function() {
-                    layer.closeAll();
-                }
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            var data = form.val("updateBaseInfoForm");
+            http.post('/user/doUpdate', data, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                layer.open({
+                    title: '系统提示',
+                    content: '保存成功！',
+                    yes: function() {
+                        layer.closeAll();
+                    }
+                });
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
             });
-        });
+        }
     });
 
     http.get('/getMenus', {}, function(data) {

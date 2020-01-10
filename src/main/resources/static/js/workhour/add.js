@@ -24,6 +24,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     });
 
     // 自定义验证规则
+    // noinspection JSUnusedGlobalSymbols
     form.verify({
         isInputedEmployee: function() {
             // 判断该员工该日期该工地是否有录入过
@@ -92,11 +93,15 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     // 监听提交
     form.on('submit(workhour-add-submit)', function(data) {
         var that = $(this);
-        that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        http.post('/workhour/doAdd', data.field, function() {
-            that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            window.parent.mainFrm.location.href = "/workhour/index";
-        });
+        if (!that.hasClass('layui-btn-disabled')) {
+            that.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post('/workhour/doAdd', data.field, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+                window.parent.mainFrm.location.href = "/workhour/index";
+            }, function() {
+                that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
         return false;
     });
 
