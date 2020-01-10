@@ -212,41 +212,23 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                             return false;
                         }
                     }
-
-                    $.ajax({
-                        url: '/pay/doPay',
-                        type: 'POST',
-                        data: {
-                            "workhourIds": workhourIds.join(','),
-                            "employeeId": list[0].employeeId,
-                            "totalMoney": totalMoney,
-                            "totalHour": totalWorkhour,
-                            "hasModifyMoney": isModifyPayMoney ? 1 : 0,
-                            "changeMoney": diffMoney,
-                            "worksiteId": worksiteId,
-                            "remark": remark
-                        },
-                        dataType: 'json',
-                        success: function(result) {
-                            if (result.code != 200) {
-                                layer.open({
-                                    title: '系统提示',
-                                    anim: 6,
-                                    content: result.data,
-                                    btnAlign: 'c'
-                                });
-                                $("#payNoticeText").html('');
-                                $("#payRemarkBox").addClass("hide");
-                                $("#payRemarkBox").css("display", "none");
-                                return;
-                            }
-                            layer.close(index);
-                            $('.pay-btn').addClass('hide');
-                            $("#payNoticeText").html('');
-                            $("#payRemarkBox").addClass("hide");
-                            $("#payRemarkBox").css("display", "none");
-                            reload();
-                        }
+                    var params = {
+                        "workhourIds": workhourIds.join(','),
+                        "employeeId": list[0].employeeId,
+                        "totalMoney": totalMoney,
+                        "totalHour": totalWorkhour,
+                        "hasModifyMoney": isModifyPayMoney ? 1 : 0,
+                        "changeMoney": diffMoney,
+                        "worksiteId": worksiteId,
+                        "remark": remark
+                    };
+                    http.post('/pay/doPay', params, function() {
+                        layer.close(index);
+                        $('.pay-btn').addClass('hide');
+                        $("#payNoticeText").html('');
+                        $("#payRemarkBox").addClass("hide");
+                        $("#payRemarkBox").css("display", "none");
+                        reload();
                     });
                 },
                 btn3: function() {
@@ -271,38 +253,21 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 yes: function(index) {
                     var remark = $('#payRemark').val();
                     var worksiteId = $('#worksiteSelect').val();
-                    $.ajax({
-                        url: '/pay/doPay',
-                        type: 'POST',
-                        data: {
-                            "workhourIds": workhourIds.join(','),
-                            "employeeId": list[0].employeeId,
-                            "totalMoney": totalMoney,
-                            "totalHour": totalWorkhour,
-                            "worksiteId": worksiteId,
-                            "remark": remark
-                        },
-                        dataType: 'json',
-                        success: function(result) {
-                            if (result.code != 200) {
-                                layer.open({
-                                    title: '系统提示',
-                                    anim: 6,
-                                    content: result.data,
-                                    btnAlign: 'c'
-                                });
-                                $("#payNoticeText").html('');
-                                $("#payRemarkBox").addClass("hide");
-                                $("#payRemarkBox").css("display", "none");
-                                return;
-                            }
-                            layer.close(index);
-                            $('.pay-btn').addClass('hide');
-                            $("#payNoticeText").html('');
-                            $("#payRemarkBox").addClass("hide");
-                            $("#payRemarkBox").css("display", "none");
-                            reload();
-                        }
+                    var params = {
+                        "workhourIds": workhourIds.join(','),
+                        "employeeId": list[0].employeeId,
+                        "totalMoney": totalMoney,
+                        "totalHour": totalWorkhour,
+                        "worksiteId": worksiteId,
+                        "remark": remark
+                    };
+                    http.post('/pay/doPay', params, function() {
+                        layer.close(index);
+                        $('.pay-btn').addClass('hide');
+                        $("#payNoticeText").html('');
+                        $("#payRemarkBox").addClass("hide");
+                        $("#payRemarkBox").css("display", "none");
+                        reload();
                     });
                 },
                 btn2: function() {

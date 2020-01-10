@@ -1,8 +1,9 @@
 //@sourceURL=/js/menu/menu.js
 layui.config({
-    base: '/js/menu/'
+    base: '/js/lib/'
 });
 layui.use(['treetable', 'form'], function() {
+
     var o = layui.$, treetable = layui.treetable;
     var layer = layui.layer;
     var data = null;
@@ -143,11 +144,11 @@ layui.use(['treetable', 'form'], function() {
         });
     });
 
-    o('.up-all').click(function() {
+    o('.up-all').on('click', function() {
         treetable.all('up');
     });
 
-    o('.down-all').click(function() {
+    o('.down-all').on('click', function() {
         treetable.all('down');
     });
 

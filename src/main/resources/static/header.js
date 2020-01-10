@@ -5,7 +5,8 @@ requirejs.config({
         jquery: 'easyui/jquery.min',
         layui: 'layui/layui.all',
         crypto: 'js/lib/crypto-js',
-        http: 'js/common/http'
+        http: 'js/common/http',
+        left: 'left'
     },
     shim: {
         "layui": {exports: "layui"},
@@ -13,7 +14,7 @@ requirejs.config({
     }
 });
 
-requirejs(['jquery', 'crypto', 'layui', 'http'], function($, crypto, layui, http,) {
+requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, layui, http, left) {
 
     var layer = layui.layer;
     var form = layui.form;
@@ -155,6 +156,10 @@ requirejs(['jquery', 'crypto', 'layui', 'http'], function($, crypto, layui, http
                 }
             });
         });
+    });
+
+    http.get('/getMenus', {}, function(data) {
+        left.initMenu(data);
     });
 
 });

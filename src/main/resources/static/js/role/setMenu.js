@@ -1,5 +1,18 @@
 //@sourceURL=/js/role/setMenu.js
-$(function() {
+requirejs.config({
+    baseUrl: '/',
+    paths: {
+        jquery: 'easyui/jquery.min',
+        easyui: 'easyui/jquery.easyui.min',
+        layui: 'layui/layui.all',
+        http: 'js/common/http'
+    },
+    shim: {
+        "layui": {exports: "layui"}
+    }
+});
+
+requirejs(['jquery', 'easyui', 'layui', 'http'], function($, easyui, layui, http) {
 
     // 移除tree图标
     $('#permission_tree').find("span.tree-icon").removeClass('tree-icon tree-folder tree-folder-open');
@@ -16,15 +29,8 @@ $(function() {
         onClick: function(node) {
             if (node.state == 'closed' && (!$("#permission_tree").tree('isLeaf', node.target))) { // 状态为关闭而且非叶子节点
                 $(this).tree('expand', node.target); // 点击文字展开菜单
-                if (node.attributes && node.attributes.url) {
-                    openPanel(node.attributes.url, node.text);
-                }
             } else {
-                if ($("#permission_tree").tree('isLeaf', node.target)) { // 状态为打开而且为叶子节点
-                    if (node.attributes && node.attributes.url) {
-                        openPanel(node.attributes.url, node.text);
-                    }
-                } else {
+                if (!($("#permission_tree").tree('isLeaf', node.target))) { // 状态为打开而且为叶子节点
                     $(this).tree('collapse', node.target); // 点击文字关闭菜单
                 }
             }
@@ -45,19 +51,18 @@ $(function() {
                 checked == true ? checkedTrue() : checkedFalse();
             } else { // 没有子菜单，即为叶子节点，点击的时候级联父节点
                 var parentNode = $('#permission_tree').tree('getParent', node.target); //得到父节点
+                var checkBoxList = $("#" + node.domId).parent().parent().find(".tree-checkbox");
                 if (checked == true) { // 选中子节点
-                    var checkBoxList = $("#" + node.domId).parent().parent().find(".tree-checkbox");
-                    for (var i = 0; i < checkBoxList.length; i++) {
-                        if ($(checkBoxList[i]).hasClass("tree-checkbox0")) {
+                    for (var m = 0; m < checkBoxList.length; m++) {
+                        if ($(checkBoxList[m]).hasClass("tree-checkbox0")) {
                             $("#" + parentNode.domId).find(".tree-checkbox").removeClass("tree-checkbox0").removeClass("tree-checkbox1").addClass("tree-checkbox2");
                             return;
                         }
                     }
                     $("#" + parentNode.domId).find(".tree-checkbox").removeClass("tree-checkbox0").removeClass("tree-checkbox2").addClass("tree-checkbox1");
                 } else { // 取消选中子节点
-                    var checkBoxList = $("#" + node.domId).parent().parent().find(".tree-checkbox");
-                    for (var i = 0; i < checkBoxList.length; i++) {
-                        if ($(checkBoxList[i]).hasClass("tree-checkbox1")) {
+                    for (var n = 0; n < checkBoxList.length; n++) {
+                        if ($(checkBoxList[n]).hasClass("tree-checkbox1")) {
                             $("#" + parentNode.domId).find(".tree-checkbox").removeClass("tree-checkbox0").removeClass("tree-checkbox1").addClass("tree-checkbox2");
                             return;
                         }
@@ -81,29 +86,15 @@ $(function() {
         }
         var that = $(this);
         that.addClass('layui-btn-disabled'); // 禁用提交按钮
-        $.ajax({
-            url: '/role/setRoleMenu',
-            type: 'POST',
-            async: true,
-            data: {
-                "menuIds": data.toString(),
-                "roleId": roleId
-            },
-            dataType: "json",
-            success: function(result) {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    return;
-                }
-                window.parent.mainFrm.location.href = "/role/index";
-            }
+        var params = {
+            "menuIds": data.toString(),
+            "roleId": roleId
+        };
+        http.post('/role/setRoleMenu', params, function() {
+            that.removeClass('layui-btn-disabled'); // 释放提交按钮
+            window.parent.mainFrm.location.href = "/role/index";
         });
         return false;
     })
+
 });

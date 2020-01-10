@@ -172,10 +172,6 @@
 <ul id="permission_tree" class="easyui-tree" data-options="checkbox:true, cascadeCheck: false" style="margin-left: 40px;"></ul>
 <button class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn" style="margin-left: 40px; margin-top: 20px;">确认</button>
 
-<script type="application/javascript" th:src="@{/easyui/jquery.min.js}"></script>
-<script type="application/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
-<script type="application/javascript" th:src="@{/easyui/themes/easyui-lang-zh_CN.js}"></script>
-<script type="application/javascript" th:src="@{/layui/layui.all.js}"></script>
-<script type="application/javascript" th:src="@{/js/role/setMenu.js}"></script>
+<script data-main="/js/role/setMenu.js" th:src="@{/js/lib/require.js}"></script>
 </body>
 </html>
