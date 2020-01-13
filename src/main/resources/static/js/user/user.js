@@ -193,6 +193,13 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         }
     });
 
+    // 头工具栏事件
+    table.on('toolbar(user-list)', function(obj) {
+        if (obj.event == 'user-add-btn') {
+            window.parent.mainFrm.location.href = "/user/add";
+        }
+    });
+
     common.cacheMousedown();
 
 });

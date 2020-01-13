@@ -119,7 +119,7 @@ public class UserController extends com.oven.controller.BaseController {
         try {
             User userInDb = userService.getByUserName(user.getUserName());
             if (userInDb != null) {
-                return super.success(true);
+                return super.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
             }
             userService.add(user);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());

@@ -63,6 +63,14 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
     // 监听提交
     form.on('submit(user-add-submit)', function(data) {
         var that = $(this);
+        if (data.field.gender == undefined) {
+            layer.msg('请选择性别！', {
+                'icon': 5,
+                'anim': 6,
+                'time': 1000
+            });
+            return false;
+        }
         if (!that.hasClass('layui-btn-disabled')) {
             that.addClass('layui-btn-disabled'); // 禁用提交按钮
             http.post('/user/doAdd', data.field, function() {
