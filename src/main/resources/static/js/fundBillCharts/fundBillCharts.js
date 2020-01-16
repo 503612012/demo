@@ -47,7 +47,7 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         type: 'month',
         format: 'yyyy-MM',
         done: function(value) {
-            loadCharts(value, 2, employeeId);
+            loadCharts(value, 2);
         },
         max: common.getNowFormatDate()
     });
