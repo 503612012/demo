@@ -54,6 +54,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         elem: '#fundBill-list'
         , url: '/fundBill/getByPage/'
         , toolbar: '#fundBillListToolBar'
+        , limit: 9
         , id: 'fundBillReload'
         , even: true
         , cols: [[

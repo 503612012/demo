@@ -124,9 +124,9 @@ public class FundBillDao {
     public Map<String, Object> getChartsData(String date, Integer dateType, Integer fundId) {
         String sql;
         if (dateType == 1) { // 传入的是月
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 7) = ? and fund_id = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) = ? and fund_id = ?";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 10) = ? and fund_id = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) = ? and fund_id = ?";
         } else {
             return null;
         }
@@ -142,9 +142,9 @@ public class FundBillDao {
     public Double getCurrentDayTotalByDate(String date, Integer dateType) {
         String sql;
         if (dateType == 1) { // 传入的是月
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 7) = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) = ?";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 10) = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) = ?";
         } else {
             return null;
         }
@@ -160,9 +160,9 @@ public class FundBillDao {
     public Double getTotalByDate(String date, Integer dateType) {
         String sql;
         if (dateType == 1) { // 传入的是月
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 7) <= ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) <= ?";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where substr(data_date, 1, 10) <= ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) <= ?";
         } else {
             return null;
         }
@@ -174,7 +174,7 @@ public class FundBillDao {
      * 获取全部累计
      */
     public Double getTotal() {
-        String sql = "select sum(cast(money as decimal(27, 2))) as money from t_fund_bill where status = 0";
+        String sql = "select sum(money) as money from t_fund_bill where status = 0";
         return this.jdbcTemplate.queryForObject(sql, Double.class);
     }
 

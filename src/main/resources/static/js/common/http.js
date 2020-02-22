@@ -14,7 +14,9 @@ define(['jquery'], function($) {
                         content: result.data,
                         btnAlign: 'c'
                     });
-                    failCallback();
+                    if (failCallback != undefined) {
+                        failCallback();
+                    }
                     return;
                 }
                 callback(result.data);
@@ -44,7 +46,9 @@ define(['jquery'], function($) {
                         content: result.data,
                         btnAlign: 'c'
                     });
-                    failCallback();
+                    if (failCallback != undefined) {
+                        failCallback();
+                    }
                     return;
                 }
                 callback(result.data);
