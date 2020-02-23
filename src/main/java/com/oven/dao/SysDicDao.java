@@ -27,4 +27,14 @@ public class SysDicDao {
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(SysDicVo.class));
     }
 
+    public String getByKey(String key) {
+        String sql = "select _value from t_sys_dic where _key = ?";
+        return this.jdbcTemplate.queryForObject(sql, String.class, key);
+    }
+
+    public void reduceNum() {
+        String sql = "update t_sys_dic set _value = _value - 1 where _key = 'secKill'";
+        this.jdbcTemplate.update(sql);
+    }
+
 }

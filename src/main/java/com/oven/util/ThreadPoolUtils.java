@@ -33,8 +33,8 @@ public class ThreadPoolUtils {
             if (null != service) {
                 service.shutdown();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

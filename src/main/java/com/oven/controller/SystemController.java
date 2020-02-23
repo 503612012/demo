@@ -51,6 +51,8 @@ public class SystemController extends BaseController {
     @Resource
     private MenuService menuService;
     @Resource
+    private SysDicService sysDicService;
+    @Resource
     private EmployeeService employeeService;
     @Resource
     private WorksiteService worksiteService;
@@ -58,6 +60,20 @@ public class SystemController extends BaseController {
     private WorkhourService workhourService;
     @Resource
     private PayRecordService payRecordService;
+
+    /**
+     * 秒杀模拟
+     */
+    @ResponseBody
+    @RequestMapping("/secKill")
+    public Object secKill() {
+        try {
+            sysDicService.secKill();
+            return super.success("秒杀成功！");
+        } catch (Exception e) {
+            return super.fail(400, "秒杀接口异常！");
+        }
+    }
 
     /**
      * 获取验证码（Gif版本）
