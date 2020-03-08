@@ -1,5 +1,6 @@
 package com.oven.controller;
 
+import com.oven.cache.CacheService;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.enumerate.ResultEnum;
@@ -9,13 +10,19 @@ import com.oven.limitation.LimitType;
 import com.oven.service.FundService;
 import com.oven.util.LayuiPager;
 import com.oven.vo.Fund;
+import com.oven.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -29,6 +36,10 @@ public class FundController extends BaseController {
 
     @Resource
     private FundService fundService;
+    @Resource
+    private CacheService cacheService;
+    @Resource
+    private ThymeleafViewResolver thymeleafViewResolver;
 
     /**
      * 去到基金管理页面
@@ -116,6 +127,35 @@ public class FundController extends BaseController {
             Fund fund = fundService.getById(id);
             model.addAttribute("fund", fund);
             return "/fund/update";
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+        }
+    }
+
+    /**
+     * 去到基金更新页面-测试页面缓存
+     *
+     * @param id 基金ID
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateWithCache", produces = "text/html")
+    public String updateWithCache(Integer id, Model model, HttpServletRequest req, HttpServletResponse resp, User user) throws MyException {
+        try {
+            System.out.println("自定义参数解析器注入的当前用户：" + user.toString());
+            // 查询缓存
+            String html = cacheService.get("fund_update");
+            if (!StringUtils.isEmpty(html)) {
+                return html;
+            }
+            // 手动渲染
+            Fund fund = fundService.getById(id);
+            model.addAttribute("fund", fund);
+            WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale(), model.asMap());
+            html = thymeleafViewResolver.getTemplateEngine().process("/fund/update", ctx);
+            if (!StringUtils.isEmpty(html)) {
+                cacheService.set("fund_update", html, 1800000L);
+            }
+            return html;
         } catch (Exception e) {
             throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
         }
