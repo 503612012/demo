@@ -76,7 +76,7 @@ public class FundBillDao {
         StringBuilder sb = new StringBuilder("select fb.*, f.fund_name from t_fund_bill fb left join t_fund f on f.dbid = fb.fund_id");
         List<Object> params = new ArrayList<>();
         addCondition(sb, params, fundName, date);
-        sb.append(" order by fb.data_date desc, f._order desc");
+        sb.append(" order by fb.data_date desc, f._order");
         String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
         params.add((pageNum - 1) * pageSize);
         params.add(pageSize);
@@ -124,9 +124,9 @@ public class FundBillDao {
     public Map<String, Object> getChartsData(String date, Integer dateType, Integer fundId) {
         String sql;
         if (dateType == 1) { // 传入的是月
-            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) = ? and fund_id = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) = ? and fund_id = ? and `status` = 0";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) = ? and fund_id = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) = ? and fund_id = ? and `status` = 0";
         } else {
             return null;
         }
@@ -142,9 +142,9 @@ public class FundBillDao {
     public Double getCurrentDayTotalByDate(String date, Integer dateType) {
         String sql;
         if (dateType == 1) { // 传入的是月
-            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) = ? and `status` = 0";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) = ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) = ? and `status` = 0";
         } else {
             return null;
         }
@@ -160,9 +160,9 @@ public class FundBillDao {
     public Double getTotalByDate(String date, Integer dateType) {
         String sql;
         if (dateType == 1) { // 传入的是月
-            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) <= ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 7) <= ? and `status` = 0";
         } else if (dateType == 2) { // 传入的是日
-            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) <= ?";
+            sql = "select sum(money) as money from t_fund_bill where substr(data_date, 1, 10) <= ? and `status` = 0";
         } else {
             return null;
         }
