@@ -66,5 +66,8 @@
     <logger name="com.oven.aop" level="INFO">
         <appender-ref ref="INFO"/>
     </logger>
+    <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
+        <appender-ref ref="DEBUG"/>
+    </logger>
 
 </configuration>
