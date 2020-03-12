@@ -15,6 +15,11 @@
         </encoder>
     </appender>
 
+    <!-- 异步INFO日志定义 -->
+    <appender name="SYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="INFO"/>
+    </appender>
+
     <!-- ERROR日志定义 -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_HOME}/demo.error.log</File>
@@ -26,6 +31,11 @@
             <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
             <charset>UTF-8</charset>
         </encoder>
+    </appender>
+
+    <!-- 异步ERROR日志定义 -->
+    <appender name="SYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="ERROR"/>
     </appender>
 
     <!-- DEBUG日志定义 -->
@@ -41,33 +51,31 @@
         </encoder>
     </appender>
 
-    <!-- 定义控制台日志信息 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
-        </encoder>
+    <!-- 异步DEBUG日志定义 -->
+    <appender name="SYNC_DEBUG" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="DEBUG"/>
     </appender>
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+    <root level="ERROR">
+        <appender-ref ref="SYNC_ERROR"/>
     </root>
-    <logger name="com.oven.controller" level="ERROR">
-        <appender-ref ref="ERROR"/>
+    <logger name="com.oven.controller" additivity="false" level="ERROR">
+        <appender-ref ref="SYNC_ERROR"/>
     </logger>
-    <logger name="com.oven.exception" level="ERROR">
-        <appender-ref ref="ERROR"/>
+    <logger name="com.oven.exception" additivity="false" level="ERROR">
+        <appender-ref ref="SYNC_ERROR"/>
     </logger>
-    <logger name="com.oven.limitation" level="INFO">
-        <appender-ref ref="INFO"/>
+    <logger name="com.oven.limitation" additivity="false" level="INFO">
+        <appender-ref ref="SYNC_INFO"/>
     </logger>
-    <logger name="com.oven.limitation" level="ERROR">
-        <appender-ref ref="ERROR"/>
+    <logger name="com.oven.limitation" additivity="false" level="ERROR">
+        <appender-ref ref="SYNC_ERROR"/>
     </logger>
-    <logger name="com.oven.aop" level="INFO">
-        <appender-ref ref="INFO"/>
+    <logger name="com.oven.aop" additivity="false" level="INFO">
+        <appender-ref ref="SYNC_INFO"/>
     </logger>
     <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
-        <appender-ref ref="DEBUG"/>
+        <appender-ref ref="SYNC_DEBUG"/>
     </logger>
 
 </configuration>
