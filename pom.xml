@@ -6,7 +6,7 @@
 
     <groupId>com.oven</groupId>
     <artifactId>demo</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -20,7 +20,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdbctemplatetool.version>1.0.4-RELEASE</jdbctemplatetool.version>
-        <main.class.path>com.oven.app.Application</main.class.path>
         <shiro-spring.versoin>1.4.0</shiro-spring.versoin>
         <shiro-redis.version>3.2.2</shiro-redis.version>
         <fastjson.version>1.2.46</fastjson.version>
@@ -161,6 +160,7 @@
 
     <build>
         <plugins>
+            <!-- 指定编译jdk版本 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -170,25 +170,20 @@
                 </configuration>
             </plugin>
 
+            <!-- 指定资源文件目录 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>${main.class.path}</mainClass>
-                        </manifest>
                         <manifestEntries>
                             <Class-Path>./resources/</Class-Path>
                         </manifestEntries>
                     </archive>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
                 </configuration>
             </plugin>
 
+            <!-- 将第三方依赖打包到lib目录 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -206,6 +201,38 @@
                 </executions>
             </plugin>
 
+            <!-- jar包中去掉第三方依赖 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.0.2.RELEASE</version>
+                <configuration>
+                    <layout>ZIP</layout>
+                    <includes>
+                        <include>
+                            <groupId>non-exists</groupId>
+                            <artifactId>non-exists</artifactId>
+                        </include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <!-- 去掉打包后jar包中BOOT-INF中的文件 -->
+            <plugin>
+                <groupId>com.oven.maven</groupId>
+                <artifactId>oven-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>rejar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 拷贝资源文件到resources目录 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -259,6 +286,7 @@
                             <outputDirectory>${project.build.directory}/resources</outputDirectory>
                         </configuration>
                     </execution>
+                    <!-- 拷贝启动脚本到根目录 -->
                     <execution>
                         <id>copy-shell</id>
                         <phase>package</phase>
