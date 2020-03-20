@@ -6,5 +6,5 @@ if [[ "$pid" != "" ]]
 then
     echo "${APP_NAME} already startup!"
 else
-    java $env_args -jar ${APP_NAME} > ./demo.out < /dev/null &
+    nohup java $env_args -jar ${APP_NAME} > /dev/null 2>&1 &
 fi
