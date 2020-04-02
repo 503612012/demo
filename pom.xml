@@ -22,7 +22,7 @@
         <jdbctemplatetool.version>1.0.4-RELEASE</jdbctemplatetool.version>
         <shiro-spring.versoin>1.4.0</shiro-spring.versoin>
         <shiro-redis.version>3.2.2</shiro-redis.version>
-        <fastjson.version>1.2.46</fastjson.version>
+        <fastjson.version>1.2.67</fastjson.version>
         <druid.version>1.1.5</druid.version>
         <guava.version>23.0</guava.version>
         <java.version>1.8</java.version>
