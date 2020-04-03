@@ -2,9 +2,9 @@ package com.oven.realm;
 
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
-import com.oven.service.MenuService;
-import com.oven.service.UserService;
-import com.oven.vo.User;
+import com.oven.core.menu.service.MenuService;
+import com.oven.core.user.service.UserService;
+import com.oven.core.user.vo.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;

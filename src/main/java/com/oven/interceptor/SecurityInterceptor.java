@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.enumerate.ResultEnum;
 import com.oven.util.ResultInfo;
-import com.oven.vo.User;
+import com.oven.core.user.vo.User;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

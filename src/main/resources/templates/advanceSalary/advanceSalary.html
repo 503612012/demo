@@ -21,22 +21,22 @@
                     <input type="text" autocomplete="off" class="layui-input" id="advanceTime">
                 </div>
             </div>
-            <button class="layui-btn layuiadmin-btn-admin advanceSalary-search" lay-submit="" lay-filter="advanceSalary-back-search" style="line-height: 0">
+            <button class="layui-btn layuiadmin-btn-admin advanceSalary-search" lay-submit="" lay-filter="com.oven.core.advanceSalary-back-search" style="line-height: 0">
                 <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
             </button>
-            <button class="layui-btn layuiadmin-btn-admin advanceSalary-reset" lay-submit="" lay-filter="advanceSalary-back-reset" style="line-height: 0">
+            <button class="layui-btn layuiadmin-btn-admin advanceSalary-reset" lay-submit="" lay-filter="com.oven.core.advanceSalary-back-reset" style="line-height: 0">
                 <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
             </button>
         </div>
         <div class="layui-card-body">
-            <table class="layui-hide" id="advanceSalary-list" lay-filter="advanceSalary-list" style="margin: 10px;"></table>
+            <table class="layui-hide" id="advanceSalary-list" lay-filter="com.oven.core.advanceSalary-list" style="margin: 10px;"></table>
         </div>
     </div>
 </div>
 
 <script type="text/html" id="advanceSalaryListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).ADVANCE_SALARY_INSERT)}" class="layui-btn layui-btn-sm" id="advanceSalary-add-btn" lay-event="advanceSalary-add-btn">
+        <button th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).ADVANCE_SALARY_INSERT)}" class="layui-btn layui-btn-sm" id="advanceSalary-add-btn" lay-event="com.oven.core.advanceSalary-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">录入预支</i>
         </button>
     </div>
@@ -65,6 +65,6 @@
     /*]]>*/
 </script>
 
-<script data-main="/js/advanceSalary/advanceSalary.js" th:src="@{/js/lib/require.js}"></script>
+<script data-main="/js/com.oven.core.advanceSalary/com.oven.core.advanceSalary.js" th:src="@{/js/lib/require.js}"></script>
 </body>
 </html>

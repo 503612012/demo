@@ -1,8 +1,8 @@
 package com.oven.config;
 
 import com.oven.constant.AppConst;
-import com.oven.service.SysDicService;
-import com.oven.vo.SysDicVo;
+import com.oven.core.sysDic.service.SysDicService;
+import com.oven.core.sysDic.vo.SysDicVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

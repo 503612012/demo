@@ -1,7 +1,7 @@
 package com.oven.task;
 
 import com.oven.constant.AppConst;
-import com.oven.dao.CrontabDao;
+import com.oven.core.crontab.service.CrontabService;
 import com.oven.util.QueueUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -23,7 +23,7 @@ import java.util.Random;
 public class AppTask implements SchedulingConfigurer {
 
     @Resource
-    private CrontabDao crontabDao;
+    private CrontabService crontabService;
 
     /**
      * 模拟生产消息
@@ -31,7 +31,7 @@ public class AppTask implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(this::doSomething, triggerContext -> {
-            String cron = crontabDao.getCron("cronKey");
+            String cron = crontabService.getCron("cronKey");
             if (StringUtils.isEmpty(cron)) {
                 log.error(AppConst.ERROR_LOG_PREFIX + "cron is null...");
             }

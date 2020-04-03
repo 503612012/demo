@@ -1,4 +1,4 @@
-//@sourceURL=/js/advanceSalary/add.js
+//@sourceURL=/js/com.oven.core.advanceSalary/add.js
 requirejs.config({
     baseUrl: '/',
     paths: {
@@ -18,13 +18,13 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     var laydate = layui.laydate;
 
     // 监听提交
-    form.on('submit(advanceSalary-add-submit)', function(data) {
+    form.on('submit(com.oven.core.advanceSalary-add-submit)', function(data) {
         var that = $(this);
         if (!that.hasClass('layui-btn-disabled')) {
             that.addClass('layui-btn-disabled'); // 禁用提交按钮
-            http.post('/advanceSalary/doAdd', data.field, function() {
+            http.post('/com.oven.core.advanceSalary/doAdd', data.field, function() {
                 that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                window.parent.mainFrm.location.href = "/advanceSalary/index";
+                window.parent.mainFrm.location.href = "../../../../java/com/oven/core/advanceSalary/index";
             }, function() {
                 that.removeClass('layui-btn-disabled'); // 释放提交按钮
             });

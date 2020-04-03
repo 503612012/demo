@@ -123,7 +123,6 @@ public class RedisCacheKey {
     public static final String FUNDBILL_GET_BY_PAGE = PREFIX + "fundBill_getByPage_{0}_{1}_{2}_{3}";
     public static final String FUNDBILL_GET_TOTAL_BY_DATE = PREFIX + "fundBill_getTotalByDate_{0}_{1}";
     public static final String FUNDBILL_GET_CHARTS_DATA = PREFIX + "fundBill_getChartsData_{0}_{1}_{2}";
-    public static final String FUNDBILL_GET_TOTAL_CHARTS_DATA = PREFIX + "fundBill_getTotalChartsData_{0}_{1}";
     public static final String FUNDBILL_GET_CURRENT_DAY_TOTAL_BY_DATE = PREFIX + "fundBill_getCurrentDayTotalByDate_{0}_{1}";
 
     // 微信基金实体类缓存key定义

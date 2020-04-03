@@ -1,4 +1,4 @@
-//@sourceURL=/js/advanceSalary/advanceSalary.js
+//@sourceURL=/js/com.oven.core.advanceSalary/com.oven.core.advanceSalary.js
 requirejs.config({
     baseUrl: '/',
     paths: {
@@ -42,8 +42,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     };
 
     table.render({
-        elem: '#advanceSalary-list'
-        , url: '/advanceSalary/getByPage/'
+        elem: '#com.oven.core.advanceSalary-list'
+        , url: '/com.oven.core.advanceSalary/getByPage/'
         , toolbar: '#advanceSalaryListToolBar'
         , id: 'advanceSalaryReload'
         , even: true
@@ -108,25 +108,25 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     /**
      * 查询按钮点击事件绑定
      */
-    $('.advanceSalaryTable .advanceSalary-search').on('click', function() {
+    $('.advanceSalaryTable .com.oven.core.advanceSalary-search').on('click', function() {
         reload();
     });
 
     /**
      * 重置按钮点击事件绑定
      */
-    $('.advanceSalaryTable .advanceSalary-reset').on('click', function() {
+    $('.advanceSalaryTable .com.oven.core.advanceSalary-reset').on('click', function() {
         $('#employeeName').val('');
         $('#advanceTime').val('');
         reload();
     });
 
     // 监听工具条
-    table.on('tool(advanceSalary-list)', function(obj) {
+    table.on('tool(com.oven.core.advanceSalary-list)', function(obj) {
         var data = obj.data;
         if (obj.event == 'del') {
             layer.confirm('真的删除此条记录么？', {anim: 6}, function(index) {
-                http.post('/advanceSalary/delete', {id: data.id}, function() {
+                http.post('/com.oven.core.advanceSalary/delete', {id: data.id}, function() {
                     layer.close(index);
                     reload();
                 });
@@ -135,9 +135,9 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     });
 
     // 头工具栏事件
-    table.on('toolbar(advanceSalary-list)', function(obj) {
-        if (obj.event == 'advanceSalary-add-btn') {
-            window.parent.mainFrm.location.href = "/advanceSalary/add";
+    table.on('toolbar(com.oven.core.advanceSalary-list)', function(obj) {
+        if (obj.event == 'com.oven.core.advanceSalary-add-btn') {
+            window.parent.mainFrm.location.href = "../../../../java/com/oven/core/advanceSalary/add";
         }
     });
 
