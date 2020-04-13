@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * 定时任务服务层
+ *
+ * @author Oven
+ */
 @Service
 public class CrontabService extends BaseService {
 

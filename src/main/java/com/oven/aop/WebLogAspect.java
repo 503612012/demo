@@ -1,13 +1,16 @@
 package com.oven.aop;
 
+import com.oven.common.RequestLog;
 import com.oven.constant.AppConst;
 import com.oven.util.ParametersUtils;
+import com.oven.util.RequestLogQueueUtils;
 import com.oven.util.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class WebLogAspect {
 
-    @Pointcut("execution(public * com.oven.core.*.*(..))")
+    @Pointcut("execution(public * com.oven.core..*.*(..))")
     public void webLog() {
     }
 
@@ -42,6 +45,15 @@ public class WebLogAspect {
         log.info(AppConst.INFO_LOG_PREFIX + "请求方法：" + request.getMethod());
         log.info(AppConst.INFO_LOG_PREFIX + "请求者IP：" + request.getRemoteAddr());
         log.info(AppConst.INFO_LOG_PREFIX + "请求参数：" + ParametersUtils.getParameters(request));
+
+        // 放入日志队列，保存到数据库
+        RequestLog requestLog = new RequestLog();
+        requestLog.setRequestIp(request.getRemoteAddr());
+        requestLog.setRequestMethod(request.getMethod());
+        requestLog.setRequestParam(ParametersUtils.getParameters(request));
+        requestLog.setRequestTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        requestLog.setRequestUrl(request.getRequestURL().toString());
+        RequestLogQueueUtils.getInstance().offer(requestLog);
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")

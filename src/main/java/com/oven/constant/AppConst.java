@@ -19,6 +19,8 @@ public class AppConst {
 
     public static final String USER_MENU = "menu"; // 用户菜单
 
+    public static final String REQUEST_LOG_TEMPLATE_TABLENAME = "t_request_log_template"; // 请求日志模板表名
+
     public static final String SHIRO_COOKIE_KEY = "demo_shiro_cookie_key";
     public static final String SHIRO_CACHE_KEY_PROFIX = "demo_";
 
