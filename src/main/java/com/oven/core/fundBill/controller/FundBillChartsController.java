@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
-import com.oven.enumerate.ResultEnum;
-import com.oven.exception.MyException;
-import com.oven.core.fundBill.service.FundBillService;
 import com.oven.core.fund.service.FundService;
 import com.oven.core.fund.vo.Fund;
+import com.oven.core.fundBill.service.FundBillService;
+import com.oven.enumerate.ResultEnum;
+import com.oven.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
@@ -54,7 +54,7 @@ public class FundBillChartsController extends BaseController {
         try {
             return super.success(fundBillService.getTotal());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取累计收益异常", e);
         }
     }
 
@@ -131,7 +131,7 @@ public class FundBillChartsController extends BaseController {
             result.put("series", series);
             return super.success(result);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取收益报表数据异常", e);
         }
     }
 
@@ -173,7 +173,7 @@ public class FundBillChartsController extends BaseController {
             result.put("data", data);
             return super.success(result);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取微信累计基金报表数据异常", e);
         }
     }
 

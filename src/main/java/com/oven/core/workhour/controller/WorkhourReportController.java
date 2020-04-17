@@ -75,7 +75,7 @@ public class WorkhourReportController extends BaseController {
             result.put("preWorkhours", preWorkhours);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取工时报表数据异常", e);
         }
     }
 

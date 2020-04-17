@@ -2,11 +2,11 @@ package com.oven.core.payRecord.controller;
 
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.payRecord.service.PayRecordService;
+import com.oven.core.payRecord.vo.PayRecord;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
-import com.oven.core.payRecord.service.PayRecordService;
 import com.oven.util.LayuiPager;
-import com.oven.core.payRecord.vo.PayRecord;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +56,7 @@ public class PayRecordController extends BaseController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取发薪记录异常", e);
         }
     }
 

@@ -95,6 +95,9 @@
     <logger name="com.oven.limitation" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
     </logger>
+    <logger name="com.oven.task" level="INFO">
+        <appender-ref ref="SYNC_INFO"/>
+    </logger>
     <logger name="com.oven.limitation" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
     </logger>

@@ -16,11 +16,13 @@ public class MyException extends Exception {
 
     private Integer code;
     private String msg;
+    private String log;
     private Exception e;
 
-    public MyException(Integer code, String msg, Exception e) {
+    public MyException(Integer code, String msg, String log, Exception e) {
         this.code = code;
         this.msg = msg;
+        this.log = log;
         this.e = e;
     }
 

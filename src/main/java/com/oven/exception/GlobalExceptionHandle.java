@@ -37,7 +37,7 @@ public class GlobalExceptionHandle {
         log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：{}", ParametersUtils.getParameters(request));
         if (e instanceof MyException) {
             MyException myException = (MyException) e;
-            log.error(AppConst.ERROR_LOG_PREFIX + myException.getMsg(), myException.getE());
+            log.error(AppConst.ERROR_LOG_PREFIX + myException.getLog(), myException.getE());
             if (myException.getCode().equals(ResultEnum.SEARCH_PAGE_ERROR.getCode())) {
                 JSONObject result = new JSONObject();
                 result.put("code", myException.getCode());

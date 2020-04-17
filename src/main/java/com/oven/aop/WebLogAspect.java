@@ -36,7 +36,6 @@ public class WebLogAspect {
         // 获取请求
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
-            log.info(AppConst.ERROR_LOG_PREFIX + "全局请求参数记录类异常，获取attributes为null！");
             return;
         }
         HttpServletRequest request = attributes.getRequest();

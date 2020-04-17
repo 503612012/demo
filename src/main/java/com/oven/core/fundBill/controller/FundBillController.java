@@ -3,13 +3,13 @@ package com.oven.core.fundBill.controller;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.fundBill.service.FundBillService;
+import com.oven.core.fundBill.vo.FundBill;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.core.fundBill.service.FundBillService;
 import com.oven.util.LayuiPager;
-import com.oven.core.fundBill.vo.FundBill;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +51,7 @@ public class FundBillController extends BaseController {
         try {
             return super.success(fundBillService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取收益异常", e);
         }
     }
 
@@ -75,7 +75,7 @@ public class FundBillController extends BaseController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取收益异常", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class FundBillController extends BaseController {
             fundBillService.add(fundBill);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "录入收益异常", e);
         }
     }
 
@@ -107,7 +107,7 @@ public class FundBillController extends BaseController {
             fundBillService.update(fundBill);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改收益异常", e);
         }
     }
 
@@ -129,7 +129,7 @@ public class FundBillController extends BaseController {
                 return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除收益异常", e);
         }
     }
 

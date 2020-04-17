@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
-import com.oven.enumerate.ResultEnum;
-import com.oven.exception.MyException;
 import com.oven.core.wechatFund.service.WechatFundService;
 import com.oven.core.wechatFund.vo.WechatFund;
+import com.oven.enumerate.ResultEnum;
+import com.oven.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
@@ -51,7 +51,7 @@ public class WechatFundController extends BaseController {
             wechatFundService.add(wechatFund);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "录入收益异常", e);
         }
     }
 
@@ -86,7 +86,7 @@ public class WechatFundController extends BaseController {
             result.put("data", data);
             return super.success(result);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取微信基金报表数据异常", e);
         }
     }
 
@@ -121,7 +121,7 @@ public class WechatFundController extends BaseController {
             result.put("data", data);
             return super.success(result);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取微信累计基金报表数据异常", e);
         }
     }
 

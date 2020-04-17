@@ -1,11 +1,11 @@
 package com.oven.core.salary.controller;
 
 import com.oven.constant.PermissionCode;
+import com.oven.core.advanceSalary.service.AdvanceSalaryService;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.workhour.service.WorkhourService;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
-import com.oven.core.advanceSalary.service.AdvanceSalaryService;
-import com.oven.core.workhour.service.WorkhourService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -77,7 +77,7 @@ public class SalaryController extends BaseController {
             result.put("advanceSalary", advanceSalarys);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取薪资统计图表数据异常", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class SalaryController extends BaseController {
             result.put("advanceSalary", advanceSalary);
             return super.success(result);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "加载同比增长数据异常", e);
         }
     }
 

@@ -32,7 +32,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
     private RequestLogService requestLogService;
 
     /**
-     * 模拟生产消息
+     * 保存接口访问日志到数据库
      */
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -53,6 +53,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
                 requestLogService.createTable(tableName);
             }
             requestLogService.batchSave(list, tableName);
+            log.info(AppConst.INFO_LOG_PREFIX + "成功保存{}条接口访问日志到数据库。", list.size());
         }
     }
 

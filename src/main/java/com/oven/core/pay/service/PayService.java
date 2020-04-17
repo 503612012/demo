@@ -98,7 +98,7 @@ public class PayService extends BaseService {
         financeDao.updateOutMoney(finance);
         // 移除缓存
         super.batchRemove(RedisCacheKey.FINANCE_PREFIX);
-        // 记录日志
+        // 记录日志4
         super.addLog("更新财务支出金额", "【" + oldOutMoney + "】改为【" + finance.getOutMoney() + "】", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
 
         // 保存发薪记录

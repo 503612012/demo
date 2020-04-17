@@ -2,11 +2,11 @@ package com.oven.core.log.controller;
 
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.log.service.LogService;
+import com.oven.core.log.vo.Log;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
-import com.oven.core.log.service.LogService;
 import com.oven.util.LayuiPager;
-import com.oven.core.log.vo.Log;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +48,7 @@ public class LogController extends BaseController {
         try {
             return super.success(logService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取日志异常", e);
         }
     }
 
@@ -72,7 +72,7 @@ public class LogController extends BaseController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取日志异常", e);
         }
     }
 

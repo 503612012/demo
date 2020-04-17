@@ -4,14 +4,14 @@ import com.oven.cache.CacheService;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.fund.service.FundService;
+import com.oven.core.fund.vo.Fund;
+import com.oven.core.user.vo.User;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.core.fund.service.FundService;
 import com.oven.util.LayuiPager;
-import com.oven.core.fund.vo.Fund;
-import com.oven.core.user.vo.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,7 +63,7 @@ public class FundController extends BaseController {
         try {
             return super.success(fundService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取基金异常", e);
         }
     }
 
@@ -87,7 +87,7 @@ public class FundController extends BaseController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取基金异常", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class FundController extends BaseController {
             fundService.add(fund);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加基金异常", e);
         }
     }
 
@@ -129,7 +129,7 @@ public class FundController extends BaseController {
             model.addAttribute("fund", fund);
             return "/fund/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到基金更新页面异常", e);
         }
     }
 
@@ -158,7 +158,7 @@ public class FundController extends BaseController {
             }
             return html;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到基金更新页面-测试页面缓存异常", e);
         }
     }
 
@@ -174,7 +174,7 @@ public class FundController extends BaseController {
             fundService.update(fund);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改基金异常", e);
         }
     }
 
@@ -189,7 +189,7 @@ public class FundController extends BaseController {
             fundService.updateOrder(fundId, order);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改基金排序异常", e);
         }
     }
 
@@ -211,7 +211,7 @@ public class FundController extends BaseController {
                 return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除基金异常", e);
         }
     }
 
@@ -232,7 +232,7 @@ public class FundController extends BaseController {
             fundService.update(fund);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改基金状态异常", e);
         }
     }
 
@@ -246,7 +246,7 @@ public class FundController extends BaseController {
         try {
             return super.success(fundService.getAll());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有基金异常", e);
         }
     }
 

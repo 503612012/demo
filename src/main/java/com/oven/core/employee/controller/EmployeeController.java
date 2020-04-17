@@ -2,19 +2,19 @@ package com.oven.core.employee.controller;
 
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
+import com.oven.core.advanceSalary.service.AdvanceSalaryService;
+import com.oven.core.advanceSalary.vo.AdvanceSalary;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.employee.service.EmployeeService;
+import com.oven.core.employee.vo.Employee;
+import com.oven.core.user.service.UserService;
+import com.oven.core.workhour.service.WorkhourService;
+import com.oven.core.workhour.vo.Workhour;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.core.advanceSalary.service.AdvanceSalaryService;
-import com.oven.core.employee.service.EmployeeService;
-import com.oven.core.user.service.UserService;
-import com.oven.core.workhour.service.WorkhourService;
 import com.oven.util.LayuiPager;
-import com.oven.core.advanceSalary.vo.AdvanceSalary;
-import com.oven.core.employee.vo.Employee;
-import com.oven.core.workhour.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,7 +63,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取员工异常", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class EmployeeController extends BaseController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取员工异常", e);
         }
     }
 
@@ -116,7 +116,7 @@ public class EmployeeController extends BaseController {
             employeeService.add(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加员工异常", e);
         }
     }
 
@@ -133,7 +133,7 @@ public class EmployeeController extends BaseController {
             model.addAttribute("employee", employee);
             return "/employee/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到员工更新页面异常", e);
         }
     }
 
@@ -149,7 +149,7 @@ public class EmployeeController extends BaseController {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工异常", e);
         }
     }
 
@@ -181,7 +181,7 @@ public class EmployeeController extends BaseController {
                 return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除员工异常", e);
         }
     }
 
@@ -202,7 +202,7 @@ public class EmployeeController extends BaseController {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工状态异常", e);
         }
     }
 
@@ -216,7 +216,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getAll());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有员工异常", e);
         }
     }
 
@@ -230,7 +230,7 @@ public class EmployeeController extends BaseController {
         try {
             return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取一个员工的时薪异常", e);
         }
     }
 

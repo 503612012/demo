@@ -4,18 +4,18 @@ import com.alibaba.fastjson.JSONArray;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.menu.service.MenuService;
+import com.oven.core.role.service.RoleService;
+import com.oven.core.role.vo.Role;
+import com.oven.core.user.service.UserService;
+import com.oven.core.user.vo.User;
+import com.oven.core.userRole.service.UserRoleService;
+import com.oven.core.userRole.vo.UserRole;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.core.menu.service.MenuService;
-import com.oven.core.role.service.RoleService;
-import com.oven.core.userRole.service.UserRoleService;
-import com.oven.core.user.service.UserService;
 import com.oven.util.LayuiPager;
-import com.oven.core.role.vo.Role;
-import com.oven.core.user.vo.User;
-import com.oven.core.userRole.vo.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -67,7 +67,7 @@ public class RoleController extends BaseController {
         try {
             return super.success(roleService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取角色异常", e);
         }
     }
 
@@ -97,7 +97,7 @@ public class RoleController extends BaseController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取角色异常", e);
         }
     }
 
@@ -122,7 +122,7 @@ public class RoleController extends BaseController {
             roleService.add(role);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加角色异常", e);
         }
     }
 
@@ -139,7 +139,7 @@ public class RoleController extends BaseController {
             model.addAttribute("role", role);
             return "/role/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到角色更新页面异常", e);
         }
     }
 
@@ -155,7 +155,7 @@ public class RoleController extends BaseController {
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色异常", e);
         }
     }
 
@@ -177,7 +177,7 @@ public class RoleController extends BaseController {
             roleService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除角色异常", e);
         }
     }
 
@@ -198,7 +198,7 @@ public class RoleController extends BaseController {
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色状态异常", e);
         }
     }
 
@@ -225,7 +225,7 @@ public class RoleController extends BaseController {
         try {
             return roleService.getMenuTreeByRoleId(roleId);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色ID获取权限树异常", e);
         }
     }
 
@@ -247,7 +247,7 @@ public class RoleController extends BaseController {
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(ResultEnum.UPDATE_ERROR.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置角色权限异常", e);
         }
     }
 

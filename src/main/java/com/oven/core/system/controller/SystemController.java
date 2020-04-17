@@ -102,7 +102,7 @@ public class SystemController extends BaseController {
             captcha.out(response.getOutputStream());
             session.setAttribute(AppConst.CAPTCHA, captcha.text().toLowerCase());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", "获取验证码异常", e);
         }
     }
 
@@ -185,7 +185,7 @@ public class SystemController extends BaseController {
                 logService.addLog("登录系统！", "失败[" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
-                throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", e);
+                throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
             }
         }
     }
@@ -235,7 +235,7 @@ public class SystemController extends BaseController {
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(menus);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", e);
+            throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
         }
     }
 
@@ -257,7 +257,7 @@ public class SystemController extends BaseController {
             obj.put("totalWorkhour", totalWorkhour);
             return super.success(obj);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页数据异常", e);
         }
     }
 
@@ -282,7 +282,7 @@ public class SystemController extends BaseController {
             result.put("data", data);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取薪资排行前五异常", e);
         }
     }
 
@@ -300,7 +300,7 @@ public class SystemController extends BaseController {
             obj.put("workhourProportion", workhourProportion);
             return super.success(obj);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页占比信息异常", e);
         }
     }
 

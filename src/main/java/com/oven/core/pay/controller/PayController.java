@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.oven.constant.AppConst;
 import com.oven.constant.PermissionCode;
 import com.oven.core.base.controller.BaseController;
+import com.oven.core.pay.service.PayService;
+import com.oven.core.workhour.vo.Workhour;
 import com.oven.enumerate.ResultEnum;
 import com.oven.exception.DoPayException;
 import com.oven.exception.MyException;
 import com.oven.limitation.Limit;
 import com.oven.limitation.LimitType;
-import com.oven.core.pay.service.PayService;
-import com.oven.core.workhour.vo.Workhour;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -56,7 +56,7 @@ public class PayController extends BaseController {
             result.put("data", list);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取员工未发放的薪资的工时异常", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class PayController extends BaseController {
             if (e instanceof DoPayException) {
                 return super.fail(((DoPayException) e).getCode(), ((DoPayException) e).getMsg());
             }
-            throw new MyException(ResultEnum.SYSTEM_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), e);
+            throw new MyException(ResultEnum.SYSTEM_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "下发薪资异常", e);
         }
     }
 
