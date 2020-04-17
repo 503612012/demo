@@ -134,7 +134,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         }
         var advanceSalary;
         $.ajax({
-            url: '/com.oven.core.advanceSalary/getTotalAdvanceSalaryByEmployeeId',
+            url: '/advanceSalary/getTotalAdvanceSalaryByEmployeeId',
             type: 'POST',
             data: {
                 "employeeId": list[0].employeeId

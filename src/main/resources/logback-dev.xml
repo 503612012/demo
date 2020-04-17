@@ -83,7 +83,7 @@
     <root level="INFO">
         <appender-ref ref="SYNC_STDOUT"/>
     </root>
-    <logger name="com.oven.core.controller" level="ERROR">
+    <logger name="com.oven.core" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
     </logger>
     <logger name="com.oven.exception" level="ERROR">

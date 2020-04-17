@@ -171,11 +171,11 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
             if (dateType == 1) { // 按月查看
                 $("#inSalary span").html("同比去年增长");
                 $("#outSalary span").html("同比去年增长");
-                $("#com.oven.core.advanceSalary span").html("同去年增长");
+                $("#advanceSalary span").html("同去年增长");
             } else if (dateType == 2) { // 按天查看
                 $("#inSalary span").html("同比上月增长");
                 $("#outSalary span").html("同比上月增长");
-                $("#com.oven.core.advanceSalary span").html("同比上月增长");
+                $("#advanceSalary span").html("同比上月增长");
             }
 
             element.progress("inSalaryProgress", data.inSalary);
@@ -208,7 +208,7 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
                 element.progress("advanceSalaryProgress", -data.advanceSalary);
                 $("#advanceSalaryProgress").attr("lay-percent", ((common.numberFormat(-data.advanceSalary == null ? 0 : -data.advanceSalary, 2, '.', ',') + '%')));
                 $("#advanceSalaryProgress span").html(common.numberFormat(-data.advanceSalary == null ? 0 : -data.advanceSalary, 2, '.', ',') + '%');
-                $("#com.oven.core.advanceSalary span").html($("#com.oven.core.advanceSalary span").html().replace('增长', '下降'));
+                $("#advanceSalary span").html($("#advanceSalary span").html().replace('增长', '下降'));
             }
             element.init();
         });
