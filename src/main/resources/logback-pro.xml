@@ -2,15 +2,19 @@
 <configuration>
 
     <property name="LOG_HOME" value="/usr/local/app/demo/logs"/>
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L - %msg%n"/>
     <!-- INFO日志定义 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/demo.info.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/demo.info.%d{yyyy-MM-dd}.log</FileNamePattern>
+        <file>${LOG_HOME}/demo.info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/demo.info.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder>
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+            <pattern>${PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -18,17 +22,21 @@
     <!-- 异步INFO日志定义 -->
     <appender name="SYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="INFO"/>
+        <includeCallerData>true</includeCallerData>
     </appender>
 
     <!-- ERROR日志定义 -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/demo.error.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/demo.error.%d{yyyy-MM-dd}.log</FileNamePattern>
+        <file>${LOG_HOME}/demo.error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/demo.error.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder>
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+            <pattern>${PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -36,17 +44,21 @@
     <!-- 异步ERROR日志定义 -->
     <appender name="SYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="ERROR"/>
+        <includeCallerData>true</includeCallerData>
     </appender>
 
     <!-- DEBUG日志定义 -->
     <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/demo.debug.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/demo.debug.%d{yyyy-MM-dd}.log</FileNamePattern>
+        <file>${LOG_HOME}/demo.debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/demo.debug.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder>
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+            <pattern>${PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -54,6 +66,7 @@
     <!-- 异步DEBUG日志定义 -->
     <appender name="SYNC_DEBUG" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="DEBUG"/>
+        <includeCallerData>true</includeCallerData>
     </appender>
 
     <root level="ERROR">
@@ -71,7 +84,7 @@
     <logger name="com.oven.limitation" additivity="false" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
     </logger>
-    <logger name="com.oven.task" level="INFO">
+    <logger name="com.oven.task" additivity="false" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
     </logger>
     <logger name="com.oven.aop" additivity="false" level="INFO">
