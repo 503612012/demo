@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class WebLogAspect {
 
-    @Pointcut("execution(public * com.oven.core..*.*(..))")
+    @Pointcut("execution(public * com.oven.core.*.controller..*.*(..))")
     public void webLog() {
     }
 

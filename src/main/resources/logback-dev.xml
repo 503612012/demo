@@ -100,24 +100,31 @@
     </root>
     <logger name="com.oven.core" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="com.oven.exception" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="com.oven.aop" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="com.oven.limitation" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="com.oven.task" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="com.oven.limitation" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="org.springframework.jdbc.core" level="DEBUG" additivity="false">
         <appender-ref ref="SYNC_JDBC"/>
+        <appender-ref ref="SYNC_DEBUG"/>
     </logger>
 
 </configuration>
