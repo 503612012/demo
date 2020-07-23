@@ -24,6 +24,8 @@ public class AppConst {
     public static final String SHIRO_COOKIE_KEY = "demo_shiro_cookie_key";
     public static final String SHIRO_CACHE_KEY_PROFIX = "demo_";
 
+    public static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     public static final String CAPTCHA = "_captcha";
     public static final String PERCENTAGE_MARK = "\\\\%";
 

@@ -1,7 +1,7 @@
-package com.oven.core.sysDic.dao;
+package com.oven.core.system.dao;
 
 import com.oven.util.VoPropertyRowMapper;
-import com.oven.core.sysDic.vo.SysDicVo;
+import com.oven.core.system.vo.SysDicVo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 

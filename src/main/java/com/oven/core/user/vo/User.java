@@ -41,6 +41,8 @@ public class User implements Serializable {
     private String lastModifyTime;
     @Column(name = "last_modify_id")
     private Integer lastModifyId;
+    @Column(name = "last_login_time")
+    private String lastLoginTime;
 
     // 非数据库属性
     private String createName;

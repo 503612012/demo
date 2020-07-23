@@ -1,5 +1,6 @@
 package com.oven.core.finance.service;
 
+import com.oven.constant.AppConst;
 import com.oven.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.finance.dao.FinanceDao;
@@ -30,8 +31,8 @@ public class FinanceService extends BaseService {
     public void add(Finance finance) {
         finance.setCreateId(super.getCurrentUser().getId());
         finance.setLastModifyId(super.getCurrentUser().getId());
-        finance.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
-        finance.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        finance.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        finance.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         finance.setOutMoney(0d);
         finance.setDelFlag(0);
         finance.setFinishFlag(1);
@@ -85,7 +86,7 @@ public class FinanceService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer id) {
         Finance finance = financeDao.getById(id);
-        boolean flag = financeDao.delete(id, 1, super.getCurrentUser().getId(), new DateTime().toString("yyyy-MM-dd HH:mm:ss")) > 0;
+        boolean flag = financeDao.delete(id, 1, super.getCurrentUser().getId(), new DateTime().toString(AppConst.TIME_PATTERN)) > 0;
         if (flag) {
             // 移除缓存
             super.batchRemove(RedisCacheKey.FINANCE_PREFIX);

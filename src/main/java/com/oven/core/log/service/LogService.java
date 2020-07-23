@@ -1,5 +1,6 @@
 package com.oven.core.log.service;
 
+import com.oven.constant.AppConst;
 import com.oven.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.log.dao.LogDao;
@@ -98,7 +99,7 @@ public class LogService extends BaseService {
         log.setOperatorId(operatorId);
         log.setOperatorName(operatorName);
         log.setOperatorIp(operatorIp);
-        log.setOperatorTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        log.setOperatorTime(new DateTime().toString(AppConst.TIME_PATTERN));
         this.add(log);
     }
 

@@ -30,7 +30,7 @@ public class RequestLogDao {
      * 批量保存
      */
     public int[] batchSave(List<RequestLog> list, String tableName) {
-        String sql = "insert into " + tableName + " (request_time, request_url, request_method, request_ip, request_param) values (?, ?, ?, ?, ?)";
+        String sql = "insert into " + tableName + " (request_time, request_url, request_method, request_ip, request_param, user_id) values (?, ?, ?, ?, ?, ?)";
         return this.jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -40,6 +40,7 @@ public class RequestLogDao {
                 ps.setString(3, item.getRequestMethod());
                 ps.setString(4, item.getRequestIp());
                 ps.setString(5, item.getRequestParam());
+                ps.setInt(6, item.getUserId());
                 if (i % 1000 == 0) {
                     // 执行prepareStatement对象中所有的sql语句
                     ps.executeBatch();

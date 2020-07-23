@@ -439,6 +439,7 @@ CREATE TABLE `t_user` (
                           `create_id` int(11) DEFAULT NULL COMMENT '创建人ID',
                           `last_modify_time` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '最后修改时间',
                           `last_modify_id` int(11) DEFAULT NULL COMMENT '最后修改人ID',
+                          `last_login_time` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '最后登录时间',
                           PRIMARY KEY (`dbid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 
@@ -446,8 +447,8 @@ CREATE TABLE `t_user` (
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` VALUES (1, 'Oven', 'bf5025fefa332dadc1e9c20f2e066be4', 'Oven', 18, 'oven@vhzsqm.com', '15731135527', 0, 1, '2018-10-19 12:52:17', 1, '2020-01-09 18:41:42', 1);
-INSERT INTO `t_user` VALUES (8, 'admin', 'd8e6ca2238dccaf93c13bde915f9e88f', 'admin', 18, 'admin@vhzsqm.com', '15731135527', 0, 1, '2018-10-30 09:49:43', 1, '2019-06-14 11:11:46', 1);
+INSERT INTO `t_user` VALUES (1, 'Oven', 'bf5025fefa332dadc1e9c20f2e066be4', 'Oven', 18, 'oven@vhzsqm.com', '15731135527', 0, 1, '2018-10-19 12:52:17', 1, '2020-01-09 18:41:42', 1, '2020-01-09 18:41:42');
+INSERT INTO `t_user` VALUES (8, 'admin', 'd8e6ca2238dccaf93c13bde915f9e88f', 'admin', 18, 'admin@vhzsqm.com', '15731135527', 0, 1, '2018-10-30 09:49:43', 1, '2019-06-14 11:11:46', 1, '2020-01-09 18:41:42');
 COMMIT;
 
 -- ----------------------------

@@ -1,4 +1,4 @@
-package com.oven.core.sysDic.vo;
+package com.oven.core.system.vo;
 
 import lombok.Data;
 

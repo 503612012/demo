@@ -8,7 +8,7 @@ import com.oven.core.employee.vo.Employee;
 import com.oven.core.log.service.LogService;
 import com.oven.core.menu.service.MenuService;
 import com.oven.core.payRecord.service.PayRecordService;
-import com.oven.core.sysDic.service.SysDicService;
+import com.oven.core.system.service.SysDicService;
 import com.oven.core.user.service.UserService;
 import com.oven.core.user.vo.User;
 import com.oven.core.workhour.service.WorkhourService;
@@ -29,6 +29,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -172,6 +173,7 @@ public class SystemController extends BaseController {
             // 登录成功后放入session中
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInDb);
             logService.addLog("登录系统！", "成功！", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
+            userService.updateLastLoginTime(new DateTime().toString(AppConst.TIME_PATTERN), userInDb.getId());
             return super.success("登录成功！");
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);

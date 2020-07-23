@@ -1,5 +1,6 @@
 package com.oven.core.menu.service;
 
+import com.oven.constant.AppConst;
 import com.oven.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.menu.dao.MenuDao;
@@ -72,7 +73,7 @@ public class MenuService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            menuInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+            menuInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
             menuInDb.setLastModifyId(super.getCurrentUser().getId());
             menuDao.update(menuInDb);
             // 移除缓存

@@ -1,5 +1,6 @@
 package com.oven.core.employee.service;
 
+import com.oven.constant.AppConst;
 import com.oven.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.employee.dao.EmployeeDao;
@@ -29,9 +30,9 @@ public class EmployeeService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public void add(Employee employee) {
         employee.setCreateId(super.getCurrentUser().getId());
-        employee.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        employee.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
         employee.setLastModifyId(super.getCurrentUser().getId());
-        employee.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        employee.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         employeeDao.add(employee);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
@@ -81,7 +82,7 @@ public class EmployeeService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            employeeInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+            employeeInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
             employeeInDb.setLastModifyId(super.getCurrentUser().getId());
             employeeDao.update(employeeInDb);
             // 移除缓存

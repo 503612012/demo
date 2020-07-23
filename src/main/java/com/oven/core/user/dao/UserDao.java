@@ -171,4 +171,9 @@ public class UserDao {
         }
     }
 
+    public void updateLastLoginTime(String time, Integer userId) {
+        String sql = "update t_user set last_login_time = ? where dbid = ?";
+        this.jdbcTemplate.update(sql, time, userId);
+    }
+
 }

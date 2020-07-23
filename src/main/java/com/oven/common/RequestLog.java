@@ -27,5 +27,7 @@ public class RequestLog implements Serializable {
     private String requestIp;
     @Column(name = "request_param")
     private String requestParam;
+    @Column(name = "user_id")
+    private Integer userId;
 
 }

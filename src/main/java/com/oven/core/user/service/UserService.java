@@ -117,9 +117,9 @@ public class UserService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public void add(User user) {
         user.setCreateId(super.getCurrentUser().getId());
-        user.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        user.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
         user.setLastModifyId(super.getCurrentUser().getId());
-        user.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        user.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
         userDao.add(user);
@@ -174,7 +174,7 @@ public class UserService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            userInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+            userInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
             userInDb.setLastModifyId(super.getCurrentUser().getId());
             userDao.update(userInDb);
             // 移除缓存
@@ -277,6 +277,12 @@ public class UserService extends BaseService {
             }
         }
         return list;
+    }
+
+    public void updateLastLoginTime(String time, Integer userId) {
+        userDao.updateLastLoginTime(time, userId);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
 
 }

@@ -2,6 +2,7 @@ package com.oven.aop;
 
 import com.oven.common.RequestLog;
 import com.oven.constant.AppConst;
+import com.oven.core.user.vo.User;
 import com.oven.util.ParametersUtils;
 import com.oven.util.RequestLogQueueUtils;
 import com.oven.util.ResultInfo;
@@ -50,8 +51,15 @@ public class WebLogAspect {
         requestLog.setRequestIp(request.getRemoteAddr());
         requestLog.setRequestMethod(request.getMethod());
         requestLog.setRequestParam(ParametersUtils.getParameters(request));
-        requestLog.setRequestTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        requestLog.setRequestTime(new DateTime().toString(AppConst.TIME_PATTERN));
         requestLog.setRequestUrl(request.getRequestURL().toString());
+        if (request.getSession().getAttribute(AppConst.CURRENT_USER) != null) {
+            User currentUser = (User) request.getSession().getAttribute(AppConst.CURRENT_USER);
+            requestLog.setUserId(currentUser.getId());
+        } else {
+            requestLog.setUserId(-1);
+        }
+
         RequestLogQueueUtils.getInstance().offer(requestLog);
     }
 

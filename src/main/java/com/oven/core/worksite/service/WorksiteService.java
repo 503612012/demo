@@ -1,5 +1,6 @@
 package com.oven.core.worksite.service;
 
+import com.oven.constant.AppConst;
 import com.oven.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.worksite.dao.WorksiteDao;
@@ -83,9 +84,9 @@ public class WorksiteService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public void add(Worksite worksite) {
         worksite.setCreateId(super.getCurrentUser().getId());
-        worksite.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        worksite.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
         worksite.setLastModifyId(super.getCurrentUser().getId());
-        worksite.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        worksite.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         worksiteDao.add(worksite);
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
@@ -136,7 +137,7 @@ public class WorksiteService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            worksiteInDb.setLastModifyTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+            worksiteInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
             worksiteInDb.setLastModifyId(super.getCurrentUser().getId());
             worksiteDao.update(worksiteInDb);
             // 移除缓存
