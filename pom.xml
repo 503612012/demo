@@ -346,6 +346,39 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant</artifactId>
+                        <version>1.9.6</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>chmod</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo message="start exec chmod u+x start.sh"/>
+                                <chmod file="${project.build.directory}/start.sh" perm="u+x"/>
+                                <echo message="finish exec chmod u+x start.sh"/>
+                                <echo message="start exec chmod u+x stop.sh"/>
+                                <chmod file="${project.build.directory}/stop.sh" perm="u+x"/>
+                                <echo message="finish exec chmod u+x stop.sh"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <resources>
             <resource>
