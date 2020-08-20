@@ -1,6 +1,6 @@
 package com.oven.core.menu.dao;
 
-import com.oven.util.VoPropertyRowMapper;
+import com.oven.common.util.VoPropertyRowMapper;
 import com.oven.core.menu.vo.Menu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

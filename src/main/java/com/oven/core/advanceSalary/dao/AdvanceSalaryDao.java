@@ -1,7 +1,7 @@
 package com.oven.core.advanceSalary.dao;
 
-import com.oven.constant.AppConst;
-import com.oven.util.VoPropertyRowMapper;
+import com.oven.common.constant.AppConst;
+import com.oven.common.util.VoPropertyRowMapper;
 import com.oven.core.advanceSalary.vo.AdvanceSalary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

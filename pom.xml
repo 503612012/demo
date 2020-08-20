@@ -19,7 +19,6 @@
         <yuicompressor-maven-plugin.version>1.5.1</yuicompressor-maven-plugin.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdbctemplatetool.version>1.0.4-RELEASE</jdbctemplatetool.version>
         <shiro-spring.versoin>1.4.0</shiro-spring.versoin>
         <shiro-redis.version>3.2.2</shiro-redis.version>
         <fastjson.version>1.2.67</fastjson.version>
@@ -98,13 +97,6 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-        </dependency>
-
-        <!-- 实体操作数据库,只需要column注解与数据库字段相同即可 -->
-        <dependency>
-            <groupId>org.crazycake</groupId>
-            <artifactId>jdbctemplatetool</artifactId>
-            <version>${jdbctemplatetool.version}</version>
         </dependency>
 
         <!-- AOP支持 -->

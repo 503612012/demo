@@ -1,7 +1,7 @@
 package com.oven.core.log.dao;
 
-import com.oven.constant.AppConst;
-import com.oven.util.VoPropertyRowMapper;
+import com.oven.common.constant.AppConst;
+import com.oven.common.util.VoPropertyRowMapper;
 import com.oven.core.log.vo.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

@@ -1,6 +1,6 @@
 package com.oven.core.payRecord.service;
 
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.payRecord.dao.PayRecordDao;
 import com.oven.core.payRecord.vo.PayRecord;

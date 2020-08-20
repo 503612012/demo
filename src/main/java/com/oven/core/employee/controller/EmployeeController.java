@@ -1,7 +1,9 @@
 package com.oven.core.employee.controller;
 
-import com.oven.constant.AppConst;
-import com.oven.constant.PermissionCode;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.PermissionCode;
+import com.oven.common.enumerate.ResultEnum;
+import com.oven.common.util.LayuiPager;
 import com.oven.core.advanceSalary.service.AdvanceSalaryService;
 import com.oven.core.advanceSalary.vo.AdvanceSalary;
 import com.oven.core.base.controller.BaseController;
@@ -10,11 +12,9 @@ import com.oven.core.employee.vo.Employee;
 import com.oven.core.user.service.UserService;
 import com.oven.core.workhour.service.WorkhourService;
 import com.oven.core.workhour.vo.Workhour;
-import com.oven.enumerate.ResultEnum;
-import com.oven.exception.MyException;
-import com.oven.limitation.Limit;
-import com.oven.limitation.LimitType;
-import com.oven.util.LayuiPager;
+import com.oven.framework.exception.MyException;
+import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,7 +1,7 @@
 package com.oven.core.fund.dao;
 
-import com.oven.constant.AppConst;
-import com.oven.util.VoPropertyRowMapper;
+import com.oven.common.constant.AppConst;
+import com.oven.common.util.VoPropertyRowMapper;
 import com.oven.core.fund.vo.Fund;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -32,11 +32,11 @@ public class FundDao {
      */
     public int add(Fund fund) {
         String sql = "insert into t_fund (`dbid`," +
-                "                             `fund_name`," +
-                "                             `create_id`," +
-                "                             `create_time`," +
-                "                             `status`)" +
-                "                       values (null, ?, ?, ?, 0)";
+                "                         `fund_name`," +
+                "                         `create_id`," +
+                "                         `create_time`," +
+                "                         `status`)" +
+                "                   values (null, ?, ?, ?, 0)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
@@ -54,8 +54,8 @@ public class FundDao {
      */
     public int update(Fund fund) {
         String sql = "update t_fund set `fund_name` = ?," +
-                "                           `status` = ?" +
-                "                     where `dbid` = ?";
+                "                       `status` = ?" +
+                "                 where `dbid` = ?";
         return this.jdbcTemplate.update(sql, fund.getFundName(), fund.getStatus(), fund.getId());
     }
 

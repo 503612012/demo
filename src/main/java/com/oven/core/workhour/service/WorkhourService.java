@@ -1,7 +1,7 @@
 package com.oven.core.workhour.service;
 
-import com.oven.constant.AppConst;
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.workhour.dao.WorkhourDao;
 import com.oven.core.workhour.vo.Workhour;

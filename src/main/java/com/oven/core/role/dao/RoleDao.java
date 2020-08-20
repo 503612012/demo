@@ -1,7 +1,7 @@
 package com.oven.core.role.dao;
 
-import com.oven.constant.AppConst;
-import com.oven.util.VoPropertyRowMapper;
+import com.oven.common.constant.AppConst;
+import com.oven.common.util.VoPropertyRowMapper;
 import com.oven.core.role.vo.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

@@ -1,14 +1,14 @@
 package com.oven.core.menu.controller;
 
-import com.oven.constant.AppConst;
-import com.oven.constant.PermissionCode;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.PermissionCode;
+import com.oven.common.enumerate.ResultEnum;
 import com.oven.core.base.controller.BaseController;
-import com.oven.enumerate.ResultEnum;
-import com.oven.exception.MyException;
-import com.oven.limitation.Limit;
-import com.oven.limitation.LimitType;
 import com.oven.core.menu.service.MenuService;
 import com.oven.core.menu.vo.Menu;
+import com.oven.framework.exception.MyException;
+import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,9 +1,9 @@
 package com.oven.core.advanceSalary.service;
 
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.advanceSalary.dao.AdvanceSalaryDao;
-import com.oven.core.base.service.BaseService;
 import com.oven.core.advanceSalary.vo.AdvanceSalary;
+import com.oven.core.base.service.BaseService;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
 package com.oven.core.system.service;
 
+import com.oven.common.redis.IRedisService;
 import com.oven.core.system.dao.SysDicDao;
-import com.oven.redis.IRedisService;
 import com.oven.core.system.vo.SysDicVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

@@ -1,7 +1,7 @@
 package com.oven.core.worksite.service;
 
-import com.oven.constant.AppConst;
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.worksite.dao.WorksiteDao;
 import com.oven.core.worksite.vo.Worksite;

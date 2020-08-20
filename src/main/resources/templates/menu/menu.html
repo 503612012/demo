@@ -24,8 +24,8 @@
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
 
-    var hasUpdateMenuPermission = /*[[${T(com.oven.constant.PermissionCode).MENU_UPDATE}]]*/ '';
-    var hasChangeMenuStatusPermission = /*[[${T(com.oven.constant.PermissionCode).MENU_SETSTATUS}]]*/ '';
+    var hasUpdateMenuPermission = /*[[${T(com.oven.common.constant.PermissionCode).MENU_UPDATE}]]*/ '';
+    var hasChangeMenuStatusPermission = /*[[${T(com.oven.common.constant.PermissionCode).MENU_SETSTATUS}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

@@ -1,14 +1,14 @@
 package com.oven.core.user.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.constant.AppConst;
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.role.service.RoleService;
-import com.oven.core.userRole.service.UserRoleService;
-import com.oven.core.user.dao.UserDao;
 import com.oven.core.role.vo.Role;
+import com.oven.core.user.dao.UserDao;
 import com.oven.core.user.vo.User;
+import com.oven.core.userRole.service.UserRoleService;
 import com.oven.core.userRole.vo.UserRole;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.joda.time.DateTime;

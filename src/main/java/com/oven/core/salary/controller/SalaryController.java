@@ -1,11 +1,11 @@
 package com.oven.core.salary.controller;
 
-import com.oven.constant.PermissionCode;
+import com.oven.common.constant.PermissionCode;
+import com.oven.common.enumerate.ResultEnum;
 import com.oven.core.advanceSalary.service.AdvanceSalaryService;
 import com.oven.core.base.controller.BaseController;
 import com.oven.core.workhour.service.WorkhourService;
-import com.oven.enumerate.ResultEnum;
-import com.oven.exception.MyException;
+import com.oven.framework.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;

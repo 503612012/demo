@@ -1,6 +1,6 @@
 package com.oven.core.wechatFund.service;
 
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.wechatFund.dao.WechatFundDao;
 import com.oven.core.wechatFund.vo.WechatFund;

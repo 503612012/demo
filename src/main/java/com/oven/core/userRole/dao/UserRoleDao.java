@@ -1,6 +1,6 @@
 package com.oven.core.userRole.dao;
 
-import com.oven.util.VoPropertyRowMapper;
+import com.oven.common.util.VoPropertyRowMapper;
 import com.oven.core.userRole.vo.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

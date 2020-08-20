@@ -1,6 +1,6 @@
 package com.oven.core.fundBill.service;
 
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.fundBill.dao.FundBillDao;
 import com.oven.core.fundBill.vo.FundBill;

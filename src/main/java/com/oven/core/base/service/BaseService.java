@@ -1,9 +1,9 @@
 package com.oven.core.base.service;
 
-import com.oven.cache.CacheService;
-import com.oven.constant.AppConst;
+import com.oven.common.cache.CacheService;
+import com.oven.common.constant.AppConst;
+import com.oven.common.util.IPUtils;
 import com.oven.core.log.service.LogService;
-import com.oven.util.IPUtils;
 import com.oven.core.user.vo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;

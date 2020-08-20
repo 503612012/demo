@@ -30,21 +30,21 @@
 
 <script type="text/html" id="fundListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FUND_INSERT)}" class="layui-btn layui-btn-sm" id="fund-add-btn" lay-event="fund-add-btn">
+        <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUND_INSERT)}" class="layui-btn layui-btn-sm" id="fund-add-btn" lay-event="fund-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加基金</i>
         </button>
     </div>
 </script>
 <script type="text/html" id="fundListBar">
-    <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FUND_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a th:if="${session.menu.contains(T(com.oven.constant.PermissionCode).FUND_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUND_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUND_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
 
-    var hasChangeFundStatusPermission = /*[[${T(com.oven.constant.PermissionCode).FUND_SETSTATUS}]]*/ '';
-    var hasChangeFundOrderPermission = /*[[${T(com.oven.constant.PermissionCode).FUND_UPDATE_ORDER}]]*/ '';
+    var hasChangeFundStatusPermission = /*[[${T(com.oven.common.constant.PermissionCode).FUND_SETSTATUS}]]*/ '';
+    var hasChangeFundOrderPermission = /*[[${T(com.oven.common.constant.PermissionCode).FUND_UPDATE_ORDER}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

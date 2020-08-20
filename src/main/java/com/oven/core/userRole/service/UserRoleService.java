@@ -1,6 +1,6 @@
 package com.oven.core.userRole.service;
 
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.userRole.dao.UserRoleDao;
 import com.oven.core.userRole.vo.UserRole;

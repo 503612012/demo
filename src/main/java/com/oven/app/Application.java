@@ -1,7 +1,7 @@
 package com.oven.app;
 
-import com.oven.config.PropertyConfig;
-import com.oven.constant.AppConst;
+import com.oven.common.constant.AppConst;
+import com.oven.framework.config.PropertyConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

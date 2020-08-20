@@ -1,8 +1,10 @@
 package com.oven.core.role.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.oven.constant.AppConst;
-import com.oven.constant.PermissionCode;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.PermissionCode;
+import com.oven.common.enumerate.ResultEnum;
+import com.oven.common.util.LayuiPager;
 import com.oven.core.base.controller.BaseController;
 import com.oven.core.menu.service.MenuService;
 import com.oven.core.role.service.RoleService;
@@ -11,11 +13,9 @@ import com.oven.core.user.service.UserService;
 import com.oven.core.user.vo.User;
 import com.oven.core.userRole.service.UserRoleService;
 import com.oven.core.userRole.vo.UserRole;
-import com.oven.enumerate.ResultEnum;
-import com.oven.exception.MyException;
-import com.oven.limitation.Limit;
-import com.oven.limitation.LimitType;
-import com.oven.util.LayuiPager;
+import com.oven.framework.exception.MyException;
+import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
 package com.oven.core.log.service;
 
-import com.oven.constant.AppConst;
-import com.oven.constant.RedisCacheKey;
+import com.oven.common.constant.AppConst;
+import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.log.dao.LogDao;
 import com.oven.core.log.vo.Log;
