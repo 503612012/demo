@@ -77,7 +77,10 @@ public class MenuService extends BaseService {
             menuInDb.setLastModifyId(super.getCurrentUser().getId());
             menuDao.update(menuInDb);
             // 移除缓存
-            super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES);
+            super.batchRemove(RedisCacheKey.ROLE_PREFIX);
+            super.batchRemove(RedisCacheKey.MENU_PREFIX);
+            super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
+            super.batchRemove(RedisCacheKey.USER_MENU_CODES);
             // 记录日志
             super.addLog("修改菜单", "[" + menuName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         }

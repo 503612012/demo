@@ -194,7 +194,8 @@ public class UserService extends BaseService {
         userRoleService.deleteByUserId(id);
         userDao.delete(id);
         // 移除缓存
-        super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
         super.addLog("删除用户", user.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }
@@ -257,7 +258,10 @@ public class UserService extends BaseService {
             content = content.substring(0, content.length() - 1);
         }
         // 移除缓存
-        super.batchRemove(RedisCacheKey.USERROLE_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX);
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
+        super.batchRemove(RedisCacheKey.ROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.MENU_PREFIX);
         // 记录日志
         super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }
@@ -282,7 +286,8 @@ public class UserService extends BaseService {
     public void updateLastLoginTime(String time, Integer userId) {
         userDao.updateLastLoginTime(time, userId);
         // 移除缓存
-        super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
+        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
     }
 
 }
