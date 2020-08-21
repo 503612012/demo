@@ -104,8 +104,7 @@ public class RoleService extends BaseService {
         role.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         roleDao.add(role);
         // 移除缓存
-        super.batchRemove(RedisCacheKey.ROLE_PREFIX);
-        super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+        super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
         super.addLog("添加角色", role.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
     }
@@ -136,8 +135,7 @@ public class RoleService extends BaseService {
             roleInDb.setLastModifyId(super.getCurrentUser().getId());
             roleDao.update(roleInDb);
             // 移除缓存
-            super.batchRemove(RedisCacheKey.ROLE_PREFIX);
-            super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
+            super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
             // 记录日志
             super.addLog("修改角色", "[" + roleName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
         }
@@ -245,9 +243,7 @@ public class RoleService extends BaseService {
         Role role = this.getById(roleId);
         if (StringUtils.isEmpty(menuIds)) { // 删除了该角色所有的权限
             // 移除缓存
-            super.batchRemove(RedisCacheKey.MENU_PREFIX);
-            super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
-            super.batchRemove(RedisCacheKey.USER_MENU_CODES_PREFIX);
+            super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
             // 记录日志
             super.addLog("分配权限", "删除了角色[" + role.getRoleName() + "]所有的权限！", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
             return;
@@ -271,9 +267,7 @@ public class RoleService extends BaseService {
             content = content.substring(0, content.length() - 1);
         }
         // 移除缓存
-        super.batchRemove(RedisCacheKey.MENU_PREFIX);
-        super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
-        super.batchRemove(RedisCacheKey.USER_MENU_CODES_PREFIX);
+        super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
         // 移除shiro授权缓存
         super.batchRemove(AppConst.SHIRO_CACHE_KEY_PROFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + super.getCurrentUser().getId());
         // 记录日志
