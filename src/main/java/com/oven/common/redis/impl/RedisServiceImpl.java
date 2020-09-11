@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  * @author Oven
  */
 @Service
-@SuppressWarnings("unused")
 public class RedisServiceImpl implements IRedisService {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
@@ -392,7 +391,6 @@ public class RedisServiceImpl implements IRedisService {
             final List<Map<String, Object>> list = this.splitMap(map);
             // 任务执行器
             final IExecutor executor = redisDao -> {
-                int count = 0;
                 for (Map<String, Object> update : list) {
                     if (expire <= 0L) {
                         redisDao.pipelineSet(update);
@@ -451,7 +449,6 @@ public class RedisServiceImpl implements IRedisService {
 
         List<Object> result = new ArrayList<>();
         try {
-            int count = 0;
             List<List<String>> keyList = this.splitList(list);
             for (List<String> readList : keyList) {
                 result.addAll(this.redisDao.pipelineGet(readList));
@@ -483,7 +480,6 @@ public class RedisServiceImpl implements IRedisService {
                 return resultMap;
             }
             List<List<String>> keyList = this.splitList(syncData);
-            int count = 0;
             for (List<String> readList : keyList) {
                 resultMap.putAll(this.redisDao.pipelineBatchSGet(readList));
             }

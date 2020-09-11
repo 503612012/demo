@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  * @author Oven
  */
 @Component
-@SuppressWarnings("unused")
 public class RedisDaoImpl implements IRedisDao {
 
     @Resource
