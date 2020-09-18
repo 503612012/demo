@@ -23,8 +23,8 @@ public enum ResultEnum {
     DELETE_WORKHOUR_ERROR_HAS_FINANCE(3009, "该工地有录入的财务信息，禁止删除！"),
     SYSTEM_ERROR(3010, "系统错误！"),
 
-    NO_THIS_USER(4001, "该用户不存在！"),
-    PASSWORD_WRONG(4002, "密码错误！"),
+    NO_THIS_USER(4001, "用户名或密码错误！"),
+    PASSWORD_WRONG(4002, "用户名或密码错误！"),
     USER_DISABLE(4003, "该用户已被锁定，请联系管理人员！"),
     SESSION_TIMEOUT(4004, "未登录或会话超时，请重新登录！"),
     LOSE_LOGIN(4005, "已掉线，请重新登录！"),

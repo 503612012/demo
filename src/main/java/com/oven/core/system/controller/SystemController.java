@@ -135,6 +135,38 @@ public class SystemController extends BaseController {
     }
 
     /**
+     * 登出操作
+     */
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest req) {
+        try {
+            req.setAttribute("key", EncryptUtils.KEY);
+            req.getSession().removeAttribute(AppConst.CURRENT_USER);
+            req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
+            SecurityUtils.getSubject().logout();
+        } catch (Exception e) {
+            log.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，请联系网站管理人员。：", e);
+        }
+        return "login";
+    }
+
+    /**
+     * 去到错误页面
+     */
+    @RequestMapping("/noauth")
+    public String noauth() {
+        return "noauth";
+    }
+
+    /**
+     * 去到错误页面
+     */
+    @RequestMapping("/err")
+    public String err() {
+        return "err";
+    }
+
+    /**
      * 登录操作
      *
      * @param userName 用户名
@@ -190,38 +222,6 @@ public class SystemController extends BaseController {
                 throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
             }
         }
-    }
-
-    /**
-     * 登出操作
-     */
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest req) {
-        try {
-            req.setAttribute("key", EncryptUtils.KEY);
-            req.getSession().removeAttribute(AppConst.CURRENT_USER);
-            req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
-            SecurityUtils.getSubject().logout();
-        } catch (Exception e) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，请联系网站管理人员。：", e);
-        }
-        return "login";
-    }
-
-    /**
-     * 去到错误页面
-     */
-    @RequestMapping("/noauth")
-    public String noauth() {
-        return "noauth";
-    }
-
-    /**
-     * 去到错误页面
-     */
-    @RequestMapping("/err")
-    public String err() {
-        return "err";
     }
 
     /**
