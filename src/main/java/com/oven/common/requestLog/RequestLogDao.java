@@ -1,7 +1,7 @@
 package com.oven.common.requestLog;
 
-import com.oven.common.cache.CacheService;
 import com.oven.common.constant.AppConst;
+import com.oven.framework.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;

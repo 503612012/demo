@@ -1,4 +1,4 @@
-package com.oven.common.cache;
+package com.oven.framework.cache;
 
 import java.util.function.Function;
 

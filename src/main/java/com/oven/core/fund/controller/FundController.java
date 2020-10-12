@@ -1,6 +1,5 @@
 package com.oven.core.fund.controller;
 
-import com.oven.common.cache.CacheService;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
@@ -9,6 +8,7 @@ import com.oven.core.base.controller.BaseController;
 import com.oven.core.fund.service.FundService;
 import com.oven.core.fund.vo.Fund;
 import com.oven.core.user.vo.User;
+import com.oven.framework.cache.CacheService;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
 import com.oven.framework.limitation.LimitType;

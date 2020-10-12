@@ -1,6 +1,6 @@
-package com.oven.common.cache.impl;
+package com.oven.framework.cache.impl;
 
-import com.oven.common.cache.CacheService;
+import com.oven.framework.cache.CacheService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
