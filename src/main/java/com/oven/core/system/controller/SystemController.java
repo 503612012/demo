@@ -2,6 +2,7 @@ package com.oven.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oven.common.constant.AppConst;
+import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.EncryptUtils;
 import com.oven.common.util.IPUtils;
@@ -28,6 +29,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
@@ -42,7 +44,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 系统控制器
@@ -140,6 +146,13 @@ public class SystemController extends BaseController {
     @RequestMapping("/logout")
     public String logout(HttpServletRequest req) {
         try {
+            User user = super.getCurrentUser();
+            ServletContext application = req.getServletContext();
+            @SuppressWarnings("unchecked")
+            Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+            if (loginedMap != null) {
+                loginedMap.remove(user.getUserName());
+            }
             req.setAttribute("key", EncryptUtils.KEY);
             req.getSession().removeAttribute(AppConst.CURRENT_USER);
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
@@ -148,6 +161,26 @@ public class SystemController extends BaseController {
             log.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，请联系网站管理人员。：", e);
         }
         return "login";
+    }
+
+    /**
+     * 强制退出
+     */
+    @ResponseBody
+    @RequestMapping("/forceLogout")
+    @RequiresPermissions(PermissionCode.FORCE_LOGOUT)
+    public Object forceLogout(String userName, HttpServletRequest req) throws MyException {
+        try {
+            ServletContext application = req.getServletContext();
+            @SuppressWarnings("unchecked")
+            Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+            if (loginedMap != null) {
+                loginedMap.put(userName, ResultEnum.FORCE_LOGOUT.getValue());
+            }
+            return super.success("退出成功");
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.FORCE_LOGOUT_ERROR.getCode(), ResultEnum.FORCE_LOGOUT_ERROR.getValue(), "强制退出异常", e);
+        }
     }
 
     /**

@@ -57,6 +57,7 @@
     var menu = [[${session.menu}]];
 
     var hasChangeUserStatusPermission = /*[[${T(com.oven.common.constant.PermissionCode).USER_SETSTATUS}]]*/ '';
+    var hasForceLogoutPermission = /*[[${T(com.oven.common.constant.PermissionCode).FORCE_LOGOUT}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

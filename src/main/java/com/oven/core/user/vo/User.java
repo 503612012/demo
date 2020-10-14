@@ -47,5 +47,6 @@ public class User implements Serializable {
     // 非数据库属性
     private String createName;
     private String lastModifyName;
+    private boolean isOnline;
 
 }

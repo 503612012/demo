@@ -46,6 +46,15 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             {type: 'numbers'}
             , {field: 'userName', title: '用户名', sort: true}
             , {field: 'nickName', title: '昵称'}
+            , {
+                field: 'isOnline', title: '在线状态', templet: function(d) {
+                    if (d.online) {
+                        return '<button class="layui-btn layui-btn-xs force-logout" data-user-name="' + d.userName + '">在线</button>';
+                    } else {
+                        return '<button class="layui-btn layui-btn-primary layui-btn-xs">离线</button>';
+                    }
+                }
+            }
             , {field: 'age', title: '年龄'}
             , {field: 'email', title: '邮箱'}
             , {field: 'phone', title: '手机号'}
@@ -101,6 +110,28 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             reload();
         });
     };
+
+    /**
+     * 强制退出
+     */
+    var forceLogout = function(userName) {
+        http.post('/forceLogout', {userName: userName}, function() {
+            reload();
+        });
+    };
+
+    /**
+     * 绑定强制退出点击事件
+     */
+    $("body").on("click", ".force-logout", function() {
+        if (hasPermission(hasForceLogoutPermission)) {
+            var userName = $(this).attr("data-user-name");
+            layer.confirm('确认退出该用户吗？', {anim: 6}, function(index) {
+                forceLogout(userName);
+                layer.close(index);
+            });
+        }
+    });
 
     /**
      * 绑定用户状态更改点击事件

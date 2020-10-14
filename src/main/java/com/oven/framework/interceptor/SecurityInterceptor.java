@@ -9,6 +9,7 @@ import org.apache.commons.codec.CharEncoding;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.ServletContext;
@@ -73,6 +74,9 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             return responseRequest(ResultEnum.LOSE_LOGIN.getCode(), ResultEnum.LOSE_LOGIN.getValue(), ResultEnum.LOSE_LOGIN.getValue(), req, resp);
         }
         String loginedUserSessionId = loginedMap.get(user.getUserName());
+        if (!StringUtils.isEmpty(loginedUserSessionId) && ResultEnum.FORCE_LOGOUT.getValue().equals(loginedUserSessionId)) {
+            return responseRequest(ResultEnum.FORCE_LOGOUT.getCode(), ResultEnum.FORCE_LOGOUT.getValue(), ResultEnum.FORCE_LOGOUT.getValue(), req, resp);
+        }
         String mySessionId = req.getSession().getId();
 
         if (!mySessionId.equals(loginedUserSessionId)) {

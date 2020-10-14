@@ -24,6 +24,7 @@ public interface PermissionCode {
     String ROLE_DELETE                        = "A1_03_03";   // 删除角色
     String ROLE_SETSTATUS                     = "A1_03_04";   // 修改角色状态
     String ROLE_SETMENU                       = "A1_03_05";   // 设置角色菜单
+    String FORCE_LOGOUT                       = "A1_01_06";   // 强制退出
 
     String LOG_MANAGER                        = "A1_04";      // 日志管理
 

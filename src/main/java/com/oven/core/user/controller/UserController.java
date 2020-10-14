@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户控制层
@@ -81,13 +84,20 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    public Object getByPage(Integer page, Integer limit, User user) throws MyException {
+    public Object getByPage(Integer page, Integer limit, User user, HttpServletRequest req) throws MyException {
         try {
             LayuiPager<User> result = new LayuiPager<>();
             List<User> list = userService.getByPage(page, limit, user);
+
+            ServletContext context = req.getServletContext();
+            //noinspection unchecked
+            Map<String, String> loginedMap = (Map<String, String>) context.getAttribute(AppConst.LOGINEDUSERS);
             for (User item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
+
+                // 在线状态
+                item.setOnline(loginedMap.containsKey(item.getUserName()) && !ResultEnum.FORCE_LOGOUT.getValue().equals(loginedMap.get(item.getUserName())));
             }
             Integer totalNum = userService.getTotalNum(user);
             result.setCode(0);
