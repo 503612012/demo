@@ -8,6 +8,7 @@ import com.oven.core.base.controller.BaseController;
 import com.oven.core.fund.service.FundService;
 import com.oven.core.fund.vo.Fund;
 import com.oven.core.user.vo.User;
+import com.oven.framework.annotation.CurrentUser;
 import com.oven.framework.cache.CacheService;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
@@ -140,7 +141,7 @@ public class FundController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/updateWithCache", produces = "text/html")
-    public String updateWithCache(Integer id, Model model, HttpServletRequest req, HttpServletResponse resp, User user) throws MyException {
+    public String updateWithCache(Integer id, Model model, HttpServletRequest req, HttpServletResponse resp, @CurrentUser User user) throws MyException {
         try {
             System.out.println("自定义参数解析器注入的当前用户：" + user.toString());
             // 查询缓存

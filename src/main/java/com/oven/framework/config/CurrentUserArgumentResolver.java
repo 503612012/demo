@@ -2,6 +2,7 @@ package com.oven.framework.config;
 
 import com.oven.common.constant.AppConst;
 import com.oven.core.user.vo.User;
+import com.oven.framework.annotation.CurrentUser;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -21,8 +22,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        Class<?> clazz = parameter.getParameterType();
-        return clazz == User.class;
+        return parameter.hasParameterAnnotation(CurrentUser.class);
     }
 
     /**
