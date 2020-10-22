@@ -13,6 +13,7 @@ public interface PermissionCode {
     String USER_DELETE                        = "A1_01_03";   // 删除用户
     String USER_SETSTATUS                     = "A1_01_04";   // 修改用户状态
     String USER_SETROLE                       = "A1_01_05";   // 设置用户角色
+    String FORCE_LOGOUT                       = "A1_01_06";   // 强制退出
 
     String MENU_MANAGER                       = "A1_02";      // 菜单管理
     String MENU_UPDATE                        = "A1_02_01";   // 修改菜单名称
@@ -24,7 +25,6 @@ public interface PermissionCode {
     String ROLE_DELETE                        = "A1_03_03";   // 删除角色
     String ROLE_SETSTATUS                     = "A1_03_04";   // 修改角色状态
     String ROLE_SETMENU                       = "A1_03_05";   // 设置角色菜单
-    String FORCE_LOGOUT                       = "A1_01_06";   // 强制退出
 
     String LOG_MANAGER                        = "A1_04";      // 日志管理
 

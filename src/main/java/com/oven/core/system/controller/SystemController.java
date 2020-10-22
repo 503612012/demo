@@ -149,7 +149,7 @@ public class SystemController extends BaseController {
             User user = super.getCurrentUser();
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked")
-            Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap != null) {
                 loginedMap.remove(user.getUserName());
             }
@@ -173,9 +173,12 @@ public class SystemController extends BaseController {
         try {
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked")
-            Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap != null) {
-                loginedMap.put(userName, ResultEnum.FORCE_LOGOUT.getValue());
+                JSONObject obj = new JSONObject();
+                obj.put(AppConst.SESSION_ID, ResultEnum.FORCE_LOGOUT.getValue());
+                obj.put(AppConst.SESSION, null);
+                loginedMap.put(userName, obj);
             }
             return super.success("退出成功");
         } catch (Exception e) {
@@ -228,12 +231,15 @@ public class SystemController extends BaseController {
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked")
-            Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap == null) {
                 loginedMap = new HashMap<>();
                 application.setAttribute(AppConst.LOGINEDUSERS, loginedMap);
             }
-            loginedMap.put(userInDb.getUserName(), req.getSession().getId());
+            JSONObject obj = new JSONObject();
+            obj.put(AppConst.SESSION_ID, req.getSession().getId());
+            obj.put(AppConst.SESSION, req.getSession());
+            loginedMap.put(userInDb.getUserName(), obj);
 
             // 登录成功后放入session中
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInDb);

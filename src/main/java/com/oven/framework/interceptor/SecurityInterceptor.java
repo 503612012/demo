@@ -37,7 +37,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private static final String INDEX = "/";
 
     @Override
-    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, @SuppressWarnings("NullableProblems") Object handler) throws Exception {
         resp.setContentType("text/plain;charset=UTF-8");
         String servletPath = req.getServletPath();
         // 放行的请求
@@ -69,11 +69,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         // 检查是否被其他人挤出去
         ServletContext application = req.getServletContext();
         @SuppressWarnings("unchecked")
-        Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+        Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
         if (loginedMap == null) { // 可能是掉线了
             return responseRequest(ResultEnum.LOSE_LOGIN.getCode(), ResultEnum.LOSE_LOGIN.getValue(), ResultEnum.LOSE_LOGIN.getValue(), req, resp);
         }
-        String loginedUserSessionId = loginedMap.get(user.getUserName());
+        JSONObject obj = loginedMap.get(user.getUserName());
+        String loginedUserSessionId = obj.getString(AppConst.SESSION_ID);
         if (!StringUtils.isEmpty(loginedUserSessionId) && ResultEnum.FORCE_LOGOUT.getValue().equals(loginedUserSessionId)) {
             return responseRequest(ResultEnum.FORCE_LOGOUT.getCode(), ResultEnum.FORCE_LOGOUT.getValue(), ResultEnum.FORCE_LOGOUT.getValue(), req, resp);
         }

@@ -14,6 +14,8 @@ public interface AppConst {
     String CURRENT_USER = "current_user"; // 当前登录用户
 
     String LOGINEDUSERS = "loginedUsers"; // 已经登录到系统用户，是一个map
+    String SESSION_ID = "sessionId";
+    String SESSION = "session";
 
     String MD5_SALT = "5217"; // MD5盐值
 

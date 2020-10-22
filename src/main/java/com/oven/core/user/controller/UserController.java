@@ -14,14 +14,18 @@ import com.oven.framework.limitation.Limit;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +40,8 @@ public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource(name = "sessionManager")
+    private DefaultSessionManager sessionManager;
 
     /**
      * 去到用户管理页面
@@ -91,13 +97,13 @@ public class UserController extends BaseController {
 
             ServletContext context = req.getServletContext();
             //noinspection unchecked
-            Map<String, String> loginedMap = (Map<String, String>) context.getAttribute(AppConst.LOGINEDUSERS);
+            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) context.getAttribute(AppConst.LOGINEDUSERS);
             for (User item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
 
                 // 在线状态
-                item.setOnline(loginedMap.containsKey(item.getUserName()) && !ResultEnum.FORCE_LOGOUT.getValue().equals(loginedMap.get(item.getUserName())));
+                item.setOnline(getOnlineStatus(loginedMap, item));
             }
             Integer totalNum = userService.getTotalNum(user);
             result.setCode(0);
@@ -108,6 +114,27 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取用户异常", e);
         }
+    }
+
+    /**
+     * 判断在线状态
+     */
+    private boolean getOnlineStatus(Map<String, JSONObject> loginedMap, User user) {
+        if (loginedMap != null) {
+            if (loginedMap.containsKey(user.getUserName())) {
+                JSONObject obj = loginedMap.get(user.getUserName());
+                String sessionId = obj.getString(AppConst.SESSION_ID);
+                if (!StringUtils.isEmpty(sessionId) && !ResultEnum.FORCE_LOGOUT.getValue().equals(sessionId)) {
+                    Collection<Session> activeSessions = sessionManager.getSessionDAO().getActiveSessions();
+                    for (Session s : activeSessions) {
+                        if (sessionId.equals(s.getId())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -279,7 +306,6 @@ public class UserController extends BaseController {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有用户异常", e);
         }
     }
-
 
     /**
      * 修改密码

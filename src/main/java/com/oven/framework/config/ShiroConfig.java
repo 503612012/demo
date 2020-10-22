@@ -10,6 +10,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,18 +103,31 @@ public class ShiroConfig {
     }
 
     @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setGlobalSessionTimeout(10000); // 10s
+//        sessionManager.setGlobalSessionTimeout(600000); // 10m
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionValidationInterval(10000); // 10s
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        return sessionManager;
+    }
+
+
+    @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myShiroRealm());
         securityManager.setCacheManager(cacheManager());
         securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
     private SimpleCookie rememberMeCookie() {
         // 设置cookie名称，对应登录页面的 <input type="checkbox" name="rememberMe"/>
         SimpleCookie cookie = new SimpleCookie("rememberMe");
-        // 设置cookie的过期时间，单位为秒，这里为一天
+        // 设置cookie的过期时间，单位为秒，这里为七天
         cookie.setMaxAge(86400 * 7);
         return cookie;
     }
