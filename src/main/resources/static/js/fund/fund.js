@@ -14,6 +14,7 @@ requirejs.config({
 
 requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
+    var form = layui.form;
     var layer = layui.layer;
     var table = layui.table;
 
@@ -26,8 +27,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('fundReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 fundName: nameReload.val()
             }
         });
@@ -39,18 +40,18 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     }
 
     table.render({
-        elem: '#fund-list'
-        , url: '/fund/getByPage/'
-        , toolbar: '#fundListToolBar'
-        , id: 'fundReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'fundName', title: '基金名称', sort: true}
-            , {field: 'createTime', title: '创建时间'}
-            , {field: 'createName', title: '创建人'}
-            , orderColumn
-            , {
+        elem: '#fund-list',
+        url: '/fund/getByPage/',
+        toolbar: '#fundListToolBar',
+        id: 'fundReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'fundName', title: '基金名称', sort: true},
+            {field: 'createTime', title: '创建时间'},
+            {field: 'createName', title: '创建人'},
+            orderColumn,
+            {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked fund-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -58,10 +59,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox fund-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 120, align: 'center', toolbar: '#fundListBar'}
-        ]]
-        , page: true
+            },
+            {title: '操作', width: 120, align: 'center', toolbar: '#fundListBar'}
+        ]],
+        page: true
     });
 
     /**
@@ -119,6 +120,31 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         }
     });
 
+    var openDialog = function(title) {
+        layer.open({
+            title: title,
+            id: "fundDialog",
+            type: 1,
+            offset: '20px',
+            content: $('#fundTips'),
+            area: [$(window).width() <= 750 ? '60%' : '500px', '200px'],
+            resize: false,
+            end: function() {
+                $("#fundTips").css("display", 'none');
+            }
+        });
+    };
+
+    form.on('submit(fund-submit)', function(data) {
+        var url;
+        if (data.field.id != null && data.field.id != '' && data.field.id != undefined) { // 修改
+            url = '/fund/update';
+        } else { // 添加
+            url = '/fund/add';
+        }
+        common.commitForm($(this), layer, url, data.field, reload);
+    });
+
     //监听单元格编辑
     table.on('edit(fund-list)', function(obj) {
         var params = {
@@ -141,14 +167,20 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 });
             });
         } else if (obj.event == 'edit') {
-            window.parent.mainFrm.location.href = "/fund/update?id=" + data.id;
+            http.get('/fund/getById', {id: data.id}, function(result) {
+                $('#fundId').val(result.id);
+                $('#fundName').val(result.fundName);
+                openDialog('修改基金');
+            });
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(fund-list)', function(obj) {
         if (obj.event == 'fund-add-btn') {
-            window.parent.mainFrm.location.href = "/fund/add";
+            $('#fundId').val('');
+            $('#fundName').val('');
+            openDialog('添加基金');
         }
     });
 

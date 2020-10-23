@@ -105,8 +105,8 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setGlobalSessionTimeout(10000); // 10s
-//        sessionManager.setGlobalSessionTimeout(600000); // 10m
+//        sessionManager.setGlobalSessionTimeout(10000); // 10s
+        sessionManager.setGlobalSessionTimeout(600000); // 10m
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionValidationInterval(10000); // 10s
         sessionManager.setSessionValidationSchedulerEnabled(true);

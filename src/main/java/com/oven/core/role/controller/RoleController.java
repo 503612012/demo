@@ -102,22 +102,13 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 去到添加角色页面
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions(PermissionCode.ROLE_INSERT)
-    public String add() {
-        return "role/add";
-    }
-
-    /**
      * 添加角色
      */
     @ResponseBody
-    @RequestMapping("/doAdd")
+    @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
     @Limit(key = AppConst.ROLE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doAdd(Role role) throws MyException {
+    public Object add(Role role) throws MyException {
         try {
             roleService.add(role);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
@@ -127,30 +118,13 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 去到角色更新页面
-     *
-     * @param id 角色ID
-     */
-    @RequestMapping("/update")
-    @RequiresPermissions(PermissionCode.ROLE_UPDATE)
-    public String update(Integer id, Model model) throws MyException {
-        try {
-            Role role = roleService.getById(id);
-            model.addAttribute("role", role);
-            return "/role/update";
-        } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到角色更新页面异常", e);
-        }
-    }
-
-    /**
      * 修改角色
      */
     @ResponseBody
-    @RequestMapping("/doUpdate")
+    @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
     @Limit(key = AppConst.ROLE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doUpdate(Role role) throws MyException {
+    public Object update(Role role) throws MyException {
         try {
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());

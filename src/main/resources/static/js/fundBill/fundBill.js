@@ -28,7 +28,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         change: function(value) {
             common.disabledDate(value, '7,1')
         },
-        trigger: 'click',
+        showBottom: false,
         format: 'yyyy-MM-dd'
     });
 
@@ -42,8 +42,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('fundBillReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 fundName: nameReload.val(),
                 date: dataDateReload.val()
             }
@@ -51,17 +51,17 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     };
 
     table.render({
-        elem: '#fundBill-list'
-        , url: '/fundBill/getByPage/'
-        , toolbar: '#fundBillListToolBar'
-        , limit: 9
-        , id: 'fundBillReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'fundName', title: '基金名称', sort: true}
-            , {field: 'dataDate', title: '收益时间'}
-            , {
+        elem: '#fundBill-list',
+        url: '/fundBill/getByPage/',
+        toolbar: '#fundBillListToolBar',
+        limit: 9,
+        id: 'fundBillReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'fundName', title: '基金名称', sort: true},
+            {field: 'dataDate', title: '收益时间'},
+            {
                 field: 'money', title: '收益金额', templet: function(d) {
                     if (d.money > 0) {
                         return '<span style="color: red;">' + d.money + '</span>';
@@ -69,10 +69,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<span style="color: green;">' + d.money + '</span>';
                     }
                 }
-            }
-            , {title: '操作', width: 120, align: 'center', toolbar: '#fundBillListBar'}
-        ]]
-        , page: true
+            },
+            {title: '操作', width: 120, align: 'center', toolbar: '#fundBillListBar'}
+        ]],
+        page: true
     });
 
     /**
@@ -119,7 +119,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 change: function(value) {
                     common.disabledDate(value, '7,1')
                 },
-                trigger: 'click',
+                showBottom: false,
                 format: 'yyyy-MM-dd'
             });
 
@@ -176,7 +176,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     change: function(value) {
                         common.disabledDate(value, '7,1')
                     },
-                    trigger: 'click',
+                    showBottom: false,
                     format: 'yyyy-MM-dd'
                 });
 
@@ -197,31 +197,13 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
 
     // 监听提交
     form.on('submit(updateProfit-submit)', function(data) {
-        var that = $(this);
-        if (!that.hasClass('layui-btn-disabled')) {
-            that.addClass('layui-btn-disabled'); // 禁用提交按钮
-            http.post('/fundBill/doUpdate', data.field, function() {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                window.parent.mainFrm.location.href = "/fundBill/index";
-            }, function() {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            });
-        }
+        common.commitForm($(this), layer, '/fundBill/doUpdate', data.field, reload);
         return false;
     });
 
     // 监听提交
     form.on('submit(inputProfit-submit)', function(data) {
-        var that = $(this);
-        if (!that.hasClass('layui-btn-disabled')) {
-            that.addClass('layui-btn-disabled'); // 禁用提交按钮
-            http.post('/fundBill/doAdd', data.field, function() {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                window.parent.mainFrm.location.href = "/fundBill/index";
-            }, function() {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            });
-        }
+        common.commitForm($(this), layer, '/fundBill/doAdd', data.field, reload);
         return false;
     });
 

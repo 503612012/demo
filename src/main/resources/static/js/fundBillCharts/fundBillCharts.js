@@ -34,7 +34,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         value: new Date(),
         type: 'year',
         format: 'yyyy',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#fundBillChartsDateYear").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadCharts(value, 1);
         },
         max: common.getNowFormatDate()
@@ -46,7 +51,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         value: new Date(),
         type: 'month',
         format: 'yyyy-MM',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#fundBillChartsDateMonth").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadCharts(value, 2);
         },
         max: common.getNowFormatDate()
@@ -58,7 +68,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         value: new Date(),
         type: 'year',
         format: 'yyyy',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#totalFundBillChartsDateYear").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadTotalCharts(value, 1);
         },
         max: common.getNowFormatDate()
@@ -70,7 +85,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         value: new Date(),
         type: 'month',
         format: 'yyyy-MM',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#totalFundBillChartsDateMonth").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadTotalCharts(value, 2);
         },
         max: common.getNowFormatDate()
@@ -80,17 +100,7 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
      * 加载图表
      */
     function loadCharts(date, dateType) {
-        $.get('/fundBillCharts/getChartsData?date=' + date + '&dateType=' + dateType).done(function(result) {
-            if (result.code != 200) {
-                layer.open({
-                    title: '系统提示',
-                    anim: 6,
-                    content: result.data,
-                    btnAlign: 'c'
-                });
-                return;
-            }
-            var data = result.data;
+        http.get('/fundBillCharts/getChartsData?date=' + date + '&dateType=' + dateType, {}, function(data) {
             myLine.dispose();
             myLine = echarts.init(document.getElementById('fundBillChartsLine'));
             myLine.setOption({
@@ -161,7 +171,7 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         myLine.resize();
 
         myLine.showLoading();
-        $.get('/fundBillCharts/getTotalChartsData?date=' + date + '&dateType=' + dataType).done(function(data) {
+        http.get('/fundBillCharts/getTotalChartsData?date=' + date + '&dateType=' + dataType, {}, function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
@@ -200,7 +210,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
                 value: common.getCurrentDate(1),
                 type: 'year',
                 format: 'yyyy',
-                done: function(value) {
+                showBottom: false,
+                change: function(value) {
+                    $("#fundBillChartsDateYear").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
                     loadCharts(value, 1);
                 },
                 max: common.getNowFormatDate()
@@ -216,7 +231,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
                 value: common.getCurrentDate(2),
                 type: 'month',
                 format: 'yyyy-MM',
-                done: function(value) {
+                showBottom: false,
+                change: function(value) {
+                    $("#fundBillChartsDateMonth").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
                     loadCharts(value, 2);
                 },
                 max: common.getNowFormatDate()
@@ -241,7 +261,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
                 value: common.getCurrentDate(1),
                 type: 'year',
                 format: 'yyyy',
-                done: function(value) {
+                showBottom: false,
+                change: function(value) {
+                    $("#totalFundBillChartsDateYear").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
                     loadTotalCharts(value, 1);
                 },
                 max: common.getNowFormatDate()
@@ -257,7 +282,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
                 value: common.getCurrentDate(2),
                 type: 'month',
                 format: 'yyyy-MM',
-                done: function(value) {
+                showBottom: false,
+                change: function(value) {
+                    $("#totalFundBillChartsDateMonth").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
                     loadTotalCharts(value, 2);
                 },
                 max: common.getNowFormatDate()

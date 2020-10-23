@@ -28,6 +28,32 @@
     </div>
 </div>
 
+</body>
+<div id="worksiteTips" class="hide">
+    <form lay-filter="worksite-from" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">工地名称：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" id="worksiteId">
+                <input type="text" lay-verify="required" class="layui-input" name="name" autocomplete="off" id="name" placeholder="请输入工地名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工地描述</label>
+            <div class="layui-input-block">
+                <textarea name="desc" placeholder="请输入工地描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="worksite-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/html" id="worksiteListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).WORKSITE_INSERT)}" class="layui-btn layui-btn-sm" id="worksite-add-btn" lay-event="worksite-add-btn">
@@ -57,5 +83,4 @@
     /*]]>*/
 </script>
 <script data-main="/js/worksite/worksite.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>

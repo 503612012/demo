@@ -27,8 +27,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('userReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 nickName: nickNameReload.val(),
                 userName: userNameReload.val(),
                 phone: phoneReload.val()
@@ -37,16 +37,16 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     };
 
     table.render({
-        elem: '#user-list'
-        , url: '/user/getByPage/'
-        , toolbar: '#userListToolBar'
-        , id: 'userReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'userName', title: '用户名', sort: true}
-            , {field: 'nickName', title: '昵称'}
-            , {
+        elem: '#user-list',
+        url: '/user/getByPage/',
+        toolbar: '#userListToolBar',
+        id: 'userReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'userName', title: '用户名', sort: true},
+            {field: 'nickName', title: '昵称'},
+            {
                 field: 'isOnline', title: '在线状态', templet: function(d) {
                     if (d.online) {
                         return '<button class="layui-btn layui-btn-xs force-logout" data-user-name="' + d.userName + '">在线</button>';
@@ -54,20 +54,20 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<button class="layui-btn layui-btn-primary layui-btn-xs">离线</button>';
                     }
                 }
-            }
-            , {field: 'age', title: '年龄'}
-            , {field: 'email', title: '邮箱'}
-            , {field: 'phone', title: '手机号'}
-            , {
+            },
+            {field: 'age', title: '年龄'},
+            {field: 'email', title: '邮箱'},
+            {field: 'phone', title: '手机号'},
+            {
                 field: 'gender', title: '性别', templet: function(d) {
                     return d.gender == 1 ? '男' : '<span style="color: #F581B1;">女</span>';
                 }
-            }
-            , {field: 'createTime', title: '创建时间'}
-            , {field: 'createName', title: '创建人'}
-            , {field: 'lastModifyTime', title: '最后修改时间'}
-            , {field: 'lastModifyName', title: '最后修改人'}
-            , {
+            },
+            {field: 'createTime', title: '创建时间'},
+            {field: 'createName', title: '创建人'},
+            {field: 'lastModifyTime', title: '最后修改时间'},
+            {field: 'lastModifyName', title: '最后修改人'},
+            {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked user-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -75,10 +75,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox user-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 200, align: 'center', toolbar: '#userListBar'}
-        ]]
-        , page: true
+            },
+            {title: '操作', width: 200, align: 'center', toolbar: '#userListBar'}
+        ]],
+        page: true
     });
 
     /**

@@ -29,9 +29,13 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
         value: common.getCurrentDate(1),
         type: 'year',
         format: 'yyyy',
-        done: function(value) {
-            var employeeId = $("#employeeSelect").val();
-            loadCharts(value, 1, employeeId);
+        showBottom: false,
+        change: function(value) {
+            $("#workhourReportDateMonth").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
+            loadCharts(value, 1, $("#employeeSelect").val());
         },
         max: common.getNowFormatDate()
     });
@@ -42,9 +46,13 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
         value: common.getCurrentDate(2),
         type: 'month',
         format: 'yyyy-MM',
-        done: function(value) {
-            var employeeId = $("#employeeSelect").val();
-            loadCharts(value, 2, employeeId);
+        showBottom: false,
+        change: function(value) {
+            $("#workhourReportDateDay").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
+            loadCharts(value, 2, $("#employeeSelect").val());
         },
         max: common.getNowFormatDate()
     });
@@ -119,7 +127,7 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
         myLine.resize();
 
         myLine.showLoading();
-        $.get('/workhourReport/getWorkhourReportData?employeeId=' + employeeId + '&date=' + date + '&dateType=' + dateType).done(function(data) {
+        http.get('/workhourReport/getWorkhourReportData?employeeId=' + employeeId + '&date=' + date + '&dateType=' + dateType, {}, function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
@@ -161,9 +169,13 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
                 value: common.getCurrentDate(1),
                 type: 'year',
                 format: 'yyyy',
-                done: function(value) {
-                    var employeeId = $("#employeeSelect").val();
-                    loadCharts(value, 1, employeeId);
+                showBottom: false,
+                change: function(value) {
+                    $("#workhourReportDateMonth").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
+                    loadCharts(value, 1, $("#employeeSelect").val());
                 },
                 max: common.getNowFormatDate()
             });
@@ -178,9 +190,13 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
                 value: common.getCurrentDate(2),
                 type: 'month',
                 format: 'yyyy-MM',
-                done: function(value) {
-                    var employeeId = $("#employeeSelect").val();
-                    loadCharts(value, 2, employeeId);
+                showBottom: false,
+                change: function(value) {
+                    $("#workhourReportDateDay").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
+                    loadCharts(value, 2, $("#employeeSelect").val());
                 },
                 max: common.getNowFormatDate()
             });

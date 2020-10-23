@@ -34,6 +34,45 @@
     </div>
 </div>
 
+</body>
+<div id="advanceSalaryTips" class="hide">
+    <form lay-filter="advanceSalary-from" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">员工名称</label>
+            <div class="layui-input-block">
+                <select name="employeeId" lay-verify="required" lay-filter="employeeSelect" id="employeeSelect"></select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">预支金额</label>
+            <div class="layui-input-block">
+                <input type="number" placeholder="请输入预支金额" lay-verify="required" class="layui-input" name="money" autocomplete="off" id="money">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">预支日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="advanceTime" placeholder="请选择预支日期" lay-verify="required" class="layui-input" autocomplete="off" id="advanceTimeForm">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入备注内容" name="remark" id="remark" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="advanceSalary-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/html" id="advanceSalaryListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).ADVANCE_SALARY_INSERT)}" class="layui-btn layui-btn-sm" id="advanceSalary-add-btn" lay-event="advanceSalary-add-btn">
@@ -64,7 +103,5 @@
 
     /*]]>*/
 </script>
-
 <script data-main="/js/advanceSalary/advanceSalary.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>

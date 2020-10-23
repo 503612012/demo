@@ -17,7 +17,6 @@ import com.oven.framework.limitation.Limit;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -96,22 +95,13 @@ public class EmployeeController extends BaseController {
     }
 
     /**
-     * 去到添加员工页面
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
-    public String add() {
-        return "employee/add";
-    }
-
-    /**
      * 添加员工
      */
     @ResponseBody
-    @RequestMapping("/doAdd")
+    @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
     @Limit(key = AppConst.EMPLOYEE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doAdd(Employee employee) throws MyException {
+    public Object add(Employee employee) throws MyException {
         try {
             employeeService.add(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
@@ -121,30 +111,13 @@ public class EmployeeController extends BaseController {
     }
 
     /**
-     * 去到员工更新页面
-     *
-     * @param id 员工ID
-     */
-    @RequestMapping("/update")
-    @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
-    public String update(Integer id, Model model) throws MyException {
-        try {
-            Employee employee = employeeService.getById(id);
-            model.addAttribute("employee", employee);
-            return "/employee/update";
-        } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到员工更新页面异常", e);
-        }
-    }
-
-    /**
      * 修改员工
      */
     @ResponseBody
-    @RequestMapping("/doUpdate")
+    @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
     @Limit(key = AppConst.EMPLOYEE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doUpdate(Employee employee) throws MyException {
+    public Object update(Employee employee) throws MyException {
         try {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());

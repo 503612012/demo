@@ -1,5 +1,6 @@
 package com.oven.core.advanceSalary.service;
 
+import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
 import com.oven.core.advanceSalary.dao.AdvanceSalaryDao;
 import com.oven.core.advanceSalary.vo.AdvanceSalary;
@@ -122,7 +123,7 @@ public class AdvanceSalaryService extends BaseService {
                     if (dateType == 1) {
                         date = String.valueOf((Integer.parseInt(date) - 1));
                     } else if (dateType == 2) {
-                        date = DateTime.parse(date).plusMonths(-1).toString("yyyy-MM");
+                        date = DateTime.parse(date).plusMonths(-1).toString(AppConst.MONTH_PATTERN);
                     }
                     Double preAdvanceSalary = advanceSalaryDao.getAdvanceSalaryByDateAndDateType(date, dateType); // 上期薪资
                     thisAdvanceSalary = (thisAdvanceSalary == null ? 0d : thisAdvanceSalary);

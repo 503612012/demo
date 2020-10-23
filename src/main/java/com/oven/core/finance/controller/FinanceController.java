@@ -40,22 +40,13 @@ public class FinanceController extends BaseController {
     }
 
     /**
-     * 去到财务登记页面
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions(PermissionCode.FINANCE_INSERT)
-    public String add() {
-        return "finance/add";
-    }
-
-    /**
      * 财务登记
      */
     @ResponseBody
-    @RequestMapping("/doAdd")
+    @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.FINANCE_INSERT)
     @Limit(key = AppConst.FINANCE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doAdd(Finance finance) throws MyException {
+    public Object add(Finance finance) throws MyException {
         try {
             Finance financeInDb = financeService.getByWorksiteId(finance.getWorksiteId());
             if (financeInDb != null) {

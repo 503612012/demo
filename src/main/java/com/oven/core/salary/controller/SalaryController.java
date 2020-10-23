@@ -75,7 +75,7 @@ public class SalaryController extends BaseController {
             result.put("salaryIn", salaryIn);
             result.put("salaryOut", salaryOut);
             result.put("advanceSalary", advanceSalarys);
-            return result;
+            return super.success(result);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取薪资统计图表数据异常", e);
         }

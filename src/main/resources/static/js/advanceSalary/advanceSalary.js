@@ -14,6 +14,7 @@ requirejs.config({
 
 requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
+    var form = layui.form;
     var table = layui.table;
     var laydate = layui.laydate;
 
@@ -33,8 +34,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('advanceSalaryReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 employeeName: employeeName.val(),
                 advanceTime: advanceTime.val()
             }
@@ -42,22 +43,22 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     };
 
     table.render({
-        elem: '#advanceSalary-list'
-        , url: '/advanceSalary/getByPage/'
-        , toolbar: '#advanceSalaryListToolBar'
-        , id: 'advanceSalaryReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'employeeName', title: '员工名称', sort: true}
-            , {field: 'advanceTime', title: '预支时间', sort: true}
-            , {
+        elem: '#advanceSalary-list',
+        url: '/advanceSalary/getByPage/',
+        toolbar: '#advanceSalaryListToolBar',
+        id: 'advanceSalaryReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'employeeName', title: '员工名称', sort: true},
+            {field: 'advanceTime', title: '预支时间', sort: true},
+            {
                 field: 'money', title: '预支金额', templet: function(d) {
                     return '<span class="money" data-value="' + d.money + '" style="cursor: pointer;">***</span>';
                 }
-            }
-            , {field: 'createName', title: '录入人'}
-            , {
+            },
+            {field: 'createName', title: '录入人'},
+            {
                 field: 'remark', title: '备注', templet: function(d) {
                     if (d.remark == '' || d.remark == null) {
                         return '无';
@@ -65,8 +66,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return d.remark;
                     }
                 }
-            }
-            , {
+            },
+            {
                 field: 'hasRepay', title: '是否归还', sort: true, templet: function(d) {
                     if (d.hasRepay == 0) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked"><span>是</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -74,11 +75,11 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox"><span>否</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 80, align: 'center', toolbar: '#advanceSalaryListBar'}
-        ]]
-        , page: true
-        , done: function(res) {
+            },
+            {title: '操作', width: 80, align: 'center', toolbar: '#advanceSalaryListBar'}
+        ]],
+        page: true,
+        done: function(res) {
             if (hasPermission(hasShowAdvanceSalaryTotalMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
                 var totalAdvanceSalary = 0;
@@ -121,6 +122,25 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         reload();
     });
 
+    var openDialog = function(title) {
+        layer.open({
+            title: title,
+            id: "advanceSalaryDialog",
+            type: 1,
+            offset: '20px',
+            content: $('#advanceSalaryTips'),
+            area: [$(window).width() <= 750 ? '60%' : '500px', '450px'],
+            resize: false,
+            end: function() {
+                $("#advanceSalaryTips").css("display", 'none');
+            }
+        });
+    };
+
+    form.on('submit(advanceSalary-submit)', function(data) {
+        common.commitForm($(this), layer, '/advanceSalary/add', data.field, reload);
+    });
+
     // 监听工具条
     table.on('tool(advanceSalary-list)', function(obj) {
         var data = obj.data;
@@ -137,7 +157,20 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     // 头工具栏事件
     table.on('toolbar(advanceSalary-list)', function(obj) {
         if (obj.event == 'advanceSalary-add-btn') {
-            window.parent.mainFrm.location.href = "../../../../java/com/oven/core/advanceSalary/add";
+            // 初始化日期选择框
+            laydate.render({
+                elem: '#advanceTimeForm',
+                format: 'yyyy-MM-dd',
+                max: common.getNowFormatDate()
+            });
+
+            http.get('/employee/getAll', {}, function(data) {
+                common.initEmployeeSelectBox(data, $("#employeeSelect"), form);
+            });
+            $('#money').val('');
+            $('#remark').val('');
+            $('#advanceTimeForm').val('');
+            openDialog('录入预支薪资');
         }
     });
 

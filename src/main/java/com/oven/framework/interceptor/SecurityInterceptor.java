@@ -113,12 +113,15 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             user = (User) subject.getPrincipal();
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked")
-            Map<String, String> loginedMap = (Map<String, String>) application.getAttribute(AppConst.LOGINEDUSERS);
+            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap == null) {
                 loginedMap = new HashMap<>();
                 application.setAttribute(AppConst.LOGINEDUSERS, loginedMap);
             }
-            loginedMap.put(user.getUserName(), req.getSession().getId());
+            JSONObject obj = new JSONObject();
+            obj.put(AppConst.SESSION_ID, req.getSession().getId());
+            obj.put(AppConst.SESSION, req.getSession());
+            loginedMap.put(user.getUserName(), obj);
 
             req.getSession().setAttribute(AppConst.CURRENT_USER, user);
         }

@@ -29,7 +29,12 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
         value: common.getCurrentDate(1),
         type: 'year',
         format: 'yyyy',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#salaryDateMonth").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadCharts(value, 1);
             loadUpData(value, 1);
         },
@@ -42,7 +47,12 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
         value: common.getCurrentDate(2),
         type: 'month',
         format: 'yyyy-MM',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#salaryDateDay").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadCharts(value, 2);
             loadUpData(value, 2);
         },
@@ -134,7 +144,7 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
         myLine.resize();
 
         myLine.showLoading();
-        $.get('/salary/getSalaryData?date=' + date + '&dateType=' + dateType).done(function(data) {
+        http.get('/salary/getSalaryData?date=' + date + '&dateType=' + dateType, {}, function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
@@ -235,7 +245,12 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
                 value: common.getCurrentDate(1),
                 type: 'year',
                 format: 'yyyy',
-                done: function(value) {
+                showBottom: false,
+                change: function(value) {
+                    $("#salaryDateMonth").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
                     loadCharts(value, 1);
                     loadUpData(value, 1);
                 },
@@ -253,7 +268,12 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
                 value: common.getCurrentDate(2),
                 type: 'month',
                 format: 'yyyy-MM',
-                done: function(value) {
+                showBottom: false,
+                change: function(value) {
+                    $("#salaryDateDay").val(value);
+                    if ($(".layui-laydate").length) {
+                        $(".layui-laydate").remove();
+                    }
                     loadCharts(value, 2);
                     loadUpData(value, 2);
                 },

@@ -93,44 +93,18 @@ public class FundController extends BaseController {
     }
 
     /**
-     * 去到添加基金页面
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions(PermissionCode.FUND_INSERT)
-    public String add() {
-        return "fund/add";
-    }
-
-    /**
      * 添加基金
      */
     @ResponseBody
-    @RequestMapping("/doAdd")
+    @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.FUND_INSERT)
     @Limit(key = AppConst.FUND_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doAdd(Fund fund) throws MyException {
+    public Object add(Fund fund) throws MyException {
         try {
             fundService.add(fund);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加基金异常", e);
-        }
-    }
-
-    /**
-     * 去到基金更新页面
-     *
-     * @param id 基金ID
-     */
-    @RequestMapping("/update")
-    @RequiresPermissions(PermissionCode.FUND_UPDATE)
-    public String update(Integer id, Model model) throws MyException {
-        try {
-            Fund fund = fundService.getById(id);
-            model.addAttribute("fund", fund);
-            return "/fund/update";
-        } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到基金更新页面异常", e);
         }
     }
 
@@ -167,10 +141,10 @@ public class FundController extends BaseController {
      * 修改基金
      */
     @ResponseBody
-    @RequestMapping("/doUpdate")
+    @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.FUND_UPDATE)
     @Limit(key = AppConst.FUND_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doUpdate(Fund fund) throws MyException {
+    public Object update(Fund fund) throws MyException {
         try {
             fundService.update(fund);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());

@@ -14,6 +14,7 @@ requirejs.config({
 
 requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
+    var form = layui.form;
     var table = layui.table;
 
     /**
@@ -25,27 +26,27 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('roleReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 roleName: roleNameReload.val()
             }
         });
     };
 
     table.render({
-        elem: '#role-list'
-        , url: '/role/getByPage/'
-        , toolbar: '#roleListToolBar'
-        , id: 'roleReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'roleName', title: '角色名', sort: true}
-            , {field: 'createTime', title: '创建时间'}
-            , {field: 'createName', title: '创建人'}
-            , {field: 'lastModifyTime', title: '最后修改时间'}
-            , {field: 'lastModifyName', title: '最后修改人'}
-            , {
+        elem: '#role-list',
+        url: '/role/getByPage/',
+        toolbar: '#roleListToolBar',
+        id: 'roleReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'roleName', title: '角色名', sort: true},
+            {field: 'createTime', title: '创建时间'},
+            {field: 'createName', title: '创建人'},
+            {field: 'lastModifyTime', title: '最后修改时间'},
+            {field: 'lastModifyName', title: '最后修改人'},
+            {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked role-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -53,10 +54,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox role-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 200, align: 'center', toolbar: '#roleListBar'}
-        ]]
-        , page: true
+            },
+            {title: '操作', width: 200, align: 'center', toolbar: '#roleListBar'}
+        ]],
+        page: true
     });
 
     /**
@@ -114,6 +115,31 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         }
     });
 
+    var openDialog = function(title) {
+        layer.open({
+            title: title,
+            id: "roleDialog",
+            type: 1,
+            offset: '20px',
+            content: $('#roleTips'),
+            area: [$(window).width() <= 750 ? '60%' : '500px', '200px'],
+            resize: false,
+            end: function() {
+                $("#roleTips").css("display", 'none');
+            }
+        });
+    };
+
+    form.on('submit(role-submit)', function(data) {
+        var url;
+        if (data.field.id != null && data.field.id != '' && data.field.id != undefined) { // 修改
+            url = '/role/update';
+        } else { // 添加
+            url = '/role/add';
+        }
+        common.commitForm($(this), layer, url, data.field, reload);
+    });
+
     // 监听工具条
     table.on('tool(role-list)', function(obj) {
         var data = obj.data;
@@ -127,14 +153,20 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 });
             });
         } else if (obj.event == 'edit') {
-            window.parent.mainFrm.location.href = "/role/update?id=" + data.id;
+            http.get('/role/getById', {id: data.id}, function(result) {
+                $('#roleId').val(result.id);
+                $('#roleName').val(result.roleName);
+                openDialog('修改角色');
+            });
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(role-list)', function(obj) {
         if (obj.event == 'role-add-btn') {
-            window.parent.mainFrm.location.href = "/role/add";
+            $('#roleId').val('');
+            $('#roleName').val('');
+            openDialog('添加角色');
         }
     });
 

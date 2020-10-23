@@ -28,6 +28,25 @@
     </div>
 </div>
 
+</body>
+<div id="fundTips" class="hide">
+    <form lay-filter="fund-from" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">基金名称：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" id="fundId">
+                <input type="text" lay-verify="required" class="layui-input" name="fundName" autocomplete="off" id="fundName" placeholder="请输入基金名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="fund-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/html" id="fundListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUND_INSERT)}" class="layui-btn layui-btn-sm" id="fund-add-btn" lay-event="fund-add-btn">
@@ -59,5 +78,4 @@
 </script>
 
 <script data-main="/js/fund/fund.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>

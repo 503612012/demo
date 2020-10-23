@@ -64,22 +64,13 @@ public class AdvanceSalaryController extends BaseController {
     }
 
     /**
-     * 去到添加预支薪资页面
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions(PermissionCode.ADVANCE_SALARY_INSERT)
-    public String add() {
-        return "advanceSalary/add";
-    }
-
-    /**
      * 添加预支薪资
      */
     @ResponseBody
-    @RequestMapping("/doAdd")
+    @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.ADVANCE_SALARY_INSERT)
     @Limit(key = AppConst.ADVANCESALARY_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doAdd(AdvanceSalary advanceSalary) throws MyException {
+    public Object add(AdvanceSalary advanceSalary) throws MyException {
         try {
             advanceSalaryService.add(advanceSalary);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());

@@ -34,6 +34,61 @@
     </div>
 </div>
 
+</body>
+<div id="employeeTips" class="hide">
+    <form lay-filter="employee-from" id="employeeForm" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">员工姓名</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" id="employeeId">
+                <input type="text" name="name" lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-block">
+                <input type="number" name="age" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block">
+                <input type="tel" name="contact" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input layui-form-danger">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="gender" value="1" title="男">
+                <input type="radio" name="gender" value="0" title="女">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">时薪</label>
+            <div class="layui-input-block">
+                <input type="number" name="hourSalary" placeholder="￥" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">住址</label>
+            <div class="layui-input-block">
+                <textarea name="address" placeholder="请输入住址" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="employee-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/html" id="employeeListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).EMPLOYEE_INSERT)}" class="layui-btn layui-btn-sm" id="employee-add-btn" lay-event="employee-add-btn">
@@ -65,5 +120,4 @@
 </script>
 
 <script data-main="/js/employee/employee.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>

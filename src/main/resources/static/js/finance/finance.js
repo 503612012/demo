@@ -14,6 +14,7 @@ requirejs.config({
 
 requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
+    var form = layui.form;
     var table = layui.table;
 
     /**
@@ -25,35 +26,35 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('financeReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 worksiteName: worksiteName.val()
             }
         });
     };
 
     table.render({
-        elem: '#finance-list'
-        , url: '/finance/getByPage/'
-        , toolbar: '#financeListToolBar'
-        , id: 'financeReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'worksiteName', title: '工地名称', sort: true}
-            , {
+        elem: '#finance-list',
+        url: '/finance/getByPage/',
+        toolbar: '#financeListToolBar',
+        id: 'financeReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'worksiteName', title: '工地名称', sort: true},
+            {
                 field: 'money', title: '登记金额', templet: function(d) {
                     return '<span class="money" data-value="' + d.money + '" style="cursor: pointer;">***</span>';
                 }
-            }
-            , {
+            },
+            {
                 field: 'outMoney', title: '已支出金额', templet: function(d) {
                     return '<span class="outMoney" data-value="' + d.outMoney + '" style="cursor: pointer;">***</span>';
                 }
-            }
-            , {field: 'createName', title: '登记人'}
-            , {field: 'createTime', title: '登记日期'}
-            , {
+            },
+            {field: 'createName', title: '登记人'},
+            {field: 'createTime', title: '登记日期'},
+            {
                 field: 'remark', title: '备注', templet: function(d) {
                     if (d.remark == '' || d.remark == null) {
                         return '无';
@@ -61,8 +62,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return d.remark;
                     }
                 }
-            }
-            , {
+            },
+            {
                 field: 'finishFlag', title: '是否完结', sort: true, templet: function(d) {
                     if (d.finishFlag == 0) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked"><span>是</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -70,11 +71,11 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox"><span>否</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 80, align: 'center', toolbar: '#financeListBar'}
-        ]]
-        , page: true
-        , done: function(res) {
+            },
+            {title: '操作', width: 80, align: 'center', toolbar: '#financeListBar'}
+        ]],
+        page: true,
+        done: function(res) {
             var html = "<div style='margin-left: 20px; font-weight: bold; color: red;'>本页";
             if (hasPermission(hasShowFinanceTotalInMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
@@ -144,6 +145,25 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         reload();
     });
 
+    var openDialog = function(title) {
+        layer.open({
+            title: title,
+            id: "financeDialog",
+            type: 1,
+            offset: '20px',
+            content: $('#financeTips'),
+            area: [$(window).width() <= 750 ? '60%' : '500px', '400px'],
+            resize: false,
+            end: function() {
+                $("#financeTips").css("display", 'none');
+            }
+        });
+    };
+
+    form.on('submit(finance-submit)', function(data) {
+        common.commitForm($(this), layer, '/finance/add', data.field, reload);
+    });
+
     // 监听工具条
     table.on('tool(finance-list)', function(obj) {
         var data = obj.data;
@@ -160,7 +180,12 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     // 头工具栏事件
     table.on('toolbar(finance-list)', function(obj) {
         if (obj.event == 'finance-add-btn') {
-            window.parent.mainFrm.location.href = "/finance/add";
+            http.get('/worksite/getAll', {}, function(data) {
+                common.initWorksiteSelectBox(data, $("#worksiteSelect"), form);
+            });
+            $('#money').val('');
+            $('#remark').val('');
+            openDialog('财务登记');
         }
     });
 

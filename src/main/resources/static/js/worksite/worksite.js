@@ -14,6 +14,7 @@ requirejs.config({
 
 requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
+    var form = layui.form;
     var table = layui.table;
 
     /**
@@ -25,23 +26,23 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('worksiteReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 name: worksiteNameReload.val()
             }
         });
     };
 
     table.render({
-        elem: '#worksite-list'
-        , url: '/worksite/getByPage/'
-        , toolbar: '#worksiteListToolBar'
-        , id: 'worksiteReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'name', title: '工地名称', sort: true}
-            , {
+        elem: '#worksite-list',
+        url: '/worksite/getByPage/',
+        toolbar: '#worksiteListToolBar',
+        id: 'worksiteReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'name', title: '工地名称', sort: true},
+            {
                 field: 'desc', title: '工地描述', templet: function(d) {
                     if (d.desc == '' || d.desc == null) {
                         return '-';
@@ -49,12 +50,12 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return d.desc;
                     }
                 }
-            }
-            , {field: 'createTime', title: '创建时间'}
-            , {field: 'createName', title: '创建人'}
-            , {field: 'lastModifyTime', title: '最后修改时间'}
-            , {field: 'lastModifyName', title: '最后修改人'}
-            , {
+            },
+            {field: 'createTime', title: '创建时间'},
+            {field: 'createName', title: '创建人'},
+            {field: 'lastModifyTime', title: '最后修改时间'},
+            {field: 'lastModifyName', title: '最后修改人'},
+            {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked worksite-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -62,10 +63,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox worksite-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 120, align: 'center', toolbar: '#worksiteListBar'}
-        ]]
-        , page: true
+            },
+            {title: '操作', width: 120, align: 'center', toolbar: '#worksiteListBar'}
+        ]],
+        page: true
     });
 
     /**
@@ -123,6 +124,31 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         }
     });
 
+    var openDialog = function(title) {
+        layer.open({
+            title: title,
+            id: "worksiteDialog",
+            type: 1,
+            offset: '20px',
+            content: $('#worksiteTips'),
+            area: [$(window).width() <= 750 ? '60%' : '500px', '300px'],
+            resize: false,
+            end: function() {
+                $("#worksiteTips").css("display", 'none');
+            }
+        });
+    };
+
+    form.on('submit(worksite-submit)', function(data) {
+        var url;
+        if (data.field.id != null && data.field.id != '' && data.field.id != undefined) { // 修改
+            url = '/worksite/update';
+        } else { // 添加
+            url = '/worksite/add';
+        }
+        common.commitForm($(this), layer, url, data.field, reload);
+    });
+
     // 监听工具条
     table.on('tool(worksite-list)', function(obj) {
         var data = obj.data;
@@ -134,14 +160,24 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 });
             });
         } else if (obj.event == 'edit') {
-            window.parent.mainFrm.location.href = "/worksite/update?id=" + data.id;
+            http.get('/worksite/getById', {id: data.id}, function(result) {
+                $('#worksiteId').val(result.id);
+                $('#name').val(result.name);
+                $('#desc').val(result.desc);
+                openDialog('修改工地');
+            });
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(worksite-list)', function(obj) {
         if (obj.event == 'worksite-add-btn') {
-            window.parent.mainFrm.location.href = "/worksite/add";
+            if (obj.event == 'worksite-add-btn') {
+                $('#worksiteId').val('');
+                $('#name').val('');
+                $('#desc').val('');
+                openDialog('添加工地');
+            }
         }
     });
 

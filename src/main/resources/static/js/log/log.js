@@ -27,8 +27,8 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
         table.reload('logReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 title: titleReload.val(),
                 content: contentReload.val(),
                 operatorId: logSearchSelect.val()
@@ -37,20 +37,20 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
     };
 
     table.render({
-        elem: '#log-list'
-        , url: '/log/getByPage/'
-        , toolbar: '#logListToolBar'
-        , id: 'logReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'title', title: '标题', sort: true}
-            , {field: 'content', title: '内容'}
-            , {field: 'operatorName', title: '操作人', sort: true}
-            , {field: 'operatorTime', title: '操作时间', sort: true}
-            , {field: 'operatorIp', title: '操作IP'}
-        ]]
-        , page: true
+        elem: '#log-list',
+        url: '/log/getByPage/',
+        toolbar: '#logListToolBar',
+        id: 'logReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'title', title: '标题', sort: true},
+            {field: 'content', title: '内容'},
+            {field: 'operatorName', title: '操作人', sort: true},
+            {field: 'operatorTime', title: '操作时间', sort: true},
+            {field: 'operatorIp', title: '操作IP'}
+        ]],
+        page: true
     });
 
     /**

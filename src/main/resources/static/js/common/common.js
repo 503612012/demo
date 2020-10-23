@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(['jquery', 'http'], function($, http) {
 
     /**
      * 获取当前日期
@@ -149,11 +149,28 @@ define(['jquery'], function($) {
         }
     }
 
+    /**
+     * 提交表单
+     */
+    function commitForm(submitBtn, layer, url, data, callback) {
+        if (!submitBtn.hasClass('layui-btn-disabled')) {
+            submitBtn.addClass('layui-btn-disabled'); // 禁用提交按钮
+            http.post(url, data, function() {
+                submitBtn.removeClass('layui-btn-disabled'); // 释放提交按钮
+                layer.closeAll();
+                callback();
+            }, function() {
+                submitBtn.removeClass('layui-btn-disabled'); // 释放提交按钮
+            });
+        }
+    }
+
     return {
         getCurrentDate: getCurrentDate,
         getNowFormatDate: getNowFormatDate,
         cacheMousedown: cacheMousedown,
         showOrHide: showOrHide,
+        commitForm: commitForm,
         disabledDate: disabledDate,
         numberFormat: numberFormat,
         initEmployeeSelectBox: initEmployeeSelectBox,

@@ -1,5 +1,6 @@
 package com.oven.core.workhour.controller;
 
+import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.core.base.controller.BaseController;
@@ -58,9 +59,9 @@ public class WorkhourReportController extends BaseController {
                     Double workhour = workhourService.getWorkhourByDateAndDateType(category, dateType, employeeId);
                     workhours.add(workhour == null ? 0d : workhour);
                     if (dateType == 1) { // 年月
-                        preCategories.add(DateTime.parse(category).plusYears(-1).toString("yyyy-MM"));
+                        preCategories.add(DateTime.parse(category).plusYears(-1).toString(AppConst.MONTH_PATTERN));
                     } else if (dateType == 2) { // 年月日
-                        preCategories.add(DateTime.parse(category).plusMonths(-1).toString("yyyy-MM-dd"));
+                        preCategories.add(DateTime.parse(category).plusMonths(-1).toString(AppConst.DATE_PATTERN));
                     }
                 }
             }
@@ -73,7 +74,7 @@ public class WorkhourReportController extends BaseController {
             result.put("categories", categories);
             result.put("workhours", workhours);
             result.put("preWorkhours", preWorkhours);
-            return result;
+            return super.success(result);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取工时报表数据异常", e);
         }

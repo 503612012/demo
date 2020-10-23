@@ -40,6 +40,7 @@
     </div>
 </div>
 
+</body>
 <script type="text/html" id="userListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).USER_INSERT)}" class="layui-btn layui-btn-sm" id="user-add-btn" lay-event="user-add-btn">
@@ -71,5 +72,4 @@
     /*]]>*/
 </script>
 <script data-main="/js/user/user.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>

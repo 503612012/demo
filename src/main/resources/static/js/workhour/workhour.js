@@ -34,8 +34,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('workhourReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 employeeName: employeeName.val(),
                 worksiteName: worksiteName.val(),
                 workDate: workDate.val()
@@ -44,25 +44,25 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     };
 
     table.render({
-        elem: '#workhour-list'
-        , url: '/workhour/getByPage/'
-        , toolbar: '#workhourListToolBar'
-        , id: 'workhourReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'employeeName', title: '员工名称', sort: true}
-            , {field: 'worksiteName', title: '工地名称'}
-            , {field: 'workDate', title: '工时日期', sort: true}
-            , {field: 'workhour', title: '录入工时'}
-            , {
+        elem: '#workhour-list',
+        url: '/workhour/getByPage/',
+        toolbar: '#workhourListToolBar',
+        id: 'workhourReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'employeeName', title: '员工名称', sort: true},
+            {field: 'worksiteName', title: '工地名称'},
+            {field: 'workDate', title: '工时日期', sort: true},
+            {field: 'workhour', title: '录入工时'},
+            {
                 field: 'hourSalary', title: '当日时薪', templet: function(d) {
                     return '<span class="hourSalary" data-value="' + d.hourSalary + '" style="cursor: pointer;">***</span>';
                 }
-            }
-            , {field: 'createName', title: '录入人'}
-            , {field: 'createTime', title: '录入时间', sort: true}
-            , {
+            },
+            {field: 'createName', title: '录入人'},
+            {field: 'createTime', title: '录入时间', sort: true},
+            {
                 field: 'remark', title: '备注', templet: function(d) {
                     if (d.remark == '' || d.remark == null) {
                         return '无';
@@ -70,8 +70,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return d.remark;
                     }
                 }
-            }
-            , {
+            },
+            {
                 field: 'hasPay', title: '是否发放', sort: true, templet: function(d) {
                     if (d.hasPay == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked"><span>是</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -79,11 +79,11 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox"><span>否</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 80, align: 'center', toolbar: '#workhourListBar'}
-        ]]
-        , page: true
-        , done: function(res) {
+            },
+            {title: '操作', width: 80, align: 'center', toolbar: '#workhourListBar'}
+        ]],
+        page: true,
+        done: function(res) {
             if (hasPermission(hasShowWorkhourMoneyPermission)) {
                 $('#layui-table-page1').css("display", "flex");
                 var totalWorkhour = 0;

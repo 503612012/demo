@@ -17,7 +17,6 @@ import com.oven.framework.limitation.Limit;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -80,22 +79,13 @@ public class WorksiteController extends BaseController {
     }
 
     /**
-     * 去到添加工地页面
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions(PermissionCode.WORKSITE_INSERT)
-    public String add() {
-        return "worksite/add";
-    }
-
-    /**
      * 添加工地
      */
     @ResponseBody
-    @RequestMapping("/doAdd")
+    @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.WORKSITE_INSERT)
     @Limit(key = AppConst.WORKSITE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doAdd(Worksite worksite) throws MyException {
+    public Object add(Worksite worksite) throws MyException {
         try {
             worksiteService.add(worksite);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
@@ -105,30 +95,13 @@ public class WorksiteController extends BaseController {
     }
 
     /**
-     * 去到工地更新页面
-     *
-     * @param id 工地ID
-     */
-    @RequestMapping("/update")
-    @RequiresPermissions(PermissionCode.WORKSITE_UPDATE)
-    public String update(Integer id, Model model) throws MyException {
-        try {
-            Worksite worksite = worksiteService.getById(id);
-            model.addAttribute("worksite", worksite);
-            return "/worksite/update";
-        } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到工地更新页面异常", e);
-        }
-    }
-
-    /**
      * 修改工地
      */
     @ResponseBody
-    @RequestMapping("/doUpdate")
+    @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.WORKSITE_UPDATE)
     @Limit(key = AppConst.WORKSITE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object doUpdate(Worksite worksite) throws MyException {
+    public Object update(Worksite worksite) throws MyException {
         try {
             worksiteService.update(worksite);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
@@ -197,6 +170,23 @@ public class WorksiteController extends BaseController {
             return super.success(worksiteService.getAll());
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有工地异常", e);
+        }
+    }
+
+
+    /**
+     * 通过ID获取工地
+     *
+     * @param id 工地ID
+     */
+    @ResponseBody
+    @RequestMapping("/getById")
+    @RequiresPermissions(PermissionCode.WORKSITE_MANAGER)
+    public Object getById(Integer id) throws MyException {
+        try {
+            return super.success(worksiteService.getById(id));
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取工地异常", e);
         }
     }
 

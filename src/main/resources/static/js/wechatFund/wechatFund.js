@@ -29,7 +29,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         value: new Date(),
         type: 'month',
         format: 'yyyy-MM',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#wechatFundDateMonth").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadCharts(value);
         },
         max: common.getNowFormatDate()
@@ -41,7 +46,12 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         value: new Date(),
         type: 'month',
         format: 'yyyy-MM',
-        done: function(value) {
+        showBottom: false,
+        change: function(value) {
+            $("#totalWechatFundDateMonth").val(value);
+            if ($(".layui-laydate").length) {
+                $(".layui-laydate").remove();
+            }
             loadTotalCharts(value);
         },
         max: common.getNowFormatDate()
@@ -52,6 +62,7 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         laydate.render({
             elem: '#dataDate',
             value: new Date(),
+            showBottom: false,
             ready: function(value) {
                 common.disabledDate(value, '7,1')
             },
@@ -61,6 +72,7 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
             trigger: 'click',
             format: 'yyyy-MM-dd'
         });
+        $('#money').val('');
 
         layer.open({
             title: '录入收益',
@@ -75,18 +87,14 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         });
     });
 
+    var reload = function() {
+        loadCharts($('#wechatFundDateMonth').val());
+        loadTotalCharts($('#totalWechatFundDateMonth').val());
+    };
+
     // 监听提交
     form.on('submit(input-wechat-fund-submit)', function(data) {
-        var that = $(this);
-        if (!that.hasClass('layui-btn-disabled')) {
-            that.addClass('layui-btn-disabled'); // 禁用提交按钮
-            http.post('/wechatFund/doAdd', data.field, function() {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-                window.parent.mainFrm.location.href = "/wechatFund/index";
-            }, function() {
-                that.removeClass('layui-btn-disabled'); // 释放提交按钮
-            });
-        }
+        common.commitForm($(this), layer, '/wechatFund/doAdd', data.field, reload);
         return false;
     });
 
@@ -140,18 +148,18 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         myLine.resize();
 
         myLine.showLoading();
-        $.get('/wechatFund/getChartsData?date=' + date).done(function(data) {
+        http.get('/wechatFund/getChartsData?date=' + date, {}, function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
                 xAxis: [
                     {
-                        data: data.data.categories
+                        data: data.categories
                     }
                 ],
                 series: [
                     {
-                        data: data.data.data
+                        data: data.data
                     }
                 ]
             });
@@ -209,18 +217,18 @@ requirejs(['jquery', 'echarts', 'layui', 'http', 'common'], function($, echarts,
         myLine.resize();
 
         myLine.showLoading();
-        $.get('/wechatFund/getTotalChartsData?date=' + date).done(function(data) {
+        http.get('/wechatFund/getTotalChartsData?date=' + date, {}, function(data) {
             myLine.hideLoading();
             // 填入数据
             myLine.setOption({
                 xAxis: [
                     {
-                        data: data.data.categories
+                        data: data.categories
                     }
                 ],
                 series: [
                     {
-                        data: data.data.data
+                        data: data.data
                     }
                 ]
             });

@@ -200,7 +200,7 @@ public class WorkhourService extends BaseService {
                     if (dateType == 1) {
                         date = String.valueOf((Integer.parseInt(date) - 1));
                     } else if (dateType == 2) {
-                        date = DateTime.parse(date).plusMonths(-1).toString("yyyy-MM");
+                        date = DateTime.parse(date).plusMonths(-1).toString(AppConst.MONTH_PATTERN);
                     }
                     Double preSalary = workhourDao.getSalaryByDateAndDateType(date, dateType, dataType); // 上期薪资
                     thisSalary = (thisSalary == null ? 0d : thisSalary);

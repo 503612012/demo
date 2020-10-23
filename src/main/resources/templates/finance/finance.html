@@ -29,6 +29,38 @@
     </div>
 </div>
 
+</body>
+<div id="financeTips" class="hide">
+    <form lay-filter="finance-from" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">工地名称：</label>
+            <div class="layui-input-block">
+                <select name="worksiteId" lay-verify="required" lay-filter="worksiteSelect" id="worksiteSelect"></select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">登记金额</label>
+            <div class="layui-input-block">
+                <input type="number" lay-verify="required" class="layui-input" name="money" autocomplete="off" id="money">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入备注内容" name="remark" id="remark" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="finance-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/html" id="financeListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FINANCE_INSERT)}" class="layui-btn layui-btn-sm" id="finance-add-btn" lay-event="finance-add-btn">
@@ -62,5 +94,4 @@
 </script>
 
 <script data-main="/js/finance/finance.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>

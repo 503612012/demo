@@ -27,6 +27,8 @@ public interface AppConst {
     String SHIRO_CACHE_KEY_PROFIX = "demo_";
 
     String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    String DATE_PATTERN = "yyyy-MM-dd";
+    String MONTH_PATTERN = "yyyy-MM";
 
     String CAPTCHA = "_captcha";
     String PERCENTAGE_MARK = "\\\\%";
@@ -41,7 +43,7 @@ public interface AppConst {
 
     String DELETE_LIMIT = "删除操作太快，请稍后重试！";
 
-    int LIMIT_TIME = 5;
+    int LIMIT_TIME = 2;
 
     String EMPLOYEE_INSERT_LIMIT_KEY = "employee.insert.limit.key";
     String EMPLOYEE_UPDATE_LIMIT_KEY = "employee.update.limit.key";

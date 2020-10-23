@@ -14,6 +14,7 @@ requirejs.config({
 
 requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
+    var form = layui.form;
     var table = layui.table;
 
     /**
@@ -26,8 +27,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         table.reload('employeeReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
-            }
-            , where: {
+            },
+            where: {
                 name: nameReload.val(),
                 contact: contactReload.val()
             }
@@ -35,32 +36,32 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     };
 
     table.render({
-        elem: '#employee-list'
-        , url: '/employee/getByPage/'
-        , toolbar: '#employeeListToolBar'
-        , id: 'employeeReload'
-        , even: true
-        , cols: [[
-            {type: 'numbers'}
-            , {field: 'name', title: '员工姓名', sort: true}
-            , {field: 'age', title: '年龄', sort: true}
-            , {field: 'contact', title: '手机号'}
-            , {
+        elem: '#employee-list',
+        url: '/employee/getByPage/',
+        toolbar: '#employeeListToolBar',
+        id: 'employeeReload',
+        even: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'name', title: '员工姓名', sort: true},
+            {field: 'age', title: '年龄', sort: true},
+            {field: 'contact', title: '手机号'},
+            {
                 field: 'gender', title: '性别', templet: function(d) {
                     return d.gender == 1 ? '男' : '<span style="color: #F581B1;">女</span>';
                 }
-            }
-            , {
+            },
+            {
                 field: 'hourSalary', title: '时薪', templet: function(d) {
                     return '<span class="hourSalary" data-value="' + d.hourSalary + '" style="cursor: pointer;">***</span>';
                 }
-            }
-            , {field: 'address', title: '住址'}
-            , {field: 'createTime', title: '创建时间'}
-            , {field: 'createName', title: '创建人'}
-            , {field: 'lastModifyTime', title: '最后修改时间'}
-            , {field: 'lastModifyName', title: '最后修改人'}
-            , {
+            },
+            {field: 'address', title: '住址'},
+            {field: 'createTime', title: '创建时间'},
+            {field: 'createName', title: '创建人'},
+            {field: 'lastModifyTime', title: '最后修改时间'},
+            {field: 'lastModifyName', title: '最后修改人'},
+            {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked employee-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
@@ -68,10 +69,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         return '<div><div class="layui-unselect layui-form-checkbox employee-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     }
                 }
-            }
-            , {title: '操作', width: 120, align: 'center', toolbar: '#employeeListBar'}
-        ]]
-        , page: true
+            },
+            {title: '操作', width: 120, align: 'center', toolbar: '#employeeListBar'}
+        ]],
+        page: true
     });
 
     /**
@@ -137,6 +138,31 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         common.showOrHide($(this), hasShowEmployeeMoneyStatusPermission);
     });
 
+    var openDialog = function(title) {
+        layer.open({
+            title: title,
+            id: "employeeDialog",
+            type: 1,
+            offset: '20px',
+            content: $('#employeeTips'),
+            area: [$(window).width() <= 750 ? '60%' : '500px', '500px'],
+            resize: false,
+            end: function() {
+                $("#employeeTips").css("display", 'none');
+            }
+        });
+    };
+
+    form.on('submit(employee-submit)', function(data) {
+        var url;
+        if (data.field.id != null && data.field.id != '' && data.field.id != undefined) { // 修改
+            url = '/employee/update';
+        } else { // 添加
+            url = '/employee/add';
+        }
+        common.commitForm($(this), layer, url, data.field, reload);
+    });
+
     // 监听工具条
     table.on('tool(employee-list)', function(obj) {
         var data = obj.data;
@@ -148,14 +174,29 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 });
             });
         } else if (obj.event == 'edit') {
-            window.parent.mainFrm.location.href = "/employee/update?id=" + data.id;
+            http.get('/employee/getById', {id: data.id}, function(result) {
+                form.val("employee-from", {
+                    "id": result.id,
+                    "name": result.name,
+                    "age": result.age,
+                    "gender": result.gender,
+                    "address": result.address,
+                    "hourSalary": result.hourSalary,
+                    "contact": result.contact
+                });
+                openDialog('修改员工');
+            });
         }
     });
 
     // 头工具栏事件
     table.on('toolbar(employee-list)', function(obj) {
         if (obj.event == 'employee-add-btn') {
-            window.parent.mainFrm.location.href = "/employee/add";
+            if (obj.event == 'employee-add-btn') {
+                $('#employeeForm')[0].reset();
+                layui.form.render();
+                openDialog('添加员工');
+            }
         }
     });
 

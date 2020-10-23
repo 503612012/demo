@@ -26,19 +26,19 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         var employeeId = $('#employeeSelect').val();
         var worksiteId = $('#worksiteSelect').val();
         table.render({
-            elem: '#pay-list'
-            , url: '/pay/getWorkhourData/'
-            , id: 'payReload'
-            , even: true
-            , cols: [[
-                {type: 'checkbox'}
-                , {field: 'employeeName', title: '员工名称'}
-                , {field: 'worksiteName', title: '工地名称'}
-                , {field: 'workDate', title: '工时日期'}
-                , {field: 'workhour', title: '录入工时'}
-                , {field: 'hourSalary', title: '当日时薪'}
-                , {field: 'createName', title: '录入人'}
-                , {
+            elem: '#pay-list',
+            url: '/pay/getWorkhourData/',
+            id: 'payReload',
+            even: true,
+            cols: [[
+                {type: 'checkbox'},
+                {field: 'employeeName', title: '员工名称'},
+                {field: 'worksiteName', title: '工地名称'},
+                {field: 'workDate', title: '工时日期'},
+                {field: 'workhour', title: '录入工时'},
+                {field: 'hourSalary', title: '当日时薪'},
+                {field: 'createName', title: '录入人'},
+                {
                     field: 'remark', title: '备注', templet: function(d) {
                         if (d.remark == '' || d.remark == null) {
                             return '无';
@@ -47,11 +47,11 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         }
                     }
                 }
-            ]]
-            , page: {
+            ]],
+            page: {
                 layout: []
-            }
-            , where: {
+            },
+            where: {
                 employeeId: employeeId,
                 worksiteId: worksiteId
             },
@@ -133,29 +133,11 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             }
         }
         var advanceSalary;
-        $.ajax({
-            url: '/advanceSalary/getTotalAdvanceSalaryByEmployeeId',
-            type: 'POST',
-            data: {
-                "employeeId": list[0].employeeId
-            },
-            async: false,
-            dataType: 'json',
-            success: function(result) {
-                if (result.code != 200) {
-                    layer.open({
-                        title: '系统提示',
-                        anim: 6,
-                        content: result.data,
-                        btnAlign: 'c'
-                    });
-                    $("#payNoticeText").html('');
-                    $("#payRemarkBox").addClass("hide");
-                    $("#payRemarkBox").css("display", "none");
-                    return;
-                }
-                advanceSalary = result.data;
-            }
+        http.getAsync('/advanceSalary/getTotalAdvanceSalaryByEmployeeId', {"employeeId": list[0].employeeId}, function(result) {
+            $("#payNoticeText").html('');
+            $("#payRemarkBox").addClass("hide");
+            $("#payRemarkBox").css("display", "none");
+            advanceSalary = result;
         });
         var notice;
         if (advanceSalary) {

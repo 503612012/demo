@@ -28,6 +28,25 @@
     </div>
 </div>
 
+</body>
+<div id="roleTips" class="hide">
+    <form lay-filter="role-from" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名称：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" id="roleId">
+                <input type="text" lay-verify="required" class="layui-input" name="roleName" autocomplete="off" id="roleName" placeholder="请输入角色名">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="role-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/html" id="roleListToolBar">
     <div class="layui-btn-container">
         <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).ROLE_INSERT)}" class="layui-btn layui-btn-sm" id="role-add-btn" lay-event="role-add-btn">
@@ -58,5 +77,4 @@
     /*]]>*/
 </script>
 <script data-main="/js/role/role.js" th:src="@{/js/lib/require.js}"></script>
-</body>
 </html>
