@@ -24,38 +24,46 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
     }
 
     // 初始化日期选择框
-    laydate.render({
-        elem: '#workhourReportDateMonth',
-        value: common.getCurrentDate(1),
-        type: 'year',
-        format: 'yyyy',
-        showBottom: false,
-        change: function(value) {
-            $("#workhourReportDateMonth").val(value);
-            if ($(".layui-laydate").length) {
-                $(".layui-laydate").remove();
-            }
-            loadCharts(value, 1, $("#employeeSelect").val());
-        },
-        max: common.getNowFormatDate()
-    });
+    var initMonthDate = function() {
+        laydate.render({
+            elem: '#workhourReportDateMonth',
+            value: common.getCurrentDate(1),
+            type: 'year',
+            format: 'yyyy',
+            showBottom: false,
+            change: function(value) {
+                $("#workhourReportDateMonth").val(value);
+                if ($(".layui-laydate").length) {
+                    $(".layui-laydate").remove();
+                }
+                loadCharts(value, 1, $("#employeeSelect").val());
+            },
+            max: common.getNowFormatDate()
+        });
+    };
+
+    initMonthDate();
 
     // 初始化日期选择框
-    laydate.render({
-        elem: '#workhourReportDateDay',
-        value: common.getCurrentDate(2),
-        type: 'month',
-        format: 'yyyy-MM',
-        showBottom: false,
-        change: function(value) {
-            $("#workhourReportDateDay").val(value);
-            if ($(".layui-laydate").length) {
-                $(".layui-laydate").remove();
-            }
-            loadCharts(value, 2, $("#employeeSelect").val());
-        },
-        max: common.getNowFormatDate()
-    });
+    var initDayDate = function() {
+        laydate.render({
+            elem: '#workhourReportDateDay',
+            value: common.getCurrentDate(2),
+            type: 'month',
+            format: 'yyyy-MM',
+            showBottom: false,
+            change: function(value) {
+                $("#workhourReportDateDay").val(value);
+                if ($(".layui-laydate").length) {
+                    $(".layui-laydate").remove();
+                }
+                loadCharts(value, 2, $("#employeeSelect").val());
+            },
+            max: common.getNowFormatDate()
+        });
+    };
+
+    initDayDate();
 
     /**
      * 加载图表
@@ -164,42 +172,14 @@ requirejs(['jquery', 'layui', 'echarts', 'http', 'common'], function($, layui, e
             loadCharts(common.getCurrentDate(1), dateType, employeeId);
 
             // 初始化日期选择框
-            laydate.render({
-                elem: '#workhourReportDateMonth',
-                value: common.getCurrentDate(1),
-                type: 'year',
-                format: 'yyyy',
-                showBottom: false,
-                change: function(value) {
-                    $("#workhourReportDateMonth").val(value);
-                    if ($(".layui-laydate").length) {
-                        $(".layui-laydate").remove();
-                    }
-                    loadCharts(value, 1, $("#employeeSelect").val());
-                },
-                max: common.getNowFormatDate()
-            });
+            initMonthDate();
         } else if (dateType == 2) {
             $("#workhourReportDateMonth").addClass('hide');
             $("#workhourReportDateDay").removeClass('hide');
             loadCharts(common.getCurrentDate(2), dateType, employeeId);
 
             // 初始化日期选择框
-            laydate.render({
-                elem: '#workhourReportDateDay',
-                value: common.getCurrentDate(2),
-                type: 'month',
-                format: 'yyyy-MM',
-                showBottom: false,
-                change: function(value) {
-                    $("#workhourReportDateDay").val(value);
-                    if ($(".layui-laydate").length) {
-                        $(".layui-laydate").remove();
-                    }
-                    loadCharts(value, 2, $("#employeeSelect").val());
-                },
-                max: common.getNowFormatDate()
-            });
+            initDayDate();
         }
     });
 

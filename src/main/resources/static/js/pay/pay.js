@@ -114,6 +114,17 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         });
     };
 
+    var doPay = function(params) {
+        http.post('/pay/doPay', params, function() {
+            layer.close(index);
+            $('.pay-btn').addClass('hide');
+            $("#payNoticeText").html('');
+            $("#payRemarkBox").addClass("hide");
+            $("#payRemarkBox").css("display", "none");
+            reload();
+        });
+    };
+
     /**
      * 薪资发放按钮点击事件绑定
      */
@@ -158,6 +169,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             $("#remarkBox").css("width", "400px");
         }
         if (hasPermission(hasChangeSalaryPayMoneyPermission)) {
+            // noinspection JSUnusedGlobalSymbols
             layer.open({
                 title: '系统提示！',
                 skin: 'pay-confirm-box-class',
@@ -172,7 +184,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     var actualPayMoneyInput = "<input type='number' style='color: red; width: " + ((parseInt(actualPayMoneyWidth.replace('px', '')) + 13) + 'px') + ";' name='actualPayMoney' value='" + actualPayMoney + "'>";
                     $(".auctualPayMoneySpan").replaceWith(actualPayMoneyInput);
                 },
-                btn2: function(index) {
+                btn2: function() {
                     var isModifyPayMoney = false;
                     var actualPayMoney = $("input[name=actualPayMoney]").val();
                     var diffMoney = 0;
@@ -204,14 +216,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         "worksiteId": worksiteId,
                         "remark": remark
                     };
-                    http.post('/pay/doPay', params, function() {
-                        layer.close(index);
-                        $('.pay-btn').addClass('hide');
-                        $("#payNoticeText").html('');
-                        $("#payRemarkBox").addClass("hide");
-                        $("#payRemarkBox").css("display", "none");
-                        reload();
-                    });
+                    doPay(params);
                 },
                 btn3: function() {
                     $("#payNoticeText").html('');
@@ -232,7 +237,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 btn: ['确定', '取消'],
                 area: [$(window).width() <= 750 ? '60%' : '500px', '300px'],
                 resize: false,
-                yes: function(index) {
+                yes: function() {
                     var remark = $('#payRemark').val();
                     var worksiteId = $('#worksiteSelect').val();
                     var params = {
@@ -243,14 +248,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                         "worksiteId": worksiteId,
                         "remark": remark
                     };
-                    http.post('/pay/doPay', params, function() {
-                        layer.close(index);
-                        $('.pay-btn').addClass('hide');
-                        $("#payNoticeText").html('');
-                        $("#payRemarkBox").addClass("hide");
-                        $("#payRemarkBox").css("display", "none");
-                        reload();
-                    });
+                    doPay(params);
                 },
                 btn2: function() {
                     $("#payNoticeText").html('');

@@ -24,40 +24,48 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
     }
 
     // 初始化日期选择框
-    laydate.render({
-        elem: '#salaryDateMonth',
-        value: common.getCurrentDate(1),
-        type: 'year',
-        format: 'yyyy',
-        showBottom: false,
-        change: function(value) {
-            $("#salaryDateMonth").val(value);
-            if ($(".layui-laydate").length) {
-                $(".layui-laydate").remove();
-            }
-            loadCharts(value, 1);
-            loadUpData(value, 1);
-        },
-        max: common.getNowFormatDate()
-    });
+    var initMonthDate = function() {
+        laydate.render({
+            elem: '#salaryDateMonth',
+            value: common.getCurrentDate(1),
+            type: 'year',
+            format: 'yyyy',
+            showBottom: false,
+            change: function(value) {
+                $("#salaryDateMonth").val(value);
+                if ($(".layui-laydate").length) {
+                    $(".layui-laydate").remove();
+                }
+                loadCharts(value, 1);
+                loadUpData(value, 1);
+            },
+            max: common.getNowFormatDate()
+        });
+    };
+
+    initMonthDate();
 
     // 初始化日期选择框
-    laydate.render({
-        elem: '#salaryDateDay',
-        value: common.getCurrentDate(2),
-        type: 'month',
-        format: 'yyyy-MM',
-        showBottom: false,
-        change: function(value) {
-            $("#salaryDateDay").val(value);
-            if ($(".layui-laydate").length) {
-                $(".layui-laydate").remove();
-            }
-            loadCharts(value, 2);
-            loadUpData(value, 2);
-        },
-        max: common.getNowFormatDate()
-    });
+    var initDayDate = function() {
+        laydate.render({
+            elem: '#salaryDateDay',
+            value: common.getCurrentDate(2),
+            type: 'month',
+            format: 'yyyy-MM',
+            showBottom: false,
+            change: function(value) {
+                $("#salaryDateDay").val(value);
+                if ($(".layui-laydate").length) {
+                    $(".layui-laydate").remove();
+                }
+                loadCharts(value, 2);
+                loadUpData(value, 2);
+            },
+            max: common.getNowFormatDate()
+        });
+    };
+
+    initDayDate();
 
     /**
      * 加载图表
@@ -240,22 +248,7 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
             loadUpData(common.getCurrentDate(1), dateType);
 
             // 初始化日期选择框
-            laydate.render({
-                elem: '#salaryDateMonth',
-                value: common.getCurrentDate(1),
-                type: 'year',
-                format: 'yyyy',
-                showBottom: false,
-                change: function(value) {
-                    $("#salaryDateMonth").val(value);
-                    if ($(".layui-laydate").length) {
-                        $(".layui-laydate").remove();
-                    }
-                    loadCharts(value, 1);
-                    loadUpData(value, 1);
-                },
-                max: common.getNowFormatDate()
-            });
+            initMonthDate();
         } else if (dateType == 2) {
             $("#salaryDateMonth").addClass('hide');
             $("#salaryDateDay").removeClass('hide');
@@ -263,22 +256,7 @@ requirejs(['jquery', 'layui', 'http', 'echarts', 'common'], function($, layui, h
             loadUpData(common.getCurrentDate(2), dateType);
 
             // 初始化日期选择框
-            laydate.render({
-                elem: '#salaryDateDay',
-                value: common.getCurrentDate(2),
-                type: 'month',
-                format: 'yyyy-MM',
-                showBottom: false,
-                change: function(value) {
-                    $("#salaryDateDay").val(value);
-                    if ($(".layui-laydate").length) {
-                        $(".layui-laydate").remove();
-                    }
-                    loadCharts(value, 2);
-                    loadUpData(value, 2);
-                },
-                max: common.getNowFormatDate()
-            });
+            initDayDate();
         }
     });
 
