@@ -19,6 +19,30 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
     var layer = layui.layer;
     var form = layui.form;
 
+    var upload = layui.upload;
+
+    var uploadAvatar = upload.render({
+        elem: '#uploadAvatar',
+        url: '/user/uploadAvatar',
+        before: function(obj) {
+            obj.preview(function(index, file, result) {
+                $('img.userAvatar').attr('src', result);
+            });
+        },
+        done: function(result) {
+            if (result.code != 200) {
+                return layer.msg('上传失败');
+            }
+        },
+        error: function() {
+            var avatarText = $('#avatarText');
+            avatarText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs avatar-reload">重试</a>');
+            avatarText.find('.avatar-reload').on('click', function() {
+                uploadAvatar.upload();
+            });
+        }
+    });
+
     /**
      * 基本资料
      */
@@ -41,8 +65,8 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
                 id: 'updateBaseInfoFrm',
                 type: 1,
                 title: '修改基本资料',
-                area: [$(window).width() <= 750 ? '80%' : '500px', 'auto'],
-                content: $('#baseInffoBtnFrm')
+                area: [$(window).width() <= 750 ? '80%' : '700px', 'auto'],
+                content: $('#baseInfoBtnFrm')
             });
         });
     });
@@ -147,7 +171,7 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
         return false;
     });
 
-    $('body').on('click', '#baseInffoBtnFrmSubmitBtn', function() {
+    $('body').on('click', '#baseInfoBtnFrmSubmitBtn', function() {
         var that = $(this);
         if (!that.hasClass('layui-btn-disabled')) {
             that.addClass('layui-btn-disabled'); // 禁用提交按钮

@@ -12,22 +12,27 @@ import com.oven.core.user.vo.User;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
 import com.oven.framework.limitation.LimitType;
+import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 用户控制层
@@ -37,6 +42,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
+
+    @Value("${avatar.path}")
+    private String avatarPath;
 
     @Resource
     private UserService userService;
@@ -327,6 +335,37 @@ public class UserController extends BaseController {
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改密码异常", e);
+        }
+    }
+
+    /**
+     * 上传头像
+     */
+    @ResponseBody
+    @RequestMapping("/uploadAvatar")
+    @RequiresPermissions(PermissionCode.UPLOAD_AVATAR)
+    @Limit(key = AppConst.USER_UPLOAD_AVATAR_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    public Object uploadAvatar(MultipartFile file, HttpServletRequest req) throws MyException {
+        try {
+            String originalFilename = file.getOriginalFilename();
+            if (StringUtils.isEmpty(originalFilename)) {
+                return "文件名称为空，请重新上传！";
+            }
+            String fileName = UUID.randomUUID().toString() + originalFilename.substring(originalFilename.lastIndexOf("."));
+            File path = new File(avatarPath);
+            if (!path.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                path.mkdirs();
+            }
+            File savedFile = new File(avatarPath, fileName);
+            FileUtils.copyInputStreamToFile(file.getInputStream(), savedFile);
+            userService.updateAvatar(super.getCurrentUser().getId(), "/avatar/" + fileName);
+            User userInSession = (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
+            userInSession.setAvatar("/avatar/" + fileName);
+            req.getSession().setAttribute(AppConst.CURRENT_USER, userInSession);
+            return super.success("保存成功！");
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.UPLOAD_ERROR.getCode(), ResultEnum.UPLOAD_ERROR.getValue(), "上传头像异常", e);
         }
     }
 

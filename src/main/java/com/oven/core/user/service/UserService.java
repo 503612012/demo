@@ -295,6 +295,14 @@ public class UserService extends BaseService {
     }
 
     /**
+     * 更新头像
+     */
+    public void updateAvatar(Integer id, String avatarFileName) {
+        userDao.updateAvatar(id, avatarFileName);
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
+    }
+
+    /**
      * 重置错误次数
      */
     public void resetErrNum(Integer userId) {

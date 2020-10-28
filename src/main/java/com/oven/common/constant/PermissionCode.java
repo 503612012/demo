@@ -15,6 +15,7 @@ public interface PermissionCode {
     String USER_SETROLE                       = "A1_01_05";   // 设置用户角色
     String FORCE_LOGOUT                       = "A1_01_06";   // 强制退出
     String RESET_ERR_NUM                      = "A1_01_07";   // 重置错误次数
+    String UPLOAD_AVATAR                      = "A1_01_08";   // 修改头像
 
     String MENU_MANAGER                       = "A1_02";      // 菜单管理
     String MENU_UPDATE                        = "A1_02_01";   // 修改菜单名称

@@ -22,6 +22,7 @@ public enum ResultEnum {
     DELETE_WORKHOUR_ERROR_HAS_UNPAY_WORKHOUR(3008, "该工地下存在未发放薪资的工时，禁止删除！"),
     DELETE_WORKHOUR_ERROR_HAS_FINANCE(3009, "该工地有录入的财务信息，禁止删除！"),
     SYSTEM_ERROR(3010, "系统错误！"),
+    UPLOAD_ERROR(3011, "上传文件错误！"),
 
     NO_THIS_USER(4001, "用户名或密码错误！"),
     PASSWORD_WRONG(4002, "用户名或密码错误！"),

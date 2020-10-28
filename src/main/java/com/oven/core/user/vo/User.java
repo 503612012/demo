@@ -43,6 +43,8 @@ public class User implements Serializable {
     private Integer lastModifyId;
     @Column(name = "last_login_time")
     private String lastLoginTime;
+    @Column(name = "avatar")
+    private String avatar;
     @Column(name = "err_num")
     private Integer errNum;
 

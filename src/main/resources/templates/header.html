@@ -8,7 +8,9 @@
     <ul class="layui-nav layui-layout-right">
         <li class="layui-nav-item">
             <a href="javascript:">
-                <img src="http://t.cn/RCzsdCq" class="layui-nav-img" alt=""><span id="currentUserSpan" th:text="${session.current_user.nickName}"></span>
+                <img th:if="${session.current_user.avatar == null}" src="http://t.cn/RCzsdCq" class="layui-nav-img" alt="">
+                <img th:if="${session.current_user.avatar != null}" th:src="${session.current_user.avatar}" class="layui-nav-img" alt="">
+                <span id="currentUserSpan" th:text="${session.current_user.nickName}"></span>
             </a>
             <dl class="layui-nav-child">
                 <dd><a href="javascript:" id="baseInfoBtn">基本资料</a></dd>
@@ -49,62 +51,72 @@
     </div>
 </div>
 
-<div id="baseInffoBtnFrm" class="hide">
-    <form class="layui-form" lay-filter="updateBaseInfoForm" action="" style="padding: 20px 77px 20px 20px;">
-        <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
-            <div class="layui-input-inline">
-                <input type="hidden" name="id">
-                <input type="text" name="userName" disabled lay-verify="title" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">昵称</label>
-            <div class="layui-input-inline">
-                <input type="text" name="nickName" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">年龄</label>
-            <div class="layui-input-inline">
-                <input type="number" name="age" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
-            <div class="layui-input-inline">
-                <input type="email" name="email" lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">性别</label>
-            <div class="layui-input-inline">
-                <input type="radio" name="gender" value="1" title="男">
-                <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
-                    <div>男</div>
-                </div>
-                <input type="radio" name="gender" value="0" title="女">
-                <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                    <div>女</div>
+<div id="baseInfoBtnFrm" style="display: flex;" class="hide" xmlns:th="http://www.thymeleaf.org">
+    <div>
+        <form class="layui-form" lay-filter="updateBaseInfoForm" action="" style="padding: 20px 77px 20px 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="id">
+                    <input type="text" name="userName" disabled lay-verify="title" autocomplete="off" class="layui-input">
                 </div>
             </div>
-        </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">手机号</label>
-            <div class="layui-input-inline">
-                <input type="number" name="phone" lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+            <div class="layui-form-item">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="nickName" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+                </div>
             </div>
-        </div>
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <span class="layui-btn" id="baseInffoBtnFrmSubmitBtn">保存</span>
+            <div class="layui-form-item">
+                <label class="layui-form-label">年龄</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="age" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
+                </div>
             </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="email" name="email" lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="gender" value="1" title="男">
+                    <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
+                        <div>男</div>
+                    </div>
+                    <input type="radio" name="gender" value="0" title="女">
+                    <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                        <div>女</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="phone" lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <span class="layui-btn" id="baseInfoBtnFrmSubmitBtn">保存</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-upload" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="layui-upload-list">
+            <img th:if="${session.current_user.avatar == null}" src="http://t.cn/RCzsdCq" class="layui-nav-img userAvatar" alt="" style="width: 200px; height: 200px; margin: 0;">
+            <img th:if="${session.current_user.avatar != null}" th:src="${session.current_user.avatar}" class="layui-nav-img userAvatar" alt="" style="width: 200px; height: 200px; margin: 0;">
+            <p id="avatarText"></p>
         </div>
-    </form>
+        <button type="button" class="layui-btn" id="uploadAvatar" th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).UPLOAD_AVATAR)}">上传头像</button>
+    </div>
 </div>

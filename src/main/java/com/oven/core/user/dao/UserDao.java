@@ -187,6 +187,14 @@ public class UserDao {
     }
 
     /**
+     * 更新头像
+     */
+    public void updateAvatar(Integer id, String avatarFileName) {
+        String sql = "update t_user set avatar = ? where dbid = ?";
+        jdbcTemplate.update(sql, avatarFileName, id);
+    }
+
+    /**
      * 重置错误次数
      */
     public void resetErrNum(Integer userId) {

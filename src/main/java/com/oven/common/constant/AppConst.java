@@ -60,6 +60,7 @@ public interface AppConst {
     String USER_DELETE_LIMIT_KEY = "user.delete.limit.key";
     String USER_UPDATE_STATUS_LIMIT_KEY = "user.update.status.limit.key";
     String USER_SET_USER_ROLE_LIMIT_KEY = "user.set.user.role.limit.key";
+    String USER_UPLOAD_AVATAR_LIMIT_KEY = "user.upload.avatar.limit.key";
 
     String ROLE_INSERT_LIMIT_KEY = "role.insert.limit.key";
     String ROLE_UPDATE_LIMIT_KEY = "role.update.limit.key";
