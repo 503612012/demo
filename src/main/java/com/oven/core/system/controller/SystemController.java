@@ -228,6 +228,10 @@ public class SystemController extends BaseController {
             subject.login(token);
 
             User userInDb = userService.getByUserName(userName);
+            if (userInDb.getErrNum() >= 5) {
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVEN_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                return super.fail(ResultEnum.OVEN_WRONG_NUM.getCode(), ResultEnum.OVEN_WRONG_NUM.getValue());
+            }
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked")
@@ -249,13 +253,18 @@ public class SystemController extends BaseController {
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
-                logService.addLog("登录系统！", "失败[" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
             } else if (e instanceof IncorrectCredentialsException) {
-                logService.addLog("登录系统！", "失败[" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
+                if (userInDb.getErrNum() >= 5) {
+                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVEN_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                    return super.fail(ResultEnum.OVEN_WRONG_NUM.getCode(), ResultEnum.OVEN_WRONG_NUM.getValue());
+                }
+                userService.logPasswordWrong(userInDb.getId());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
             } else if (e instanceof LockedAccountException) {
-                logService.addLog("登录系统！", "失败[" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
                 throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);

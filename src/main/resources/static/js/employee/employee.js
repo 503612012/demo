@@ -42,7 +42,6 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         id: 'employeeReload',
         even: true,
         cols: [[
-            {type: 'numbers'},
             {field: 'name', title: '员工姓名', sort: true},
             {field: 'age', title: '年龄', sort: true},
             {field: 'contact', title: '手机号'},
@@ -57,10 +56,6 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                 }
             },
             {field: 'address', title: '住址'},
-            {field: 'createTime', title: '创建时间'},
-            {field: 'createName', title: '创建人'},
-            {field: 'lastModifyTime', title: '最后修改时间'},
-            {field: 'lastModifyName', title: '最后修改人'},
             {
                 field: 'status', title: '状态', templet: function(d) {
                     if (d.status == 1) {

@@ -89,11 +89,12 @@ public class UserDao {
                 "                         `phone`," +
                 "                         `status`," +
                 "                         `gender`," +
+                "                         `err_num`," +
                 "                         `create_time`," +
                 "                         `create_id`," +
                 "                         `last_modify_time`," +
                 "                         `last_modify_id`)" +
-                "                   values (null, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)";
+                "                   values (null, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)";
         KeyHolder key = new GeneratedKeyHolder();
         PreparedStatementCreator creator = con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
@@ -104,10 +105,11 @@ public class UserDao {
             ps.setString(5, user.getEmail());
             ps.setString(6, user.getPhone());
             ps.setInt(7, user.getGender());
-            ps.setString(8, user.getCreateTime());
-            ps.setInt(9, user.getCreateId());
-            ps.setString(10, user.getLastModifyTime());
-            ps.setInt(11, user.getLastModifyId());
+            ps.setInt(8, user.getErrNum());
+            ps.setString(9, user.getCreateTime());
+            ps.setInt(10, user.getCreateId());
+            ps.setString(11, user.getLastModifyTime());
+            ps.setInt(12, user.getLastModifyId());
             return ps;
         };
         this.jdbcTemplate.update(creator, key);
@@ -172,8 +174,24 @@ public class UserDao {
     }
 
     public void updateLastLoginTime(String time, Integer userId) {
-        String sql = "update t_user set last_login_time = ? where dbid = ?";
+        String sql = "update t_user set last_login_time = ?, err_num = 0 where dbid = ?";
         this.jdbcTemplate.update(sql, time, userId);
+    }
+
+    /**
+     * 登录密码错误次数加一
+     */
+    public void logPasswordWrong(Integer userId) {
+        String sql = "update t_user set err_num = err_num + 1 where dbid = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    /**
+     * 重置错误次数
+     */
+    public void resetErrNum(Integer userId) {
+        String sql = "update t_user set err_num = 0 where dbid = ?";
+        jdbcTemplate.update(sql, userId);
     }
 
 }

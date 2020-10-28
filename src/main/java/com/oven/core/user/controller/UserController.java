@@ -330,4 +330,19 @@ public class UserController extends BaseController {
         }
     }
 
+    /**
+     * 重置错误次数
+     */
+    @ResponseBody
+    @RequestMapping("/resetErrNum")
+    @RequiresPermissions(PermissionCode.RESET_ERR_NUM)
+    public Object resetErrNum(Integer userId) throws MyException {
+        try {
+            userService.resetErrNum(userId);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "重置错误次数异常", e);
+        }
+    }
+
 }

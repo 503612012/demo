@@ -43,11 +43,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         id: 'userReload',
         even: true,
         cols: [[
-            {type: 'numbers'},
-            {field: 'userName', title: '用户名', sort: true},
-            {field: 'nickName', title: '昵称'},
+            {field: 'userName', width: 120, title: '用户名', sort: true},
+            {field: 'nickName', width: 120, title: '昵称'},
             {
-                field: 'isOnline', title: '在线状态', templet: function(d) {
+                field: 'isOnline', align: "center", width: 88, title: '在线状态', templet: function(d) {
                     if (d.online) {
                         return '<button class="layui-btn layui-btn-xs force-logout" data-user-name="' + d.userName + '">在线</button>';
                     } else {
@@ -55,20 +54,16 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     }
                 }
             },
-            {field: 'age', title: '年龄'},
-            {field: 'email', title: '邮箱'},
-            {field: 'phone', title: '手机号'},
+            {field: 'age', width: 60, align: "center", title: '年龄'},
+            {field: 'phone', width: 120, title: '手机号'},
             {
-                field: 'gender', title: '性别', templet: function(d) {
+                field: 'gender', width: 60, align: "center", title: '性别', templet: function(d) {
                     return d.gender == 1 ? '男' : '<span style="color: #F581B1;">女</span>';
                 }
             },
-            {field: 'createTime', title: '创建时间'},
-            {field: 'createName', title: '创建人'},
-            {field: 'lastModifyTime', title: '最后修改时间'},
-            {field: 'lastModifyName', title: '最后修改人'},
+            {field: 'lastLoginTime', width: 180, title: '最后登录时间'},
             {
-                field: 'status', title: '状态', templet: function(d) {
+                field: 'status', width: 110, title: '状态', templet: function(d) {
                     if (d.status == 1) {
                         return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked user-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                     } else if (d.status == 0) {
@@ -76,7 +71,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     }
                 }
             },
-            {title: '操作', width: 200, align: 'center', toolbar: '#userListBar'}
+            {title: '操作', align: 'center', toolbar: '#userListBar'}
         ]],
         page: true
     });
@@ -221,6 +216,13 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             });
         } else if (obj.event == 'edit') {
             window.parent.mainFrm.location.href = "/user/update?id=" + data.id;
+        } else if (obj.event == 'reset') {
+            layer.confirm('确定要重置该用户密码错误次数吗？', {anim: 6}, function(index) {
+                http.get('/user/resetErrNum', {userId: data.id}, function() {
+                    layer.close(index);
+                    reload();
+                });
+            });
         }
     });
 

@@ -56,6 +56,7 @@ $(function() {
                             content: result.data,
                             btnAlign: 'c'
                         });
+                        changeCode();
                         return;
                     }
                     window.location.href = "/";

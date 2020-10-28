@@ -50,6 +50,7 @@
 </script>
 <script type="text/html" id="userListBar">
     <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).USER_SETROLE)}" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">分配角色</a>
+    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).RESET_ERR_NUM)}" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="reset">重置次数</a>
     <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).USER_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).USER_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>

@@ -116,6 +116,7 @@ public class UserService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void add(User user) {
+        user.setErrNum(0);
         user.setCreateId(super.getCurrentUser().getId());
         user.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
         user.setLastModifyId(super.getCurrentUser().getId());
@@ -283,6 +284,22 @@ public class UserService extends BaseService {
         userDao.updateLastLoginTime(time, userId);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
+    }
+
+    /**
+     * 登录密码错误次数加一
+     */
+    public void logPasswordWrong(Integer userId) {
+        userDao.logPasswordWrong(userId);
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
+    }
+
+    /**
+     * 重置错误次数
+     */
+    public void resetErrNum(Integer userId) {
+        userDao.resetErrNum(userId);
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
 }
