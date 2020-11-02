@@ -249,6 +249,14 @@ public class SystemController extends BaseController {
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInDb);
             logService.addLog("登录系统！", "成功！", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
             userService.updateLastLoginTime(new DateTime().toString(AppConst.TIME_PATTERN), userInDb.getId());
+
+            // 获取该用户的所有权限编码，放入session中
+            Object userMenus = req.getSession().getAttribute(AppConst.USER_MENU);
+            if (userMenus == null) {
+                userMenus = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
+                req.getSession().setAttribute(AppConst.USER_MENU, userMenus);
+            }
+
             return super.success("登录成功！");
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
