@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.oven.common.constant.AppConst;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.ResultInfo;
+import com.oven.core.menu.service.MenuService;
 import com.oven.core.user.vo.User;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.shiro.SecurityUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +29,9 @@ import java.util.Map;
  */
 @Component
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
+
+    @Resource
+    private MenuService menuService;
 
     private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     private static final String GET_GIF_CODE = "/getGifCode";
@@ -124,6 +129,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             loginedMap.put(user.getUserName(), obj);
 
             req.getSession().setAttribute(AppConst.CURRENT_USER, user);
+        }
+
+        // 获取该用户的所有权限编码，放入session中
+        Object userMenus = req.getSession().getAttribute(AppConst.USER_MENU);
+        if (userMenus == null && user != null) {
+            userMenus = menuService.getAllMenuCodeByUserId(user.getId());
+            req.getSession().setAttribute(AppConst.USER_MENU, userMenus);
         }
         return user;
     }
