@@ -60,8 +60,8 @@ public class MenuController extends BaseController {
     @Limit(key = AppConst.MENU_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(Menu menu) throws MyException {
         try {
-            menuService.update(menu);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+//            menuService.update(menu);
+            return super.success("暂不开通修改功能");
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单异常", e);
         }

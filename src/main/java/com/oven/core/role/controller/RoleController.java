@@ -126,6 +126,9 @@ public class RoleController extends BaseController {
     @Limit(key = AppConst.ROLE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object update(Role role) throws MyException {
         try {
+            if (role.getId() == 1 || role.getId() == 2) {
+                return super.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
+            }
             roleService.update(role);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
@@ -144,6 +147,9 @@ public class RoleController extends BaseController {
     @Limit(key = AppConst.ROLE_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
+            if (id == 1 || id == 2) {
+                return super.fail(ResultEnum.CAN_NOT_DELETE_ROLE.getCode(), ResultEnum.CAN_NOT_DELETE_ROLE.getValue());
+            }
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
             if (userRoles != null && userRoles.size() > 0) {
                 return super.fail(400, "该角色被其他用户引用，禁止删除！");
@@ -167,6 +173,9 @@ public class RoleController extends BaseController {
     @Limit(key = AppConst.ROLE_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer roleId, Integer status) throws MyException {
         try {
+            if (roleId == 1 || roleId == 2) {
+                return super.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
+            }
             Role role = roleService.getById(roleId);
             role.setStatus(status);
             roleService.update(role);
@@ -215,6 +224,9 @@ public class RoleController extends BaseController {
     @Limit(key = AppConst.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
+            if (roleId == 1 || roleId == 2) {
+                return super.fail(ResultEnum.CAN_NOT_SET_MENU.getCode(), ResultEnum.CAN_NOT_SET_MENU.getValue());
+            }
             roleService.setRoleMenu(roleId, menuIds);
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());

@@ -47,7 +47,16 @@ public enum ResultEnum {
     INSERT_ERROR(6002, "添加错误！"),
     DELETE_ERROR(6003, "删除错误！"),
     UPDATE_ERROR(6004, "修改错误！"),
-    ERROR_PAGE(6005, "去到错误页面！");
+    ERROR_PAGE(6005, "去到错误页面！"),
+
+    CAN_NOT_UPDATE_USER(7001, "该用户不可以修改"),
+    CAN_NOT_DELETE_USER(7002, "该用户不可以删除"),
+    CAN_NOT_SET_ROLE(7003, "该用户禁止设置角色"),
+    CAN_NOT_SET_PWD(7004, "该用户禁止修改密码"),
+
+    CAN_NOT_UPDATE_ROLE(7005, "该角色不可以修改"),
+    CAN_NOT_DELETE_ROLE(7006, "该角色不可以删除"),
+    CAN_NOT_SET_MENU(7007, "该角色禁止设置权限");
 
     private Integer code;
     private String value;

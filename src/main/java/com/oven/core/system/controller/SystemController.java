@@ -228,7 +228,7 @@ public class SystemController extends BaseController {
             subject.login(token);
 
             User userInDb = userService.getByUserName(userName);
-            if (userInDb.getErrNum() >= 5) {
+            if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVEN_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
                 return super.fail(ResultEnum.OVEN_WRONG_NUM.getCode(), ResultEnum.OVEN_WRONG_NUM.getValue());
             }

@@ -219,6 +219,9 @@ public class UserController extends BaseController {
     @Limit(key = AppConst.USER_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(User user) throws MyException {
         try {
+            if (user.getId() == 1 || user.getId() == 2) {
+                return super.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
+            }
             userService.update(user);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
@@ -237,6 +240,9 @@ public class UserController extends BaseController {
     @Limit(key = AppConst.USER_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
+            if (id == 1 || id == 2) {
+                return super.fail(ResultEnum.CAN_NOT_DELETE_USER.getCode(), ResultEnum.CAN_NOT_DELETE_USER.getValue());
+            }
             userService.delete(id);
             return super.success(ResultEnum.DELETE_SUCCESS.getValue());
         } catch (Exception e) {
@@ -256,6 +262,9 @@ public class UserController extends BaseController {
     @Limit(key = AppConst.USER_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer userId, Integer status) throws MyException {
         try {
+            if (userId == 1 || userId == 2) {
+                return super.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
+            }
             User user = userService.getById(userId);
             user.setStatus(status);
             userService.update(user);
@@ -294,6 +303,9 @@ public class UserController extends BaseController {
     @Limit(key = AppConst.USER_SET_USER_ROLE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object setUserRole(Integer userId, String roleIds) throws MyException {
         try {
+            if (userId == 1 || userId == 2) {
+                return super.fail(ResultEnum.CAN_NOT_SET_ROLE.getCode(), ResultEnum.CAN_NOT_SET_ROLE.getValue());
+            }
             userService.setUserRole(userId, roleIds);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
         } catch (Exception e) {
@@ -324,6 +336,9 @@ public class UserController extends BaseController {
         try {
             String oldPwdDecode = EncryptUtils.aesDecrypt(oldPwd, EncryptUtils.KEY);
             User user = userService.getByUserName(super.getCurrentUser().getUserName());
+            if (user.getId() == 1 || user.getId() == 2) {
+                return super.fail(ResultEnum.CAN_NOT_SET_PWD.getCode(), ResultEnum.CAN_NOT_SET_PWD.getValue());
+            }
             Md5Hash md5 = new Md5Hash(oldPwdDecode, AppConst.MD5_SALT, 2);
             // 密码错误
             if (!md5.toString().equals(user.getPassword())) {

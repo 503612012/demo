@@ -207,7 +207,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.0.2.RELEASE</version>
                 <configuration>
-                    <mainClass>com.oven.app.Application</mainClass>
                     <layout>ZIP</layout>
                     <includes>
                         <include>
