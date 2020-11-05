@@ -14,7 +14,7 @@ CREATE TABLE `t_advance_salary` (
                                     `create_id` int(11) DEFAULT NULL,
                                     `remark` varchar(1023) DEFAULT NULL,
                                     PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for t_config
@@ -26,7 +26,7 @@ CREATE TABLE `t_config` (
                             `value` varchar(255) DEFAULT NULL,
                             `desc` varchar(1023) DEFAULT NULL,
                             PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of t_config
@@ -53,6 +53,7 @@ INSERT INTO `t_config` VALUES (19, 'logging.config', 'classpath:logback-dev.xml'
 INSERT INTO `t_config` VALUES (29, 'spring.data.redis.repositories.enabled', 'false', NULL);
 INSERT INTO `t_config` VALUES (30, 'spring.data.jpa.repositories.enabled', 'false', NULL);
 INSERT INTO `t_config` VALUES (31, 'spring.transaction.rollback-on-commit-failure', 'true', NULL);
+INSERT INTO `t_config` VALUES (37, 'avatar.path', '/Users/oven/log/img/avatar/', '头像保存地址');
 COMMIT;
 
 -- ----------------------------
@@ -71,7 +72,7 @@ CREATE TABLE `t_crontab` (
 -- Records of t_crontab
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_crontab` VALUES (1, 'cronKey', 'cron的key', '0/5 * * * * ?');
+INSERT INTO `t_crontab` VALUES (1, 'REQUEST_LOG_CRON', '每分钟将队列中的请求日志保存到数据库', '0 */1 * * * ?');
 COMMIT;
 
 -- ----------------------------
@@ -93,7 +94,7 @@ CREATE TABLE `t_employee` (
                               `last_modify_time` varchar(31) DEFAULT NULL COMMENT '最后修改时间',
                               PRIMARY KEY (`dbid`),
                               UNIQUE KEY `t_employee_dbid_uindex` (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='员工表';
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='员工表';
 
 -- ----------------------------
 -- Table structure for t_finance
@@ -116,7 +117,7 @@ CREATE TABLE `t_finance` (
                              `finish_time` int(11) DEFAULT NULL,
                              `remark` varchar(1023) DEFAULT NULL,
                              PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for t_fund
@@ -130,7 +131,7 @@ CREATE TABLE `t_fund` (
                           `create_time` varchar(31) DEFAULT NULL,
                           `_order` int(11) DEFAULT '9999',
                           PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for t_fund_bill
@@ -140,10 +141,10 @@ CREATE TABLE `t_fund_bill` (
                                `dbid` int(11) NOT NULL AUTO_INCREMENT,
                                `fund_id` int(11) DEFAULT NULL,
                                `data_date` varchar(31) DEFAULT NULL,
-                               `money` double DEFAULT NULL,
+                               `money` decimal(8,2) DEFAULT NULL,
                                `status` int(11) DEFAULT '0' COMMENT '0正常，1禁用',
                                PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=490 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for t_log
@@ -159,7 +160,7 @@ CREATE TABLE `t_log` (
                          `operator_ip` varchar(31) DEFAULT NULL COMMENT '操作人IP地址',
                          PRIMARY KEY (`dbid`),
                          UNIQUE KEY `t_log_dbid_uindex` (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2057 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=2458 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='日志表';
 
 -- ----------------------------
 -- Table structure for t_menu
@@ -181,7 +182,7 @@ CREATE TABLE `t_menu` (
                           `status` int(11) DEFAULT NULL COMMENT '状态，0-正常、1-删除',
                           PRIMARY KEY (`dbid`),
                           UNIQUE KEY `menu_code` (`menu_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=670 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=677 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of t_menu
@@ -255,6 +256,13 @@ INSERT INTO `t_menu` VALUES (65, 'D1_03_03', '删除收益', 62, 3, NULL, NULL, 
 INSERT INTO `t_menu` VALUES (66, 'D1_01_05', '修改基金排序值', 56, 5, NULL, NULL, 2, NULL, '2018-02-09 18:15:27', NULL, '2018-02-09 18:15:27', 0);
 INSERT INTO `t_menu` VALUES (67, 'D1_04', '微信基金', 55, 4, '/wechatFund/index', '', 1, NULL, '2018-08-21 18:15:27', NULL, '2018-08-21 18:15:27', 0);
 INSERT INTO `t_menu` VALUES (68, 'D1_04_01', '录入收益', 67, 1, NULL, NULL, 2, NULL, '2018-02-09 18:15:27', NULL, '2018-02-09 18:15:27', 0);
+INSERT INTO `t_menu` VALUES (670, 'G1_01', '用户管理', 7, 1, '/user/index', '', 1, NULL, '2018-02-09 18:15:27', 1, '2019-09-18 10:55:01', 0);
+INSERT INTO `t_menu` VALUES (671, 'G1_02', '菜单管理', 7, 3, '/menu/index', '', 1, NULL, '2018-02-09 18:15:27', 1, '2018-10-30 20:52:38', 0);
+INSERT INTO `t_menu` VALUES (672, 'G1_03', '角色管理', 7, 2, '/role/index', '', 1, NULL, '2018-02-09 18:15:27', NULL, '2018-02-09 18:15:27', 0);
+INSERT INTO `t_menu` VALUES (673, 'G1_04', '系统日志', 7, 4, '/log/index', '', 1, NULL, '2018-02-09 18:15:27', 1, '2018-10-30 20:49:15', 0);
+INSERT INTO `t_menu` VALUES (674, 'A1_01_06', '强制退出', 2, 6, NULL, '', 2, NULL, '2018-02-09 18:15:27', NULL, '2018-02-09 18:15:27', 0);
+INSERT INTO `t_menu` VALUES (675, 'A1_01_07', '重置错误次数', 2, 7, NULL, '', 2, NULL, '2018-02-09 18:15:27', NULL, '2018-02-09 18:15:27', 0);
+INSERT INTO `t_menu` VALUES (676, 'A1_01_08', '修改头像', 2, 8, NULL, '', 2, NULL, '2018-02-09 18:15:27', NULL, '2018-02-09 18:15:27', 0);
 COMMIT;
 
 -- ----------------------------
@@ -273,7 +281,20 @@ CREATE TABLE `t_pay_record` (
                                 `has_modify_money` int(11) DEFAULT NULL COMMENT '是否修改了金额，1是，0否',
                                 `change_money` double DEFAULT NULL,
                                 PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='发薪记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='发薪记录表';
+
+-- ----------------------------
+-- Table structure for t_request_log_template
+-- ----------------------------
+DROP TABLE IF EXISTS `t_request_log_template`;
+CREATE TABLE `t_request_log_template` (
+                                          `request_time` varchar(31) DEFAULT NULL COMMENT '请求时间',
+                                          `request_url` varchar(1023) DEFAULT NULL COMMENT '请求地址',
+                                          `request_method` varchar(31) DEFAULT NULL COMMENT '请求方法',
+                                          `request_ip` varchar(127) DEFAULT NULL COMMENT '请求者IP',
+                                          `request_param` text COMMENT '请求参数',
+                                          `user_id` int(11) DEFAULT NULL COMMENT '登录人ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='接口请求日志模板表';
 
 -- ----------------------------
 -- Table structure for t_role
@@ -289,15 +310,14 @@ CREATE TABLE `t_role` (
                           `last_modify_id` int(11) DEFAULT NULL COMMENT '最后修改人ID',
                           PRIMARY KEY (`dbid`),
                           UNIQUE KEY `t_role_dbid_uindex` (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色表';
 
 -- ----------------------------
 -- Records of t_role
 -- ----------------------------
 BEGIN;
 INSERT INTO `t_role` VALUES (1, '超级管理员', '2018-10-19 12:52:17', 1, 0, '2019-02-06 17:04:26', 1);
-INSERT INTO `t_role` VALUES (17, '普通用户', '2018-10-26 01:15:48', 1, 0, '2019-09-25 22:54:15', 1);
-INSERT INTO `t_role` VALUES (19, '管理员', '2019-05-14 15:10:11', 1, 0, '2019-09-25 23:11:53', 1);
+INSERT INTO `t_role` VALUES (2, '普通用户', '2018-10-26 01:15:48', 1, 0, '2019-09-25 22:54:15', 1);
 COMMIT;
 
 -- ----------------------------
@@ -310,80 +330,78 @@ CREATE TABLE `t_role_menu` (
                                `menu_id` int(11) DEFAULT NULL COMMENT '菜单ID',
                                PRIMARY KEY (`dbid`),
                                UNIQUE KEY `t_role_menu_dbid_uindex` (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3901 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色-菜单关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=4446 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色-菜单关系表';
 
 -- ----------------------------
 -- Records of t_role_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_role_menu` VALUES (3833, 1, 55);
-INSERT INTO `t_role_menu` VALUES (3834, 1, 56);
-INSERT INTO `t_role_menu` VALUES (3835, 1, 58);
-INSERT INTO `t_role_menu` VALUES (3836, 1, 59);
-INSERT INTO `t_role_menu` VALUES (3837, 1, 60);
-INSERT INTO `t_role_menu` VALUES (3838, 1, 61);
-INSERT INTO `t_role_menu` VALUES (3839, 1, 66);
-INSERT INTO `t_role_menu` VALUES (3840, 1, 62);
-INSERT INTO `t_role_menu` VALUES (3841, 1, 63);
-INSERT INTO `t_role_menu` VALUES (3842, 1, 64);
-INSERT INTO `t_role_menu` VALUES (3843, 1, 65);
-INSERT INTO `t_role_menu` VALUES (3844, 1, 57);
-INSERT INTO `t_role_menu` VALUES (3845, 1, 67);
-INSERT INTO `t_role_menu` VALUES (3846, 1, 68);
-INSERT INTO `t_role_menu` VALUES (3847, 1, 18);
-INSERT INTO `t_role_menu` VALUES (3848, 1, 19);
-INSERT INTO `t_role_menu` VALUES (3849, 1, 20);
-INSERT INTO `t_role_menu` VALUES (3850, 1, 21);
-INSERT INTO `t_role_menu` VALUES (3851, 1, 22);
-INSERT INTO `t_role_menu` VALUES (3852, 1, 23);
-INSERT INTO `t_role_menu` VALUES (3853, 1, 24);
-INSERT INTO `t_role_menu` VALUES (3854, 1, 29);
-INSERT INTO `t_role_menu` VALUES (3855, 1, 30);
-INSERT INTO `t_role_menu` VALUES (3856, 1, 31);
-INSERT INTO `t_role_menu` VALUES (3857, 1, 32);
-INSERT INTO `t_role_menu` VALUES (3858, 1, 33);
-INSERT INTO `t_role_menu` VALUES (3859, 1, 25);
-INSERT INTO `t_role_menu` VALUES (3860, 1, 26);
-INSERT INTO `t_role_menu` VALUES (3861, 1, 27);
-INSERT INTO `t_role_menu` VALUES (3862, 1, 28);
-INSERT INTO `t_role_menu` VALUES (3863, 1, 48);
-INSERT INTO `t_role_menu` VALUES (3864, 1, 54);
-INSERT INTO `t_role_menu` VALUES (3865, 1, 34);
-INSERT INTO `t_role_menu` VALUES (3866, 1, 35);
-INSERT INTO `t_role_menu` VALUES (3867, 1, 36);
-INSERT INTO `t_role_menu` VALUES (3868, 1, 49);
-INSERT INTO `t_role_menu` VALUES (3869, 1, 37);
-INSERT INTO `t_role_menu` VALUES (3870, 1, 38);
-INSERT INTO `t_role_menu` VALUES (3871, 1, 50);
-INSERT INTO `t_role_menu` VALUES (3872, 1, 41);
-INSERT INTO `t_role_menu` VALUES (3873, 1, 42);
-INSERT INTO `t_role_menu` VALUES (3874, 1, 43);
-INSERT INTO `t_role_menu` VALUES (3875, 1, 44);
-INSERT INTO `t_role_menu` VALUES (3876, 1, 51);
-INSERT INTO `t_role_menu` VALUES (3877, 1, 39);
-INSERT INTO `t_role_menu` VALUES (3878, 1, 45);
-INSERT INTO `t_role_menu` VALUES (3879, 1, 47);
-INSERT INTO `t_role_menu` VALUES (3880, 1, 46);
-INSERT INTO `t_role_menu` VALUES (3881, 1, 52);
-INSERT INTO `t_role_menu` VALUES (3882, 1, 53);
-INSERT INTO `t_role_menu` VALUES (3883, 1, 40);
-INSERT INTO `t_role_menu` VALUES (3884, 1, 1);
-INSERT INTO `t_role_menu` VALUES (3885, 1, 2);
-INSERT INTO `t_role_menu` VALUES (3886, 1, 3);
-INSERT INTO `t_role_menu` VALUES (3887, 1, 4);
-INSERT INTO `t_role_menu` VALUES (3888, 1, 5);
-INSERT INTO `t_role_menu` VALUES (3889, 1, 6);
-INSERT INTO `t_role_menu` VALUES (3890, 1, 7);
-INSERT INTO `t_role_menu` VALUES (3891, 1, 11);
-INSERT INTO `t_role_menu` VALUES (3892, 1, 12);
-INSERT INTO `t_role_menu` VALUES (3893, 1, 13);
-INSERT INTO `t_role_menu` VALUES (3894, 1, 14);
-INSERT INTO `t_role_menu` VALUES (3895, 1, 15);
-INSERT INTO `t_role_menu` VALUES (3896, 1, 16);
-INSERT INTO `t_role_menu` VALUES (3897, 1, 8);
-INSERT INTO `t_role_menu` VALUES (3898, 1, 9);
-INSERT INTO `t_role_menu` VALUES (3899, 1, 10);
-INSERT INTO `t_role_menu` VALUES (3900, 1, 17);
+INSERT INTO `t_role_menu` VALUES (4380, 1, 55);
+INSERT INTO `t_role_menu` VALUES (4381, 1, 56);
+INSERT INTO `t_role_menu` VALUES (4382, 1, 58);
+INSERT INTO `t_role_menu` VALUES (4383, 1, 59);
+INSERT INTO `t_role_menu` VALUES (4384, 1, 60);
+INSERT INTO `t_role_menu` VALUES (4385, 1, 61);
+INSERT INTO `t_role_menu` VALUES (4386, 1, 66);
+INSERT INTO `t_role_menu` VALUES (4387, 1, 62);
+INSERT INTO `t_role_menu` VALUES (4388, 1, 63);
+INSERT INTO `t_role_menu` VALUES (4389, 1, 64);
+INSERT INTO `t_role_menu` VALUES (4390, 1, 65);
+INSERT INTO `t_role_menu` VALUES (4391, 1, 57);
+INSERT INTO `t_role_menu` VALUES (4392, 1, 67);
+INSERT INTO `t_role_menu` VALUES (4393, 1, 68);
+INSERT INTO `t_role_menu` VALUES (4394, 1, 18);
+INSERT INTO `t_role_menu` VALUES (4395, 1, 19);
+INSERT INTO `t_role_menu` VALUES (4396, 1, 20);
+INSERT INTO `t_role_menu` VALUES (4397, 1, 21);
+INSERT INTO `t_role_menu` VALUES (4398, 1, 22);
+INSERT INTO `t_role_menu` VALUES (4399, 1, 23);
+INSERT INTO `t_role_menu` VALUES (4400, 1, 24);
+INSERT INTO `t_role_menu` VALUES (4401, 1, 29);
+INSERT INTO `t_role_menu` VALUES (4402, 1, 30);
+INSERT INTO `t_role_menu` VALUES (4403, 1, 31);
+INSERT INTO `t_role_menu` VALUES (4404, 1, 32);
+INSERT INTO `t_role_menu` VALUES (4405, 1, 33);
+INSERT INTO `t_role_menu` VALUES (4406, 1, 25);
+INSERT INTO `t_role_menu` VALUES (4407, 1, 26);
+INSERT INTO `t_role_menu` VALUES (4408, 1, 27);
+INSERT INTO `t_role_menu` VALUES (4409, 1, 28);
+INSERT INTO `t_role_menu` VALUES (4410, 1, 48);
+INSERT INTO `t_role_menu` VALUES (4411, 1, 54);
+INSERT INTO `t_role_menu` VALUES (4412, 1, 34);
+INSERT INTO `t_role_menu` VALUES (4413, 1, 35);
+INSERT INTO `t_role_menu` VALUES (4414, 1, 36);
+INSERT INTO `t_role_menu` VALUES (4415, 1, 49);
+INSERT INTO `t_role_menu` VALUES (4416, 1, 37);
+INSERT INTO `t_role_menu` VALUES (4417, 1, 38);
+INSERT INTO `t_role_menu` VALUES (4418, 1, 50);
+INSERT INTO `t_role_menu` VALUES (4419, 1, 39);
+INSERT INTO `t_role_menu` VALUES (4420, 1, 45);
+INSERT INTO `t_role_menu` VALUES (4421, 1, 47);
+INSERT INTO `t_role_menu` VALUES (4422, 1, 46);
+INSERT INTO `t_role_menu` VALUES (4423, 1, 52);
+INSERT INTO `t_role_menu` VALUES (4424, 1, 53);
+INSERT INTO `t_role_menu` VALUES (4425, 1, 40);
+INSERT INTO `t_role_menu` VALUES (4426, 1, 1);
+INSERT INTO `t_role_menu` VALUES (4427, 1, 2);
+INSERT INTO `t_role_menu` VALUES (4428, 1, 3);
+INSERT INTO `t_role_menu` VALUES (4429, 1, 4);
+INSERT INTO `t_role_menu` VALUES (4430, 1, 5);
+INSERT INTO `t_role_menu` VALUES (4431, 1, 6);
+INSERT INTO `t_role_menu` VALUES (4432, 1, 7);
+INSERT INTO `t_role_menu` VALUES (4433, 1, 674);
+INSERT INTO `t_role_menu` VALUES (4434, 1, 675);
+INSERT INTO `t_role_menu` VALUES (4435, 1, 676);
+INSERT INTO `t_role_menu` VALUES (4436, 1, 11);
+INSERT INTO `t_role_menu` VALUES (4437, 1, 12);
+INSERT INTO `t_role_menu` VALUES (4438, 1, 13);
+INSERT INTO `t_role_menu` VALUES (4439, 1, 14);
+INSERT INTO `t_role_menu` VALUES (4440, 1, 15);
+INSERT INTO `t_role_menu` VALUES (4441, 1, 16);
+INSERT INTO `t_role_menu` VALUES (4442, 1, 8);
+INSERT INTO `t_role_menu` VALUES (4443, 1, 9);
+INSERT INTO `t_role_menu` VALUES (4444, 1, 10);
+INSERT INTO `t_role_menu` VALUES (4445, 1, 17);
 COMMIT;
 
 -- ----------------------------
@@ -397,15 +415,13 @@ CREATE TABLE `t_sys_dic` (
                              `_profile` varchar(31) DEFAULT NULL,
                              `_desc` varchar(1024) DEFAULT NULL,
                              PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of t_sys_dic
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_sys_dic` VALUES (1, 'name', 'Oven', NULL, NULL);
-INSERT INTO `t_sys_dic` VALUES (2, 'age', '18', NULL, NULL);
-INSERT INTO `t_sys_dic` VALUES (3, 'gender', '男', NULL, NULL);
+INSERT INTO `t_sys_dic` VALUES (4, 'secKill', '0', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -439,16 +455,19 @@ CREATE TABLE `t_user` (
                           `create_id` int(11) DEFAULT NULL COMMENT '创建人ID',
                           `last_modify_time` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '最后修改时间',
                           `last_modify_id` int(11) DEFAULT NULL COMMENT '最后修改人ID',
-                          `last_login_time` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '最后登录时间',
+                          `last_login_time` varchar(31) DEFAULT NULL COMMENT '最后登录时间',
+                          `open_id` varchar(127) DEFAULT NULL,
+                          `err_num` int(11) DEFAULT NULL,
+                          `avatar` varchar(127) DEFAULT NULL,
                           PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` VALUES (1, 'Oven', 'bf5025fefa332dadc1e9c20f2e066be4', 'Oven', 18, 'oven@vhzsqm.com', '15731135527', 0, 1, '2018-10-19 12:52:17', 1, '2020-01-09 18:41:42', 1, '2020-01-09 18:41:42');
-INSERT INTO `t_user` VALUES (8, 'admin', 'd8e6ca2238dccaf93c13bde915f9e88f', 'admin', 18, 'admin@vhzsqm.com', '15731135527', 0, 1, '2018-10-30 09:49:43', 1, '2019-06-14 11:11:46', 1, '2020-01-09 18:41:42');
+INSERT INTO `t_user` VALUES (1, 'Oven', '96ba8efe664c1b11fa56a691e1094cc8', 'Oven', 18, 'oven@vhzsqm.com', '15731135527', 0, 1, '2018-10-19 12:52:17', 1, '2020-01-09 18:41:42', 1, '2020-11-04 20:01:01', NULL, 0, '/avatar/19f7be77-09df-414b-90e9-bac445017f5d.jpg');
+INSERT INTO `t_user` VALUES (2, 'admin', '18526bf18b5fbe2f1c4f4a6745b25201', 'admin', 27, '503612012@qq.com', '15731135527', 0, 1, '2020-10-15 10:01:28', 1, '2020-10-23 19:05:58', 1, NULL, NULL, 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -461,14 +480,14 @@ CREATE TABLE `t_user_role` (
                                `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
                                PRIMARY KEY (`dbid`),
                                UNIQUE KEY `t_user_role_dbid_uindex` (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户-角色关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户-角色关系表';
 
 -- ----------------------------
 -- Records of t_user_role
 -- ----------------------------
 BEGIN;
 INSERT INTO `t_user_role` VALUES (30, 1, 1);
-INSERT INTO `t_user_role` VALUES (31, 8, 17);
+INSERT INTO `t_user_role` VALUES (33, 13, 1);
 COMMIT;
 
 -- ----------------------------
@@ -478,9 +497,9 @@ DROP TABLE IF EXISTS `t_wechat_fund`;
 CREATE TABLE `t_wechat_fund` (
                                  `dbid` int(11) NOT NULL AUTO_INCREMENT,
                                  `data_date` varchar(31) DEFAULT NULL,
-                                 `money` double DEFAULT NULL,
+                                 `money` decimal(8,2) DEFAULT NULL,
                                  PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for t_workhour
@@ -498,7 +517,7 @@ CREATE TABLE `t_workhour` (
                               `has_pay` int(11) DEFAULT '0' COMMENT '是否发薪，0否，1是',
                               `remark` text COMMENT '备注',
                               PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for t_worksite
@@ -514,6 +533,6 @@ CREATE TABLE `t_worksite` (
                               `last_modify_id` int(11) DEFAULT NULL,
                               `last_modify_time` varchar(31) DEFAULT NULL,
                               PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
