@@ -1,5 +1,8 @@
 # OVEN SPRINGBOOT DEOM
-
+## 项目测试地址
+>  http://124.70.154.221:45678/
+>  用户名：admin
+>  密码：123456
 ## 安装步骤
 ### 1. 下载代码
 git clone https://github.com/503612012/demo.git
