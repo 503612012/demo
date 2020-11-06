@@ -57,7 +57,7 @@ public class LimitInterceptor {
             case IP_AND_METHOD:
                 @SuppressWarnings("ConstantConditions")
                 HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-                key = AppConst.LIMIT_KEY_PREFIX + IPUtils.getClientIPAddr(req) + "_" + limitAnnotation.key();
+                key = LimitKey.LIMIT_KEY_PREFIX + IPUtils.getClientIPAddr(req) + "_" + limitAnnotation.key();
                 break;
             default:
                 key = StringUtils.upperCase(method.getName());

@@ -22,6 +22,7 @@ import com.oven.core.worksite.service.WorksiteService;
 import com.oven.core.worksite.vo.Worksite;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -367,7 +368,7 @@ public class SystemController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/limit")
-    @Limit(key = "limit", period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = "limit", period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object limit() {
         return UUID.randomUUID().toString();
     }

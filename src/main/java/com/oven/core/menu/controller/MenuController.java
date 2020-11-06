@@ -1,6 +1,5 @@
 package com.oven.core.menu.controller;
 
-import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.core.base.controller.BaseController;
@@ -8,6 +7,7 @@ import com.oven.core.menu.service.MenuService;
 import com.oven.core.menu.vo.Menu;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -57,7 +57,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.MENU_UPDATE)
-    @Limit(key = AppConst.MENU_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.MENU_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(Menu menu) throws MyException {
         try {
 //            menuService.update(menu);
@@ -76,7 +76,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.MENU_SETSTATUS)
-    @Limit(key = AppConst.MENU_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.MENU_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer menuId, Integer status) throws MyException {
         try {
             Menu menu = menuService.getById(menuId);

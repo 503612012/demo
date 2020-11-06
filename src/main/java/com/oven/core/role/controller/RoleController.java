@@ -15,6 +15,7 @@ import com.oven.core.userRole.service.UserRoleService;
 import com.oven.core.userRole.vo.UserRole;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -107,7 +108,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
-    @Limit(key = AppConst.ROLE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ROLE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object add(Role role) throws MyException {
         try {
             roleService.add(role);
@@ -123,7 +124,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
-    @Limit(key = AppConst.ROLE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ROLE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object update(Role role) throws MyException {
         try {
             if (role.getId() == 1 || role.getId() == 2) {
@@ -144,7 +145,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.ROLE_DELETE)
-    @Limit(key = AppConst.ROLE_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ROLE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             if (id == 1 || id == 2) {
@@ -170,7 +171,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
-    @Limit(key = AppConst.ROLE_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ROLE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer roleId, Integer status) throws MyException {
         try {
             if (roleId == 1 || roleId == 2) {
@@ -221,7 +222,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/setRoleMenu")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
-    @Limit(key = AppConst.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             if (roleId == 1 || roleId == 2) {

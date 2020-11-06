@@ -1,6 +1,5 @@
 package com.oven.core.advanceSalary.controller;
 
-import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.LayuiPager;
@@ -9,6 +8,7 @@ import com.oven.core.advanceSalary.vo.AdvanceSalary;
 import com.oven.core.base.controller.BaseController;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -69,7 +69,7 @@ public class AdvanceSalaryController extends BaseController {
     @ResponseBody
     @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.ADVANCE_SALARY_INSERT)
-    @Limit(key = AppConst.ADVANCESALARY_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ADVANCESALARY_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object add(AdvanceSalary advanceSalary) throws MyException {
         try {
             advanceSalaryService.add(advanceSalary);
@@ -87,7 +87,7 @@ public class AdvanceSalaryController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.ADVANCE_SALARY_DELETE)
-    @Limit(key = AppConst.ADVANCESALARY_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.ADVANCESALARY_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             // 判断该预支薪资是否已经归还

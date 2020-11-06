@@ -1,6 +1,5 @@
 package com.oven.core.fund.controller;
 
-import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.LayuiPager;
@@ -12,6 +11,7 @@ import com.oven.framework.annotation.CurrentUser;
 import com.oven.framework.cache.CacheService;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -98,7 +98,7 @@ public class FundController extends BaseController {
     @ResponseBody
     @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.FUND_INSERT)
-    @Limit(key = AppConst.FUND_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object add(Fund fund) throws MyException {
         try {
             fundService.add(fund);
@@ -143,7 +143,7 @@ public class FundController extends BaseController {
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.FUND_UPDATE)
-    @Limit(key = AppConst.FUND_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object update(Fund fund) throws MyException {
         try {
             fundService.update(fund);
@@ -176,7 +176,7 @@ public class FundController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.FUND_DELETE)
-    @Limit(key = AppConst.FUND_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             boolean result = fundService.delete(id);
@@ -199,7 +199,7 @@ public class FundController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.FUND_SETSTATUS)
-    @Limit(key = AppConst.FUND_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer fundId, Integer status) throws MyException {
         try {
             Fund fund = fundService.getById(fundId);

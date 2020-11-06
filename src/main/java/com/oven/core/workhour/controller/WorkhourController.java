@@ -1,6 +1,5 @@
 package com.oven.core.workhour.controller;
 
-import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.LayuiPager;
@@ -9,6 +8,7 @@ import com.oven.core.workhour.service.WorkhourService;
 import com.oven.core.workhour.vo.Workhour;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -78,7 +78,7 @@ public class WorkhourController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.WORKHOUR_INSERT)
-    @Limit(key = AppConst.WORKHOUR_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.WORKHOUR_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(Workhour workhour) throws MyException {
         try {
             Workhour workhourInDeb = workhourService.isInputed(workhour.getEmployeeId(), workhour.getWorkDate(), workhour.getWorksiteId());
@@ -100,7 +100,7 @@ public class WorkhourController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.WORKHOUR_DELETE)
-    @Limit(key = AppConst.WORKHOUR_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.WORKHOUR_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             workhourService.delete(id);

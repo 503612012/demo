@@ -1,6 +1,5 @@
 package com.oven.core.worksite.controller;
 
-import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.LayuiPager;
@@ -14,6 +13,7 @@ import com.oven.core.worksite.service.WorksiteService;
 import com.oven.core.worksite.vo.Worksite;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -84,7 +84,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.WORKSITE_INSERT)
-    @Limit(key = AppConst.WORKSITE_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.WORKSITE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object add(Worksite worksite) throws MyException {
         try {
             worksiteService.add(worksite);
@@ -100,7 +100,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.WORKSITE_UPDATE)
-    @Limit(key = AppConst.WORKSITE_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.WORKSITE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object update(Worksite worksite) throws MyException {
         try {
             worksiteService.update(worksite);
@@ -118,7 +118,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.WORKSITE_DELETE)
-    @Limit(key = AppConst.WORKSITE_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.WORKSITE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             // 判断该工地下有没有未发放薪资的工时
@@ -147,7 +147,7 @@ public class WorksiteController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.WORKSITE_SETSTATUS)
-    @Limit(key = AppConst.WORKSITE_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.WORKSITE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer worksiteId, Integer status) throws MyException {
         try {
             Worksite worksite = worksiteService.getById(worksiteId);

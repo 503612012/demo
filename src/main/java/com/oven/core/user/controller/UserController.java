@@ -11,6 +11,7 @@ import com.oven.core.user.service.UserService;
 import com.oven.core.user.vo.User;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -160,7 +161,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.USER_INSERT)
-    @Limit(key = AppConst.USER_INSERT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.USER_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(User user) throws MyException {
         try {
             User userInDb = userService.getByUserName(user.getUserName());
@@ -216,7 +217,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
-    @Limit(key = AppConst.USER_UPDATE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.USER_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(User user) throws MyException {
         try {
             if (user.getId() == 1 || user.getId() == 2) {
@@ -237,7 +238,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.USER_DELETE)
-    @Limit(key = AppConst.USER_DELETE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.USER_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             if (id == 1 || id == 2) {
@@ -259,7 +260,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.USER_SETSTATUS)
-    @Limit(key = AppConst.USER_UPDATE_STATUS_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.USER_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object updateStatus(Integer userId, Integer status) throws MyException {
         try {
             if (userId == 1 || userId == 2) {
@@ -300,7 +301,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/setUserRole")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
-    @Limit(key = AppConst.USER_SET_USER_ROLE_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.USER_SET_USER_ROLE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object setUserRole(Integer userId, String roleIds) throws MyException {
         try {
             if (userId == 1 || userId == 2) {
@@ -359,7 +360,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("/uploadAvatar")
     @RequiresPermissions(PermissionCode.UPLOAD_AVATAR)
-    @Limit(key = AppConst.USER_UPLOAD_AVATAR_LIMIT_KEY, period = 5, count = 1, errMsg = AppConst.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.USER_UPLOAD_AVATAR_LIMIT_KEY, period = 5, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object uploadAvatar(MultipartFile file, HttpServletRequest req) throws MyException {
         try {
             String originalFilename = file.getOriginalFilename();

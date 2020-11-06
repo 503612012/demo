@@ -1,6 +1,5 @@
 package com.oven.core.fundBill.controller;
 
-import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
 import com.oven.common.util.LayuiPager;
@@ -9,6 +8,7 @@ import com.oven.core.fundBill.service.FundBillService;
 import com.oven.core.fundBill.vo.FundBill;
 import com.oven.framework.exception.MyException;
 import com.oven.framework.limitation.Limit;
+import com.oven.framework.limitation.LimitKey;
 import com.oven.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -85,7 +85,7 @@ public class FundBillController extends BaseController {
     @ResponseBody
     @RequestMapping("/doAdd")
     @RequiresPermissions(PermissionCode.FUNDBILL_INSERT)
-    @Limit(key = AppConst.FUND_INPUT_PROFIT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_INPUT_PROFIT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(FundBill fundBill) throws MyException {
         try {
             fundBillService.add(fundBill);
@@ -101,7 +101,7 @@ public class FundBillController extends BaseController {
     @ResponseBody
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.FUNDBILL_UPDATE)
-    @Limit(key = AppConst.FUND_INPUT_UPDATE_PROFIT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_INPUT_UPDATE_PROFIT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(FundBill fundBill) throws MyException {
         try {
             fundBillService.update(fundBill);
@@ -119,7 +119,7 @@ public class FundBillController extends BaseController {
     @ResponseBody
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.FUNDBILL_DELETE)
-    @Limit(key = AppConst.FUND_INPUT_DELETE_PROFIT_LIMIT_KEY, period = AppConst.LIMIT_TIME, count = 1, errMsg = AppConst.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
+    @Limit(key = LimitKey.FUND_INPUT_DELETE_PROFIT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
             boolean result = fundBillService.delete(id);
