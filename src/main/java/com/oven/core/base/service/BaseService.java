@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 基类服务
@@ -30,8 +31,23 @@ public class BaseService {
      */
     @SuppressWarnings("all")
     public User getCurrentUser() {
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (servletRequestAttributes == null) {
+            return null;
+        }
+        HttpServletRequest req = servletRequestAttributes.getRequest();
+        if (req == null) {
+            return null;
+        }
+        HttpSession session = req.getSession();
+        if (session == null) {
+            return null;
+        }
+        Object attribute = session.getAttribute(AppConst.CURRENT_USER);
+        if (attribute == null) {
+            return null;
+        }
+        return (User) attribute;
     }
 
     /**
@@ -39,7 +55,14 @@ public class BaseService {
      */
     @SuppressWarnings("all")
     public String getCurrentUserIp() {
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (servletRequestAttributes == null) {
+            return null;
+        }
+        HttpServletRequest req = servletRequestAttributes.getRequest();
+        if (req == null) {
+            return null;
+        }
         return IPUtils.getClientIPAddr(req);
     }
 
