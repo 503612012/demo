@@ -36,7 +36,7 @@ public class FundService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.FUND_PREFIX);
         // 记录日志
-        super.addLog("添加基金", fund.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加基金", fund.toString());
     }
 
     /**
@@ -64,7 +64,7 @@ public class FundService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.FUND_PREFIX);
             // 记录日志
-            super.addLog("修改基金", "[" + fundName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("修改基金", "[" + fundName + "]" + str);
         }
     }
 
@@ -133,7 +133,7 @@ public class FundService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.FUND_PREFIX);
             // 记录日志
-            super.addLog("删除基金", fund.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("删除基金", fund.toString());
         }
         return flag;
     }
@@ -165,7 +165,7 @@ public class FundService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.FUND_PREFIX);
         // 记录日志
-        super.addLog("修改基金排序", fund.getFundName() + "的排序值由【" + fund.getOrder() + "】改为【" + order + "】", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("修改基金排序", fund.getFundName() + "的排序值由【" + fund.getOrder() + "】改为【" + order + "】");
     }
 
 }

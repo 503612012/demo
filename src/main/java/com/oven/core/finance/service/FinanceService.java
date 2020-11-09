@@ -40,7 +40,7 @@ public class FinanceService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.FINANCE_PREFIX);
         // 记录日志
-        super.addLog("添加财务登记", finance.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加财务登记", finance.toString());
     }
 
     /**
@@ -91,7 +91,7 @@ public class FinanceService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.FINANCE_PREFIX);
             // 记录日志
-            super.addLog("删除财务登记", finance.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("删除财务登记", finance.toString());
         }
         return flag;
     }

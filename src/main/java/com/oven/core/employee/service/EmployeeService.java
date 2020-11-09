@@ -37,7 +37,7 @@ public class EmployeeService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
         // 记录日志
-        super.addLog("添加员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加员工", employee.toString());
     }
 
     /**
@@ -88,7 +88,7 @@ public class EmployeeService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
             // 记录日志
-            super.addLog("修改员工", "[" + employeeName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("修改员工", "[" + employeeName + "]" + str);
         }
     }
 
@@ -157,7 +157,7 @@ public class EmployeeService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
             // 记录日志
-            super.addLog("删除员工", employee.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("删除员工", employee.toString());
         }
         return flag;
     }

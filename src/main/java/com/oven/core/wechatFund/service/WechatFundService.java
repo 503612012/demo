@@ -31,7 +31,7 @@ public class WechatFundService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WECHAT_FUND_PREFIX);
         // 记录日志
-        super.addLog("添加微信基金", wechatFund.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加微信基金", wechatFund.toString());
     }
 
     /**

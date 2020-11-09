@@ -79,7 +79,7 @@ public class MenuService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES);
             // 记录日志
-            super.addLog("修改菜单", "[" + menuName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("修改菜单", "[" + menuName + "]" + str);
         }
     }
 

@@ -68,7 +68,7 @@ public class FundBillService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.FUNDBILL_PREFIX);
             // 记录日志
-            super.addLog("修改基金", "[" + fundName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("修改基金", "[" + fundName + "]" + str);
         }
     }
 
@@ -120,7 +120,7 @@ public class FundBillService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.FUNDBILL_PREFIX);
             // 记录日志
-            super.addLog("删除基金收益", fundBill.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("删除基金收益", fundBill.toString());
         }
         return flag;
     }
@@ -134,7 +134,7 @@ public class FundBillService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.FUNDBILL_PREFIX);
         // 记录日志
-        super.addLog("添加基金账单", fundBill.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加基金账单", fundBill.toString());
     }
 
     /**

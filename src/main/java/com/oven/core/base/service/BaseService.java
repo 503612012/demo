@@ -46,8 +46,13 @@ public class BaseService {
     /**
      * 添加日志
      */
-    public void addLog(String title, String content, Integer operatorId, String operatorName, String operatorIp) {
-        logService.addLog(title, content, operatorId, operatorName, operatorIp);
+    public void addLog(String title, String content) {
+        User user = this.getCurrentUser();
+        if (user != null) {
+            logService.addLog(title, content, user.getId(), user.getNickName(), this.getCurrentUserIp());
+        } else {
+            logService.addLog(title, content, -1, "系统", "127.0.0.1");
+        }
     }
 
     /**

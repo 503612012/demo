@@ -91,7 +91,7 @@ public class WorksiteService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
-        super.addLog("添加工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加工地", worksite.toString());
     }
 
     /**
@@ -143,7 +143,7 @@ public class WorksiteService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
             // 记录日志
-            super.addLog("修改工地", "[" + name + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("修改工地", "[" + name + "]" + str);
         }
     }
 
@@ -157,7 +157,7 @@ public class WorksiteService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKSITE_PREFIX);
         // 记录日志
-        super.addLog("删除工地", worksite.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("删除工地", worksite.toString());
     }
 
 }

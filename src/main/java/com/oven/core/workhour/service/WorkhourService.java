@@ -73,7 +73,7 @@ public class WorkhourService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKHOUR_PREFIX, RedisCacheKey.PAYRECORD_PREFIX);
         // 记录日志
-        super.addLog("录入工时", workhour.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("录入工时", workhour.toString());
     }
 
     /**
@@ -103,7 +103,7 @@ public class WorkhourService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKHOUR_PREFIX);
         // 记录日志
-        super.addLog("删除工时", workhour.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("删除工时", workhour.toString());
     }
 
     /**

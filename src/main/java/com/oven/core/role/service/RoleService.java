@@ -106,7 +106,7 @@ public class RoleService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
         // 记录日志
-        super.addLog("添加角色", role.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加角色", role.toString());
     }
 
     /**
@@ -137,7 +137,7 @@ public class RoleService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
             // 记录日志
-            super.addLog("修改角色", "[" + roleName + "]" + str, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("修改角色", "[" + roleName + "]" + str);
         }
     }
 
@@ -151,7 +151,7 @@ public class RoleService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
         // 记录日志
-        super.addLog("删除角色", role.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("删除角色", role.toString());
     }
 
     /**
@@ -245,7 +245,7 @@ public class RoleService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
             // 记录日志
-            super.addLog("分配权限", "删除了角色[" + role.getRoleName() + "]所有的权限！", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("分配权限", "删除了角色[" + role.getRoleName() + "]所有的权限！");
             return;
         }
         // 给角色添加新的菜单
@@ -271,7 +271,7 @@ public class RoleService extends BaseService {
         // 移除shiro授权缓存
         super.batchRemove(AppConst.SHIRO_CACHE_KEY_PROFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + super.getCurrentUser().getId());
         // 记录日志
-        super.addLog("分配权限", "角色[" + role.getRoleName() + "]分配权限[" + content + "]", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("分配权限", "角色[" + role.getRoleName() + "]分配权限[" + content + "]");
     }
 
 }

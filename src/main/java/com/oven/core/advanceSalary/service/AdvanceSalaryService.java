@@ -34,7 +34,7 @@ public class AdvanceSalaryService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.ADVANCESALARY_PREFIX);
         // 记录日志
-        super.addLog("添加预支薪资", advanceSalary.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加预支薪资", advanceSalary.toString());
     }
 
     /**
@@ -85,7 +85,7 @@ public class AdvanceSalaryService extends BaseService {
             // 移除缓存
             super.batchRemove(RedisCacheKey.ADVANCESALARY_PREFIX);
             // 记录日志
-            super.addLog("删除预支薪资", advanceSalary.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+            super.addLog("删除预支薪资", advanceSalary.toString());
         }
         return flag;
     }

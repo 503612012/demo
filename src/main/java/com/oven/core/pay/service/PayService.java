@@ -64,7 +64,7 @@ public class PayService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.WORKHOUR_PREFIX);
         // 记录日志
-        super.addLog("工时标记为已发薪", workhourIds, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("工时标记为已发薪", workhourIds);
 
         // 发放金额中扣除预支薪资
         List<AdvanceSalary> advanceSalaries = advanceSalaryDao.getByEmployeeId(employeeId, null);
@@ -84,7 +84,7 @@ public class PayService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.ADVANCESALARY_PREFIX);
         // 记录日志
-        super.addLog("预支薪资标记为已归还", "员工ID" + employeeId, super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("预支薪资标记为已归还", "员工ID" + employeeId);
 
         // 从工地资金中扣除
         Finance finance = financeDao.getByWorksiteId(worksiteId);
@@ -100,7 +100,7 @@ public class PayService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.FINANCE_PREFIX);
         // 记录日志4
-        super.addLog("更新财务支出金额", "【" + oldOutMoney + "】改为【" + finance.getOutMoney() + "】", super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("更新财务支出金额", "【" + oldOutMoney + "】改为【" + finance.getOutMoney() + "】");
 
         // 保存发薪记录
         PayRecord payRecord = new PayRecord();
@@ -117,7 +117,7 @@ public class PayService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.PAYRECORD_PREFIX);
         // 记录日志
-        super.addLog("添加发薪记录", payRecord.toString(), super.getCurrentUser().getId(), super.getCurrentUser().getNickName(), super.getCurrentUserIp());
+        super.addLog("添加发薪记录", payRecord.toString());
         return "";
     }
 
