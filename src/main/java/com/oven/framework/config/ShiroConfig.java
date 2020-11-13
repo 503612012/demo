@@ -13,6 +13,7 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -105,6 +106,10 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        RedisSessionDAO sessionDAO = new RedisSessionDAO();
+        sessionDAO.setRedisManager(redisManager());
+        sessionManager.setSessionDAO(sessionDAO);
+        sessionDAO.setKeyPrefix(AppConst.SHIRO_CACHE_KEY_PROFIX + "shiro_session_");
 //        sessionManager.setGlobalSessionTimeout(10000); // 10s
         sessionManager.setGlobalSessionTimeout(600000); // 10m
         sessionManager.setDeleteInvalidSessions(true);

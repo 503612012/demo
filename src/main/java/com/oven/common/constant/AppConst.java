@@ -23,8 +23,8 @@ public interface AppConst {
 
     String REQUEST_LOG_TEMPLATE_TABLENAME = "t_request_log_template"; // 请求日志模板表名
 
-    String SHIRO_COOKIE_KEY = "demo_shiro_cookie_key";
-    String SHIRO_CACHE_KEY_PROFIX = "demo_";
+    String SHIRO_COOKIE_KEY = RedisCacheKey.PREFIX + "shiro_cookie_key";
+    String SHIRO_CACHE_KEY_PROFIX = RedisCacheKey.PREFIX;
 
     String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     String DATE_PATTERN = "yyyy-MM-dd";
