@@ -1,10 +1,12 @@
 package com.oven.framework.limitation;
 
+import com.oven.common.constant.AppConst;
+
 public interface LimitKey {
 
     int LIMIT_TIME = 2;
 
-    String LIMIT_KEY_PREFIX = "demo_limit_key_prefix_";
+    String LIMIT_KEY_PREFIX = AppConst.APP_NAME + "limit_key_prefix_";
 
     String SYSTEM_LIMIT = "操作太快，请稍后重试！";
 
