@@ -7,7 +7,7 @@ package com.oven.common.constant;
  */
 public interface RedisCacheKey {
 
-    String PREFIX = "demo_";
+    String PREFIX = AppConst.APP_NAME;
 
     // 用户实体类缓存key定义
     String USER_PREFIX = PREFIX + "user_";

@@ -7,6 +7,8 @@ package com.oven.common.constant;
  */
 public interface AppConst {
 
+    String APP_NAME = "demo_";
+
     String ERROR_LOG_PREFIX = "---------------------------"; // ERROR日志前缀
 
     String INFO_LOG_PREFIX = "***************************"; // INFO日志前缀
@@ -23,8 +25,8 @@ public interface AppConst {
 
     String REQUEST_LOG_TEMPLATE_TABLENAME = "t_request_log_template"; // 请求日志模板表名
 
-    String SHIRO_COOKIE_KEY = RedisCacheKey.PREFIX + "shiro_cookie_key";
-    String SHIRO_CACHE_KEY_PROFIX = RedisCacheKey.PREFIX;
+    String SHIRO_COOKIE_KEY = APP_NAME + "shiro_cookie_key";
+    String SHIRO_CACHE_KEY_PROFIX = APP_NAME;
 
     String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     String DATE_PATTERN = "yyyy-MM-dd";

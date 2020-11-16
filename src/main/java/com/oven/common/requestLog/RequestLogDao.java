@@ -1,7 +1,6 @@
 package com.oven.common.requestLog;
 
 import com.oven.common.constant.AppConst;
-import com.oven.common.constant.RedisCacheKey;
 import com.oven.framework.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -60,7 +59,7 @@ public class RequestLogDao {
      */
     public boolean isExist(String tableName) {
         // 先读缓存，看是否已经创建表
-        Object result = cacheService.get(RedisCacheKey.PREFIX + tableName);
+        Object result = cacheService.get(AppConst.APP_NAME + tableName);
         if (result != null) {
             return true;
         }
@@ -69,7 +68,7 @@ public class RequestLogDao {
         String sql = "select 1 from " + tableName;
         try {
             this.jdbcTemplate.execute(sql);
-            cacheService.set(RedisCacheKey.PREFIX + tableName, new Object());
+            cacheService.set(AppConst.APP_NAME + tableName, new Object());
             return true;
         } catch (Exception e) {
             return false;
@@ -81,7 +80,7 @@ public class RequestLogDao {
      */
     public void createTable(String tableName) {
         // 先读缓存，看是否已经创建表
-        Object result = cacheService.get(tableName);
+        Object result = cacheService.get(AppConst.APP_NAME + tableName);
         if (result != null) {
             return;
         }
@@ -93,7 +92,7 @@ public class RequestLogDao {
         try {
             this.jdbcTemplate.execute(sql.toString());
             // 创建成功时，更新缓存
-            cacheService.set(tableName, new Object());
+            cacheService.set(AppConst.APP_NAME + tableName, new Object());
         } catch (Exception e) {
             log.error("创建表时出现异常：\n", e);
         }
