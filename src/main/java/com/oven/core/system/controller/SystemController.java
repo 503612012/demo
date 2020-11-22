@@ -230,8 +230,8 @@ public class SystemController extends BaseController {
 
             User userInDb = userService.getByUserName(userName);
             if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVEN_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
-                return super.fail(ResultEnum.OVEN_WRONG_NUM.getCode(), ResultEnum.OVEN_WRONG_NUM.getValue());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                return super.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
             }
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
@@ -266,8 +266,8 @@ public class SystemController extends BaseController {
                 return super.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
             } else if (e instanceof IncorrectCredentialsException) {
                 if (userInDb.getErrNum() >= 5) {
-                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVEN_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
-                    return super.fail(ResultEnum.OVEN_WRONG_NUM.getCode(), ResultEnum.OVEN_WRONG_NUM.getValue());
+                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                    return super.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
                 }
                 userService.logPasswordWrong(userInDb.getId());
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));

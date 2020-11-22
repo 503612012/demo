@@ -27,7 +27,7 @@ public enum ResultEnum {
     NO_THIS_USER(4001, "用户名或密码错误！"),
     PASSWORD_WRONG(4002, "用户名或密码错误！"),
     USER_DISABLE(4003, "该用户已被锁定，请联系管理人员！"),
-    OVEN_WRONG_NUM(4004, "密码错误超过5次，请联系管理人员解锁！"),
+    OVER_WRONG_NUM(4004, "密码错误超过5次，请联系管理人员解锁！"),
     SESSION_TIMEOUT(4005, "未登录或会话超时，请重新登录！"),
     LOSE_LOGIN(4006, "已掉线，请重新登录！"),
     OTHER_LOGINED(4007, "会话失效，该账号已被其他人登录。请检查账号是否丢失或立即修改密码！"),
