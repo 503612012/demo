@@ -15,8 +15,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
-/***
+/**
  * redis服务层实现类
  *
  * @author Oven
@@ -669,7 +668,7 @@ public class RedisServiceImpl implements IRedisService {
         this.redisDao.pipelineDel(keys);
     }
 
-    /***
+    /**
      * 设置过期时间
      *
      * @param expire 单位：秒
