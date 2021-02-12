@@ -218,7 +218,7 @@ public class SystemController extends BaseController {
             if (StringUtils.isEmpty(inputCode)) {
                 return super.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
             } else {
-                if (!inputCode.toLowerCase().equals(code.toLowerCase())) {
+                if (!inputCode.equalsIgnoreCase(code)) {
                     return super.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
                 }
             }
