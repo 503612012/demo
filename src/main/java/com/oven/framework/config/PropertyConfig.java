@@ -22,7 +22,6 @@ public class PropertyConfig {
     private final static String PRO_PROFILE = "pro"; // 生产环境
     private final static String PROFILE = "@profile@"; // 由于IDEA开发环境无法进行变量替换，故这里识别到占位符时，默认为开发环境
 
-
     /**
      * 生成Properties对象
      */
@@ -88,18 +87,26 @@ public class PropertyConfig {
             log.error(AppConst.ERROR_LOG_PREFIX + "加载系统配置表异常，异常信息：", e);
             return null;
         } finally {
-            try {
-                if (conn != null) {
+            if (conn != null) {
+                try {
                     conn.close();
+                } catch (Exception e) {
+                    log.error("加载配置信息类异常：", e);
                 }
-                if (pstmt != null) {
+            }
+            if (pstmt != null) {
+                try {
                     pstmt.close();
+                } catch (Exception e) {
+                    log.error("加载配置信息类异常：", e);
                 }
-                if (rs != null) {
+            }
+            if (rs != null) {
+                try {
                     rs.close();
+                } catch (Exception e) {
+                    log.error("加载配置信息类异常：", e);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
