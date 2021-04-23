@@ -15,9 +15,11 @@ ADD classes /usr/local/demo/classes
 ADD lib /usr/local/demo/lib
 ADD resources /usr/local/demo/resources
 ADD demo-1.0.0.jar /usr/local/demo
-ADD demo.sh /usr/local/demo
-RUN chmod +x /usr/local/demo/demo.sh
+ADD start.sh /usr/local/demo
+RUN chmod +x /usr/local/demo/start.sh
+ADD stop.sh /usr/local/demo
+RUN chmod +x /usr/local/demo/stop.sh
 
 EXPOSE 80
 WORKDIR /usr/local/demo
-CMD ["sh","demo.sh","start"]
+CMD ["sh","start.sh"]

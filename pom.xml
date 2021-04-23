@@ -368,9 +368,12 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <echo message="start copy demo.sh to target folder"/>
-                                <copy file="src/main/bin/demo.sh" tofile="${project.build.directory}/demo.sh"/>
-                                <echo message="finish copy demo.sh"/>
+                                <echo message="start copy start.sh to target folder"/>
+                                <copy file="src/main/bin/start.sh" tofile="${project.build.directory}/start.sh"/>
+                                <echo message="finish copy start.sh"/>
+                                <echo message="start copy stop.sh to target folder"/>
+                                <copy file="src/main/bin/stop.sh" tofile="${project.build.directory}/stop.sh"/>
+                                <echo message="finish copy stop.sh"/>
                             </tasks>
                         </configuration>
                     </execution>
@@ -382,9 +385,12 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <echo message="start exec chmod u+x demo.sh"/>
-                                <chmod file="${project.build.directory}/demo.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x demo.sh"/>
+                                <echo message="start exec chmod u+x start.sh"/>
+                                <chmod file="${project.build.directory}/start.sh" perm="u+x"/>
+                                <echo message="finish exec chmod u+x start.sh"/>
+                                <echo message="start exec chmod u+x stop.sh"/>
+                                <chmod file="${project.build.directory}/stop.sh" perm="u+x"/>
+                                <echo message="finish exec chmod u+x stop.sh"/>
                             </tasks>
                         </configuration>
                     </execution>
