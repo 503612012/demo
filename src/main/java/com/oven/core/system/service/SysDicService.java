@@ -23,7 +23,6 @@ public class SysDicService {
     @Resource
     private IRedisService redisService;
 
-
     /**
      * 查询所有
      */
