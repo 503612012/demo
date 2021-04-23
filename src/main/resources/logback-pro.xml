@@ -30,7 +30,7 @@
     <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/${LOG_FILE}.info.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${LOG_FILE}.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
             <maxFileSize>10MB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
