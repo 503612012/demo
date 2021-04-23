@@ -116,7 +116,7 @@
     <logger name="com" additivity="false" level="INFO">
         <appender-ref ref="SYNC_LOG"/>
     </logger>
-    <logger name="org" additivity="warn" level="INFO">
+    <logger name="org" additivity="false" level="WARN">
         <appender-ref ref="SYNC_LOG"/>
     </logger>
     <root level="INFO">
