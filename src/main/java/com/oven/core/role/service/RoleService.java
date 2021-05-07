@@ -181,7 +181,7 @@ public class RoleService extends BaseService {
         List<Menu> levelOne = menuService.getByPid(0); // 获取所有一级菜单
         for (Menu levelOneItem : levelOne) {
             JSONObject oneObj = new JSONObject();
-            oneObj.put("text", levelOneItem.getMenuName());
+            oneObj.put("label", levelOneItem.getMenuName());
             oneObj.put("id", levelOneItem.getId());
             RoleMenu levelOneRoleMenu = roleMenuService.getByRoleIdAndMenuId(id, levelOneItem.getId());
             if (levelOneRoleMenu == null) {
@@ -193,7 +193,7 @@ public class RoleService extends BaseService {
             JSONArray levelOneChildren = new JSONArray();
             for (Menu levelTwoItem : levelTwo) {
                 JSONObject twoObj = new JSONObject();
-                twoObj.put("text", levelTwoItem.getMenuName());
+                twoObj.put("label", levelTwoItem.getMenuName());
                 twoObj.put("id", levelTwoItem.getId());
                 RoleMenu levelTwoRoleMenu = roleMenuService.getByRoleIdAndMenuId(id, levelTwoItem.getId());
                 if (levelTwoRoleMenu == null) {
@@ -205,7 +205,7 @@ public class RoleService extends BaseService {
                 JSONArray levelTwoChildren = new JSONArray();
                 for (Menu levelThreeItem : levelThree) {
                     JSONObject threeObj = new JSONObject();
-                    threeObj.put("text", levelThreeItem.getMenuName());
+                    threeObj.put("label", levelThreeItem.getMenuName());
                     threeObj.put("id", levelThreeItem.getId());
                     RoleMenu levelThreeRoleMenu = roleMenuService.getByRoleIdAndMenuId(id, levelThreeItem.getId());
                     if (levelThreeRoleMenu == null) {
@@ -238,7 +238,7 @@ public class RoleService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void setRoleMenu(Integer roleId, String menuIds) {
-        // 删除用户原有的所有角色
+        // 删除角色原有的所有权限
         roleMenuService.deleteByRoleId(roleId);
         Role role = this.getById(roleId);
         if (StringUtils.isEmpty(menuIds)) { // 删除了该角色所有的权限

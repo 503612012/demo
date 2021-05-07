@@ -205,9 +205,9 @@ public class RoleController extends BaseController {
     @ResponseBody
     @RequestMapping("/getRoleMenuTree")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
-    public JSONArray getRoleMenuTree(Integer roleId) throws MyException {
+    public Object getRoleMenuTree(Integer roleId) throws MyException {
         try {
-            return roleService.getMenuTreeByRoleId(roleId);
+            return super.success(roleService.getMenuTreeByRoleId(roleId));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色ID获取权限树异常", e);
         }

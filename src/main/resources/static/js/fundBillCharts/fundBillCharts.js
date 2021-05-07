@@ -3,14 +3,14 @@ requirejs.config({
     baseUrl: '/',
     paths: {
         echarts: 'js/lib/echarts.min',
-        jquery: 'easyui/jquery.min',
+        jquery: 'js/lib/jquery.min',
         common: 'js/common/common',
         layui: 'layui/layui.all',
         http: 'js/common/http'
     },
     shim: {
-        "layui": {exports: "layui"},
-        "echarts": {exports: "echarts"}
+        layui: {exports: "layui"},
+        echarts: {exports: "echarts"}
     }
 });
 

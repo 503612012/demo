@@ -2,12 +2,12 @@
 requirejs.config({
     baseUrl: '/',
     paths: {
-        jquery: 'easyui/jquery.min',
+        jquery: 'js/lib/jquery.min',
         layui: 'layui/layui.all',
         common: 'js/common/common'
     },
     shim: {
-        "layui": {exports: "layui"}
+        layui: {exports: "layui"}
     }
 });
 

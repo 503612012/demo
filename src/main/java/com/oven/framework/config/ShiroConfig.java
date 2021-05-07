@@ -54,7 +54,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/*.js", "anon");
         filterChainDefinitionMap.put("/layui/**", "anon");
-        filterChainDefinitionMap.put("/easyui/**", "anon");
         filterChainDefinitionMap.put("/*.woff", "anon");
         filterChainDefinitionMap.put("/*.woff2", "anon");
         filterChainDefinitionMap.put("/*.ico", "anon");

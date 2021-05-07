@@ -82,7 +82,9 @@ public class FundBillChartsController extends BaseController {
             }
             List<Fund> fundsList = fundService.getAll();
             if (CollectionUtils.isEmpty(fundsList)) {
-                return super.fail(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue());
+                result.put("source", source);
+                result.put("series", series);
+                return super.success(result);
             }
             for (int i = 0; i < fundsList.size() + 1; i++) {
                 JSONObject seriesItem = new JSONObject();

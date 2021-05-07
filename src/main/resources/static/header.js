@@ -2,15 +2,15 @@
 requirejs.config({
     baseUrl: '/',
     paths: {
-        jquery: 'easyui/jquery.min',
+        jquery: 'js/lib/jquery.min',
         layui: 'layui/layui.all',
         crypto: 'js/lib/crypto-js',
         http: 'js/common/http',
         left: 'left'
     },
     shim: {
-        "layui": {exports: "layui"},
-        "crypto": {exports: "crypto"}
+        layui: {exports: "layui"},
+        crypto: {exports: "crypto"}
     }
 });
 

@@ -20,7 +20,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(securityInterceptor).excludePathPatterns("/login", "/css/**", "/js/**", "/layui/**", "/easyui/**", "/*.js");
+        registry.addInterceptor(securityInterceptor).excludePathPatterns("/login", "/css/**", "/js/**", "/layui/**", "/*.js");
     }
 
 }
