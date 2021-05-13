@@ -25,6 +25,7 @@ requirejs(['jquery', 'layui', 'http', 'eleTree'], function($, layui, http, eleTr
         tree = eleTree.render({
             elem: '.permission_tree',
             highlightCurrent: true,
+            renderAfterExpand: false,
             checkStrictly: true,
             showLine: true,
             data: data,
