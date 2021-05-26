@@ -92,6 +92,9 @@
         <includeCallerData>true</includeCallerData>
     </appender>
 
+    <root level="INFO">
+        <appender-ref ref="SYNC_LOG"/>
+    </root>
     <logger name="com.oven.core" additivity="false" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
     </logger>
@@ -110,17 +113,17 @@
     <logger name="com.oven.framework.aop" additivity="false" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
     </logger>
-    <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
-        <appender-ref ref="SYNC_DEBUG"/>
-    </logger>
     <logger name="com" additivity="false" level="INFO">
         <appender-ref ref="SYNC_LOG"/>
     </logger>
     <logger name="org" additivity="false" level="WARN">
         <appender-ref ref="SYNC_LOG"/>
     </logger>
-    <root level="INFO">
-        <appender-ref ref="SYNC_LOG"/>
-    </root>
+    <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
+        <appender-ref ref="SYNC_DEBUG"/>
+    </logger>
+    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="TRACE" additivity="false">
+        <appender-ref ref="SYNC_DEBUG"/>
+    </logger>
 
 </configuration>

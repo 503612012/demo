@@ -127,5 +127,9 @@
         <appender-ref ref="SYNC_JDBC"/>
         <appender-ref ref="SYNC_DEBUG"/>
     </logger>
+    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="TRACE" additivity="false">
+        <appender-ref ref="SYNC_JDBC"/>
+        <appender-ref ref="SYNC_DEBUG"/>
+    </logger>
 
 </configuration>
