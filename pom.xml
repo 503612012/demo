@@ -394,6 +394,25 @@
                             </tasks>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>delete</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo message="start delete useless file in target folder"/>
+                                <delete dir="${project.build.directory}/antrun"/>
+                                <delete dir="${project.build.directory}/generated-sources"/>
+                                <delete dir="${project.build.directory}/maven-archiver"/>
+                                <delete dir="${project.build.directory}/maven-status"/>
+                                <delete file="${project.build.directory}/demo-1.0.0.jar.bak"/>
+                                <delete file="${project.build.directory}/demo-1.0.0.jar.original"/>
+                                <echo message="finish delete useless file"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
