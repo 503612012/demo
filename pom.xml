@@ -402,7 +402,7 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <echo message="start delete useless file in target folder"/>
+                                <echo message="start delete useless file in target"/>
                                 <delete dir="${project.build.directory}/antrun"/>
                                 <delete dir="${project.build.directory}/generated-sources"/>
                                 <delete dir="${project.build.directory}/maven-archiver"/>
