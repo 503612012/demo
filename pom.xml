@@ -368,6 +368,8 @@
                         </goals>
                         <configuration>
                             <tasks>
+                                <echo message="start copy Dockerfile to target folder"/>
+                                <copy file="src/main/bin/Dockerfile" tofile="${project.build.directory}/Dockerfile"/>
                                 <echo message="start copy start.sh to target folder"/>
                                 <copy file="src/main/bin/start.sh" tofile="${project.build.directory}/start.sh"/>
                                 <echo message="finish copy start.sh"/>
