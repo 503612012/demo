@@ -3,6 +3,7 @@ package com.oven.core.user.service;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.role.service.RoleService;
 import com.oven.core.role.vo.Role;
@@ -117,9 +118,9 @@ public class UserService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public void add(User user) {
         user.setErrNum(0);
-        user.setCreateId(super.getCurrentUser().getId());
+        user.setCreateId(CommonUtils.getCurrentUser().getId());
         user.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
-        user.setLastModifyId(super.getCurrentUser().getId());
+        user.setLastModifyId(CommonUtils.getCurrentUser().getId());
         user.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
@@ -176,7 +177,7 @@ public class UserService extends BaseService {
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
             userInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
-            userInDb.setLastModifyId(super.getCurrentUser().getId());
+            userInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             userDao.update(userInDb);
             // 移除缓存
             super.batchRemove(RedisCacheKey.USER_PREFIX);

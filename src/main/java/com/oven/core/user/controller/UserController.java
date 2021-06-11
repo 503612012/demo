@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
+import com.oven.common.util.CommonUtils;
 import com.oven.common.util.EncryptUtils;
 import com.oven.common.util.LayuiPager;
 import com.oven.core.base.controller.BaseController;
@@ -84,7 +85,7 @@ public class UserController extends BaseController {
     @RequestMapping("/getCurrentUserInfo")
     public Object getCurrentUserInfo() throws MyException {
         try {
-            return super.success(userService.getByUserName(super.getCurrentUser().getUserName()));
+            return super.success(userService.getByUserName(CommonUtils.getCurrentUser().getUserName()));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取当前登录用户异常", e);
         }
@@ -336,7 +337,7 @@ public class UserController extends BaseController {
     public Object changePwd(String oldPwd, String newPwd) throws MyException {
         try {
             String oldPwdDecode = EncryptUtils.aesDecrypt(oldPwd, EncryptUtils.KEY);
-            User user = userService.getByUserName(super.getCurrentUser().getUserName());
+            User user = userService.getByUserName(CommonUtils.getCurrentUser().getUserName());
             if (user.getId() == 1 || user.getId() == 2) {
                 return super.fail(ResultEnum.CAN_NOT_SET_PWD.getCode(), ResultEnum.CAN_NOT_SET_PWD.getValue());
             }
@@ -375,7 +376,7 @@ public class UserController extends BaseController {
             }
             File savedFile = new File(avatarPath, fileName);
             FileUtils.copyInputStreamToFile(file.getInputStream(), savedFile);
-            userService.updateAvatar(super.getCurrentUser().getId(), "/avatar/" + fileName);
+            userService.updateAvatar(CommonUtils.getCurrentUser().getId(), "/avatar/" + fileName);
             User userInSession = (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
             userInSession.setAvatar("/avatar/" + fileName);
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInSession);

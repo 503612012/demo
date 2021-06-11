@@ -1,4 +1,4 @@
-SET NAMES utf8mb4;
+SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `t_advance_salary`;
@@ -14,8 +14,8 @@ CREATE TABLE `t_advance_salary`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 25
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 DROP TABLE IF EXISTS `t_config`;
 CREATE TABLE `t_config`
@@ -27,8 +27,8 @@ CREATE TABLE `t_config`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 38
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 BEGIN;
 INSERT INTO `t_config`
@@ -87,8 +87,8 @@ CREATE TABLE `t_crontab`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 BEGIN;
 INSERT INTO `t_crontab`
@@ -114,8 +114,8 @@ CREATE TABLE `t_employee`
     UNIQUE KEY `t_employee_dbid_uindex` (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 34
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='员工表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='员工表';
 
 DROP TABLE IF EXISTS `t_finance`;
 CREATE TABLE `t_finance`
@@ -138,8 +138,8 @@ CREATE TABLE `t_finance`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 22
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 DROP TABLE IF EXISTS `t_fund`;
 CREATE TABLE `t_fund`
@@ -153,8 +153,8 @@ CREATE TABLE `t_fund`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 21
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 DROP TABLE IF EXISTS `t_fund_bill`;
 CREATE TABLE `t_fund_bill`
@@ -167,8 +167,8 @@ CREATE TABLE `t_fund_bill`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 490
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 DROP TABLE IF EXISTS `t_log`;
 CREATE TABLE `t_log`
@@ -184,8 +184,8 @@ CREATE TABLE `t_log`
     UNIQUE KEY `t_log_dbid_uindex` (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2458
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='日志表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='日志表';
 
 DROP TABLE IF EXISTS `t_menu`;
 CREATE TABLE `t_menu`
@@ -207,8 +207,8 @@ CREATE TABLE `t_menu`
     UNIQUE KEY `menu_code` (`menu_code`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 677
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='菜单表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='菜单表';
 
 BEGIN;
 INSERT INTO `t_menu`
@@ -379,8 +379,8 @@ CREATE TABLE `t_pay_record`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 42
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='发薪记录表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='发薪记录表';
 
 DROP TABLE IF EXISTS `t_request_log_template`;
 CREATE TABLE `t_request_log_template`
@@ -392,8 +392,8 @@ CREATE TABLE `t_request_log_template`
     `request_param`  text COMMENT '请求参数',
     `user_id`        int(11)       DEFAULT NULL COMMENT '登录人ID'
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='接口请求日志模板表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='接口请求日志模板表';
 
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role`
@@ -409,8 +409,8 @@ CREATE TABLE `t_role`
     UNIQUE KEY `t_role_dbid_uindex` (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 28
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='角色表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='角色表';
 
 BEGIN;
 INSERT INTO `t_role`
@@ -429,8 +429,8 @@ CREATE TABLE `t_role_menu`
     UNIQUE KEY `t_role_menu_dbid_uindex` (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4446
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='角色-菜单关系表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='角色-菜单关系表';
 
 BEGIN;
 INSERT INTO `t_role_menu`
@@ -578,8 +578,8 @@ CREATE TABLE `t_sys_dic`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 BEGIN;
 INSERT INTO `t_sys_dic`
@@ -596,24 +596,24 @@ CREATE TABLE `t_sys_filter`
     `params`      varchar(2047) DEFAULT NULL COMMENT '过滤器参数',
     `order_no`    int(32)       DEFAULT NULL COMMENT '序号'
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='系统过滤器配置';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='系统过滤器配置';
 
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user`
 (
     `dbid`             int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `user_name`        varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户名',
-    `password`         varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '密码',
-    `nick_name`        varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '昵称',
+    `user_name`        varchar(31) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '用户名',
+    `password`         varchar(63) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '密码',
+    `nick_name`        varchar(31) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '昵称',
     `age`              int(11)                                                      DEFAULT NULL COMMENT '年龄',
-    `email`            varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '邮箱',
-    `phone`            varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '手机号',
+    `email`            varchar(63) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '邮箱',
+    `phone`            varchar(11) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '手机号',
     `status`           int(11)                                                      DEFAULT NULL COMMENT '状态，0-正常、1-删除',
     `gender`           int(11)                                                      DEFAULT NULL COMMENT '0-女、1-男',
-    `create_time`      varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建时间',
+    `create_time`      varchar(31) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '创建时间',
     `create_id`        int(11)                                                      DEFAULT NULL COMMENT '创建人ID',
-    `last_modify_time` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '最后修改时间',
+    `last_modify_time` varchar(31) CHARACTER SET utf8 COLLATE utf8 DEFAULT NULL COMMENT '最后修改时间',
     `last_modify_id`   int(11)                                                      DEFAULT NULL COMMENT '最后修改人ID',
     `last_login_time`  varchar(31)                                                  DEFAULT NULL COMMENT '最后登录时间',
     `open_id`          varchar(127)                                                 DEFAULT NULL,
@@ -622,8 +622,8 @@ CREATE TABLE `t_user`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 14
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='用户表';
 
 BEGIN;
 INSERT INTO `t_user`
@@ -642,8 +642,8 @@ CREATE TABLE `t_user_role`
     UNIQUE KEY `t_user_role_dbid_uindex` (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 34
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户-角色关系表';
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8 COMMENT ='用户-角色关系表';
 
 BEGIN;
 INSERT INTO `t_user_role`
@@ -661,8 +661,8 @@ CREATE TABLE `t_wechat_fund`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 55
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 DROP TABLE IF EXISTS `t_workhour`;
 CREATE TABLE `t_workhour`
@@ -680,8 +680,8 @@ CREATE TABLE `t_workhour`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 81
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 DROP TABLE IF EXISTS `t_worksite`;
 CREATE TABLE `t_worksite`
@@ -697,7 +697,7 @@ CREATE TABLE `t_worksite`
     PRIMARY KEY (`dbid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 19
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;

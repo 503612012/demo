@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
+import com.oven.common.util.CommonUtils;
 import com.oven.common.util.EncryptUtils;
 import com.oven.common.util.IPUtils;
 import com.oven.common.vcode.Captcha;
@@ -147,7 +148,7 @@ public class SystemController extends BaseController {
     @RequestMapping("/logout")
     public String logout(HttpServletRequest req) {
         try {
-            User user = super.getCurrentUser();
+            User user = CommonUtils.getCurrentUser();
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked")
             Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
@@ -254,7 +255,7 @@ public class SystemController extends BaseController {
             // 获取该用户的所有权限编码，放入session中
             Object userMenus = req.getSession().getAttribute(AppConst.USER_MENU);
             if (userMenus == null) {
-                userMenus = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
+                userMenus = menuService.getAllMenuCodeByUserId(userInDb.getId());
                 req.getSession().setAttribute(AppConst.USER_MENU, userMenus);
             }
 
@@ -288,9 +289,9 @@ public class SystemController extends BaseController {
     @RequestMapping("/getMenus")
     public Object getMenus(HttpServletRequest req) throws MyException {
         try {
-            List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(super.getCurrentUser().getId());
+            List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(CommonUtils.getCurrentUser().getId());
             // 获取该用户的所有权限编码，放入session中
-            List<String> code = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
+            List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(menus);
         } catch (Exception e) {

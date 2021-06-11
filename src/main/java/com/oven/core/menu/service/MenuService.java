@@ -2,6 +2,7 @@ package com.oven.core.menu.service;
 
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.menu.dao.MenuDao;
 import com.oven.core.menu.vo.Menu;
@@ -15,7 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单服务层
@@ -74,7 +79,7 @@ public class MenuService extends BaseService {
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
             menuInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
-            menuInDb.setLastModifyId(super.getCurrentUser().getId());
+            menuInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             menuDao.update(menuInDb);
             // 移除缓存
             super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES);

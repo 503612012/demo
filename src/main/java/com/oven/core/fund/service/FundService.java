@@ -2,6 +2,7 @@ package com.oven.core.fund.service;
 
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.fund.dao.FundDao;
 import com.oven.core.fund.vo.Fund;
@@ -30,7 +31,7 @@ public class FundService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void add(Fund fund) {
-        fund.setCreateId(super.getCurrentUser().getId());
+        fund.setCreateId(CommonUtils.getCurrentUser().getId());
         fund.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
         fundDao.add(fund);
         // 移除缓存

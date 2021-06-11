@@ -1,9 +1,9 @@
 package com.oven.core.role.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.PermissionCode;
 import com.oven.common.enumerate.ResultEnum;
+import com.oven.common.util.CommonUtils;
 import com.oven.common.util.LayuiPager;
 import com.oven.core.base.controller.BaseController;
 import com.oven.core.menu.service.MenuService;
@@ -230,7 +230,7 @@ public class RoleController extends BaseController {
             }
             roleService.setRoleMenu(roleId, menuIds);
             // 获取该用户的所有权限编码，放入session中
-            List<String> code = menuService.getAllMenuCodeByUserId(super.getCurrentUser().getId());
+            List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return super.success(ResultEnum.UPDATE_ERROR.getValue());
         } catch (Exception e) {

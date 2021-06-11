@@ -3,6 +3,7 @@ package com.oven.core.pay.service;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
 import com.oven.common.enumerate.ResultEnum;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.advanceSalary.dao.AdvanceSalaryDao;
 import com.oven.core.advanceSalary.vo.AdvanceSalary;
 import com.oven.core.base.service.BaseService;
@@ -104,7 +105,7 @@ public class PayService extends BaseService {
 
         // 保存发薪记录
         PayRecord payRecord = new PayRecord();
-        payRecord.setPayerId(super.getCurrentUser().getId());
+        payRecord.setPayerId(CommonUtils.getCurrentUser().getId());
         payRecord.setEmployeeId(employeeId);
         payRecord.setPayDate(new DateTime().toString(AppConst.TIME_PATTERN));
         payRecord.setTotalHour(totalHour);

@@ -2,6 +2,7 @@ package com.oven.core.workhour.service;
 
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.workhour.dao.WorkhourDao;
 import com.oven.core.workhour.vo.Workhour;
@@ -67,7 +68,7 @@ public class WorkhourService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void add(Workhour workhour) {
-        workhour.setCreateId(super.getCurrentUser().getId());
+        workhour.setCreateId(CommonUtils.getCurrentUser().getId());
         workhour.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
         workhourDao.add(workhour);
         // 移除缓存

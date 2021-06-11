@@ -2,6 +2,7 @@ package com.oven.core.advanceSalary.service;
 
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.advanceSalary.dao.AdvanceSalaryDao;
 import com.oven.core.advanceSalary.vo.AdvanceSalary;
 import com.oven.core.base.service.BaseService;
@@ -29,7 +30,7 @@ public class AdvanceSalaryService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void add(AdvanceSalary advanceSalary) {
-        advanceSalary.setCreateId(super.getCurrentUser().getId());
+        advanceSalary.setCreateId(CommonUtils.getCurrentUser().getId());
         advanceSalaryDao.add(advanceSalary);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ADVANCESALARY_PREFIX);

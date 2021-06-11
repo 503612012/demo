@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.common.constant.AppConst;
 import com.oven.common.constant.RedisCacheKey;
+import com.oven.common.util.CommonUtils;
 import com.oven.core.base.service.BaseService;
 import com.oven.core.menu.service.MenuService;
 import com.oven.core.menu.vo.Menu;
@@ -98,9 +99,9 @@ public class RoleService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void add(Role role) {
-        role.setCreateId(super.getCurrentUser().getId());
+        role.setCreateId(CommonUtils.getCurrentUser().getId());
         role.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
-        role.setLastModifyId(super.getCurrentUser().getId());
+        role.setLastModifyId(CommonUtils.getCurrentUser().getId());
         role.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
         roleDao.add(role);
         // 移除缓存
@@ -132,7 +133,7 @@ public class RoleService extends BaseService {
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
             roleInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
-            roleInDb.setLastModifyId(super.getCurrentUser().getId());
+            roleInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             roleDao.update(roleInDb);
             // 移除缓存
             super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
@@ -269,7 +270,7 @@ public class RoleService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
         // 移除shiro授权缓存
-        super.batchRemove(AppConst.SHIRO_CACHE_KEY_PROFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + super.getCurrentUser().getId());
+        super.batchRemove(AppConst.SHIRO_CACHE_KEY_PROFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + CommonUtils.getCurrentUser().getId());
         // 记录日志
         super.addLog("分配权限", "角色[" + role.getRoleName() + "]分配权限[" + content + "]");
     }
