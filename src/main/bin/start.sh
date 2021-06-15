@@ -1,6 +1,6 @@
-#!/bin/bash
-env_args="-Xms128M -Xmx128M -XX:NewRatio=2 -Xverify:none -Dloader.path=./,./classes,./lib"
-APP_NAME="`find ./ -name 'demo*.jar'`"
+#!/bin/sh
+env_args="-Xms256M -Xmx256M -XX:NewRatio=2 -Xverify:none -Dloader.path=./,./classes,./lib,./resources"
+APP_NAME="`find /data/docker/demo/ -name 'demo*.jar'`"
 pid=`ps -ef | grep ${APP_NAME} | grep -v grep | awk '{print $2}'`
 if [[ "$pid" != "" ]]
 then
