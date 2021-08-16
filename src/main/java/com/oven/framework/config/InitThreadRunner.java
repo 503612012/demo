@@ -1,9 +1,11 @@
 package com.oven.framework.config;
 
-import com.oven.common.util.ThreadPoolUtils;
 import com.oven.core.thread.ExecLogThread;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.concurrent.Executor;
 
 /**
  * 初始化队列线程开始工作
@@ -13,9 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class InitThreadRunner implements CommandLineRunner {
 
+    @Resource(name = "asyncExecLogExecutor")
+    private Executor execute;
+
     @Override
     public void run(String... args) {
-        ThreadPoolUtils.getInstance().execute(new ExecLogThread());
+        execute.execute(new ExecLogThread());
     }
 
 }
