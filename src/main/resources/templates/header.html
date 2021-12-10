@@ -117,6 +117,6 @@
             <img th:if="${session.current_user.avatar != null}" th:src="${session.current_user.avatar}" class="layui-nav-img userAvatar" alt="" style="width: 200px; height: 200px; margin: 0;">
             <p id="avatarText"></p>
         </div>
-        <button type="button" class="layui-btn" id="uploadAvatar" th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).UPLOAD_AVATAR)}">上传头像</button>
+        <button type="button" class="layui-btn" id="uploadAvatar" th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).UPLOAD_AVATAR)}">上传头像</button>
     </div>
 </div>

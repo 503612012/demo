@@ -69,7 +69,7 @@ layui.use(['treetable', 'form'], function() {
                         if (d.status == 1) {
                             return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked menu-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                         } else if (d.status == 0) {
-                            return '<div><div class="layui-unselect layui-form-checkbox menu-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                            return '<div><div class="layui-unselect layui-form-checkbox menu-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>正常</span><i class="layui-icon layui-icon-ok"></i></div></div>';
                         }
                     }
                 },

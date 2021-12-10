@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <style>
+        .monitor-list-row {
+            font-size: 16px;
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #f6f6f6;
+            padding: 10px 10px;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body">
+                    <div class="monitor-list-row">
+                        <span>系统名称：</span>
+                        <span id="osName"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>系统架构：</span>
+                        <span id="osArch"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>系统版本：</span>
+                        <span id="osVersion"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>主机名称：</span>
+                        <span id="osHostName"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>主机IP地址：</span>
+                        <span id="osHostAddress"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">Java信息</div>
+                <div class="layui-card-body">
+                    <div class="monitor-list-row">
+                        <span>虚拟机名称：</span>
+                        <span id="jvmName"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>虚拟机版本：</span>
+                        <span id="jvmVersion"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>虚拟机供应商：</span>
+                        <span id="jvmVendor"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>java名称：</span>
+                        <span id="javaName"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>java版本：</span>
+                        <span id="javaVersion"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">JVM内存信息</div>
+                <div class="layui-card-body">
+                    <div class="monitor-list-row">
+                        <span>最大内存：</span>
+                        <span id="jvmMaxMemory"></span>
+                        <span>可用内存：</span>
+                        <span id="jvmUsableMemory"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>总内存：</span>
+                        <span id="jvmTotalMemory"></span>
+                        <span>已使用内存：</span>
+                        <span id="jvmUsedMemory"></span>
+                    </div>
+                    <div class="monitor-list-row">
+                        <span>空余内存：</span>
+                        <span id="jvmFreeMemory"></span>
+                        <span>使用率：</span>
+                        <span id="jvmMemoryUsedRate"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script data-main="/js/monitor/index.js" th:src="@{/js/lib/require.js}"></script>
+</html>

@@ -4,6 +4,7 @@
     <property name="LOG_FILE" value="demo"/>
     <property name="LOG_HOME" value="/usr/local/app/demo/logs"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L - %msg%n"/>
+
     <!-- INFO日志定义 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_FILE}.info.log</file>
@@ -95,22 +96,11 @@
     <root level="INFO">
         <appender-ref ref="SYNC_LOG"/>
     </root>
-    <logger name="com.oven.core" additivity="false" level="ERROR">
+    <logger name="com.oven.demo.framework.exception" additivity="false" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_LOG"/>
     </logger>
-    <logger name="com.oven.framework.exception" additivity="false" level="ERROR">
-        <appender-ref ref="SYNC_ERROR"/>
-    </logger>
-    <logger name="com.oven.framework.limitation" additivity="false" level="INFO">
-        <appender-ref ref="SYNC_INFO"/>
-    </logger>
-    <logger name="com.oven.framework.limitation" additivity="false" level="ERROR">
-        <appender-ref ref="SYNC_ERROR"/>
-    </logger>
-    <logger name="com.oven.core.task" additivity="false" level="INFO">
-        <appender-ref ref="SYNC_INFO"/>
-    </logger>
-    <logger name="com.oven.framework.aop" additivity="false" level="INFO">
+    <logger name="com.oven.demo.framework.aop" additivity="false" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
     </logger>
     <logger name="com" additivity="false" level="INFO">

@@ -42,22 +42,22 @@
 
 <script type="text/html" id="workhourListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).WORKHOUR_INSERT)}" class="layui-btn layui-btn-sm" id="workhour-add-btn" lay-event="workhour-add-btn">
+        <button th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).WORKHOUR_INSERT)}" class="layui-btn layui-btn-sm" id="workhour-add-btn" lay-event="workhour-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">录入工时</i>
         </button>
     </div>
 </script>
 <script type="text/html" id="workhourListBar">
     {{#  if(d.hasPay == 0){ }}
-        <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).WORKHOUR_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).WORKHOUR_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     {{#  } }}
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
 
-    var hasShowWorkhourMoneyPermission = /*[[${T(com.oven.common.constant.PermissionCode).WORKHOUR_SHOW_MONEY}]]*/ '';
-    var hasShowWorkhourTotalWorkhourPermission = /*[[${T(com.oven.common.constant.PermissionCode).WORKHOUR_SHOW_TOTAL_WORKHOUR}]]*/ '';
+    var hasShowWorkhourMoneyPermission = /*[[${T(com.oven.demo.common.constant.PermissionCode).WORKHOUR_SHOW_MONEY}]]*/ '';
+    var hasShowWorkhourTotalWorkhourPermission = /*[[${T(com.oven.demo.common.constant.PermissionCode).WORKHOUR_SHOW_TOTAL_WORKHOUR}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

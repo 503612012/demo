@@ -99,27 +99,27 @@
     <root level="INFO">
         <appender-ref ref="SYNC_STDOUT"/>
     </root>
-    <logger name="com.oven.core" level="ERROR" additivity="false">
+    <logger name="com.oven.demo.core" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
-    <logger name="com.oven.framework.exception" level="ERROR" additivity="false">
+    <logger name="com.oven.demo.framework.exception" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
-    <logger name="com.oven.framework.aop" level="INFO" additivity="false">
+    <logger name="com.oven.demo.framework.aop" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
-    <logger name="com.oven.framework.limitation" level="INFO" additivity="false">
+    <logger name="com.oven.demo.framework.limitation" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
-    <logger name="com.oven.core.task" level="INFO" additivity="false">
+    <logger name="com.oven.demo.core.task" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
-    <logger name="com.oven.framework.limitation" level="ERROR" additivity="false">
+    <logger name="com.oven.demo.framework.limitation" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>

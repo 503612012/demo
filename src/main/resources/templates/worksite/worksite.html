@@ -56,20 +56,20 @@
 </div>
 <script type="text/html" id="worksiteListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).WORKSITE_INSERT)}" class="layui-btn layui-btn-sm" id="worksite-add-btn" lay-event="worksite-add-btn">
+        <button th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).WORKSITE_INSERT)}" class="layui-btn layui-btn-sm" id="worksite-add-btn" lay-event="worksite-add-btn">
             <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加工地</i>
         </button>
     </div>
 </script>
 <script type="text/html" id="worksiteListBar">
-    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).WORKSITE_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).WORKSITE_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).WORKSITE_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).WORKSITE_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var menu = [[${session.menu}]];
 
-    var hasChangeWorksiteStatusPermission = /*[[${T(com.oven.common.constant.PermissionCode).WORKSITE_SETSTATUS}]]*/ '';
+    var hasChangeWorksiteStatusPermission = /*[[${T(com.oven.demo.common.constant.PermissionCode).WORKSITE_SETSTATUS}]]*/ '';
 
     function hasPermission(code) {
         for (var i = 0; i < menu.length; i++) {

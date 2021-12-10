@@ -36,14 +36,14 @@
 
 <script type="text/html" id="fundBillListToolBar">
     <div class="layui-btn-container">
-        <button th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUNDBILL_INSERT)}" class="layui-btn layui-btn-sm" id="fundBill-input-profit" lay-event="fundBill-input-profit">
+        <button th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).FUNDBILL_INSERT)}" class="layui-btn layui-btn-sm" id="fundBill-input-profit" lay-event="fundBill-input-profit">
             <i class="layui-icon layui-icon-rmb" style="vertical-align: initial;">录入收益</i>
         </button>
     </div>
 </script>
 <script type="text/html" id="fundBillListBar">
-    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUNDBILL_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a th:if="${session.menu.contains(T(com.oven.common.constant.PermissionCode).FUNDBILL_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).FUNDBILL_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).FUNDBILL_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <script data-main="/js/fundBill/fundBill.js" th:src="@{/js/lib/require.js}"></script>
