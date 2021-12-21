@@ -368,7 +368,7 @@ public class UserController extends BaseController {
             if (StringUtils.isEmpty(originalFilename)) {
                 return "文件名称为空，请重新上传！";
             }
-            String fileName = UUID.randomUUID().toString() + originalFilename.substring(originalFilename.lastIndexOf("."));
+            String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
             File path = new File(avatarPath);
             if (!path.exists()) {
                 //noinspection ResultOfMethodCallIgnored

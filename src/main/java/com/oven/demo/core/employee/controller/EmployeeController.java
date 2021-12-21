@@ -3,14 +3,10 @@ package com.oven.demo.core.employee.controller;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.common.util.LayuiPager;
-import com.oven.demo.core.advanceSalary.service.AdvanceSalaryService;
-import com.oven.demo.core.advanceSalary.vo.AdvanceSalary;
 import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.employee.service.EmployeeService;
 import com.oven.demo.core.employee.vo.Employee;
 import com.oven.demo.core.user.service.UserService;
-import com.oven.demo.core.workhour.service.WorkhourService;
-import com.oven.demo.core.workhour.vo.Workhour;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -35,11 +31,7 @@ public class EmployeeController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
-    private WorkhourService workhourService;
-    @Resource
     private EmployeeService employeeService;
-    @Resource
-    private AdvanceSalaryService advanceSalaryService;
 
     /**
      * 去到员工管理页面
@@ -137,16 +129,6 @@ public class EmployeeController extends BaseController {
     @Limit(key = LimitKey.EMPLOYEE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
         try {
-            // 判断该员工有没有未发的薪资
-            List<Workhour> workhours = workhourService.getUnPayByEmployeeId(id);
-            if (workhours != null && workhours.size() > 0) {
-                return super.fail(ResultEnum.DELETE_EMPLOYEE_ERROR_UNPAY_SALARY.getCode(), ResultEnum.DELETE_EMPLOYEE_ERROR_UNPAY_SALARY.getValue());
-            }
-            // 判断该员工有没有未归还的预支薪资
-            List<AdvanceSalary> advanceSalaries = advanceSalaryService.getByEmployeeId(id, 1);
-            if (advanceSalaries != null && advanceSalaries.size() > 0) {
-                return super.fail(ResultEnum.DELETE_EMPLOYEE_ERROR_UNBACK_ADVANCE_SALARY.getCode(), ResultEnum.DELETE_EMPLOYEE_ERROR_UNBACK_ADVANCE_SALARY.getValue());
-            }
             boolean result = employeeService.delete(id);
             if (result) {
                 return super.success(ResultEnum.DELETE_SUCCESS.getValue());

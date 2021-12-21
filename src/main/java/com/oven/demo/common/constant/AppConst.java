@@ -29,8 +29,6 @@ public interface AppConst {
     String SHIRO_CACHE_KEY_PROFIX = APP_NAME;
 
     String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    String DATE_PATTERN = "yyyy-MM-dd";
-    String MONTH_PATTERN = "yyyy-MM";
 
     String CAPTCHA = "_captcha";
     String PERCENTAGE_MARK = "\\\\%";

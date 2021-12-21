@@ -14,13 +14,9 @@ import com.oven.demo.core.employee.service.EmployeeService;
 import com.oven.demo.core.employee.vo.Employee;
 import com.oven.demo.core.log.service.LogService;
 import com.oven.demo.core.menu.service.MenuService;
-import com.oven.demo.core.payRecord.service.PayRecordService;
 import com.oven.demo.core.system.service.SysDicService;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.core.user.vo.User;
-import com.oven.demo.core.workhour.service.WorkhourService;
-import com.oven.demo.core.worksite.service.WorksiteService;
-import com.oven.demo.core.worksite.vo.Worksite;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -71,12 +67,6 @@ public class SystemController extends BaseController {
     private SysDicService sysDicService;
     @Resource
     private EmployeeService employeeService;
-    @Resource
-    private WorksiteService worksiteService;
-    @Resource
-    private WorkhourService workhourService;
-    @Resource
-    private PayRecordService payRecordService;
 
     /**
      * 秒杀模拟
@@ -150,8 +140,7 @@ public class SystemController extends BaseController {
         try {
             User user = CommonUtils.getCurrentUser();
             ServletContext application = req.getServletContext();
-            @SuppressWarnings("unchecked")
-            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
+            @SuppressWarnings("unchecked") Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap != null) {
                 loginedMap.remove(user.getUserName());
             }
@@ -174,8 +163,7 @@ public class SystemController extends BaseController {
     public Object forceLogout(String userName, HttpServletRequest req) throws MyException {
         try {
             ServletContext application = req.getServletContext();
-            @SuppressWarnings("unchecked")
-            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
+            @SuppressWarnings("unchecked") Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap != null) {
                 JSONObject obj = new JSONObject();
                 obj.put(AppConst.SESSION_ID, ResultEnum.FORCE_LOGOUT.getValue());
@@ -236,8 +224,7 @@ public class SystemController extends BaseController {
             }
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
-            @SuppressWarnings("unchecked")
-            Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
+            @SuppressWarnings("unchecked") Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap == null) {
                 loginedMap = new HashMap<>();
                 application.setAttribute(AppConst.LOGINEDUSERS, loginedMap);
@@ -307,14 +294,11 @@ public class SystemController extends BaseController {
     public Object getMainPageData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
-            Double totalPay = payRecordService.getTotalPay();
             Integer totalEmployee = employeeService.getTotalNum(new Employee());
-            Integer totalWorksite = worksiteService.getTotalNum(new Worksite());
-            Double totalWorkhour = workhourService.getTotalWorkhour();
-            obj.put("totalPay", totalPay);
+            obj.put("totalPay", "0.00");
             obj.put("totalEmployee", totalEmployee);
-            obj.put("totalWorksite", totalWorksite);
-            obj.put("totalWorkhour", totalWorkhour);
+            obj.put("totalWorksite", "0");
+            obj.put("totalWorkhour", "0.00");
             return super.success(obj);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页数据异常", e);
@@ -329,7 +313,7 @@ public class SystemController extends BaseController {
     public Object getSalaryTopFive() throws MyException {
         try {
             Map<String, List<String>> result = new HashMap<>();
-            List<Map<String, Object>> list = payRecordService.getSalaryTopFive();
+            List<Map<String, Object>> list = new ArrayList<>();
             List<String> employeeNames = new ArrayList<>();
             List<String> data = new ArrayList<>();
             if (!CollectionUtils.isEmpty(list)) {
@@ -354,10 +338,8 @@ public class SystemController extends BaseController {
     public Object getProportionData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
-            Double salaryProportion = payRecordService.getSalaryProportion();
-            Double workhourProportion = workhourService.getWorkhourProportion();
-            obj.put("salaryProportion", salaryProportion);
-            obj.put("workhourProportion", workhourProportion);
+            obj.put("salaryProportion", "0.00");
+            obj.put("workhourProportion", "0.00");
             return super.success(obj);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页占比信息异常", e);
