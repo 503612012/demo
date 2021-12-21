@@ -1,7 +1,7 @@
-package com.oven.demo.core.userRole.dao;
+package com.oven.demo.core.user.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
-import com.oven.demo.core.userRole.vo.UserRole;
+import com.oven.demo.core.user.vo.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

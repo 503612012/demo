@@ -1,7 +1,7 @@
-package com.oven.demo.core.roleMenu.dao;
+package com.oven.demo.core.role.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
-import com.oven.demo.core.roleMenu.vo.RoleMenu;
+import com.oven.demo.core.role.vo.RoleMenu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

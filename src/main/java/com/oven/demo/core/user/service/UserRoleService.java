@@ -1,9 +1,9 @@
-package com.oven.demo.core.userRole.service;
+package com.oven.demo.core.user.service;
 
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.core.base.service.BaseService;
-import com.oven.demo.core.userRole.dao.UserRoleDao;
-import com.oven.demo.core.userRole.vo.UserRole;
+import com.oven.demo.core.user.dao.UserRoleDao;
+import com.oven.demo.core.user.vo.UserRole;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

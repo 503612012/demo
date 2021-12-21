@@ -1,9 +1,9 @@
-package com.oven.demo.core.roleMenu.service;
+package com.oven.demo.core.role.service;
 
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.core.base.service.BaseService;
-import com.oven.demo.core.roleMenu.dao.RoleMenuDao;
-import com.oven.demo.core.roleMenu.vo.RoleMenu;
+import com.oven.demo.core.role.dao.RoleMenuDao;
+import com.oven.demo.core.role.vo.RoleMenu;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
