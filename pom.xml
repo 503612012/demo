@@ -179,17 +179,17 @@
             </plugin>
 
             <!-- 指定资源文件目录 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Class-Path>./resources/</Class-Path>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-jar-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifestEntries>-->
+            <!--                            <Class-Path>./resources/</Class-Path>-->
+            <!--                        </manifestEntries>-->
+            <!--                    </archive>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
 
             <!-- 将第三方依赖打包到lib目录 -->
             <plugin>
@@ -226,19 +226,19 @@
             </plugin>
 
             <!-- 去掉打包后jar包中BOOT-INF中的文件 -->
-            <plugin>
-                <groupId>com.oven.maven</groupId>
-                <artifactId>oven-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>rejar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.oven.maven</groupId>-->
+            <!--                <artifactId>oven-maven-plugin</artifactId>-->
+            <!--                <version>1.0.1</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>package</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>rejar</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
             <!-- 拷贝资源文件到resources目录 -->
             <plugin>
@@ -450,6 +450,7 @@
                                 <delete dir="${project.build.directory}/generated-sources"/>
                                 <delete dir="${project.build.directory}/maven-archiver"/>
                                 <delete dir="${project.build.directory}/maven-status"/>
+                                <delete dir="${project.build.directory}/classes"/>
                                 <delete file="${project.build.directory}/demo-1.0.0.jar.bak"/>
                                 <delete file="${project.build.directory}/demo-1.0.0.jar.original"/>
                                 <echo message="finish delete useless file"/>
