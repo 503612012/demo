@@ -13,7 +13,6 @@ ENV CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 ADD simsun.ttf /usr/local/jdk1.8.0_181/jre/lib/fonts
 
 RUN mkdir -p /home/demo/
-ADD classes /home/demo/classes
 ADD lib /home/demo/lib
 ADD resources /home/demo/resources
 ADD demo-1.0.0.jar /home/demo

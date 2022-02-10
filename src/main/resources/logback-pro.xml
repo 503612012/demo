@@ -2,7 +2,7 @@
 <configuration>
 
     <property name="LOG_FILE" value="demo"/>
-    <property name="LOG_HOME" value="/usr/local/app/demo/logs"/>
+    <property name="LOG_HOME" value="/home/demo/logs"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L - %msg%n"/>
 
     <!-- INFO日志定义 -->

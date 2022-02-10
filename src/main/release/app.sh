@@ -1,4 +1,4 @@
 #!/bin/sh
-cd /data/docker/demo
+cd /home/demo
 sh start.sh
-tail -f /data/docker/demo/resources/application.properties
+tail -f /home/demo/resources/application.properties
