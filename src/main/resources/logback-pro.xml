@@ -93,27 +93,34 @@
         <includeCallerData>true</includeCallerData>
     </appender>
 
-    <root level="INFO">
-        <appender-ref ref="SYNC_LOG"/>
-    </root>
-    <logger name="com" additivity="false" level="INFO">
-        <appender-ref ref="SYNC_LOG"/>
-    </logger>
-    <logger name="com.oven.demo.framework.exception" additivity="false" level="ERROR">
+    <logger name="com.oven.diary.framework.exception" additivity="false" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_LOG"/>
     </logger>
-    <logger name="com.oven.demo.framework.aop" additivity="false" level="INFO">
+    <logger name="com.oven.diary.framework.aop" additivity="false" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
+        <appender-ref ref="SYNC_LOG"/>
+    </logger>
+    <logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" additivity="false" level="ERROR">
+        <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_LOG"/>
     </logger>
     <logger name="org" additivity="false" level="WARN">
         <appender-ref ref="SYNC_LOG"/>
     </logger>
     <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">
         <appender-ref ref="SYNC_DEBUG"/>
+        <appender-ref ref="SYNC_LOG"/>
     </logger>
     <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="TRACE" additivity="false">
         <appender-ref ref="SYNC_DEBUG"/>
+        <appender-ref ref="SYNC_LOG"/>
     </logger>
+    <logger name="com" additivity="false" level="INFO">
+        <appender-ref ref="SYNC_LOG"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="SYNC_LOG"/>
+    </root>
 
 </configuration>

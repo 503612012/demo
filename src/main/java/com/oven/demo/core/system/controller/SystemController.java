@@ -245,6 +245,15 @@ public class SystemController extends BaseController {
                 userMenus = menuService.getAllMenuCodeByUserId(userInDb.getId());
                 req.getSession().setAttribute(AppConst.USER_MENU, userMenus);
             }
+            if (StringUtils.isEmpty(userInDb.getConfig())) {
+                req.getSession().setAttribute("userTheme", "light");
+                req.getSession().setAttribute("menuPosition", "left");
+            } else {
+                String userTheme = JSONObject.parseObject(userInDb.getConfig()).getString("userTheme");
+                req.getSession().setAttribute("userTheme", StringUtils.isEmpty(userTheme) ? "light" : userTheme);
+                String menuPosition = JSONObject.parseObject(userInDb.getConfig()).getString("menuPosition");
+                req.getSession().setAttribute("menuPosition", StringUtils.isEmpty(menuPosition) ? "left" : menuPosition);
+            }
 
             return super.success("登录成功！");
         } catch (Exception e) {

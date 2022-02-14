@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="dark">
 <div class="layui-fluid" style="padding: 10px;">
     <div class="layui-card">
         <div class="layui-form layui-card-header layuiadmin-card-header-auto" style="padding-top: 15px; padding-bottom: 15px; height: auto; position: relative;">

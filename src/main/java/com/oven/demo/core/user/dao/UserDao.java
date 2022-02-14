@@ -202,4 +202,12 @@ public class UserDao {
         jdbcTemplate.update(sql, userId);
     }
 
+    /**
+     * 修改用户个性化配置
+     */
+    public void updateConfig(Integer id, String config) {
+        String sql = "update t_user set `config` = ? where dbid = ?";
+        jdbcTemplate.update(sql, config, id);
+    }
+
 }

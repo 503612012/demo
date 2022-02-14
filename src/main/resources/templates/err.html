@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>财务管理系统</title>
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" th:href="@{/css/common.css}">
     <style>
         .layui-icon {
             display: inline-block;
@@ -19,7 +20,7 @@
         }
     </style>
 </head>
-<body>
+<body class="dark">
 <div class="layui-fluid">
     <div class="layadmin-tips" style="display: flex; flex-direction: column;">
         <i class="layui-icon" face="" style="display: flex; justify-content: center;"></i>

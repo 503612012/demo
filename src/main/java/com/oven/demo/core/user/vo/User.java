@@ -47,6 +47,8 @@ public class User implements Serializable {
     private String avatar;
     @Column(name = "err_num")
     private Integer errNum;
+    @Column(name = "config")
+    private String config;
 
     // 非数据库属性
     private String createName;

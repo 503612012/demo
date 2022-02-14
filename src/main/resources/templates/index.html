@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>财务管理系统</title>
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link th:if="${session.menuPosition == 'header'}" rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body dark">
 
 <div class="layui-layout layui-layout-admin">
     <div th:replace="header"></div>
 
-    <div th:replace="left"></div>
+    <div th:if="${session.menuPosition != 'header'}">
+        <div th:replace="left"></div>
+    </div>
 
     <div class="layui-body">
-        <iframe src="main.html" id="mainFrm" name="mainFrm" style="border: none; width: 100%; height: 99%; top: 0; bottom: 0; left: 0; right: 0; background-color: #f2f2f2;"></iframe>
+        <iframe src="main.html" id="mainFrm" name="mainFrm" style="border: none; width: 100%; height: 99%; top: 0; bottom: 0; left: 0; right: 0; background-color: #f2f2f2;" class="dark"></iframe>
     </div>
 
     <div th:replace="footer"></div>

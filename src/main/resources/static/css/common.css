@@ -1,0 +1,423 @@
+html {
+    background-color: #141414 !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #262626;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #262626;
+}
+
+.dark {
+    background-color: #141414 !important;
+}
+
+.dark .main-sperator {
+    width: 1px;
+    border-left: 1px solid #141414 !important;
+}
+
+.dark .layui-footer {
+    background-color: #262626 !important;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-footer a {
+    color: #00d5c1 !important;
+}
+
+.dark .layui-header {
+    background-color: #262626 !important;
+    box-shadow: 0 4px 4px #000;
+    height: 60px;
+    position: relative;
+    display: block;
+    line-height: 40px;
+}
+
+.dark .alarm_info {
+    color: hsla(0, 0%, 100%, 0.65);
+}
+
+.dark .layui-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark .layui-nav {
+    height: 100%;
+    background-color: #262626 !important;
+}
+
+.dark .layui-nav-item {
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dark .layui-card input {
+    background-color: #262626;
+    border: 1px solid #434343;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-card {
+    background: #262626;
+    border-radius: 2px;
+    transition: all .3s;
+}
+
+.dark .layui-table-view {
+    border-color: #141414;
+}
+
+.dark button {
+    background-color: #464646;
+    border-color: #464646;
+}
+
+.dark .layui-table-view .layui-table-body tr {
+    background-color: #262626 !important;
+}
+
+.dark .layui-table-view .layui-table-body td a {
+    background-color: #464646;
+    border-color: #464646;
+}
+
+.dark .layui-table-view .layui-table-header {
+    border-color: #141414;
+    background-color: #4d4d4d;
+}
+
+.dark .layui-table-view .layui-table-tool .layui-table-tool-self div {
+    border: 1px solid #141414 !important;
+}
+
+.dark .layui-table-view .layui-table-tool i {
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-table-tool-panel li:hover {
+    background-color: #363636;
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-table-tool-panel {
+    border: 1px solid #464646;
+    background-color: #464646;
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-table-view .layui-table-tool {
+    background: #262626;
+    border-color: #141414;
+}
+
+.dark .layui-table-view .layui-table-page .layui-laypage-em {
+    background-color: #464646;
+}
+
+.dark .layui-table-view .layui-table-page span button,
+.dark .layui-table-view .layui-table-page span select {
+    background-color: #464646;
+    border-color: #464646;
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-table-view .layui-table-page a,
+.dark .layui-table-view .layui-table-page span {
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-table-view .layui-table-page {
+    border-color: #141414;
+}
+
+.dark .layui-card .layui-table thead tr th {
+    border-color: #141414;
+    background: #4d4d4d;
+    font-weight: 600;
+}
+
+.dark .layui-card .layui-table tbody tr td .layui-form-checkbox i {
+    border: 1px solid #161616;
+    background-color: #363636;
+    color: #363636;
+    border-left: none;
+}
+
+.dark .layui-card .layui-table tbody tr td .layui-form-checkbox {
+    background-color: #262626;
+}
+
+.dark .layui-card .layui-table tbody tr td .layui-form-checked i,
+.dark .layui-card .layui-table tbody tr td .layui-form-checked span {
+    background-color: #363636 !important;
+    color: #565656 !important;
+}
+
+.dark .layui-card .layui-table tbody tr td .layui-form-checkbox span {
+    background-color: #262626;
+    border: 1px solid #161616;
+    display: flex;
+    align-items: center;
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-card .layui-table tbody tr td {
+    border-color: #141414;
+    font-weight: 400;
+    color: hsla(0, 0%, 100%, .65);
+}
+
+.dark .layui-card .layui-table {
+    background: #262626;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-card .layui-table tr:hover {
+    background: #434343;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-card-header {
+    color: hsla(0, 0%, 100%, .95);
+    border-bottom: 1px solid #141414;
+}
+
+.dark .layui-card-body ul.layui-row {
+    background-color: #262626;
+}
+
+.dark .layui-card-body ul.layui-row li a cite {
+    color: #fff;
+}
+
+.dark .layui-card-body ul.layui-row li a {
+    background-color: #464646;
+}
+
+.dark .layui-table-grid-down {
+    background-color: #464646;
+    border-color: #464646;
+}
+
+.dark .layui-table-tips-main {
+    background-color: #464646 !important;
+    border-color: #262626 !important;
+    color: hsla(0, 0%, 100%, .95) !important;
+}
+
+.dark .layui-layer .layui-layer-setwin a.layui-layer-close {
+    filter: invert(1);
+}
+
+.dark .layui-layer .layui-layer-title {
+    border-color: #141414;
+    background-color: #363636;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark a.layui-layer-btn0 {
+    border-color: #363636;
+    background-color: #565656;
+    color: #fff;
+}
+
+.dark a.layui-layer-btn1 {
+    border: 1px solid #868686;
+    background-color: #363636;
+    color: #bbb;
+}
+
+.dark .layui-form-label {
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-form-checked .layui-icon-ok,
+.dark .layui-form .layui-anim-upbit dd .layui-form-checked .layui-icon {
+    color: #d2d2d2 !important;
+}
+
+.dark .layui-form-checkbox .layui-icon-ok,
+.dark .layui-form .layui-anim-upbit dd .layui-form-checkbox .layui-icon {
+    background-color: #464646;
+    color: #464646;
+}
+
+.dark .layui-anim-upbit a {
+    color: hsla(0, 0%, 100%, .95) !important;
+}
+
+.dark .layui-anim-upbit dd a:hover {
+    background-color: #363636;
+}
+
+.dark .layui-anim-upbit {
+    background-color: #464646;
+    border-color: #464646;
+    color: #464646;
+    color: hsla(0, 0%, 100%, .95) !important;
+}
+
+.dark .layui-layer-msg {
+    border-color: red;
+}
+
+.dark .layui-layer table tr td:nth-child(odd) {
+    color: white;
+}
+
+.dark .layui-layer {
+    background-color: #363636;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-form .multiple a {
+    background: #303030 !important;
+}
+
+.dark .layui-form .multiple .layui-edge {
+    border-top-color: #707070;
+}
+
+.dark .layui-form .layui-anim-upbit .layui-this {
+    background-color: #363636 !important;
+}
+
+.dark .layui-form .layui-anim-upbit dd:hover {
+    background-color: #363636 !important;
+}
+
+.dark .layui-form .layui-anim-upbit {
+    border-color: #464646 !important;
+    background-color: #464646 !important;
+}
+
+.dark .layui-form .multiple {
+    border-color: #464646 !important;
+    background-color: #464646 !important;
+}
+
+.dark .layui-form {
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-form input,
+.dark .layui-form textarea {
+    background-color: #424242;
+    border-color: #464646;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-form .layui-select-title i {
+    border-top-color: #707070;
+}
+
+
+.dark .layui-laydate td.laydate-day-next,
+.dark .layui-laydate td.laydate-day-prev {
+    color: hsla(0, 0%, 100%, .25);
+}
+
+.dark .layui-laydate .laydate-btns-clear,
+.dark .layui-laydate .laydate-btns-now,
+.dark .layui-laydate .laydate-btns-confirm {
+    background-color: #363636;
+    border-color: #262626;
+}
+
+.dark .layui-laydate .laydate-icon {
+    color: white;
+}
+
+.dark .layui-laydate td.layui-this {
+    background-color: #292929 !important;
+}
+
+.dark .layui-laydate td,
+.dark .layui-laydate span {
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-laydate .layui-laydate-content thead th {
+    color: white;
+}
+
+.dark .layui-laydate .layui-laydate-header,
+.dark .layui-laydate .layui-laydate-footer {
+    border-color: #141414;
+}
+
+.dark .layui-laydate {
+    background-color: #464646;
+    border-color: #464646;
+}
+
+.dark .laydate-time-list li:hover {
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .laydate-time-list ol li.layui-this,
+.dark .laydate-time-list ol li:hover {
+    background-color: #363636 !important;
+    color: hsla(0, 0%, 100%, .75);
+}
+
+.dark .laydate-time-list ol {
+    border-color: #141414;
+}
+
+.dark .laydate-time-list {
+    background-color: #464646;
+    color: hsla(0, 0%, 100%, .95);
+}
+
+.dark .layui-btn {
+    background-color: #565656 !important;
+}
+
+.dark .layui-btn-primary {
+    background-color: #363636 !important;
+    border: 1px solid #565656 !important;
+    color: hsla(0, 0%, 100%, .75);
+}
+
+.dark .layui-btn-danger {
+    background-color: #262626 !important;
+    border: 1px solid #565656 !important;
+}
+
+.dark .layui-nav .layui-nav-child dd.layui-this a {
+    background-color: #363636 !important;
+}
+
+.dark .layui-field-title legend {
+    color: hsla(0, 0%, 100%, .75);
+}
+
+.dark .permission_tree {
+    color: hsla(0, 0%, 100%, .75);
+}
+
+.dark .eleTree-node-content:hover,
+.dark .eleTree-node-content-active {
+    background-color: #565656;
+}
+
+.dark .monitor-list-row {
+    color: hsla(0, 0%, 100%, .95);
+    border-bottom: 1px solid #141414;
+}

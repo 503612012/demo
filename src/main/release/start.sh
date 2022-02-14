@@ -1,5 +1,5 @@
 #!/bin/sh
-env_args="-Xms256M -Xmx256M -XX:NewRatio=2 -Xverify:none -Dloader.path=./,./classes,./lib,./resources"
+env_args="-Xms256M -Xmx256M -XX:NewRatio=2 -Xverify:none -Dloader.path=./,./lib,./resources"
 APP_NAME="`find /home/demo/ -name 'demo*.jar'`"
 pid=`ps -ef | grep ${APP_NAME} | grep -v grep | awk '{print $2}'`
 if [[ "$pid" != "" ]]

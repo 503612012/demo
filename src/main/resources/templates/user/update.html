@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="dark">
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend>修改用户</legend>

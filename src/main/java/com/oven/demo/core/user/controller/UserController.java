@@ -401,4 +401,36 @@ public class UserController extends BaseController {
         }
     }
 
+    /**
+     * 修改主题
+     */
+    @ResponseBody
+    @RequestMapping("/userTheme")
+    @RequiresPermissions(PermissionCode.USER_THEME)
+    public Object userTheme(String userTheme, HttpServletRequest req) throws MyException {
+        try {
+            userService.updateConfig("userTheme", userTheme);
+            req.getSession().setAttribute("userTheme", userTheme);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改主题异常", e);
+        }
+    }
+
+    /**
+     * 修改菜单位置
+     */
+    @ResponseBody
+    @RequestMapping("/menuPosition")
+    @RequiresPermissions(PermissionCode.MENU_POSITION)
+    public Object menuPosition(String menuPosition, HttpServletRequest req) throws MyException {
+        try {
+            userService.updateConfig("menuPosition", menuPosition);
+            req.getSession().setAttribute("menuPosition", menuPosition);
+            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+        } catch (Exception e) {
+            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单位置异常", e);
+        }
+    }
+
 }

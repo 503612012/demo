@@ -128,7 +128,8 @@ create table t_user
     last_login_time  varchar(31)  null comment '最后登录时间',
     open_id          varchar(127) null,
     err_num          int          null,
-    avatar           varchar(127) null
+    avatar           varchar(127) null,
+    config           varchar(511) null
 ) comment '用户表';
 
 create table t_user_role
@@ -213,6 +214,9 @@ insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, c
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (676, 'A1_01_08', '修改头像', 2, 8, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (677, 'A1_05', '服务监控', 1, 3, '/monitor/index', '', 1, null, '2018-02-09 18:15:27', 1, '2018-10-31 09:25:38', 0);
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (678, 'A1_06', '数据源监控', 1, 4, '/druid', '', 1, null, '2018-02-09 18:15:27', 1, '2018-10-31 09:25:38', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (679, 'A1_01_09', '修改主题', 2, 9, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (680, 'A1_01_10', '菜单位置', 2, 10, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
+
 
 insert into t_role (dbid, role_name, create_time, create_id, status, last_modify_time, last_modify_id) values (1, '超级管理员', '2018-10-19 12:52:17', 1, 0, '2019-02-06 17:04:26', 1);
 insert into t_role (dbid, role_name, create_time, create_id, status, last_modify_time, last_modify_id) values (2, '普通用户', '2018-10-26 01:15:48', 1, 0, '2019-09-25 22:54:15', 1);

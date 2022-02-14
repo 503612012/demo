@@ -310,4 +310,23 @@ public class UserService extends BaseService {
         super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
+    /**
+     * 修改用户个性化配置
+     */
+    public void updateConfig(String key, String value) {
+        User currentUser = CommonUtils.getCurrentUser();
+        if (currentUser == null) {
+            return;
+        }
+        JSONObject config;
+        if (StringUtils.isEmpty(currentUser.getConfig())) {
+            config = new JSONObject();
+        } else {
+            config = JSONObject.parseObject(currentUser.getConfig());
+        }
+        config.put(key, value);
+        userDao.updateConfig(currentUser.getId(), config.toJSONString());
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
+    }
+
 }

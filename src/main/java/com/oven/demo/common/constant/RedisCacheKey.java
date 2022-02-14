@@ -58,7 +58,7 @@ public interface RedisCacheKey {
     String ROLEMENU_GET_BY_ROLEID_AND_MENUID = ROLEMENU_PREFIX + "getByRoleIdAndMenuId_{0}_{1}";
 
     // 用户菜单编码
-    String USER_MENU_CODES = PREFIX + "userMenuCodes_{0}";
-    String USER_MENU_CODES_PREFIX = USER_MENU_CODES + "userMenuCodes_";
+    String USER_MENU_CODES_PREFIX = PREFIX + "userMenuCodes_";
+    String USER_MENU_CODES = USER_MENU_CODES_PREFIX + "userMenuCodes_{0}";
 
 }

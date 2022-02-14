@@ -18,8 +18,28 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
 
     var layer = layui.layer;
     var form = layui.form;
-
+    var element = layui.element;
     var upload = layui.upload;
+
+    /**
+     * 修改主题
+     */
+    $('.userTheme').on('click', function() {
+        var userTheme = $(this).attr('data');
+        http.post('/user/userTheme', {'userTheme': userTheme}, function() {
+            window.location.reload();
+        });
+    });
+
+    /**
+     * 修改菜单位置
+     */
+    $('.menuPosition').on('click', function() {
+        var menuPosition = $(this).attr('data');
+        http.post('/user/menuPosition', {'menuPosition': menuPosition}, function() {
+            window.location.reload();
+        });
+    });
 
     var uploadAvatar = upload.render({
         elem: '#uploadAvatar',
@@ -191,8 +211,32 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
         }
     });
 
+    var initHeaderMenu = function(result) {
+        var html = '<li class="layui-nav-item"><a href="/">首页</a></li>';
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].children != null && result[i].children.length > 0) { // 有子菜单
+                html += '<li  class="layui-nav-item">';
+                html += '<a href="javascript:">' + result[i].menu.menuName + '</a>';
+                html += '<dl class="layui-nav-child">';
+                for (var j = 0; j < result[i].children.length; j++) {
+                    html += '<dd><a href="' + result[i].children[j].url + '" target="mainFrm">' + result[i].children[j].menuName + '</a></dd>';
+                }
+                html += '</dl>';
+                html += '</li>';
+            } else { // 无子菜单
+                html += '<li class="layui-nav-item"><a href="' + result[i].menu.url + '" target="mainFrm">' + result[i].menu.menuName + '</a></li>';
+            }
+        }
+        $('#searchBox').html(html);
+        element.render();
+    };
+
     http.get('/getMenus', {}, function(data) {
-        left.initMenu(data);
+        if (menuPosition === 'header') {
+            initHeaderMenu(data);
+        } else {
+            left.initMenu(data);
+        }
     });
 
 });
