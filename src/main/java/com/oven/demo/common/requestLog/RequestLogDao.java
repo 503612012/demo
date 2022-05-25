@@ -94,7 +94,7 @@ public class RequestLogDao {
             // 创建成功时，更新缓存
             cacheService.set(AppConst.APP_NAME + tableName, new Object());
         } catch (Exception e) {
-            log.error("创建表时出现异常：\n", e);
+            log.error("创建表时出现异常：", e);
         }
     }
 

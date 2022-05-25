@@ -3,6 +3,7 @@ package com.oven.demo.core.log.dao;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.log.vo.Log;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -12,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,26 +69,6 @@ public class LogDao {
     }
 
     /**
-     * 添加
-     */
-    public int add(Log log) {
-        String sql = "insert into t_log values (null, ?, ?, ?, ?, ?, ?)";
-        KeyHolder key = new GeneratedKeyHolder();
-        PreparedStatementCreator creator = con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
-            ps.setString(1, log.getTitle());
-            ps.setString(2, log.getContent());
-            ps.setInt(3, log.getOperatorId());
-            ps.setString(4, log.getOperatorName());
-            ps.setString(5, log.getOperatorTime());
-            ps.setString(6, log.getOperatorIp());
-            return ps;
-        };
-        this.jdbcTemplate.update(creator, key);
-        return Objects.requireNonNull(key.getKey()).intValue();
-    }
-
-    /**
      * 搜索条件
      */
     private void addCondition(StringBuilder sb, List<Object> params, Log log) {
@@ -102,6 +84,34 @@ public class LogDao {
             sb.append(" and operator_id = ?");
             params.add(log.getOperatorId());
         }
+    }
+
+    /**
+     * 批量添加
+     */
+    public void batchSave(List<Log> list) {
+        String sql = "insert into t_log values (null, ?, ?, ?, ?, ?, ?)";
+        this.jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Log item = list.get(i);
+                ps.setString(1, item.getTitle());
+                ps.setString(2, item.getContent());
+                ps.setInt(3, item.getOperatorId());
+                ps.setString(4, item.getOperatorName());
+                ps.setString(5, item.getOperatorTime());
+                ps.setString(6, item.getOperatorIp());
+                if (i % 1000 == 0) {
+                    // 执行prepareStatement对象中所有的sql语句
+                    ps.executeBatch();
+                }
+            }
+
+            @Override
+            public int getBatchSize() {
+                return list.size();
+            }
+        });
     }
 
 }

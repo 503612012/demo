@@ -1,9 +1,12 @@
 package com.oven.demo.core.base.service;
 
+import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.CommonUtils;
-import com.oven.demo.core.log.service.LogService;
+import com.oven.demo.common.util.LogQueueUtils;
+import com.oven.demo.core.log.vo.Log;
 import com.oven.demo.core.user.vo.User;
 import com.oven.demo.framework.cache.CacheService;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,8 +20,6 @@ import javax.annotation.Resource;
 public class BaseService {
 
     @Resource
-    private LogService logService;
-    @Resource
     private CacheService cacheService;
 
     /**
@@ -26,11 +27,20 @@ public class BaseService {
      */
     public void addLog(String title, String content) {
         User user = CommonUtils.getCurrentUser();
+        Log log = new Log();
+        log.setTitle(title);
+        log.setContent(content);
+        log.setOperatorTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         if (user != null) {
-            logService.addLog(title, content, user.getId(), user.getNickName(), CommonUtils.getCurrentUserIp());
+            log.setOperatorId(user.getId());
+            log.setOperatorName(user.getNickName());
+            log.setOperatorIp(CommonUtils.getCurrentUserIp());
         } else {
-            logService.addLog(title, content, -1, "系统", "127.0.0.1");
+            log.setOperatorId(-1);
+            log.setOperatorName("系统");
+            log.setOperatorIp("127.0.0.1");
         }
+        LogQueueUtils.getInstance().offer(log);
     }
 
     /**

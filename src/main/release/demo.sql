@@ -180,6 +180,7 @@ insert into t_config (dbid, `key`, value, `desc`) values (37, 'spring.transactio
 insert into t_config (dbid, `key`, value, `desc`) values (38, 'avatar.path', '/Users/oven/logs/img/avatar/', '头像保存地址');
 
 insert into t_crontab (dbid, _key, _desc, cron) values (1, 'REQUEST_LOG_CRON', '每分钟将队列中的请求日志保存到数据库', '0 */1 * * * ?');
+insert into t_crontab (dbid, _key, _desc, cron) values (2, 'LOG_CRON', '每分钟将队列中的操作日志保存到数据库', '0 */1 * * * ?');
 
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (1, 'A1', '系统设置', 0, 4, null, 'layui-icon-set', 1, null, '2018-02-09 18:15:17', 1, '2018-10-30 20:51:29', 0);
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, status) values (2, 'A1_01', '用户管理', 1, 1, '/user/index', '', 1, null, '2018-02-09 18:15:27', 1, '2019-09-18 10:55:01', 0);

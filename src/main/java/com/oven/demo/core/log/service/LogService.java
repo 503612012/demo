@@ -2,6 +2,7 @@ package com.oven.demo.core.log.service;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.RedisCacheKey;
+import com.oven.demo.common.util.LogQueueUtils;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.log.dao.LogDao;
 import com.oven.demo.core.log.vo.Log;
@@ -80,12 +81,10 @@ public class LogService extends BaseService {
     }
 
     /**
-     * 添加
+     * 批量添加
      */
-    public void add(Log log) {
-        logDao.add(log);
-        // 清理缓存
-        super.batchRemove(RedisCacheKey.LOG_PREFIX);
+    public void batchSave(List<Log> list) {
+        logDao.batchSave(list);
     }
 
     /**
@@ -98,8 +97,8 @@ public class LogService extends BaseService {
         log.setOperatorId(operatorId);
         log.setOperatorName(operatorName);
         log.setOperatorIp(operatorIp);
-        log.setOperatorTime(new DateTime().toString(AppConst.TIME_PATTERN));
-        this.add(log);
+        log.setOperatorTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        LogQueueUtils.getInstance().offer(log);
     }
 
 }
