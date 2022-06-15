@@ -78,7 +78,7 @@ public class MenuService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            menuInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+            menuInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
             menuInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             menuDao.update(menuInDb);
             // 移除缓存

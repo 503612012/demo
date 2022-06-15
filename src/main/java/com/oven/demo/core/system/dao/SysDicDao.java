@@ -1,7 +1,8 @@
 package com.oven.demo.core.system.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
-import com.oven.demo.core.system.vo.SysDicVo;
+import com.oven.demo.core.base.dao.BaseDao;
+import com.oven.demo.core.system.vo.SysDicEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Oven
  */
 @Repository
-public class SysDicDao {
+public class SysDicDao extends BaseDao<SysDicEntity> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -22,9 +23,9 @@ public class SysDicDao {
     /**
      * 查询所有
      */
-    public List<SysDicVo> findAll() {
+    public List<SysDicEntity> findAll() {
         String sql = "select * from t_sys_dic";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(SysDicVo.class));
+        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(SysDicEntity.class));
     }
 
     public String getByKey(String key) {

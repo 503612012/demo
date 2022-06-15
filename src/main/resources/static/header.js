@@ -6,6 +6,7 @@ requirejs.config({
         layui: 'layui/layui.all',
         crypto: 'js/lib/crypto-js',
         http: 'js/common/http',
+        common: 'js/common/common',
         left: 'left'
     },
     shim: {
@@ -14,7 +15,7 @@ requirejs.config({
     }
 });
 
-requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, layui, http, left) {
+requirejs(['jquery', 'crypto', 'layui', 'http', 'common', 'left'], function($, crypto, layui, http, common, left) {
 
     var layer = layui.layer;
     var form = layui.form;
@@ -118,41 +119,21 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'left'], function($, crypto, lay
     $("body").on('click', '#changePwd-submit', function() {
         var oldPwd = $("input[name=oldPwd]").val();
         if (oldPwd == null || oldPwd == '' || oldPwd == undefined) {
-            layer.open({
-                title: '系统提示',
-                anim: 6,
-                content: '请输入原始密码！',
-                btnAlign: 'c'
-            });
+            common.open('请输入原始密码！');
             return;
         }
         var newPwd = $("input[name=newPwd]").val();
         if (newPwd == null || newPwd == '' || newPwd == undefined) {
-            layer.open({
-                title: '系统提示',
-                anim: 6,
-                content: '请输入新密码！',
-                btnAlign: 'c'
-            });
+            common.open('请输入新密码！');
             return;
         }
         var confirmPwd = $("input[name=confirmPwd]").val();
         if (confirmPwd == null || confirmPwd == '' || confirmPwd == undefined) {
-            layer.open({
-                title: '系统提示',
-                anim: 6,
-                content: '请输入确认密码！',
-                btnAlign: 'c'
-            });
+            common.open('请输入确认密码！');
             return;
         }
         if (newPwd != confirmPwd) {
-            layer.open({
-                title: '系统提示',
-                anim: 6,
-                content: '两次输入的密码不一致！',
-                btnAlign: 'c'
-            });
+            common.open('两次输入的密码不一致！');
             return;
         }
         var that = $("#changePwd-submit");

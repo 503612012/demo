@@ -10,7 +10,7 @@ import javax.persistence.Column;
  * @author Oven
  */
 @Data
-public class SysDicVo {
+public class SysDicEntity {
 
     @Column(name = "dbid")
     private Integer id;

@@ -4,14 +4,15 @@ requirejs.config({
     paths: {
         jquery: 'js/lib/jquery.min',
         layui: 'layui/layui.all',
-        http: 'js/common/http'
+        http: 'js/common/http',
+        common: 'js/common/common'
     },
     shim: {
         layui: {exports: "layui"}
     }
 });
 
-requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
+requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
 
     var form = layui.form;
     var layer = layui.layer;
@@ -40,12 +41,7 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
                 dataType: 'json',
                 success: function(result) {
                     if (result.code != 200) {
-                        layer.open({
-                            title: '系统提示',
-                            anim: 6,
-                            content: result.data,
-                            btnAlign: 'c'
-                        });
+                        common.open(result.data);
                         isExist = true;
                     }
                     isExist = result.data;

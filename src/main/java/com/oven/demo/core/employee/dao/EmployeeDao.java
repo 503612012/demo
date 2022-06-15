@@ -2,6 +2,7 @@ package com.oven.demo.core.employee.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.employee.vo.Employee;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -22,7 +23,7 @@ import java.util.Objects;
  * @author Oven
  */
 @Repository
-public class EmployeeDao {
+public class EmployeeDao extends BaseDao<Employee> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -97,24 +98,18 @@ public class EmployeeDao {
      * 分页查询员工
      */
     public List<Employee> getByPage(Integer pageNum, Integer pageSize, Employee employee) {
-        StringBuilder sb = new StringBuilder("select * from t_employee e");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, employee);
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        params.add((pageNum - 1) * pageSize);
-        params.add(pageSize);
-        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Employee.class));
+        StringBuilder sql = new StringBuilder("select * from t_employee e");
+        List<Object> params = addCondition(sql, employee);
+        return super.getByPage(sql, params, Employee.class, pageNum, pageSize, jdbcTemplate);
     }
 
     /**
      * 统计员工总数量
      */
     public Integer getTotalNum(Employee employee) {
-        StringBuilder sb = new StringBuilder("select count(*) from t_employee e");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, employee);
-        String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
+        StringBuilder sql = new StringBuilder("select count(*) from t_employee e");
+        List<Object> params = addCondition(sql, employee);
+        return super.getTotalNum(sql, params, jdbcTemplate);
     }
 
     /**
@@ -136,19 +131,21 @@ public class EmployeeDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, List<Object> params, Employee employee) {
+    private List<Object> addCondition(StringBuilder sql, Employee employee) {
+        List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(employee.getName())) {
-            sb.append(" and e.`name` like ?");
+            sql.append(" and e.`name` like ?");
             params.add("%" + employee.getName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(employee.getContact())) {
-            sb.append(" and e.contact like ?");
+            sql.append(" and e.contact like ?");
             params.add("%" + employee.getContact().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (employee.getGender() != null) {
-            sb.append(" and e.gender = ?");
+            sql.append(" and e.gender = ?");
             params.add(employee.getGender());
         }
+        return params;
     }
 
     /**

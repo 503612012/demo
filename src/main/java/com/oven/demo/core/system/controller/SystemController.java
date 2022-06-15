@@ -237,7 +237,7 @@ public class SystemController extends BaseController {
             // 登录成功后放入session中
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInDb);
             logService.addLog("登录系统！", "成功！", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
-            userService.updateLastLoginTime(new DateTime().toString(AppConst.TIME_PATTERN), userInDb.getId());
+            userService.updateLastLoginTime(DateTime.now().toString(AppConst.TIME_PATTERN), userInDb.getId());
 
             // 获取该用户的所有权限编码，放入session中
             Object userMenus = req.getSession().getAttribute(AppConst.USER_MENU);

@@ -31,9 +31,9 @@ public class EmployeeService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public void add(Employee employee) {
         employee.setCreateId(CommonUtils.getCurrentUser().getId());
-        employee.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        employee.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
-        employee.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        employee.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         employeeDao.add(employee);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
@@ -83,7 +83,7 @@ public class EmployeeService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            employeeInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+            employeeInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
             employeeInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             employeeDao.update(employeeInDb);
             // 移除缓存

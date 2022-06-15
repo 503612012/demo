@@ -2,12 +2,10 @@ package com.oven.demo.core.log.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.log.vo.Log;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -16,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 日志dao层
@@ -24,7 +21,7 @@ import java.util.Objects;
  * @author Oven
  */
 @Repository
-public class LogDao {
+public class LogDao extends BaseDao<Log> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -47,43 +44,38 @@ public class LogDao {
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
-        StringBuilder sb = new StringBuilder("select * from t_log");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, log);
-        sb.append(" order by operator_time desc");
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        params.add((pageNum - 1) * pageSize);
-        params.add(pageSize);
-        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Log.class));
+        StringBuilder sql = new StringBuilder("select * from t_log");
+        List<Object> params = addCondition(sql, log);
+        return super.getByPage(sql, params, Log.class, pageNum, pageSize, jdbcTemplate, "operator_time desc");
     }
 
     /**
      * 获取日志总数量
      */
     public Integer getTotalNum(Log log) {
-        StringBuilder sb = new StringBuilder("select count(*) from t_log");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, log);
-        String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
+        StringBuilder sql = new StringBuilder("select count(*) from t_log");
+        List<Object> params = addCondition(sql, log);
+        return super.getTotalNum(sql, params, jdbcTemplate);
     }
 
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, List<Object> params, Log log) {
+    private List<Object> addCondition(StringBuilder sql, Log log) {
+        List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(log.getTitle())) {
-            sb.append(" and title like ?");
+            sql.append(" and title like ?");
             params.add("%" + log.getTitle().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(log.getContent())) {
-            sb.append(" and content like ?");
+            sql.append(" and content like ?");
             params.add("%" + log.getContent().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (log.getOperatorId() != null) {
-            sb.append(" and operator_id = ?");
+            sql.append(" and operator_id = ?");
             params.add(log.getOperatorId());
         }
+        return params;
     }
 
     /**
@@ -93,6 +85,7 @@ public class LogDao {
         String sql = "insert into t_log values (null, ?, ?, ?, ?, ?, ?)";
         this.jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
+            @SuppressWarnings("NullableProblems")
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 Log item = list.get(i);
                 ps.setString(1, item.getTitle());

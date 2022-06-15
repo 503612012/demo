@@ -2,6 +2,7 @@ package com.oven.demo.core.user.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.user.vo.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -22,7 +23,7 @@ import java.util.Objects;
  * @author Oven
  */
 @Repository
-public class UserDao {
+public class UserDao extends BaseDao<User> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -45,24 +46,18 @@ public class UserDao {
      * @param pageSize 每页显示数量
      */
     public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        StringBuilder sb = new StringBuilder("select * from t_user");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, user);
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        params.add((pageNum - 1) * pageSize);
-        params.add(pageSize);
-        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(User.class));
+        StringBuilder sql = new StringBuilder("select * from t_user");
+        List<Object> params = addCondition(sql, user);
+        return super.getByPage(sql, params, User.class, pageNum, pageSize, jdbcTemplate);
     }
 
     /**
      * 获取用户总数量
      */
     public Integer getTotalNum(User user) {
-        StringBuilder sb = new StringBuilder("select count(*) from t_user");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, user);
-        String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
+        StringBuilder sql = new StringBuilder("select count(*) from t_user");
+        List<Object> params = addCondition(sql, user);
+        return super.getTotalNum(sql, params, jdbcTemplate);
     }
 
     /**
@@ -158,19 +153,21 @@ public class UserDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, List<Object> params, User user) {
+    private List<Object> addCondition(StringBuilder sql, User user) {
+        List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(user.getUserName())) {
-            sb.append(" and user_name like ?");
+            sql.append(" and user_name like ?");
             params.add("%" + user.getUserName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(user.getNickName())) {
-            sb.append(" and nick_name like ?");
+            sql.append(" and nick_name like ?");
             params.add("%" + user.getNickName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
         if (!StringUtils.isEmpty(user.getPhone())) {
-            sb.append(" and phone like ?");
+            sql.append(" and phone like ?");
             params.add("%" + user.getPhone().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
+        return params;
     }
 
     public void updateLastLoginTime(String time, Integer userId) {

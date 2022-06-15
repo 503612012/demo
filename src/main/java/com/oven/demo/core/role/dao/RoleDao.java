@@ -2,6 +2,7 @@ package com.oven.demo.core.role.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.role.vo.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -22,7 +23,7 @@ import java.util.Objects;
  * @author Oven
  */
 @Repository
-public class RoleDao {
+public class RoleDao extends BaseDao<Role> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -45,24 +46,18 @@ public class RoleDao {
      * @param pageSize 每页显示数量
      */
     public List<Role> getByPage(Integer pageNum, Integer pageSize, Role role) {
-        StringBuilder sb = new StringBuilder("select * from t_role");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, role);
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        params.add((pageNum - 1) * pageSize);
-        params.add(pageSize);
-        return this.jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(Role.class));
+        StringBuilder sql = new StringBuilder("select * from t_role");
+        List<Object> params = addCondition(sql, role);
+        return super.getByPage(sql, params, Role.class, pageNum, pageSize, jdbcTemplate);
     }
 
     /**
      * 获取角色总数量
      */
     public Integer getTotalNum(Role role) {
-        StringBuilder sb = new StringBuilder("select count(*) from t_role");
-        List<Object> params = new ArrayList<>();
-        addCondition(sb, params, role);
-        String sql = sb.toString().replaceFirst("and", "where");
-        return this.jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
+        StringBuilder sql = new StringBuilder("select count(*) from t_role");
+        List<Object> params = addCondition(sql, role);
+        return super.getTotalNum(sql, params, jdbcTemplate);
     }
 
     /**
@@ -125,11 +120,13 @@ public class RoleDao {
     /**
      * 搜索条件
      */
-    private void addCondition(StringBuilder sb, List<Object> params, Role role) {
+    private List<Object> addCondition(StringBuilder sql, Role role) {
+        List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(role.getRoleName())) {
-            sb.append(" and role_name like ?");
+            sql.append(" and role_name like ?");
             params.add("%" + role.getRoleName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
+        return params;
     }
 
 }

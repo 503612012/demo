@@ -48,7 +48,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
     private void doSomething() {
         List<RequestLog> list = RequestLogQueueUtils.getInstance().drainTo(null);
         if (!CollectionUtils.isEmpty(list)) {
-            String tableName = "t_request_log_" + new DateTime().toString("yyyyMM");
+            String tableName = "t_request_log_" + DateTime.now().toString("yyyyMM");
             if (!requestLogService.isExist(tableName)) {
                 requestLogService.createTable(tableName);
             }

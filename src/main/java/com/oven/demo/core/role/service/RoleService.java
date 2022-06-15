@@ -99,9 +99,9 @@ public class RoleService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public void add(Role role) {
         role.setCreateId(CommonUtils.getCurrentUser().getId());
-        role.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        role.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
-        role.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        role.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         roleDao.add(role);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
@@ -131,7 +131,7 @@ public class RoleService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            roleInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+            roleInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
             roleInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             roleDao.update(roleInDb);
             // 移除缓存

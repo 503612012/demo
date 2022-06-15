@@ -165,6 +165,29 @@ define(['jquery', 'http'], function($, http) {
         }
     }
 
+    function success(content) {
+        layer.msg(content, {
+            'icon': 1,
+            'anim': 0
+        });
+    }
+
+    function fail(content) {
+        layer.msg(content, {
+            'icon': 2,
+            'anim': 6
+        });
+    }
+
+    function open(content) {
+        layer.open({
+            title: '系统提示',
+            anim: 6,
+            content: content,
+            btnAlign: 'c'
+        });
+    }
+
     return {
         getCurrentDate: getCurrentDate,
         getNowFormatDate: getNowFormatDate,
@@ -174,7 +197,10 @@ define(['jquery', 'http'], function($, http) {
         disabledDate: disabledDate,
         numberFormat: numberFormat,
         initEmployeeSelectBox: initEmployeeSelectBox,
-        initWorksiteSelectBox: initWorksiteSelectBox
+        initWorksiteSelectBox: initWorksiteSelectBox,
+        success: success,
+        open: open,
+        fail: fail
     };
 
 });

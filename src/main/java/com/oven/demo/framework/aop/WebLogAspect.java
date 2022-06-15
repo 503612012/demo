@@ -51,7 +51,7 @@ public class WebLogAspect {
         requestLog.setRequestIp(request.getRemoteAddr());
         requestLog.setRequestMethod(request.getMethod());
         requestLog.setRequestParam(ParametersUtils.getParameters(request));
-        requestLog.setRequestTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        requestLog.setRequestTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         requestLog.setRequestUrl(request.getRequestURL().toString());
         if (request.getSession().getAttribute(AppConst.CURRENT_USER) != null) {
             User currentUser = (User) request.getSession().getAttribute(AppConst.CURRENT_USER);

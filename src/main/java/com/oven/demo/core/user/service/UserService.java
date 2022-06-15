@@ -118,9 +118,9 @@ public class UserService extends BaseService {
     public void add(User user) {
         user.setErrNum(0);
         user.setCreateId(CommonUtils.getCurrentUser().getId());
-        user.setCreateTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        user.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         user.setLastModifyId(CommonUtils.getCurrentUser().getId());
-        user.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+        user.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
         userDao.add(user);
@@ -175,7 +175,7 @@ public class UserService extends BaseService {
         String str = content.toString();
         if (str.length() > 0) {
             str = str.substring(0, str.length() - 1);
-            userInDb.setLastModifyTime(new DateTime().toString(AppConst.TIME_PATTERN));
+            userInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
             userInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
             userDao.update(userInDb);
             // 移除缓存
