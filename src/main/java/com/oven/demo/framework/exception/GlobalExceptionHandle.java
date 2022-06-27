@@ -1,7 +1,6 @@
 package com.oven.demo.framework.exception;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.common.util.ParametersUtils;
 import com.oven.demo.common.util.ResultInfo;
@@ -31,13 +30,13 @@ public class GlobalExceptionHandle {
      */
     @ExceptionHandler(value = Exception.class)
     public Object handleException(Exception e, HttpServletRequest request, HttpServletResponse resp) throws IOException {
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求地址：{}", request.getRequestURL().toString());
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求方法：{}", request.getMethod());
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求者IP：{}", request.getRemoteAddr());
-        log.error(AppConst.ERROR_LOG_PREFIX + "请求参数：{}", ParametersUtils.getParameters(request));
+        log.error("请求地址：{}", request.getRequestURL().toString());
+        log.error("请求方法：{}", request.getMethod());
+        log.error("请求者IP：{}", request.getRemoteAddr());
+        log.error("请求参数：{}", ParametersUtils.getParameters(request));
         if (e instanceof MyException) {
             MyException myException = (MyException) e;
-            log.error(AppConst.ERROR_LOG_PREFIX + myException.getLog(), myException.getE());
+            log.error(myException.getLog(), myException.getE());
             if (myException.getCode().equals(ResultEnum.SEARCH_PAGE_ERROR.getCode())) {
                 JSONObject result = new JSONObject();
                 result.put("code", myException.getCode());
@@ -47,16 +46,16 @@ public class GlobalExceptionHandle {
                 resp.sendRedirect("/err");
                 return "";
             } else {
-                return new ResultInfo<>(myException.getCode(), myException.getMsg());
+                return ResultInfo.build(myException.getCode(), myException.getMsg());
             }
         } else if (e instanceof UnauthorizedException) {
             resp.sendRedirect("/noauth");
             return "";
         } else if (e instanceof LimitException) {
             LimitException limitException = (LimitException) e;
-            return new ResultInfo<>(limitException.getCode(), limitException.getMsg());
+            return ResultInfo.build(limitException.getCode(), limitException.getMsg());
         } else {
-            log.error(AppConst.ERROR_LOG_PREFIX + "错误信息：", e);
+            log.error("错误信息：", e);
         }
         resp.sendRedirect("/err");
         return "";

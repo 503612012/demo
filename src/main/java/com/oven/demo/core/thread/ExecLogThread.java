@@ -16,10 +16,10 @@ public class ExecLogThread implements Runnable {
 //        while (true) {
 //            try {
 //                info = QueueUtils.getInstance().poll();
-//                log.info(AppConst.INFO_LOG_PREFIX + "从队列中获取到的信息：{}", info);
+//                log.info("从队列中获取到的信息：{}", info);
 //                // do somthing
 //            } catch (Exception e) {
-//                log.error(AppConst.ERROR_LOG_PREFIX + "异步记录日志线程异常，异常信息：", e);
+//                log.error("异步记录日志线程异常，异常信息：", e);
 //            }
 //        }
     }

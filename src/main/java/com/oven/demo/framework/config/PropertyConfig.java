@@ -1,6 +1,5 @@
 package com.oven.demo.framework.config;
 
-import com.oven.demo.common.constant.AppConst;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
@@ -38,26 +37,26 @@ public class PropertyConfig {
         try {
             properties.load(in);
         } catch (Exception e) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "加载配置文件异常，异常信息：", e);
+            log.error("加载配置文件异常，异常信息：", e);
             return null;
         }
         String profile = properties.getProperty("spring.profiles.active");
         if (PROFILE.equals(profile)) {
             profile = DEV_PROFILE;
         }
-        log.info(AppConst.INFO_LOG_PREFIX + "active profile is {}", profile);
+        log.info("active profile is {}", profile);
         if (DEV_PROFILE.equals(profile)) {
             in = PropertyConfig.class.getClassLoader().getResourceAsStream("application-dev.properties");
         } else if (PRO_PROFILE.equals(profile)) {
             in = PropertyConfig.class.getClassLoader().getResourceAsStream("application-pro.properties");
         } else {
-            log.error(AppConst.ERROR_LOG_PREFIX + "profile must be dev or pro!");
+            log.error("profile must be dev or pro!");
             return null;
         }
         try {
             properties.load(in);
         } catch (Exception e) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "加载配置文件异常，异常信息：", e);
+            log.error("加载配置文件异常，异常信息：", e);
             return null;
         }
         String driverClassName = properties.getProperty("spring.datasource.druid.driver-class-name");
@@ -75,16 +74,16 @@ public class PropertyConfig {
             conn = DriverManager.getConnection(url, userName, password);
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
-            log.info(AppConst.INFO_LOG_PREFIX + " 从数据库中加载配置信息...");
+            log.info(" 从数据库中加载配置信息...");
             while (rs.next()) {
                 String key = rs.getString("key");
                 String value = rs.getString("value");
-                log.info(AppConst.INFO_LOG_PREFIX + " {} --- {}", key, value);
+                log.info(" {} --- {}", key, value);
                 properties.put(key, value);
             }
             return properties;
         } catch (Exception e) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "加载系统配置表异常，异常信息：", e);
+            log.error("加载系统配置表异常，异常信息：", e);
             return null;
         } finally {
             if (conn != null) {

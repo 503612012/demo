@@ -29,7 +29,8 @@ public class EmployeeService extends BaseService {
      * 添加员工
      */
     @Transactional(rollbackFor = Exception.class)
-    public void add(Employee employee) {
+    public void add(Employee employee) throws Exception {
+        employee.setStatus(0);
         employee.setCreateId(CommonUtils.getCurrentUser().getId());
         employee.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
@@ -37,60 +38,18 @@ public class EmployeeService extends BaseService {
         employeeDao.add(employee);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
-        // 记录日志
-        super.addLog("添加员工", employee.toString());
     }
 
     /**
      * 更新
      */
     @Transactional(rollbackFor = Exception.class)
-    public void update(Employee employee) {
-        Employee employeeInDb = this.getById(employee.getId());
-        String employeeName = employeeInDb.getName();
-        StringBuilder content = new StringBuilder();
-        if (!employeeInDb.getName().equals(employee.getName())) {
-            content.append("姓名由[").append(employeeInDb.getName()).append("]改为[").append(employee.getName()).append("]，");
-            employeeInDb.setName(employee.getName());
-        }
-        if (!employeeInDb.getAge().equals(employee.getAge())) {
-            content.append("年龄由[").append(employeeInDb.getAge()).append("]改为[").append(employee.getAge()).append("]，");
-            employeeInDb.setAge(employee.getAge());
-        }
-        if (!employeeInDb.getGender().equals(employee.getGender())) {
-            content.append("性别由[").append(employeeInDb.getGender() == 1 ? "男" : "女").append("]改为[").append(employee.getGender() == 1 ? "男" : "女").append("]，");
-            employeeInDb.setGender(employee.getGender());
-        }
-        if (!employeeInDb.getContact().equals(employee.getContact())) {
-            content.append("联系方式由[").append(employeeInDb.getContact()).append("]改为[").append(employee.getContact()).append("]，");
-            employeeInDb.setContact(employee.getContact());
-        }
-        if (!employeeInDb.getHourSalary().equals(employee.getHourSalary())) {
-            content.append("时薪由[").append(employeeInDb.getHourSalary()).append("]改为[").append(employee.getHourSalary()).append("]，");
-            employeeInDb.setHourSalary(employee.getHourSalary());
-        }
-        if (employee.getStatus() == null) {
-            employee.setStatus(0);
-        }
-        if (!employeeInDb.getStatus().equals(employee.getStatus())) {
-            content.append("状态由[").append(employeeInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(employee.getStatus() == 0 ? "正常" : "锁定").append("]，");
-            employeeInDb.setStatus(employee.getStatus());
-        }
-        if (!employeeInDb.getAddress().equals(employee.getAddress())) {
-            content.append("住址由[").append(employeeInDb.getAddress()).append("]改为[").append(employee.getAddress()).append("]");
-            employeeInDb.setAddress(employee.getAddress());
-        }
-        String str = content.toString();
-        if (str.length() > 0) {
-            str = str.substring(0, str.length() - 1);
-            employeeInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
-            employeeInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
-            employeeDao.update(employeeInDb);
-            // 移除缓存
-            super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
-            // 记录日志
-            super.addLog("修改员工", "[" + employeeName + "]" + str);
-        }
+    public void update(Employee employee) throws Exception {
+        employee.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
+        employeeDao.update(employee);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
     }
 
     /**
@@ -152,13 +111,10 @@ public class EmployeeService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer id) {
-        Employee employee = this.getById(id);
         boolean flag = employeeDao.delete(id) > 0;
         if (flag) {
             // 移除缓存
             super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
-            // 记录日志
-            super.addLog("删除员工", employee.toString());
         }
         return flag;
     }

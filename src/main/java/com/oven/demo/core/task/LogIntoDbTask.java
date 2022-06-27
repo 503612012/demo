@@ -1,6 +1,5 @@
 package com.oven.demo.core.task;
 
-import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.LogQueueUtils;
 import com.oven.demo.core.crontab.service.CrontabService;
 import com.oven.demo.core.log.service.LogService;
@@ -38,7 +37,7 @@ public class LogIntoDbTask implements SchedulingConfigurer {
         taskRegistrar.addTriggerTask(this::doJob, triggerContext -> {
             String cron = crontabService.getCron("LOG_CRON");
             if (StringUtils.isEmpty(cron)) {
-                log.error(AppConst.ERROR_LOG_PREFIX + "cron is null...");
+                log.error("cron is null...");
             }
             return new CronTrigger(cron).nextExecutionTime(triggerContext);
         });
@@ -48,7 +47,7 @@ public class LogIntoDbTask implements SchedulingConfigurer {
         List<Log> list = LogQueueUtils.getInstance().drainTo(null);
         if (!CollectionUtils.isEmpty(list)) {
             logService.batchSave(list);
-            log.info(AppConst.INFO_LOG_PREFIX + "成功保存{}条操作日志到数据库。", list.size());
+            log.info("成功保存{}条操作日志到数据库。", list.size());
         }
     }
 

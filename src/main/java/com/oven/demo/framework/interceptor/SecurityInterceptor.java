@@ -97,10 +97,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     public boolean responseRequest(Integer code, String data, String param, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String requestType = req.getHeader("X-Requested-With");
         if (XML_HTTP_REQUEST.equals(requestType)) { // ajax请求
-            ResultInfo<Object> resultInfo = new ResultInfo<>();
-            resultInfo.setCode(code);
-            resultInfo.setData(data);
-            resp.getWriter().write(JSONObject.toJSONString(resultInfo));
+            resp.getWriter().write(JSONObject.toJSONString(ResultInfo.build(code, data)));
             return false;
         }
         param = URLEncoder.encode(param, CharEncoding.UTF_8);

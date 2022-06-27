@@ -31,15 +31,18 @@ create table t_employee
     constraint t_employee_dbid_uindex unique (dbid)
 ) comment '员工表';
 
-create table t_log
+create table db_demo.t_log
 (
-    dbid          int auto_increment comment '主键' primary key,
-    title         varchar(63) null comment '标题',
-    content       text        null comment '内容',
-    operator_id   int         null comment '操作人ID',
-    operator_name varchar(31) null comment '操作人姓名',
-    operator_time varchar(31) null comment '操作时间',
-    operator_ip   varchar(31) null comment '操作人IP地址',
+    dbid           int auto_increment comment '主键' primary key,
+    title          varchar(63)   null comment '标题',
+    request        varchar(5000) null comment '内容',
+    response       varchar(5000) null,
+    request_uri    varchar(127)  null,
+    request_method varchar(15)   null,
+    operator_id    int           null comment '操作人ID',
+    operator_name  varchar(31)   null comment '操作人姓名',
+    operator_time  varchar(31)   null comment '操作时间',
+    operator_ip    varchar(31)   null comment '操作人IP地址',
     constraint t_log_dbid_uindex unique (dbid)
 ) comment '日志表';
 

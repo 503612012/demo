@@ -9,10 +9,6 @@ public interface AppConst {
 
     String APP_NAME = "demo_";
 
-    String ERROR_LOG_PREFIX = "---------------------------"; // ERROR日志前缀
-
-    String INFO_LOG_PREFIX = "***************************"; // INFO日志前缀
-
     String CURRENT_USER = "current_user"; // 当前登录用户
 
     String LOGINEDUSERS = "loginedUsers"; // 已经登录到系统用户，是一个map

@@ -90,14 +90,18 @@ public class LogService extends BaseService {
     /**
      * 添加日志
      */
-    public void addLog(String title, String content, Integer operatorId, String operatorName, String operatorIp) {
-        Log log = new Log();
-        log.setTitle(title);
-        log.setContent(content);
-        log.setOperatorId(operatorId);
-        log.setOperatorName(operatorName);
-        log.setOperatorIp(operatorIp);
-        log.setOperatorTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+    public void addLog(String title, String content, Integer operatorId, String operatorName, String operatorIp, String requestUri, String requestMethod) {
+        Log log = Log.builder()
+                .title(title)
+                .request(content)
+                .response("")
+                .requestUri(requestUri)
+                .requestMethod(requestMethod)
+                .operatorId(operatorId)
+                .operatorName(operatorName)
+                .operatorTime(DateTime.now().toString(AppConst.TIME_PATTERN))
+                .operatorIp(operatorIp)
+                .build();
         LogQueueUtils.getInstance().offer(log);
     }
 

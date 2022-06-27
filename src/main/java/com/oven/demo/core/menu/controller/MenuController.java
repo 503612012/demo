@@ -5,6 +5,7 @@ import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.menu.vo.Menu;
+import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -55,6 +56,7 @@ public class MenuController extends BaseController {
      * 修改菜单
      */
     @ResponseBody
+    @AspectLog(title = "修改菜单")
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.MENU_UPDATE)
     @Limit(key = LimitKey.MENU_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -74,6 +76,7 @@ public class MenuController extends BaseController {
      * @param status 状态编码
      */
     @ResponseBody
+    @AspectLog(title = "修改菜单状态")
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.MENU_SETSTATUS)
     @Limit(key = LimitKey.MENU_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)

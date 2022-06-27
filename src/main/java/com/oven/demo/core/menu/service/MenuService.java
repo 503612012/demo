@@ -12,7 +12,6 @@ import com.oven.demo.core.user.service.UserRoleService;
 import com.oven.demo.core.user.vo.UserRole;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -59,33 +58,12 @@ public class MenuService extends BaseService {
     /**
      * 修改菜单
      */
-    @Transactional(rollbackFor = Exception.class)
-    public void update(Menu menu) {
-        Menu menuInDb = this.getById(menu.getId());
-        String menuName = menuInDb.getMenuName();
-        StringBuilder content = new StringBuilder();
-        if (!menuInDb.getMenuName().equals(menu.getMenuName())) {
-            content.append("菜单名称由[").append(menuInDb.getMenuName()).append("]改为[").append(menu.getMenuName()).append("]，");
-            menuInDb.setMenuName(menu.getMenuName());
-        }
-        if (menu.getStatus() == null) {
-            menu.setStatus(0);
-        }
-        if (!menuInDb.getStatus().equals(menu.getStatus())) {
-            content.append("状态由[").append(menuInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(menu.getStatus() == 0 ? "正常" : "锁定").append("]，");
-            menuInDb.setStatus(menu.getStatus());
-        }
-        String str = content.toString();
-        if (str.length() > 0) {
-            str = str.substring(0, str.length() - 1);
-            menuInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
-            menuInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
-            menuDao.update(menuInDb);
-            // 移除缓存
-            super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES);
-            // 记录日志
-            super.addLog("修改菜单", "[" + menuName + "]" + str);
-        }
+    public void update(Menu menu) throws Exception {
+        menu.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        menu.setLastModifyId(CommonUtils.getCurrentUser().getId());
+        menuDao.update(menu);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES);
     }
 
     /**

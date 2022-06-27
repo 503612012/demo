@@ -17,6 +17,7 @@ import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.system.service.SysDicService;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.core.user.vo.User;
+import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -149,7 +150,7 @@ public class SystemController extends BaseController {
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
             SecurityUtils.getSubject().logout();
         } catch (Exception e) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "登录操作出错，请联系网站管理人员。：", e);
+            log.error("登录操作出错，请联系网站管理人员。：", e);
         }
         return "login";
     }
@@ -158,6 +159,7 @@ public class SystemController extends BaseController {
      * 强制退出
      */
     @ResponseBody
+    @AspectLog(title = "强制退出")
     @RequestMapping("/forceLogout")
     @RequiresPermissions(PermissionCode.FORCE_LOGOUT)
     public Object forceLogout(String userName, HttpServletRequest req) throws MyException {
@@ -219,7 +221,7 @@ public class SystemController extends BaseController {
 
             User userInDb = userService.getByUserName(userName);
             if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                 return super.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
             }
             // 登录成功后放入application，防止同一个账户多人登录
@@ -236,7 +238,7 @@ public class SystemController extends BaseController {
 
             // 登录成功后放入session中
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInDb);
-            logService.addLog("登录系统！", "成功！", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
+            logService.addLog("登录系统！", "成功！", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
             userService.updateLastLoginTime(DateTime.now().toString(AppConst.TIME_PATTERN), userInDb.getId());
 
             // 获取该用户的所有权限编码，放入session中
@@ -259,18 +261,18 @@ public class SystemController extends BaseController {
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                 return super.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
             } else if (e instanceof IncorrectCredentialsException) {
                 if (userInDb.getErrNum() >= 5) {
-                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req));
+                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                     return super.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
                 }
                 userService.logPasswordWrong(userInDb.getId());
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                 return super.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
             } else if (e instanceof LockedAccountException) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req));
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                 return super.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
                 throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);

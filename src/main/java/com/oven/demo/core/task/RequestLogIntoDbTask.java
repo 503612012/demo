@@ -1,6 +1,5 @@
 package com.oven.demo.core.task;
 
-import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.requestLog.RequestLog;
 import com.oven.demo.common.requestLog.RequestLogService;
 import com.oven.demo.common.util.RequestLogQueueUtils;
@@ -39,7 +38,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
         taskRegistrar.addTriggerTask(this::doSomething, triggerContext -> {
             String cron = crontabService.getCron("REQUEST_LOG_CRON");
             if (StringUtils.isEmpty(cron)) {
-                log.error(AppConst.ERROR_LOG_PREFIX + "cron is null...");
+                log.error("cron is null...");
             }
             return new CronTrigger(cron).nextExecutionTime(triggerContext);
         });
@@ -53,7 +52,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
                 requestLogService.createTable(tableName);
             }
             requestLogService.batchSave(list, tableName);
-            log.info(AppConst.INFO_LOG_PREFIX + "成功保存{}条接口访问日志到数据库。", list.size());
+            log.info("成功保存{}条接口访问日志到数据库。", list.size());
         }
     }
 

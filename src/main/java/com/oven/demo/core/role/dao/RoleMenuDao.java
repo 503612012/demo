@@ -1,17 +1,13 @@
 package com.oven.demo.core.role.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.role.vo.RoleMenu;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 角色-菜单关系dao层
@@ -19,7 +15,7 @@ import java.util.Objects;
  * @author Oven
  */
 @Repository
-public class RoleMenuDao {
+public class RoleMenuDao extends BaseDao<RoleMenu> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -51,25 +47,16 @@ public class RoleMenuDao {
      *
      * @param roleId 角色ID
      */
-    public int deleteByRoleId(Integer roleId) {
+    public void deleteByRoleId(Integer roleId) {
         String sql = "delete from t_role_menu where role_id = ?";
-        return this.jdbcTemplate.update(sql, roleId);
+        this.jdbcTemplate.update(sql, roleId);
     }
 
     /**
      * 添加
      */
-    public int add(RoleMenu item) {
-        String sql = "insert into t_role_menu (dbid, role_id, menu_id) values (null, ?, ?)";
-        KeyHolder key = new GeneratedKeyHolder();
-        PreparedStatementCreator creator = con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
-            ps.setInt(1, item.getRoleId());
-            ps.setInt(2, item.getMenuId());
-            return ps;
-        };
-        this.jdbcTemplate.update(creator, key);
-        return Objects.requireNonNull(key.getKey()).intValue();
+    public int add(RoleMenu roleMenu) throws Exception {
+        return super.add(jdbcTemplate, roleMenu);
     }
 
 }

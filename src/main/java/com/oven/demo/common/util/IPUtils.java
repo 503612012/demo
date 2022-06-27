@@ -1,6 +1,5 @@
 package com.oven.demo.common.util;
 
-import com.oven.demo.common.constant.AppConst;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +44,7 @@ public class IPUtils {
                 ip = InetAddress.getLocalHost().getHostAddress();
             } catch (UnknownHostException e) {
                 e.printStackTrace();
-                log.error(AppConst.ERROR_LOG_PREFIX, e);
+                log.error("获取IP地址异常：", e);
             }
         }
         // 6.校验ip的合法性，不合法返回""
@@ -71,7 +70,7 @@ public class IPUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error(AppConst.ERROR_LOG_PREFIX, e);
+            log.error("判断IP地址是否合法异常：", e);
         }
         return retVal;
     }

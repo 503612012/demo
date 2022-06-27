@@ -1,6 +1,5 @@
 package com.oven.demo.framework.config;
 
-import com.oven.demo.common.constant.AppConst;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ConcurrentMap;
@@ -24,7 +23,7 @@ public class SysDic {
      */
     public static String getProperty(String key) {
         if (SYS_DIC == null) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "系统字典数据加载失败");
+            log.error("系统字典数据加载失败");
         }
         return (String) SYS_DIC.get(key);
     }

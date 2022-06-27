@@ -1,17 +1,13 @@
 package com.oven.demo.core.user.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.user.vo.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 用户-角色关系dao层
@@ -19,7 +15,7 @@ import java.util.Objects;
  * @author Oven
  */
 @Repository
-public class UserRoleDao {
+public class UserRoleDao extends BaseDao<UserRole> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -51,25 +47,16 @@ public class UserRoleDao {
      *
      * @param userId 用户ID
      */
-    public int deleteByUserId(Integer userId) {
+    public void deleteByUserId(Integer userId) {
         String sql = "delete from t_user_role where user_id = ?";
-        return this.jdbcTemplate.update(sql, userId);
+        this.jdbcTemplate.update(sql, userId);
     }
 
     /**
      * 添加
      */
-    public int add(UserRole userRole) {
-        String sql = "insert into t_user_role (dbid, user_id, role_id) values (null, ?, ?)";
-        KeyHolder key = new GeneratedKeyHolder();
-        PreparedStatementCreator creator = con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
-            ps.setInt(1, userRole.getUserId());
-            ps.setInt(2, userRole.getRoleId());
-            return ps;
-        };
-        this.jdbcTemplate.update(creator, key);
-        return Objects.requireNonNull(key.getKey()).intValue();
+    public int add(UserRole userRole) throws Exception {
+        return super.add(jdbcTemplate, userRole);
     }
 
     /**

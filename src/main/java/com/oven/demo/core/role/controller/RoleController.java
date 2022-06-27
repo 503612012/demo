@@ -13,6 +13,7 @@ import com.oven.demo.core.user.service.UserRoleService;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.core.user.vo.User;
 import com.oven.demo.core.user.vo.UserRole;
+import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -105,6 +106,7 @@ public class RoleController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/add")
+    @AspectLog(title = "添加角色")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
     @Limit(key = LimitKey.ROLE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object add(Role role) throws MyException {
@@ -121,6 +123,7 @@ public class RoleController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/update")
+    @AspectLog(title = "修改角色")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
     @Limit(key = LimitKey.ROLE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object update(Role role) throws MyException {
@@ -142,6 +145,7 @@ public class RoleController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/delete")
+    @AspectLog(title = "删除角色")
     @RequiresPermissions(PermissionCode.ROLE_DELETE)
     @Limit(key = LimitKey.ROLE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
@@ -167,6 +171,7 @@ public class RoleController extends BaseController {
      * @param status 状态编码
      */
     @ResponseBody
+    @AspectLog(title = "修改角色状态")
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
     @Limit(key = LimitKey.ROLE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -218,6 +223,7 @@ public class RoleController extends BaseController {
      * @param menuIds 菜单ID列表
      */
     @ResponseBody
+    @AspectLog(title = "设置角色权限")
     @RequestMapping("/setRoleMenu")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
     @Limit(key = LimitKey.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)

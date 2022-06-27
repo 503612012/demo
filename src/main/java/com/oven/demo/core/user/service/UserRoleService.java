@@ -74,7 +74,7 @@ public class UserRoleService extends BaseService {
     /**
      * 添加
      */
-    public void add(UserRole userRole) {
+    public void add(UserRole userRole) throws Exception {
         userRoleDao.add(userRole);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);

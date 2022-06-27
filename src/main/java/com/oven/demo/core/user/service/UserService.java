@@ -115,8 +115,9 @@ public class UserService extends BaseService {
      * 添加用户
      */
     @Transactional(rollbackFor = Exception.class)
-    public void add(User user) {
+    public void add(User user) throws Exception {
         user.setErrNum(0);
+        user.setStatus(0);
         user.setCreateId(CommonUtils.getCurrentUser().getId());
         user.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         user.setLastModifyId(CommonUtils.getCurrentUser().getId());
@@ -126,63 +127,18 @@ public class UserService extends BaseService {
         userDao.add(user);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX);
-        // 记录日志
-        super.addLog("添加用户", user.toString());
     }
 
     /**
      * 修改用户
      */
     @Transactional(rollbackFor = Exception.class)
-    public void update(User user) {
-        User userInDb = this.getById(user.getId());
-        String nickName = userInDb.getNickName();
-        StringBuilder content = new StringBuilder();
-        if (!userInDb.getNickName().equals(user.getNickName())) {
-            content.append("昵称由[").append(userInDb.getNickName()).append("]改为[").append(user.getNickName()).append("]，");
-            userInDb.setNickName(user.getNickName());
-        }
-        if (!StringUtils.isEmpty(user.getPassword())) {
-            if (!userInDb.getPassword().equals(user.getPassword())) {
-                Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
-                userInDb.setPassword(md5.toString());
-                content.append("密码修改了，");
-            }
-        }
-        if (user.getStatus() == null) {
-            user.setStatus(0);
-        }
-        if (!userInDb.getStatus().equals(user.getStatus())) {
-            content.append("状态由[").append(userInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(user.getStatus() == 0 ? "正常" : "锁定").append("]，");
-            userInDb.setStatus(user.getStatus());
-        }
-        if (!userInDb.getAge().equals(user.getAge())) {
-            content.append("年龄由[").append(userInDb.getAge()).append("]改为[").append(user.getAge()).append("]，");
-            userInDb.setAge(user.getAge());
-        }
-        if (!userInDb.getEmail().equals(user.getEmail())) {
-            content.append("邮箱由[").append(userInDb.getEmail()).append("]改为[").append(user.getEmail()).append("]，");
-            userInDb.setEmail(user.getEmail());
-        }
-        if (!userInDb.getGender().equals(user.getGender())) {
-            content.append("性别由[").append(userInDb.getGender() == 1 ? "男" : "女").append("]改为[").append(user.getGender() == 1 ? "男" : "女").append("]，");
-            userInDb.setGender(user.getGender());
-        }
-        if (!userInDb.getPhone().equals(user.getPhone())) {
-            content.append("手机号由[").append(userInDb.getPhone()).append("]改为[").append(user.getPhone()).append("]，");
-            userInDb.setPhone(user.getPhone());
-        }
-        String str = content.toString();
-        if (str.length() > 0) {
-            str = str.substring(0, str.length() - 1);
-            userInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
-            userInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
-            userDao.update(userInDb);
-            // 移除缓存
-            super.batchRemove(RedisCacheKey.USER_PREFIX);
-            // 记录日志
-            super.addLog("修改用户", "[" + nickName + "]" + str);
-        }
+    public void update(User user) throws Exception {
+        user.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        user.setLastModifyId(CommonUtils.getCurrentUser().getId());
+        userDao.update(user);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
     /**
@@ -190,14 +146,11 @@ public class UserService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
-        User user = this.getById(id);
         // 删除该用户的所有角色信息
         userRoleService.deleteByUserId(id);
         userDao.delete(id);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
-        // 记录日志
-        super.addLog("删除用户", user.toString());
     }
 
     /**
@@ -237,30 +190,19 @@ public class UserService extends BaseService {
      * @param roleIds 角色ID列表
      */
     @Transactional(rollbackFor = Exception.class)
-    public void setUserRole(Integer userId, String roleIds) {
+    public void setUserRole(Integer userId, String roleIds) throws Exception {
         // 删除用户原有的所有角色
         userRoleService.deleteByUserId(userId);
         // 给用户添加新的角色
-        List<UserRole> userRoles = new ArrayList<>();
         String[] roles = roleIds.split(",");
         for (String roleId : roles) {
             UserRole item = new UserRole();
             item.setUserId(userId);
             item.setRoleId(Integer.parseInt(roleId));
             userRoleService.add(item);
-            userRoles.add(item);
-        }
-        User user = this.getById(userId);
-        StringBuilder roleNames = new StringBuilder();
-        userRoles.forEach(item -> roleNames.append(roleNames.append(roleService.getById(item.getRoleId()).getRoleName()).append("，")));
-        String content = roleNames.toString();
-        if (content.length() > 0) {
-            content = content.substring(0, content.length() - 1);
         }
         // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX);
-        // 记录日志
-        super.addLog("分配角色", "用户[" + user.getNickName() + "]分配角色[" + content + "]");
     }
 
     /**

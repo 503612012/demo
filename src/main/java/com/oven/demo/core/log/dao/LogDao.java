@@ -67,10 +67,6 @@ public class LogDao extends BaseDao<Log> {
             sql.append(" and title like ?");
             params.add("%" + log.getTitle().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
-        if (!StringUtils.isEmpty(log.getContent())) {
-            sql.append(" and content like ?");
-            params.add("%" + log.getContent().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
-        }
         if (log.getOperatorId() != null) {
             sql.append(" and operator_id = ?");
             params.add(log.getOperatorId());
@@ -82,18 +78,21 @@ public class LogDao extends BaseDao<Log> {
      * 批量添加
      */
     public void batchSave(List<Log> list) {
-        String sql = "insert into t_log values (null, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into t_log values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         this.jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             @SuppressWarnings("NullableProblems")
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 Log item = list.get(i);
                 ps.setString(1, item.getTitle());
-                ps.setString(2, item.getContent());
-                ps.setInt(3, item.getOperatorId());
-                ps.setString(4, item.getOperatorName());
-                ps.setString(5, item.getOperatorTime());
-                ps.setString(6, item.getOperatorIp());
+                ps.setString(2, item.getRequest());
+                ps.setString(3, item.getResponse());
+                ps.setString(4, item.getRequestUri());
+                ps.setString(5, item.getRequestMethod());
+                ps.setInt(6, item.getOperatorId());
+                ps.setString(7, item.getOperatorName());
+                ps.setString(8, item.getOperatorTime());
+                ps.setString(9, item.getOperatorIp());
                 if (i % 1000 == 0) {
                     // 执行prepareStatement对象中所有的sql语句
                     ps.executeBatch();

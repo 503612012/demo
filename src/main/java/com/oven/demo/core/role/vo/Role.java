@@ -3,6 +3,8 @@ package com.oven.demo.core.role.vo;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -11,22 +13,30 @@ import java.io.Serializable;
  * @author Oven
  */
 @Data
+@Table(name = "t_role")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
     @Column(name = "dbid")
     private Integer id;
+
     @Column(name = "role_name")
     private String roleName;
+
     @Column(name = "create_time")
     private String createTime;
+
     @Column(name = "create_id")
     private Integer createId;
+
     @Column(name = "status")
     private Integer status; // 状态，0-正常、1-删除
+
     @Column(name = "last_modify_time")
     private String lastModifyTime;
+
     @Column(name = "last_modify_id")
     private Integer lastModifyId;
 

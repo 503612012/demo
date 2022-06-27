@@ -1,6 +1,5 @@
 package com.oven.demo.app;
 
-import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.framework.config.PropertyConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -27,7 +26,7 @@ public class Application {
     public static void main(String[] args) {
         Properties properties = PropertyConfig.loadProperties();
         if (properties == null) {
-            log.error(AppConst.ERROR_LOG_PREFIX + "load properties error...");
+            log.error("load properties error...");
             return;
         }
         SpringApplication application = new SpringApplication(Application.class);

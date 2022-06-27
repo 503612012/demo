@@ -5,17 +5,12 @@ import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.user.vo.User;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 用户dao层
@@ -74,64 +69,15 @@ public class UserDao extends BaseDao<User> {
     /**
      * 添加
      */
-    public int add(User user) {
-        String sql = "insert into t_user (`dbid`," +
-                "                         `user_name`," +
-                "                         `password`," +
-                "                         `nick_name`," +
-                "                         `age`," +
-                "                         `email`," +
-                "                         `phone`," +
-                "                         `status`," +
-                "                         `gender`," +
-                "                         `err_num`," +
-                "                         `create_time`," +
-                "                         `create_id`," +
-                "                         `last_modify_time`," +
-                "                         `last_modify_id`)" +
-                "                  values (null, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)";
-        KeyHolder key = new GeneratedKeyHolder();
-        PreparedStatementCreator creator = con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getNickName());
-            ps.setInt(4, user.getAge());
-            ps.setString(5, user.getEmail());
-            ps.setString(6, user.getPhone());
-            ps.setInt(7, user.getGender());
-            ps.setInt(8, user.getErrNum());
-            ps.setString(9, user.getCreateTime());
-            ps.setInt(10, user.getCreateId());
-            ps.setString(11, user.getLastModifyTime());
-            ps.setInt(12, user.getLastModifyId());
-            return ps;
-        };
-        this.jdbcTemplate.update(creator, key);
-        return Objects.requireNonNull(key.getKey()).intValue();
+    public int add(User user) throws Exception {
+        return super.add(jdbcTemplate, user);
     }
 
     /**
      * 修改
      */
-    public int update(User userInDb) {
-        String sql = "update t_user set `user_name` = ?," +
-                "                       `password` = ?," +
-                "                       `nick_name` = ?," +
-                "                       `age` = ?," +
-                "                       `email` = ?," +
-                "                       `phone` = ?," +
-                "                       `status` = ?," +
-                "                       `gender` = ?," +
-                "                       `create_id` = ?," +
-                "                       `create_time` = ?," +
-                "                       `last_modify_id` = ?," +
-                "                       `last_modify_time` = ?" +
-                "                 where `dbid` = ?";
-        return this.jdbcTemplate.update(sql, userInDb.getUserName(), userInDb.getPassword(), userInDb.getNickName(),
-                userInDb.getAge(), userInDb.getEmail(), userInDb.getPhone(), userInDb.getStatus(), userInDb.getGender(),
-                userInDb.getCreateId(), userInDb.getCreateTime(), userInDb.getLastModifyId(), userInDb.getLastModifyTime(),
-                userInDb.getId());
+    public int update(User user) throws Exception {
+        return super.update(jdbcTemplate, user);
     }
 
     /**

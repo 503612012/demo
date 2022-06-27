@@ -19,7 +19,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +96,8 @@ public class RoleService extends BaseService {
      * 添加角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void add(Role role) {
+    public void add(Role role) throws Exception {
+        role.setStatus(0);
         role.setCreateId(CommonUtils.getCurrentUser().getId());
         role.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
@@ -105,40 +105,18 @@ public class RoleService extends BaseService {
         roleDao.add(role);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
-        // 记录日志
-        super.addLog("添加角色", role.toString());
     }
 
     /**
      * 修改角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void update(Role role) {
-        Role roleInDb = this.getById(role.getId());
-        String roleName = roleInDb.getRoleName();
-        StringBuilder content = new StringBuilder();
-        if (!roleInDb.getRoleName().equals(role.getRoleName())) {
-            content.append("角色名称由[").append(roleInDb.getRoleName()).append("]改为[").append(role.getRoleName()).append("]，");
-            roleInDb.setRoleName(role.getRoleName());
-        }
-        if (role.getStatus() == null) {
-            role.setStatus(0);
-        }
-        if (!roleInDb.getStatus().equals(role.getStatus())) {
-            content.append("状态由[").append(roleInDb.getStatus() == 0 ? "正常" : "锁定").append("]改为[").append(role.getStatus() == 0 ? "正常" : "锁定").append("]，");
-            roleInDb.setStatus(role.getStatus());
-        }
-        String str = content.toString();
-        if (str.length() > 0) {
-            str = str.substring(0, str.length() - 1);
-            roleInDb.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
-            roleInDb.setLastModifyId(CommonUtils.getCurrentUser().getId());
-            roleDao.update(roleInDb);
-            // 移除缓存
-            super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
-            // 记录日志
-            super.addLog("修改角色", "[" + roleName + "]" + str);
-        }
+    public void update(Role role) throws Exception {
+        role.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        role.setLastModifyId(CommonUtils.getCurrentUser().getId());
+        roleDao.update(role);
+        // 移除缓存
+        super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
 
     /**
@@ -146,12 +124,9 @@ public class RoleService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
-        Role role = this.getById(id);
         roleDao.delete(id);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
-        // 记录日志
-        super.addLog("删除角色", role.toString());
     }
 
     /**
@@ -237,41 +212,26 @@ public class RoleService extends BaseService {
      * @param menuIds 菜单ID列表
      */
     @Transactional(rollbackFor = Exception.class)
-    public void setRoleMenu(Integer roleId, String menuIds) {
+    public void setRoleMenu(Integer roleId, String menuIds) throws Exception {
         // 删除角色原有的所有权限
         roleMenuService.deleteByRoleId(roleId);
-        Role role = this.getById(roleId);
         if (StringUtils.isEmpty(menuIds)) { // 删除了该角色所有的权限
             // 移除缓存
             super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
-            // 记录日志
-            super.addLog("分配权限", "删除了角色[" + role.getRoleName() + "]所有的权限！");
             return;
         }
         // 给角色添加新的菜单
-        List<RoleMenu> roleMenus = new ArrayList<>();
         String[] menus = menuIds.split(",");
         for (String menuId : menus) {
             RoleMenu item = new RoleMenu();
             item.setRoleId(roleId);
             item.setMenuId(Integer.parseInt(menuId));
             roleMenuService.add(item);
-            roleMenus.add(item);
-        }
-        StringBuilder menuNames = new StringBuilder();
-        for (RoleMenu item : roleMenus) {
-            menuNames.append(menuService.getById(item.getMenuId()).getMenuName()).append("，");
-        }
-        String content = menuNames.toString();
-        if (content.length() > 0) {
-            content = content.substring(0, content.length() - 1);
         }
         // 移除缓存
         super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
         // 移除shiro授权缓存
         super.batchRemove(AppConst.SHIRO_CACHE_KEY_PROFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + CommonUtils.getCurrentUser().getId());
-        // 记录日志
-        super.addLog("分配权限", "角色[" + role.getRoleName() + "]分配权限[" + content + "]");
     }
 
 }

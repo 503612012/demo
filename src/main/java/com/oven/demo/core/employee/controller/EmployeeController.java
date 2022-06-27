@@ -7,6 +7,7 @@ import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.employee.service.EmployeeService;
 import com.oven.demo.core.employee.vo.Employee;
 import com.oven.demo.core.user.service.UserService;
+import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -91,6 +92,7 @@ public class EmployeeController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/add")
+    @AspectLog(title = "添加员工")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
     @Limit(key = LimitKey.EMPLOYEE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object add(Employee employee) throws MyException {
@@ -106,6 +108,7 @@ public class EmployeeController extends BaseController {
      * 修改员工
      */
     @ResponseBody
+    @AspectLog(title = "修改员工")
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -124,6 +127,7 @@ public class EmployeeController extends BaseController {
      * @param id 员工ID
      */
     @ResponseBody
+    @AspectLog(title = "删除员工")
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.EMPLOYEE_DELETE)
     @Limit(key = LimitKey.EMPLOYEE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -147,6 +151,7 @@ public class EmployeeController extends BaseController {
      * @param status     状态编码
      */
     @ResponseBody
+    @AspectLog(title = "修改员工状态")
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SETSTATUS)
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)

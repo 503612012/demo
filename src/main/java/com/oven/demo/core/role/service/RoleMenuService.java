@@ -74,7 +74,7 @@ public class RoleMenuService extends BaseService {
     /**
      * 添加
      */
-    public void add(RoleMenu item) {
+    public void add(RoleMenu item) throws Exception {
         roleMenuDao.add(item);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);

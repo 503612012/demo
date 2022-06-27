@@ -10,6 +10,7 @@ import com.oven.demo.common.util.LayuiPager;
 import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.core.user.vo.User;
+import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -161,6 +162,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/doAdd")
+    @AspectLog(title = "添加用户")
     @RequiresPermissions(PermissionCode.USER_INSERT)
     @Limit(key = LimitKey.USER_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doAdd(User user) throws MyException {
@@ -216,6 +218,7 @@ public class UserController extends BaseController {
      * 修改用户
      */
     @ResponseBody
+    @AspectLog(title = "修改用户")
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
     @Limit(key = LimitKey.USER_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -238,6 +241,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/delete")
+    @AspectLog(title = "删除用户")
     @RequiresPermissions(PermissionCode.USER_DELETE)
     @Limit(key = LimitKey.USER_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object delete(Integer id) throws MyException {
@@ -259,6 +263,7 @@ public class UserController extends BaseController {
      * @param status 状态编码
      */
     @ResponseBody
+    @AspectLog(title = "修改用户状态")
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.USER_SETSTATUS)
     @Limit(key = LimitKey.USER_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -300,6 +305,7 @@ public class UserController extends BaseController {
      * @param roleIds 角色ID列表
      */
     @ResponseBody
+    @AspectLog(title = "设置用户角色")
     @RequestMapping("/setUserRole")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
     @Limit(key = LimitKey.USER_SET_USER_ROLE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -333,6 +339,7 @@ public class UserController extends BaseController {
      * 修改密码
      */
     @ResponseBody
+    @AspectLog(title = "修改密码")
     @RequestMapping("/changePwd")
     public Object changePwd(String oldPwd, String newPwd) throws MyException {
         try {
@@ -359,6 +366,7 @@ public class UserController extends BaseController {
      * 上传头像
      */
     @ResponseBody
+    @AspectLog(title = "上传头像")
     @RequestMapping("/uploadAvatar")
     @RequiresPermissions(PermissionCode.UPLOAD_AVATAR)
     @Limit(key = LimitKey.USER_UPLOAD_AVATAR_LIMIT_KEY, period = 5, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
@@ -390,6 +398,7 @@ public class UserController extends BaseController {
      * 重置错误次数
      */
     @ResponseBody
+    @AspectLog(title = "重置错误次数")
     @RequestMapping("/resetErrNum")
     @RequiresPermissions(PermissionCode.RESET_ERR_NUM)
     public Object resetErrNum(Integer userId) throws MyException {
@@ -405,6 +414,7 @@ public class UserController extends BaseController {
      * 修改主题
      */
     @ResponseBody
+    @AspectLog(title = "修改主题")
     @RequestMapping("/userTheme")
     @RequiresPermissions(PermissionCode.USER_THEME)
     public Object userTheme(String userTheme, HttpServletRequest req) throws MyException {
@@ -421,6 +431,7 @@ public class UserController extends BaseController {
      * 修改菜单位置
      */
     @ResponseBody
+    @AspectLog(title = "修改菜单位置")
     @RequestMapping("/menuPosition")
     @RequiresPermissions(PermissionCode.MENU_POSITION)
     public Object menuPosition(String menuPosition, HttpServletRequest req) throws MyException {

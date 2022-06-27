@@ -5,17 +5,12 @@ import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.employee.vo.Employee;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 员工dao层
@@ -31,58 +26,15 @@ public class EmployeeDao extends BaseDao<Employee> {
     /**
      * 添加
      */
-    public int add(Employee employee) {
-        String sql = "insert into t_employee (`dbid`," +
-                "                             `name`," +
-                "                             `age`," +
-                "                             `gender`," +
-                "                             `address`," +
-                "                             `contact`," +
-                "                             `hour_salary`," +
-                "                             `create_time`," +
-                "                             `create_id`," +
-                "                             `last_modify_time`," +
-                "                             `last_modify_id`," +
-                "                             `status`)" +
-                "                      values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
-        KeyHolder key = new GeneratedKeyHolder();
-        PreparedStatementCreator creator = con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"dbid"});
-            ps.setString(1, employee.getName());
-            ps.setInt(2, employee.getAge());
-            ps.setInt(3, employee.getGender());
-            ps.setString(4, employee.getAddress());
-            ps.setString(5, employee.getContact());
-            ps.setDouble(6, employee.getHourSalary());
-            ps.setString(7, employee.getCreateTime());
-            ps.setInt(8, employee.getCreateId());
-            ps.setString(9, employee.getLastModifyTime());
-            ps.setInt(10, employee.getLastModifyId());
-            return ps;
-        };
-        this.jdbcTemplate.update(creator, key);
-        return Objects.requireNonNull(key.getKey()).intValue();
+    public int add(Employee employee) throws Exception {
+        return super.add(jdbcTemplate, employee);
     }
 
     /**
      * 更新
      */
-    public int update(Employee employee) {
-        String sql = "update t_employee set `name` = ?," +
-                "                           `age` = ?," +
-                "                           `gender` = ?," +
-                "                           `address` = ?," +
-                "                           `contact` = ?," +
-                "                           `hour_salary` = ?," +
-                "                           `create_time` = ?," +
-                "                           `create_id` = ?," +
-                "                           `last_modify_time` = ?," +
-                "                           `last_modify_id` = ?," +
-                "                           `status` = ?" +
-                "                     where `dbid` = ?";
-        return this.jdbcTemplate.update(sql, employee.getName(), employee.getAge(), employee.getGender(), employee.getAddress(),
-                employee.getContact(), employee.getHourSalary(), employee.getCreateTime(), employee.getCreateId(),
-                employee.getLastModifyTime(), employee.getLastModifyId(), employee.getStatus(), employee.getId());
+    public int update(Employee employee) throws Exception {
+        return super.update(jdbcTemplate, employee);
     }
 
     /**

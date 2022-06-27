@@ -1,6 +1,7 @@
 package com.oven.demo.core.menu.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
+import com.oven.demo.core.base.dao.BaseDao;
 import com.oven.demo.core.menu.vo.Menu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Oven
  */
 @Repository
-public class MenuDao {
+public class MenuDao extends BaseDao<Menu> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -56,23 +57,8 @@ public class MenuDao {
     /**
      * 修改菜单
      */
-    public int update(Menu menuInDb) {
-        String sql = "update t_menu set `menu_code` = ?," +
-                "                       `menu_name` = ?," +
-                "                       `pid` = ?," +
-                "                       `sort` = ?," +
-                "                       `url` = ?," +
-                "                       `iconCls` = ?," +
-                "                       `type` = ?," +
-                "                       `create_id` = ?," +
-                "                       `create_time` = ?," +
-                "                       `last_modify_id` = ?," +
-                "                       `last_modify_time` = ?," +
-                "                       `status` = ?" +
-                "                 where `dbid` = ?";
-        return this.jdbcTemplate.update(sql, menuInDb.getMenuCode(), menuInDb.getMenuName(), menuInDb.getPid(), menuInDb.getSort(),
-                menuInDb.getUrl(), menuInDb.getIconCls(), menuInDb.getType(), menuInDb.getCreateId(), menuInDb.getCreateTime(),
-                menuInDb.getLastModifyId(), menuInDb.getLastModifyTime(), menuInDb.getStatus(), menuInDb.getId());
+    public int update(Menu menu) throws Exception {
+        return super.update(jdbcTemplate, menu);
     }
 
     /**
