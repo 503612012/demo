@@ -43,10 +43,10 @@ public class Menu implements Serializable, Comparable<Menu> {
     @Column(name = "type")
     private Integer type;
 
-    @Column(name = "create_id")
+    @Column(name = "create_id", updatable = false)
     private Integer createId;
 
-    @Column(name = "create_time")
+    @Column(name = "create_time", updatable = false)
     private String createTime;
 
     @Column(name = "last_modify_id")

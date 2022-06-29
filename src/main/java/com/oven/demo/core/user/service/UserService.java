@@ -114,7 +114,6 @@ public class UserService extends BaseService {
     /**
      * 添加用户
      */
-    @Transactional(rollbackFor = Exception.class)
     public void add(User user) throws Exception {
         user.setErrNum(0);
         user.setStatus(0);
@@ -132,7 +131,6 @@ public class UserService extends BaseService {
     /**
      * 修改用户
      */
-    @Transactional(rollbackFor = Exception.class)
     public void update(User user) throws Exception {
         user.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         user.setLastModifyId(CommonUtils.getCurrentUser().getId());

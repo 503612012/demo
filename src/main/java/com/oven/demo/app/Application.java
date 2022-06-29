@@ -1,5 +1,6 @@
 package com.oven.demo.app;
 
+import com.oven.demo.common.util.PrintBanner;
 import com.oven.demo.framework.config.PropertyConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +33,7 @@ public class Application {
         SpringApplication application = new SpringApplication(Application.class);
         application.setDefaultProperties(properties);
         System.setProperty("net.sf.ehcache.enableShutdownHook", "true");
+        application.setBanner(PrintBanner.builder().build());
         application.run(args);
     }
 

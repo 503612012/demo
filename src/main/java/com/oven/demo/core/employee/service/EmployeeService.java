@@ -8,7 +8,6 @@ import com.oven.demo.core.employee.dao.EmployeeDao;
 import com.oven.demo.core.employee.vo.Employee;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -28,7 +27,6 @@ public class EmployeeService extends BaseService {
     /**
      * 添加员工
      */
-    @Transactional(rollbackFor = Exception.class)
     public void add(Employee employee) throws Exception {
         employee.setStatus(0);
         employee.setCreateId(CommonUtils.getCurrentUser().getId());
@@ -43,7 +41,6 @@ public class EmployeeService extends BaseService {
     /**
      * 更新
      */
-    @Transactional(rollbackFor = Exception.class)
     public void update(Employee employee) throws Exception {
         employee.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
@@ -109,7 +106,6 @@ public class EmployeeService extends BaseService {
     /**
      * 删除员工
      */
-    @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer id) {
         boolean flag = employeeDao.delete(id) > 0;
         if (flag) {

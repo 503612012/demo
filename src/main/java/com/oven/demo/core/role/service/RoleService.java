@@ -95,7 +95,6 @@ public class RoleService extends BaseService {
     /**
      * 添加角色
      */
-    @Transactional(rollbackFor = Exception.class)
     public void add(Role role) throws Exception {
         role.setStatus(0);
         role.setCreateId(CommonUtils.getCurrentUser().getId());
@@ -110,7 +109,6 @@ public class RoleService extends BaseService {
     /**
      * 修改角色
      */
-    @Transactional(rollbackFor = Exception.class)
     public void update(Role role) throws Exception {
         role.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
@@ -122,7 +120,6 @@ public class RoleService extends BaseService {
     /**
      * 删除角色
      */
-    @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
         roleDao.delete(id);
         // 移除缓存

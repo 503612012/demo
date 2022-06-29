@@ -61,4 +61,7 @@ public interface RedisCacheKey {
     String USER_MENU_CODES_PREFIX = PREFIX + "userMenuCodes_";
     String USER_MENU_CODES = USER_MENU_CODES_PREFIX + "userMenuCodes_{0}";
 
+    // cron表达式
+    String GET_CRON_BY_KEY = PREFIX + "getCronByKey_{0}";
+
 }

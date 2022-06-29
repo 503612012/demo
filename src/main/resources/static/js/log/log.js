@@ -45,10 +45,13 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
         cols: [[
             {type: 'numbers'},
             {field: 'title', title: '标题', sort: true},
-            {field: 'content', title: '内容'},
+            {field: 'request', title: '入参'},
+            {field: 'response', title: '出参'},
+            {field: 'requestUri', title: '接口地址'},
+            {field: 'requestMethod', width: 90, title: '请求方法'},
             {field: 'operatorName', title: '操作人', sort: true},
             {field: 'operatorTime', title: '操作时间', sort: true},
-            {field: 'operatorIp', title: '操作IP'}
+            {field: 'operatorIp', width: 127, title: '操作IP'}
         ]],
         page: true
     });

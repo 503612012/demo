@@ -43,10 +43,10 @@ public class Employee implements Serializable {
     @Column(name = "hour_salary")
     private Double hourSalary; // 时薪
 
-    @Column(name = "create_time")
+    @Column(name = "create_time", updatable = false)
     private String createTime; // 创建时间
 
-    @Column(name = "create_id")
+    @Column(name = "create_id", updatable = false)
     private Integer createId; // 创建人ID
 
     @Column(name = "last_modify_time")

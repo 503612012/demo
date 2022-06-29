@@ -46,10 +46,10 @@ public class User implements Serializable {
     @Column(name = "gender")
     private Integer gender; // 0-女、1-男
 
-    @Column(name = "create_time")
+    @Column(name = "create_time", updatable = false)
     private String createTime;
 
-    @Column(name = "create_id")
+    @Column(name = "create_id", updatable = false)
     private Integer createId;
 
     @Column(name = "last_modify_time")

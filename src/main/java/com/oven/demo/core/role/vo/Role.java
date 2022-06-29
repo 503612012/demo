@@ -25,10 +25,10 @@ public class Role implements Serializable {
     @Column(name = "role_name")
     private String roleName;
 
-    @Column(name = "create_time")
+    @Column(name = "create_time", updatable = false)
     private String createTime;
 
-    @Column(name = "create_id")
+    @Column(name = "create_id", updatable = false)
     private Integer createId;
 
     @Column(name = "status")
