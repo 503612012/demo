@@ -6,5 +6,5 @@ pid=$(ps -ef | grep ${APP_NAME} | grep -v grep | awk '{print $2}')
 if [[ "$pid" != "" ]]; then
   echo "${APP_NAME} already startup!"
 else
-  nohup java $env_args -jar ${APP_NAME} > /dev/null 2>&1 &
+  nohup java $env_args -javaagent:${APP_NAME}='-pwd Cyeg4HM6gmg0nMEpkz7CwA==' -jar ${APP_NAME} > /dev/null 2>&1 &
 fi

@@ -1,5 +1,5 @@
 echo 'mysql container starting...'
-docker run -d -p 3309:3306 --name mysql-demo -u root --restart=always -e MYSQL_ROOT_PASSWORD=1qaz@WSX3edc mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1
+docker run -d -p 3309:3306 --name mysql-demo -u root -v /home/data/demo/mysql:/var/lib/mysql -v /etc/localtime:/etc/localtime --restart=always -e MYSQL_ROOT_PASSWORD=1qaz@WSX3edc mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1
 echo 'mysql container started'
 echo 'demo.sql copying...'
 docker cp demo.sql mysql-demo:/home

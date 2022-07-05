@@ -22,6 +22,8 @@ ADD stop.sh /home/demo
 RUN chmod +x /home/demo/stop.sh
 ADD app.sh /home/demo
 RUN chmod +x /home/demo/app.sh
+
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
 RUN yum -y install kde-l10n-Chinese telnet && yum clean all && localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
 ENV LC_ALL "zh_CN.UTF-8"
 
