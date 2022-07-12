@@ -5,11 +5,11 @@ import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.menu.dao.MenuDao;
-import com.oven.demo.core.menu.vo.Menu;
+import com.oven.demo.core.menu.entity.Menu;
+import com.oven.demo.core.role.entity.RoleMenu;
 import com.oven.demo.core.role.service.RoleMenuService;
-import com.oven.demo.core.role.vo.RoleMenu;
+import com.oven.demo.core.user.entity.UserRole;
 import com.oven.demo.core.user.service.UserRoleService;
-import com.oven.demo.core.user.vo.UserRole;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 

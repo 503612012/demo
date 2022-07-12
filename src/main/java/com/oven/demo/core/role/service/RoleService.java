@@ -6,11 +6,11 @@ import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
+import com.oven.demo.core.menu.entity.Menu;
 import com.oven.demo.core.menu.service.MenuService;
-import com.oven.demo.core.menu.vo.Menu;
 import com.oven.demo.core.role.dao.RoleDao;
-import com.oven.demo.core.role.vo.Role;
-import com.oven.demo.core.role.vo.RoleMenu;
+import com.oven.demo.core.role.entity.Role;
+import com.oven.demo.core.role.entity.RoleMenu;
 import com.oven.demo.framework.realm.MyShiroRealm;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -95,13 +95,13 @@ public class RoleService extends BaseService {
     /**
      * 添加角色
      */
-    public void add(Role role) throws Exception {
+    public void save(Role role) throws Exception {
         role.setStatus(0);
         role.setCreateId(CommonUtils.getCurrentUser().getId());
         role.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
         role.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
-        roleDao.add(role);
+        roleDao.save(role);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
@@ -120,7 +120,7 @@ public class RoleService extends BaseService {
     /**
      * 删除角色
      */
-    public void delete(Integer id) {
+    public void delete(Integer id) throws Exception {
         roleDao.delete(id);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX);
@@ -223,7 +223,7 @@ public class RoleService extends BaseService {
             RoleMenu item = new RoleMenu();
             item.setRoleId(roleId);
             item.setMenuId(Integer.parseInt(menuId));
-            roleMenuService.add(item);
+            roleMenuService.save(item);
         }
         // 移除缓存
         super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);

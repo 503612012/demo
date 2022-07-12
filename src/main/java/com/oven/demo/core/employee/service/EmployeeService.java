@@ -5,7 +5,7 @@ import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.employee.dao.EmployeeDao;
-import com.oven.demo.core.employee.vo.Employee;
+import com.oven.demo.core.employee.entity.Employee;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +27,13 @@ public class EmployeeService extends BaseService {
     /**
      * 添加员工
      */
-    public void add(Employee employee) throws Exception {
+    public void save(Employee employee) throws Exception {
         employee.setStatus(0);
         employee.setCreateId(CommonUtils.getCurrentUser().getId());
         employee.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
         employee.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
-        employeeDao.add(employee);
+        employeeDao.save(employee);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
     }
@@ -106,7 +106,7 @@ public class EmployeeService extends BaseService {
     /**
      * 删除员工
      */
-    public boolean delete(Integer id) {
+    public boolean delete(Integer id) throws Exception {
         boolean flag = employeeDao.delete(id) > 0;
         if (flag) {
             // 移除缓存

@@ -5,7 +5,7 @@ import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.common.util.ResultInfo;
 import com.oven.demo.core.menu.service.MenuService;
-import com.oven.demo.core.user.vo.User;
+import com.oven.demo.core.user.entity.User;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

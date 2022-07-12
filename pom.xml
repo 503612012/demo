@@ -91,7 +91,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>2.0.7</version>
+            <version>1.2.78</version>
         </dependency>
 
         <!-- joda-time依赖 -->
@@ -389,27 +389,17 @@
                             <target>
                                 <echo message="start copy Dockerfile to target folder"/>
                                 <copy file="src/main/release/Dockerfile" tofile="${project.build.directory}/Dockerfile"/>
-                                <echo message="start copy start.sh to target folder"/>
-                                <copy file="src/main/release/start.sh" tofile="${project.build.directory}/start.sh"/>
-                                <echo message="finish copy start.sh"/>
-                                <echo message="start copy stop.sh to target folder"/>
-                                <copy file="src/main/release/stop.sh" tofile="${project.build.directory}/stop.sh"/>
-                                <echo message="finish copy stop.sh"/>
-                                <echo message="start copy app.sh to target folder"/>
-                                <copy file="src/main/release/app.sh" tofile="${project.build.directory}/app.sh"/>
-                                <echo message="finish copy app.sh"/>
-                                <echo message="start copy mysql.sh to target folder"/>
-                                <copy file="src/main/release/mysql.sh" tofile="${project.build.directory}/mysql.sh"/>
-                                <echo message="finish copy mysql.sh"/>
+                                <echo message="finish copy Dockerfile to target folder"/>
+                                <echo message="start copy shell to target folder"/>
+                                <copy todir="${project.build.directory}/">
+                                    <fileset dir="src/main/release/">
+                                        <include name="*.sh"/>
+                                    </fileset>
+                                </copy>
+                                <echo message="finish copy shell to target folder"/>
                                 <echo message="start copy demo.sql to target folder"/>
                                 <copy file="src/main/release/demo.sql" tofile="${project.build.directory}/demo.sql"/>
                                 <echo message="finish copy demo.sql"/>
-                                <echo message="start copy build.sh to target folder"/>
-                                <copy file="src/main/release/build.sh" tofile="${project.build.directory}/build.sh"/>
-                                <echo message="finish copy build.sh"/>
-                                <echo message="start copy run.sh to target folder"/>
-                                <copy file="src/main/release/run.sh" tofile="${project.build.directory}/run.sh"/>
-                                <echo message="finish copy run.sh"/>
                                 <!-- <echo message="start copy jdk-8u181-linux-x64.tar.gz to target folder"/>-->
                                 <!-- <copy file="src/main/release/jdk-8u181-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u181-linux-x64.tar.gz"/>-->
                                 <!-- <echo message="finish copy jdk-8u181-linux-x64.tar.gz"/>-->
@@ -427,24 +417,9 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="start exec chmod u+x start.sh"/>
-                                <chmod file="${project.build.directory}/start.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x start.sh"/>
-                                <echo message="start exec chmod u+x stop.sh"/>
-                                <chmod file="${project.build.directory}/stop.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x stop.sh"/>
-                                <echo message="start exec chmod u+x app.sh"/>
-                                <chmod file="${project.build.directory}/app.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x app.sh"/>
-                                <echo message="start exec chmod u+x mysql.sh"/>
-                                <chmod file="${project.build.directory}/mysql.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x mysql.sh"/>
-                                <echo message="start exec chmod u+x build.sh"/>
-                                <chmod file="${project.build.directory}/build.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x build.sh"/>
-                                <echo message="start exec chmod u+x run.sh"/>
-                                <chmod file="${project.build.directory}/run.sh" perm="u+x"/>
-                                <echo message="finish exec chmod u+x run.sh"/>
+                                <echo message="start exec chmod u+x shell"/>
+                                <chmod dir="${project.build.directory}/" perm="u+x" includes="*.sh"/>
+                                <echo message="finish exec chmod u+x shell"/>
                             </target>
                         </configuration>
                     </execution>

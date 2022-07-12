@@ -1,0 +1,1 @@
+docker exec mysql-demo /bin/bash -c 'mysqldump -uroot --password="1qaz@WSX3edc" db_demo > /home/backup/db_demo_`date +%Y%m%d_%H_%M_%S`.sql'

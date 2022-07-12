@@ -1,9 +1,9 @@
 package com.oven.demo.core.log.dao;
 
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.log.vo.Log;
+import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.log.entity.Log;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,41 +27,27 @@ public class LogDao extends BaseDao<Log> {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 通过id获取
-     *
-     * @param id 日志ID
-     */
-    public Log getById(Integer id) {
-        String sql = "select * from t_log where dbid = ?";
-        List<Log> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Log.class), id);
-        return list.size() == 0 ? null : list.get(0);
-    }
-
-    /**
      * 分页获取日志
      *
      * @param pageNum  当前页码
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
-        StringBuilder sql = new StringBuilder("select * from t_log");
-        List<Object> params = addCondition(sql, log);
-        return super.getByPage(sql, params, Log.class, pageNum, pageSize, jdbcTemplate, "operator_time desc");
+        return super.getByPage(addCondition(log), pageNum, pageSize, "operator_time desc");
     }
 
     /**
      * 获取日志总数量
      */
     public Integer getTotalNum(Log log) {
-        StringBuilder sql = new StringBuilder("select count(*) from t_log");
-        List<Object> params = addCondition(sql, log);
-        return super.getTotalNum(sql, params, jdbcTemplate);
+        return super.getTotalNum(addCondition(log));
     }
 
     /**
      * 搜索条件
      */
-    private List<Object> addCondition(StringBuilder sql, Log log) {
+    private SqlAndParams addCondition(Log log) {
+        StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(log.getTitle())) {
             sql.append(" and title like ?");
@@ -71,7 +57,7 @@ public class LogDao extends BaseDao<Log> {
             sql.append(" and operator_id = ?");
             params.add(log.getOperatorId());
         }
-        return params;
+        return SqlAndParams.build(sql.toString(), params.toArray());
     }
 
     /**

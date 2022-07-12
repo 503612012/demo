@@ -1,4 +1,4 @@
-package com.oven.demo.core.log.vo;
+package com.oven.demo.core.log.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package com.oven.demo.core.menu.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.menu.vo.Menu;
+import com.oven.demo.core.menu.entity.Menu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -20,17 +20,6 @@ public class MenuDao extends BaseDao<Menu> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
-
-    /**
-     * 通过id获取
-     *
-     * @param id 菜单ID
-     */
-    public Menu getById(Integer id) {
-        String sql = "select * from t_menu where dbid = ?";
-        List<Menu> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class), id);
-        return list.size() == 0 ? null : list.get(0);
-    }
 
     /**
      * 通过父ID获取
@@ -52,13 +41,6 @@ public class MenuDao extends BaseDao<Menu> {
         String in = StringUtils.collectionToDelimitedString(menuIds, ",");
         String sql = "select * from t_menu where pid = ? and `status` = 0 and dbid in (" + in + ") order by sort";
         return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class), pid);
-    }
-
-    /**
-     * 修改菜单
-     */
-    public int update(Menu menu) throws Exception {
-        return super.update(jdbcTemplate, menu);
     }
 
     /**

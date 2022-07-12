@@ -1,9 +1,9 @@
 package com.oven.demo.core.employee.dao;
 
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.employee.vo.Employee;
+import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.employee.entity.Employee;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -24,66 +24,24 @@ public class EmployeeDao extends BaseDao<Employee> {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 添加
-     */
-    public int add(Employee employee) throws Exception {
-        return super.add(jdbcTemplate, employee);
-    }
-
-    /**
-     * 更新
-     */
-    public int update(Employee employee) throws Exception {
-        return super.update(jdbcTemplate, employee);
-    }
-
-    /**
-     * 通过主键查询
-     */
-    public Employee getById(Integer id) {
-        String sql = "select * from t_employee where dbid = ?";
-        List<Employee> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class), id);
-        return list.size() == 0 ? null : list.get(0);
-    }
-
-    /**
      * 分页查询员工
      */
     public List<Employee> getByPage(Integer pageNum, Integer pageSize, Employee employee) {
-        StringBuilder sql = new StringBuilder("select * from t_employee e");
-        List<Object> params = addCondition(sql, employee);
-        return super.getByPage(sql, params, Employee.class, pageNum, pageSize, jdbcTemplate);
+        return super.getByPage(addCondition(employee), pageNum, pageSize);
     }
 
     /**
      * 统计员工总数量
      */
     public Integer getTotalNum(Employee employee) {
-        StringBuilder sql = new StringBuilder("select count(*) from t_employee e");
-        List<Object> params = addCondition(sql, employee);
-        return super.getTotalNum(sql, params, jdbcTemplate);
-    }
-
-    /**
-     * 获取所有员工
-     */
-    public List<Employee> getAll() {
-        String sql = "select * from t_employee where `status` = 0";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Employee.class));
-    }
-
-    /**
-     * 删除
-     */
-    public int delete(Integer id) {
-        String sql = "delete from t_employee where dbid = ?";
-        return this.jdbcTemplate.update(sql, id);
+        return super.getTotalNum(addCondition(employee));
     }
 
     /**
      * 搜索条件
      */
-    private List<Object> addCondition(StringBuilder sql, Employee employee) {
+    private SqlAndParams addCondition(Employee employee) {
+        StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(employee.getName())) {
             sql.append(" and e.`name` like ?");
@@ -97,7 +55,7 @@ public class EmployeeDao extends BaseDao<Employee> {
             sql.append(" and e.gender = ?");
             params.add(employee.getGender());
         }
-        return params;
+        return SqlAndParams.build(sql.toString(), params.toArray());
     }
 
     /**

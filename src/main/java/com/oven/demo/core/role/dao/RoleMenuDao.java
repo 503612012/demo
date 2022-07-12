@@ -2,7 +2,7 @@ package com.oven.demo.core.role.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.role.vo.RoleMenu;
+import com.oven.demo.core.role.entity.RoleMenu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -50,13 +50,6 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
     public void deleteByRoleId(Integer roleId) {
         String sql = "delete from t_role_menu where role_id = ?";
         this.jdbcTemplate.update(sql, roleId);
-    }
-
-    /**
-     * 添加
-     */
-    public int add(RoleMenu roleMenu) throws Exception {
-        return super.add(jdbcTemplate, roleMenu);
     }
 
 }

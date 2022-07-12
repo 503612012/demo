@@ -5,11 +5,11 @@ import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
+import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.service.RoleService;
-import com.oven.demo.core.role.vo.Role;
 import com.oven.demo.core.user.dao.UserDao;
-import com.oven.demo.core.user.vo.User;
-import com.oven.demo.core.user.vo.UserRole;
+import com.oven.demo.core.user.entity.User;
+import com.oven.demo.core.user.entity.UserRole;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -114,7 +114,7 @@ public class UserService extends BaseService {
     /**
      * 添加用户
      */
-    public void add(User user) throws Exception {
+    public void save(User user) throws Exception {
         user.setErrNum(0);
         user.setStatus(0);
         user.setCreateId(CommonUtils.getCurrentUser().getId());
@@ -123,7 +123,7 @@ public class UserService extends BaseService {
         user.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
-        userDao.add(user);
+        userDao.save(user);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
@@ -143,7 +143,7 @@ public class UserService extends BaseService {
      * 删除用户
      */
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Integer id) {
+    public void delete(Integer id) throws Exception {
         // 删除该用户的所有角色信息
         userRoleService.deleteByUserId(id);
         userDao.delete(id);
@@ -197,7 +197,7 @@ public class UserService extends BaseService {
             UserRole item = new UserRole();
             item.setUserId(userId);
             item.setRoleId(Integer.parseInt(roleId));
-            userRoleService.add(item);
+            userRoleService.save(item);
         }
         // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX);

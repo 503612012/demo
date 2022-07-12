@@ -3,7 +3,7 @@ package com.oven.demo.core.user.service;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.user.dao.UserRoleDao;
-import com.oven.demo.core.user.vo.UserRole;
+import com.oven.demo.core.user.entity.UserRole;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,8 +74,8 @@ public class UserRoleService extends BaseService {
     /**
      * 添加
      */
-    public void add(UserRole userRole) throws Exception {
-        userRoleDao.add(userRole);
+    public void save(UserRole userRole) throws Exception {
+        userRoleDao.save(userRole);
         // 移除缓存
         super.batchRemove(RedisCacheKey.USERROLE_PREFIX);
     }

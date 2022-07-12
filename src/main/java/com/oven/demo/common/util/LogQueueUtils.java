@@ -1,6 +1,6 @@
 package com.oven.demo.common.util;
 
-import com.oven.demo.core.log.vo.Log;
+import com.oven.demo.core.log.entity.Log;
 
 import java.util.ArrayList;
 import java.util.List;

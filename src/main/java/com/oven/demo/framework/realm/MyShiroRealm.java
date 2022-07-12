@@ -4,7 +4,7 @@ import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.user.service.UserService;
-import com.oven.demo.core.user.vo.User;
+import com.oven.demo.core.user.entity.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;

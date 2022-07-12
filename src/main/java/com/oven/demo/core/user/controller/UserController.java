@@ -9,7 +9,7 @@ import com.oven.demo.common.util.EncryptUtils;
 import com.oven.demo.common.util.LayuiPager;
 import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.user.service.UserService;
-import com.oven.demo.core.user.vo.User;
+import com.oven.demo.core.user.entity.User;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
@@ -171,7 +171,7 @@ public class UserController extends BaseController {
             if (userInDb != null) {
                 return super.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
             }
-            userService.add(user);
+            userService.save(user);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加用户异常", e);

@@ -7,12 +7,12 @@ import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.common.util.LayuiPager;
 import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.menu.service.MenuService;
+import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.service.RoleService;
-import com.oven.demo.core.role.vo.Role;
+import com.oven.demo.core.user.entity.User;
+import com.oven.demo.core.user.entity.UserRole;
 import com.oven.demo.core.user.service.UserRoleService;
 import com.oven.demo.core.user.service.UserService;
-import com.oven.demo.core.user.vo.User;
-import com.oven.demo.core.user.vo.UserRole;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
@@ -105,13 +105,13 @@ public class RoleController extends BaseController {
      * 添加角色
      */
     @ResponseBody
-    @RequestMapping("/add")
+    @RequestMapping("/save")
     @AspectLog(title = "添加角色")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
     @Limit(key = LimitKey.ROLE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object add(Role role) throws MyException {
+    public Object save(Role role) throws MyException {
         try {
-            roleService.add(role);
+            roleService.save(role);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加角色异常", e);

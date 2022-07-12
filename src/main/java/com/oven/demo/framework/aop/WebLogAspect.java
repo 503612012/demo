@@ -5,7 +5,7 @@ import com.oven.demo.common.requestLog.RequestLog;
 import com.oven.demo.common.util.ParametersUtils;
 import com.oven.demo.common.util.RequestLogQueueUtils;
 import com.oven.demo.common.util.ResultInfo;
-import com.oven.demo.core.user.vo.User;
+import com.oven.demo.core.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;

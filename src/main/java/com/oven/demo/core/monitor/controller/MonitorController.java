@@ -11,7 +11,7 @@ import cn.hutool.system.SystemUtil;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.base.controller.BaseController;
-import com.oven.demo.core.monitor.vo.SysMachineResult;
+import com.oven.demo.core.monitor.entity.SysMachineResult;
 import com.oven.demo.framework.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;

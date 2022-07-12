@@ -3,7 +3,8 @@ package com.oven.demo.core.user.dao;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.user.vo.User;
+import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.user.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -24,35 +25,20 @@ public class UserDao extends BaseDao<User> {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 通过id获取
-     *
-     * @param id 用户ID
-     */
-    public User getById(Integer id) {
-        String sql = "select * from t_user where dbid = ?";
-        List<User> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), id);
-        return list.size() == 0 ? null : list.get(0);
-    }
-
-    /**
      * 分页获取用户
      *
      * @param pageNum  当前页码
      * @param pageSize 每页显示数量
      */
     public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        StringBuilder sql = new StringBuilder("select * from t_user");
-        List<Object> params = addCondition(sql, user);
-        return super.getByPage(sql, params, User.class, pageNum, pageSize, jdbcTemplate);
+        return super.getByPage(addCondition(user), pageNum, pageSize);
     }
 
     /**
      * 获取用户总数量
      */
     public Integer getTotalNum(User user) {
-        StringBuilder sql = new StringBuilder("select count(*) from t_user");
-        List<Object> params = addCondition(sql, user);
-        return super.getTotalNum(sql, params, jdbcTemplate);
+        return super.getTotalNum(addCondition(user));
     }
 
     /**
@@ -67,39 +53,10 @@ public class UserDao extends BaseDao<User> {
     }
 
     /**
-     * 添加
-     */
-    public int add(User user) throws Exception {
-        return super.add(jdbcTemplate, user);
-    }
-
-    /**
-     * 修改
-     */
-    public int update(User user) throws Exception {
-        return super.update(jdbcTemplate, user);
-    }
-
-    /**
-     * 删除
-     */
-    public int delete(Integer id) {
-        String sql = "delete from t_user where dbid = ?";
-        return this.jdbcTemplate.update(sql, id);
-    }
-
-    /**
-     * 获取所有用户
-     */
-    public List<User> getAll() {
-        String sql = "select * from t_user where `status` = 0";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class));
-    }
-
-    /**
      * 搜索条件
      */
-    private List<Object> addCondition(StringBuilder sql, User user) {
+    private SqlAndParams addCondition(User user) {
+        StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(user.getUserName())) {
             sql.append(" and user_name like ?");
@@ -113,7 +70,7 @@ public class UserDao extends BaseDao<User> {
             sql.append(" and phone like ?");
             params.add("%" + user.getPhone().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
-        return params;
+        return SqlAndParams.build(sql.toString(), params.toArray());
     }
 
     public void updateLastLoginTime(String time, Integer userId) {

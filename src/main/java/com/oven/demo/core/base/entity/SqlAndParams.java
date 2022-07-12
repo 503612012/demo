@@ -1,8 +1,6 @@
 package com.oven.demo.core.base.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 自动化sql语句实体类
@@ -10,11 +8,20 @@ import lombok.NoArgsConstructor;
  * @author Oven
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class SqlAndParams {
 
     private String sql;
     private Object[] params;
 
+    public static SqlAndParams build(String sql, Object[] params) {
+        SqlAndParams result = new SqlAndParams();
+        result.setSql(sql);
+        result.setParams(params);
+        return result;
+    }
+
+    public static SqlAndParams empty() {
+        return SqlAndParams.build("", new Object[]{});
+    }
+    
 }

@@ -135,7 +135,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         if (data.field.id != null && data.field.id != '' && data.field.id != undefined) { // 修改
             url = '/role/update';
         } else { // 添加
-            url = '/role/add';
+            url = '/role/save';
         }
         common.commitForm($(this), layer, url, data.field, reload);
     });

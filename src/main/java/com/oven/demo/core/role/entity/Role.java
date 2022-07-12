@@ -1,4 +1,4 @@
-package com.oven.demo.core.role.vo;
+package com.oven.demo.core.role.entity;
 
 import lombok.Data;
 

@@ -153,7 +153,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         if (data.field.id != null && data.field.id != '' && data.field.id != undefined) { // 修改
             url = '/employee/update';
         } else { // 添加
-            url = '/employee/add';
+            url = '/employee/save';
         }
         common.commitForm($(this), layer, url, data.field, reload);
     });

@@ -1,4 +1,4 @@
-package com.oven.demo.core.menu.vo;
+package com.oven.demo.core.menu.entity;
 
 import lombok.Data;
 
@@ -59,7 +59,7 @@ public class Menu implements Serializable, Comparable<Menu> {
     private Integer status; // 状态，0-正常、1-删除
 
     // 非数据库属性
-    @Column(name = "title")
+    @Column(name = "title", insertable = false, updatable = false)
     private String title;
 
     @Override

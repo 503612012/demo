@@ -3,7 +3,7 @@ package com.oven.demo.framework.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 图片路径配置
@@ -11,8 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author Oven
  */
 @Configuration
-@SuppressWarnings("deprecation")
-public class ImagePathConfig extends WebMvcConfigurerAdapter {
+public class ImagePathConfig implements WebMvcConfigurer {
 
     @Value("${avatar.path}")
     private String avatarPath;

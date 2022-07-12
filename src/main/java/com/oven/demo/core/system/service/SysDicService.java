@@ -2,7 +2,7 @@ package com.oven.demo.core.system.service;
 
 import com.oven.demo.common.redis.IRedisService;
 import com.oven.demo.core.system.dao.SysDicDao;
-import com.oven.demo.core.system.vo.SysDicEntity;
+import com.oven.demo.core.system.entity.SysDicEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,8 +26,8 @@ public class SysDicService {
     /**
      * 查询所有
      */
-    public List<SysDicEntity> findAll() {
-        return sysDicDao.findAll();
+    public List<SysDicEntity> getAll() {
+        return sysDicDao.getAll();
     }
 
     /**

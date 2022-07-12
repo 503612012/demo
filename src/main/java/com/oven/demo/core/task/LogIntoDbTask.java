@@ -2,8 +2,8 @@ package com.oven.demo.core.task;
 
 import com.oven.demo.common.util.LogQueueUtils;
 import com.oven.demo.core.crontab.service.CrontabService;
+import com.oven.demo.core.log.entity.Log;
 import com.oven.demo.core.log.service.LogService;
-import com.oven.demo.core.log.vo.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;

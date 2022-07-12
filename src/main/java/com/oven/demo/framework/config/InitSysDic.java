@@ -1,7 +1,7 @@
 package com.oven.demo.framework.config;
 
 import com.oven.demo.core.system.service.SysDicService;
-import com.oven.demo.core.system.vo.SysDicEntity;
+import com.oven.demo.core.system.entity.SysDicEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class InitSysDic implements CommandLineRunner {
     @Override
     public void run(String... args) {
         log.info("*************************** 开始加载系统字典 ***************************");
-        List<SysDicEntity> list = sysDicService.findAll();
+        List<SysDicEntity> list = sysDicService.getAll();
         ConcurrentMap<String, Object> map = new ConcurrentHashMap<>();
         for (SysDicEntity item : list) {
             map.put(item.getKey(), item.getValue());

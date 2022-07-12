@@ -2,7 +2,7 @@ package com.oven.demo.core.user.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.user.vo.UserRole;
+import com.oven.demo.core.user.entity.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -50,13 +50,6 @@ public class UserRoleDao extends BaseDao<UserRole> {
     public void deleteByUserId(Integer userId) {
         String sql = "delete from t_user_role where user_id = ?";
         this.jdbcTemplate.update(sql, userId);
-    }
-
-    /**
-     * 添加
-     */
-    public int add(UserRole userRole) throws Exception {
-        return super.add(jdbcTemplate, userRole);
     }
 
     /**

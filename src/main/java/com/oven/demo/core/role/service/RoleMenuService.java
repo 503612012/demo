@@ -3,7 +3,7 @@ package com.oven.demo.core.role.service;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.role.dao.RoleMenuDao;
-import com.oven.demo.core.role.vo.RoleMenu;
+import com.oven.demo.core.role.entity.RoleMenu;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,8 +74,8 @@ public class RoleMenuService extends BaseService {
     /**
      * 添加
      */
-    public void add(RoleMenu item) throws Exception {
-        roleMenuDao.add(item);
+    public void save(RoleMenu roleMenu) throws Exception {
+        roleMenuDao.save(roleMenu);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLEMENU_PREFIX);
     }

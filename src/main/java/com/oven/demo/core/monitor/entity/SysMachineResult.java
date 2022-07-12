@@ -1,4 +1,4 @@
-package com.oven.demo.core.monitor.vo;
+package com.oven.demo.core.monitor.entity;
 
 import java.io.Serializable;
 

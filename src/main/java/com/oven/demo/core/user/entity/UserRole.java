@@ -1,4 +1,4 @@
-package com.oven.demo.core.role.vo;
+package com.oven.demo.core.user.entity;
 
 import lombok.Data;
 
@@ -8,13 +8,13 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * 角色-菜单关系实体类
+ * 用户-角色关系实体类
  *
  * @author Oven
  */
 @Data
-@Table(name = "t_role_menu")
-public class RoleMenu implements Serializable {
+@Table(name = "t_user_role")
+public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,10 +22,10 @@ public class RoleMenu implements Serializable {
     @Column(name = "dbid")
     private Integer id;
 
+    @Column(name = "user_id")
+    private Integer userId;
+
     @Column(name = "role_id")
     private Integer roleId;
-
-    @Column(name = "menu_id")
-    private Integer menuId;
 
 }

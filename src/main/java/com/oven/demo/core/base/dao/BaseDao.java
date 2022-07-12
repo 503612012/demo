@@ -8,57 +8,155 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 通过DAO
+ *
+ * @author Oven
+ */
 @Slf4j
+@Repository
 public class BaseDao<T> {
 
-    public List<T> getByPage(StringBuilder sb, List<Object> params, Class<T> clazz, Integer pageNum, Integer pageSize, JdbcTemplate jdbcTemplate) {
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        params.add((pageNum - 1) * pageSize);
-        params.add(pageSize);
-        return jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(clazz));
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    /**
+     * 通用分页查询
+     */
+    public List<T> getByPage(SqlAndParams sqlAndParams, Integer pageNum, Integer pageSize) {
+        StringBuilder sb = getBaseSql();
+        sb.append(sqlAndParams.getSql());
+        return getByPage(sb, sqlAndParams.getParams(), pageNum, pageSize);
     }
 
-    public List<T> getByPage(StringBuilder sb, List<Object> params, Class<T> clazz, Integer pageNum, Integer pageSize, JdbcTemplate jdbcTemplate, String orderby) {
-        sb.append(" order by ").append(orderby);
-        String sql = sb.append(" limit ?,?").toString().replaceFirst("and", "where");
-        params.add((pageNum - 1) * pageSize);
-        params.add(pageSize);
-        return jdbcTemplate.query(sql, params.toArray(), new VoPropertyRowMapper<>(clazz));
+    /**
+     * 通用分页查询
+     */
+    public List<T> getByPage(SqlAndParams sqlAndParams, Integer pageNum, Integer pageSize, boolean withAutoTableName) {
+        StringBuilder sb = new StringBuilder(sqlAndParams.getSql().replaceFirst("and", "where"));
+        if (withAutoTableName) {
+            sb = getBaseSql();
+            sb.append(sqlAndParams.getSql());
+        }
+        return getByPage(sb, sqlAndParams.getParams(), pageNum, pageSize);
     }
 
-    public Integer getTotalNum(StringBuilder sb, List<Object> params, JdbcTemplate jdbcTemplate) {
+    /**
+     * 通用分页查询（带排序）
+     */
+    public List<T> getByPage(SqlAndParams sqlAndParams, Integer pageNum, Integer pageSize, String orderby) {
+        StringBuilder sb = getBaseSql();
+        sb.append(" order by ");
+        sb.append(orderby);
+        return getByPage(sb, sqlAndParams.getParams(), pageNum, pageSize);
+    }
+
+    private List<T> getByPage(StringBuilder sb, Object[] params, Integer pageNum, Integer pageSize) {
+        sb.append(" limit ?,?");
         String sql = sb.toString().replaceFirst("and", "where");
-        return jdbcTemplate.queryForObject(sql, params.toArray(), Integer.class);
+        List<Object> args = new ArrayList<>(Arrays.asList(params));
+        args.add((pageNum - 1) * pageSize);
+        args.add(pageSize);
+        return jdbcTemplate.query(sql, args.toArray(), new VoPropertyRowMapper<>(getGenericClass()));
     }
 
-    public int add(JdbcTemplate jdbcTemplate, T obj) throws Exception {
-        SqlAndParams sqlAndParams = getInsertFromObject(obj);
-        AutoGeneratePreparedStatementCreator creator = getAutoGeneratePreparedStatementCreator(sqlAndParams.getSql(), sqlAndParams.getParams(), obj);
+    private StringBuilder getBaseSql() {
+        return new StringBuilder("select * from " + getTableName(getGenericClass()) + " ");
+    }
+
+    /**
+     * 查询总数量
+     */
+    public Integer getTotalNum(SqlAndParams sqlAndParams) {
+        String sql = ("select count(*) from " + getTableName(getGenericClass()) + " " + sqlAndParams.getSql()).replaceFirst("and", "where");
+        return jdbcTemplate.queryForObject(sql, sqlAndParams.getParams(), Integer.class);
+    }
+
+    /**
+     * 查询总数量
+     */
+    public Integer getTotalNum(SqlAndParams sqlAndParams, boolean withAutoTableName) {
+        if (withAutoTableName) {
+            return getTotalNum(sqlAndParams);
+        }
+        String sql = sqlAndParams.getSql().replaceFirst("and", "where");
+        return jdbcTemplate.queryForObject(sql, sqlAndParams.getParams(), Integer.class);
+    }
+
+    /**
+     * 添加
+     */
+    public int save(T obj) throws Exception {
+        SqlAndParams sqlAndParams = getInsertSql(obj);
+        AutoGeneratePreparedStatementCreator creator = getAutoGeneratePreparedStatementCreator(sqlAndParams.getSql(), sqlAndParams.getParams(), obj.getClass());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(creator, keyHolder);
         Number key = keyHolder.getKey();
         return key == null ? -1 : key.intValue();
     }
 
-    public int update(JdbcTemplate jdbcTemplate, T obj) throws Exception {
+    /**
+     * 修改
+     */
+    public int update(T obj) throws Exception {
         SqlAndParams sqlAndParams = getUpdateSql(obj);
         return jdbcTemplate.update(sqlAndParams.getSql(), sqlAndParams.getParams());
     }
 
     /**
+     * 删除
+     */
+    public int delete(Object id) throws Exception {
+        String sql = "delete from " + getTableName(getGenericClass()) + " where " + getAutoGeneratedColumn(getGenericClass()) + " = ?";
+        return jdbcTemplate.update(sql, id);
+    }
+
+    /**
+     * 根据主键获取
+     */
+    public T getById(Object id) {
+        String sql = "select * from " + getTableName(getGenericClass()) + " where " + getAutoGeneratedColumn(getGenericClass()) + " = ?";
+        List<T> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(getGenericClass()), id);
+        return list.size() == 0 ? null : list.get(0);
+    }
+
+    /**
+     * 获取全部
+     */
+    public List<T> getAll() {
+        String sql = "select * from " + getTableName(getGenericClass());
+        return jdbcTemplate.query(sql, new VoPropertyRowMapper<>(getGenericClass()));
+    }
+
+    /**
+     * 获取泛型类
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Class<T> getGenericClass() {
+        Type type = getClass().getGenericSuperclass();
+        Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
+        return (Class) actualType;
+    }
+
+    /**
      * 获取插入语句
      */
-    public SqlAndParams getInsertFromObject(T obj) throws Exception {
+    public SqlAndParams getInsertSql(T obj) throws Exception {
         // 用来存放insert语句
         StringBuilder insertSql = new StringBuilder();
         // 用来存放?号的语句
@@ -81,6 +179,10 @@ public class BaseDao<T> {
             }
             Column columnAnnotation = field.getAnnotation(Column.class);
             if (columnAnnotation == null) { // 没有column注解的字段跳过
+                continue;
+            }
+            boolean insertable = columnAnnotation.insertable();
+            if (!insertable) {
                 continue;
             }
             // 获取具体参数值
@@ -120,7 +222,8 @@ public class BaseDao<T> {
 
         insertSql.append(") values (");
         insertSql.append(paramsSql).append(")");
-        return new SqlAndParams(insertSql.toString(), params.toArray());
+
+        return SqlAndParams.build(insertSql.toString(), params.toArray());
     }
 
     /**
@@ -201,7 +304,7 @@ public class BaseDao<T> {
         updateSql.append(whereSql);
         params.add(idValue);
 
-        return new SqlAndParams(updateSql.toString(), params.toArray());
+        return SqlAndParams.build(updateSql.toString(), params.toArray());
     }
 
     /**
@@ -220,12 +323,37 @@ public class BaseDao<T> {
     }
 
     /**
+     * 获取自增主键数据库属性名
+     */
+    public static <T> String getAutoGeneratedColumn(Class<T> clazz) {
+        String autoGeneratedColumn = "";
+        // 根据注解获取自增主键字段名
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if ("serialVersionUID".equals(field.getName())) {
+                continue;
+            }
+            Column columnAnno = field.getAnnotation(Column.class);
+            if (columnAnno == null) {
+                continue;
+            }
+            Id idAnno = field.getAnnotation(Id.class);
+            if (idAnno == null) {
+                continue;
+            }
+            autoGeneratedColumn = columnAnno.name();
+            break;
+        }
+        return autoGeneratedColumn;
+    }
+
+    /**
      * 获取自增主键字段名
      */
-    public String getAutoGeneratedId(T obj) {
+    public static <T> String getAutoGeneratedId(Class<T> clazz) {
         String autoGeneratedId = "";
         // 根据注解获取自增主键字段名
-        Field[] fields = obj.getClass().getDeclaredFields();
+        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if ("serialVersionUID".equals(field.getName())) {
                 continue;
@@ -274,8 +402,8 @@ public class BaseDao<T> {
     /**
      * 获取自增主键PreparedStatementCreator
      */
-    public AutoGeneratePreparedStatementCreator getAutoGeneratePreparedStatementCreator(String sql, Object[] params, T obj) {
-        String autoGeneratedId = getAutoGeneratedId(obj);
+    public static <T> AutoGeneratePreparedStatementCreator getAutoGeneratePreparedStatementCreator(String sql, Object[] params, Class<T> clazz) {
+        String autoGeneratedId = getAutoGeneratedId(clazz);
         return new AutoGeneratePreparedStatementCreator(sql, params, autoGeneratedId);
     }
 

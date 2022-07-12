@@ -1,7 +1,7 @@
 package com.oven.demo.common.util;
 
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.core.user.vo.User;
+import com.oven.demo.core.user.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

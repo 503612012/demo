@@ -1,13 +1,11 @@
 package com.oven.demo.core.system.dao;
 
-import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.system.vo.SysDicEntity;
+import com.oven.demo.core.system.entity.SysDicEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 系统级字典dao层
@@ -19,14 +17,6 @@ public class SysDicDao extends BaseDao<SysDicEntity> {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
-
-    /**
-     * 查询所有
-     */
-    public List<SysDicEntity> findAll() {
-        String sql = "select * from t_sys_dic";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(SysDicEntity.class));
-    }
 
     public String getByKey(String key) {
         String sql = "select _value from t_sys_dic where _key = ?";

@@ -5,7 +5,7 @@ import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.common.util.LayuiPager;
 import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.employee.service.EmployeeService;
-import com.oven.demo.core.employee.vo.Employee;
+import com.oven.demo.core.employee.entity.Employee;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
@@ -91,13 +91,13 @@ public class EmployeeController extends BaseController {
      * 添加员工
      */
     @ResponseBody
-    @RequestMapping("/add")
+    @RequestMapping("/save")
     @AspectLog(title = "添加员工")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
     @Limit(key = LimitKey.EMPLOYEE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object add(Employee employee) throws MyException {
+    public Object save(Employee employee) throws MyException {
         try {
-            employeeService.add(employee);
+            employeeService.save(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加员工异常", e);
