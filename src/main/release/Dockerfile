@@ -1,4 +1,3 @@
-# Base image
 FROM centos:7
 MAINTAINER Oven <503612012@qq.com>
 LABEL Description="This image is used to run springboot with jdk8." Version="1.0"

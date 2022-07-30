@@ -1,10 +1,9 @@
 package com.oven.demo.core.base.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
-import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.base.utils.AutoGeneratePreparedStatementCreator;
 import com.oven.demo.core.base.utils.CamelNameUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -28,7 +27,6 @@ import java.util.List;
  *
  * @author Oven
  */
-@Slf4j
 @Repository
 public class BaseDao<T> {
 
@@ -37,35 +35,110 @@ public class BaseDao<T> {
 
     /**
      * 通用分页查询
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页数量
      */
-    public List<T> getByPage(SqlAndParams sqlAndParams, Integer pageNum, Integer pageSize) {
-        StringBuilder sb = getBaseSql();
-        sb.append(sqlAndParams.getSql());
-        return getByPage(sb, sqlAndParams.getParams(), pageNum, pageSize);
+    public List<T> getByPage(Integer pageNum, Integer pageSize) {
+        return getByPage(getBaseSql(), new Object[]{}, pageNum, pageSize);
     }
 
     /**
      * 通用分页查询
+     *
+     * @param sql      查询sql语句
+     * @param pageNum  页码
+     * @param pageSize 每页数量
      */
-    public List<T> getByPage(SqlAndParams sqlAndParams, Integer pageNum, Integer pageSize, boolean withAutoTableName) {
-        StringBuilder sb = new StringBuilder(sqlAndParams.getSql().replaceFirst("and", "where"));
-        if (withAutoTableName) {
-            sb = getBaseSql();
-            sb.append(sqlAndParams.getSql());
-        }
-        return getByPage(sb, sqlAndParams.getParams(), pageNum, pageSize);
+    public List<T> getByPage(StringBuilder sql, Integer pageNum, Integer pageSize) {
+        return getByPage(sql, new Object[]{}, pageNum, pageSize);
     }
 
     /**
-     * 通用分页查询（带排序）
+     * 通用分页查询（带条件、不带排序）
+     *
+     * @param pageNum            页码
+     * @param pageSize           每页数量
+     * @param conditionAndParams 过滤条件和值
      */
-    public List<T> getByPage(SqlAndParams sqlAndParams, Integer pageNum, Integer pageSize, String orderby) {
-        StringBuilder sb = getBaseSql();
-        sb.append(" order by ");
-        sb.append(orderby);
-        return getByPage(sb, sqlAndParams.getParams(), pageNum, pageSize);
+    public List<T> getByPage(Integer pageNum, Integer pageSize, ConditionAndParams conditionAndParams) {
+        StringBuilder sql = getBaseSql().append(conditionAndParams.getCondition());
+        return getByPage(sql, conditionAndParams.getParams(), pageNum, pageSize);
     }
 
+    /**
+     * 通用分页查询（带条件、不带排序）
+     *
+     * @param sql                查询sql语句
+     * @param pageNum            页码
+     * @param pageSize           每页数量
+     * @param conditionAndParams 过滤条件和值
+     */
+    public List<T> getByPage(StringBuilder sql, Integer pageNum, Integer pageSize, ConditionAndParams conditionAndParams) {
+        sql.append(conditionAndParams.getCondition());
+        return getByPage(sql, conditionAndParams.getParams(), pageNum, pageSize);
+    }
+
+    /**
+     * 通用分页查询（不带条件、带排序）
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页数量
+     * @param orderby  排序字段（实例：create_time desc）
+     */
+    public List<T> getByPage(Integer pageNum, Integer pageSize, String orderby) {
+        StringBuilder sql = getBaseSql().append(" order by ").append(orderby);
+        return getByPage(sql, new Object[]{}, pageNum, pageSize);
+    }
+
+    /**
+     * 通用分页查询（不带条件、带排序）
+     *
+     * @param sql      查询sql语句
+     * @param pageNum  页码
+     * @param pageSize 每页数量
+     * @param orderby  排序字段（实例：create_time desc）
+     */
+    public List<T> getByPage(StringBuilder sql, Integer pageNum, Integer pageSize, String orderby) {
+        sql.append(" order by ").append(orderby);
+        return getByPage(sql, new Object[]{}, pageNum, pageSize);
+    }
+
+    /**
+     * 通用分页查询（带条件、带排序）
+     *
+     * @param pageNum            页码
+     * @param pageSize           每页数量
+     * @param conditionAndParams 过滤条件和值
+     * @param orderby            排序字段（实例：create_time desc）
+     */
+    public List<T> getByPage(Integer pageNum, Integer pageSize, ConditionAndParams conditionAndParams, String orderby) {
+        StringBuilder sql = getBaseSql().append(conditionAndParams.getCondition()).append(" order by ").append(orderby);
+        return getByPage(sql, conditionAndParams.getParams(), pageNum, pageSize);
+    }
+
+    /**
+     * 通用分页查询（带条件、带排序）
+     *
+     * @param sql                查询sql语句
+     * @param pageNum            页码
+     * @param pageSize           每页数量
+     * @param conditionAndParams 过滤条件和值
+     * @param orderby            排序字段（实例：create_time desc）
+     */
+    public List<T> getByPage(StringBuilder sql, Integer pageNum, Integer pageSize, ConditionAndParams conditionAndParams, String orderby) {
+        sql.append(conditionAndParams.getCondition()).append(" order by ").append(orderby);
+        return getByPage(sql, conditionAndParams.getParams(), pageNum, pageSize);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param sb       查询sql语句
+     * @param params   过滤参数值
+     * @param pageNum  页码
+     * @param pageSize 每页数量
+     */
     private List<T> getByPage(StringBuilder sb, Object[] params, Integer pageNum, Integer pageSize) {
         sb.append(" limit ?,?");
         String sql = sb.toString().replaceFirst("and", "where");
@@ -75,35 +148,57 @@ public class BaseDao<T> {
         return jdbcTemplate.query(sql, args.toArray(), new VoPropertyRowMapper<>(getGenericClass()));
     }
 
-    private StringBuilder getBaseSql() {
-        return new StringBuilder("select * from " + getTableName(getGenericClass()) + " ");
+    /**
+     * 查询总数量
+     */
+    public Integer getTotalNum() {
+        return getTotalNum(getBaseCountSql(), new Object[]{});
+    }
+
+    /**
+     * 查询总数量
+     *
+     * @param sql 查询sql语句
+     */
+    public Integer getTotalNum(StringBuilder sql) {
+        return getTotalNum(sql, new Object[]{});
+    }
+
+    /**
+     * 查询总数量（带条件）
+     *
+     * @param conditionAndParams 过滤条件和值
+     */
+    public Integer getTotalNum(ConditionAndParams conditionAndParams) {
+        StringBuilder sql = getBaseCountSql().append(conditionAndParams.getCondition());
+        return getTotalNum(sql, conditionAndParams.getParams());
+    }
+
+    /**
+     * 查询总数量（带条件）
+     *
+     * @param sql                查询sql语句
+     * @param conditionAndParams 过滤条件和值
+     */
+    public Integer getTotalNum(StringBuilder sql, ConditionAndParams conditionAndParams) {
+        sql.append(conditionAndParams.getCondition());
+        return getTotalNum(sql, conditionAndParams.getParams());
     }
 
     /**
      * 查询总数量
      */
-    public Integer getTotalNum(SqlAndParams sqlAndParams) {
-        String sql = ("select count(*) from " + getTableName(getGenericClass()) + " " + sqlAndParams.getSql()).replaceFirst("and", "where");
-        return jdbcTemplate.queryForObject(sql, sqlAndParams.getParams(), Integer.class);
-    }
-
-    /**
-     * 查询总数量
-     */
-    public Integer getTotalNum(SqlAndParams sqlAndParams, boolean withAutoTableName) {
-        if (withAutoTableName) {
-            return getTotalNum(sqlAndParams);
-        }
-        String sql = sqlAndParams.getSql().replaceFirst("and", "where");
-        return jdbcTemplate.queryForObject(sql, sqlAndParams.getParams(), Integer.class);
+    public Integer getTotalNum(StringBuilder sb, Object[] params) {
+        String sql = sb.toString().replaceFirst("and", "where");
+        return jdbcTemplate.queryForObject(sql, params, Integer.class);
     }
 
     /**
      * 添加
      */
     public int save(T obj) throws Exception {
-        SqlAndParams sqlAndParams = getInsertSql(obj);
-        AutoGeneratePreparedStatementCreator creator = getAutoGeneratePreparedStatementCreator(sqlAndParams.getSql(), sqlAndParams.getParams(), obj.getClass());
+        ConditionAndParams conditionAndParams = getInsertSql(obj);
+        AutoGeneratePreparedStatementCreator creator = getAutoGeneratePreparedStatementCreator(conditionAndParams.getCondition(), conditionAndParams.getParams(), obj.getClass());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(creator, keyHolder);
         Number key = keyHolder.getKey();
@@ -114,8 +209,8 @@ public class BaseDao<T> {
      * 修改
      */
     public int update(T obj) throws Exception {
-        SqlAndParams sqlAndParams = getUpdateSql(obj);
-        return jdbcTemplate.update(sqlAndParams.getSql(), sqlAndParams.getParams());
+        ConditionAndParams conditionAndParams = getUpdateSql(obj);
+        return jdbcTemplate.update(conditionAndParams.getCondition(), conditionAndParams.getParams());
     }
 
     /**
@@ -130,8 +225,17 @@ public class BaseDao<T> {
      * 根据主键获取
      */
     public T getById(Object id) {
-        String sql = "select * from " + getTableName(getGenericClass()) + " where " + getAutoGeneratedColumn(getGenericClass()) + " = ?";
-        List<T> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(getGenericClass()), id);
+        StringBuilder sql = getBaseSql().append(" where ").append(getAutoGeneratedColumn(getGenericClass())).append(" = ?");
+        List<T> list = this.jdbcTemplate.query(sql.toString(), new VoPropertyRowMapper<>(getGenericClass()), id);
+        return list.size() == 0 ? null : list.get(0);
+    }
+
+    /**
+     * 查询一个
+     */
+    public T getOne(ConditionAndParams conditionAndParams) {
+        String sql = getBaseSql().append(conditionAndParams.getCondition()).toString().replaceFirst("and", "where");
+        List<T> list = this.jdbcTemplate.query(sql, conditionAndParams.getParams(), new VoPropertyRowMapper<>(getGenericClass()));
         return list.size() == 0 ? null : list.get(0);
     }
 
@@ -139,8 +243,52 @@ public class BaseDao<T> {
      * 获取全部
      */
     public List<T> getAll() {
-        String sql = "select * from " + getTableName(getGenericClass());
-        return jdbcTemplate.query(sql, new VoPropertyRowMapper<>(getGenericClass()));
+        return jdbcTemplate.query(getBaseSql().toString(), new VoPropertyRowMapper<>(getGenericClass()));
+    }
+
+    /**
+     * 获取全部（带条件）
+     *
+     * @param conditionAndParams 过滤条件和值
+     */
+    public List<T> getAll(ConditionAndParams conditionAndParams) {
+        String sql = getBaseSql().append(conditionAndParams.getCondition()).toString().replaceFirst("and", "where");
+        return jdbcTemplate.query(sql, conditionAndParams.getParams(), new VoPropertyRowMapper<>(getGenericClass()));
+    }
+
+    /**
+     * 获取全部（带排序）
+     *
+     * @param orderby 排序字段（实例：create_time desc）
+     */
+    public List<T> getAll(String orderby) {
+        StringBuilder sql = getBaseSql().append(" order by ").append(orderby);
+        return jdbcTemplate.query(sql.toString(), new VoPropertyRowMapper<>(getGenericClass()));
+    }
+
+    /**
+     * 获取全部（带条件、带排序）
+     *
+     * @param conditionAndParams 过滤条件和值
+     * @param orderby            排序字段（实例：create_time desc）
+     */
+    public List<T> getAll(ConditionAndParams conditionAndParams, String orderby) {
+        String sql = getBaseSql().append(conditionAndParams.getCondition()).append(" order by ").append(orderby).toString().replaceFirst("and", "where");
+        return jdbcTemplate.query(sql, conditionAndParams.getParams(), new VoPropertyRowMapper<>(getGenericClass()));
+    }
+
+    /**
+     * 获取基础查询语句
+     */
+    private StringBuilder getBaseSql() {
+        return new StringBuilder("select * from " + getTableName(getGenericClass()) + " ");
+    }
+
+    /**
+     * 获取基础统计数量语句
+     */
+    private StringBuilder getBaseCountSql() {
+        return new StringBuilder("select count(*) from " + getTableName(getGenericClass()) + " ");
     }
 
     /**
@@ -156,7 +304,7 @@ public class BaseDao<T> {
     /**
      * 获取插入语句
      */
-    public SqlAndParams getInsertSql(T obj) throws Exception {
+    public ConditionAndParams getInsertSql(T obj) throws Exception {
         // 用来存放insert语句
         StringBuilder insertSql = new StringBuilder();
         // 用来存放?号的语句
@@ -187,10 +335,6 @@ public class BaseDao<T> {
             }
             // 获取具体参数值
             Method getter = getGetter(obj.getClass(), field);
-
-            if (getter == null) {
-                continue;
-            }
 
             Object value = getter.invoke(obj);
             if (value == null) {
@@ -223,13 +367,13 @@ public class BaseDao<T> {
         insertSql.append(") values (");
         insertSql.append(paramsSql).append(")");
 
-        return SqlAndParams.build(insertSql.toString(), params.toArray());
+        return ConditionAndParams.build(insertSql.toString(), params.toArray());
     }
 
     /**
      * 获取更新语句
      */
-    public SqlAndParams getUpdateSql(T obj) throws Exception {
+    public ConditionAndParams getUpdateSql(T obj) throws Exception {
         // 用来存放update语句
         StringBuilder updateSql = new StringBuilder();
         // 用来存放where语句
@@ -262,10 +406,6 @@ public class BaseDao<T> {
             }
             // 获取具体参数值
             Method getter = getGetter(obj.getClass(), field);
-
-            if (getter == null) {
-                continue;
-            }
 
             Object value = getter.invoke(obj);
             if (value == null) {
@@ -304,7 +444,7 @@ public class BaseDao<T> {
         updateSql.append(whereSql);
         params.add(idValue);
 
-        return SqlAndParams.build(updateSql.toString(), params.toArray());
+        return ConditionAndParams.build(updateSql.toString(), params.toArray());
     }
 
     /**
@@ -371,15 +511,9 @@ public class BaseDao<T> {
     /**
      * 获取属性的getter方法
      */
-    private static <T> Method getGetter(Class<T> clazz, Field field) {
+    private static <T> Method getGetter(Class<T> clazz, Field field) throws NoSuchMethodException {
         String getterName = "get" + CamelNameUtils.capitalize(field.getName());
-        Method getter = null;
-        try {
-            getter = clazz.getMethod(getterName);
-        } catch (Exception e) {
-            log.error(getterName + " doesn't exist!", e);
-        }
-        return getter;
+        return clazz.getMethod(getterName);
     }
 
     /**

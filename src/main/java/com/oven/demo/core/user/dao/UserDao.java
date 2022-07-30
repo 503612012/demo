@@ -1,9 +1,8 @@
 package com.oven.demo.core.user.dao;
 
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.user.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,7 +30,7 @@ public class UserDao extends BaseDao<User> {
      * @param pageSize 每页显示数量
      */
     public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        return super.getByPage(addCondition(user), pageNum, pageSize);
+        return super.getByPage(pageNum, pageSize, addCondition(user));
     }
 
     /**
@@ -47,15 +46,13 @@ public class UserDao extends BaseDao<User> {
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
-        String sql = "select * from t_user where user_name = ?";
-        List<User> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(User.class), userName);
-        return list.size() == 0 ? null : list.get(0);
+        return super.getOne(ConditionAndParams.build("and user_name = ?", new Object[]{userName}));
     }
 
     /**
      * 搜索条件
      */
-    private SqlAndParams addCondition(User user) {
+    private ConditionAndParams addCondition(User user) {
         StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(user.getUserName())) {
@@ -70,7 +67,7 @@ public class UserDao extends BaseDao<User> {
             sql.append(" and phone like ?");
             params.add("%" + user.getPhone().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
-        return SqlAndParams.build(sql.toString(), params.toArray());
+        return ConditionAndParams.build(sql.toString(), params.toArray());
     }
 
     public void updateLastLoginTime(String time, Integer userId) {

@@ -1,28 +1,46 @@
-# OVEN SPRINGBOOT DEMO
-## 安装步骤
-### 1. 下载代码
-git clone https://github.com/503612012/demo.git
-### 2. 初始化数据
-mysql加载demo.sql文件
-### 3. 编译代码
-进入项目根目录执行：mvn clean package -Ppro/dev
-> -Ppro生产环境，-Pdev开发环境
-### 4. 启动工程
-进入项目根目录执行：./start.sh
-### 5. 停止工程
-进入项目根目录执行：./stop.sh
-## 打包后的文件说明：
-| 文件             | 用处             |
-|----------------|----------------|
-| lib            | 第三方依赖jar包      |
-| resources      | 资源文件、前端文件和配置文件 |
-| app.sh         | 容器启动后执行的脚本     |
-| build.sh       | 镜像构建脚本         |
-| demo.sql       | 数据库脚本          |
-| demo-1.0.0.jar | 项目源码           |
-| Dockerfile     | 镜像构建配置文件       |
-| mysql.sh       | 数据库容器启动脚本      |
-| run.sh         | 应用容器启动脚本       |
-| simsun.ttf     | 字体文件           |
-| start.sh       | 启动脚本           |
-| stop.sh        | 停止脚本           |
+### 一、部署建议
+
+> 建议将所有文件放到`/home/demo`目录下，否则需要修改相关文件中的配置。
+
+### 二、文件清单
+
+| 文件                         | 描述        |
+|----------------------------|-----------|
+| lib                        | 第三方依赖包    |
+| resources                  | 资源目录      |
+| app.sh                     | 容器启动后执行脚本 |
+| backup.sh                  | 数据库备份脚本   |
+| build.sh                   | 镜像构建脚本    |
+| Dockerfile                 | 镜像构建文件    |
+| jdk-8u181-linux-x64.tar.gz | jdk安装包    |
+| license.lic                | 授权文件      |
+| mysql.sh                   | 数据库安装脚本   |
+| publicCerts.keystore       | 公钥        |
+| run.sh                     | 容器启动脚本    |
+| simsun.ttf                 | 字体文件      |
+| start.sh                   | 应用启动脚本    |
+| stop.sh                    | 应用停止脚本    |
+| demo.sql                   | 数据库初始化脚本  |
+| demo-1.0.0.jar             | 应用代码      |
+
+### 三、配置修改
+
+> 修改`application-pro.properties`文件中的数据源配置
+
+### 四、数据库部署
+
+```shell
+./mysql.sh
+```
+
+### 五、应用镜像构建
+
+```shell
+./build.sh
+```
+
+### 六、启动应用容器
+
+```shell
+./run.sh
+```

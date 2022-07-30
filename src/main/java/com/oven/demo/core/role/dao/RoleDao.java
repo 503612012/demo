@@ -2,7 +2,7 @@ package com.oven.demo.core.role.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.role.entity.Role;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -25,7 +25,7 @@ public class RoleDao extends BaseDao<Role> {
      * @param pageSize 每页显示数量
      */
     public List<Role> getByPage(Integer pageNum, Integer pageSize, Role role) {
-        return super.getByPage(addCondition(role), pageNum, pageSize);
+        return super.getByPage(pageNum, pageSize, addCondition(role));
     }
 
     /**
@@ -38,14 +38,14 @@ public class RoleDao extends BaseDao<Role> {
     /**
      * 搜索条件
      */
-    private SqlAndParams addCondition(Role role) {
+    private ConditionAndParams addCondition(Role role) {
         StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(role.getRoleName())) {
             sql.append(" and role_name like ?");
             params.add("%" + role.getRoleName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
         }
-        return SqlAndParams.build(sql.toString(), params.toArray());
+        return ConditionAndParams.build(sql.toString(), params.toArray());
     }
 
 }

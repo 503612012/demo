@@ -2,7 +2,7 @@ package com.oven.demo.core.employee.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.employee.entity.Employee;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,7 +27,7 @@ public class EmployeeDao extends BaseDao<Employee> {
      * 分页查询员工
      */
     public List<Employee> getByPage(Integer pageNum, Integer pageSize, Employee employee) {
-        return super.getByPage(addCondition(employee), pageNum, pageSize);
+        return super.getByPage(pageNum, pageSize, addCondition(employee));
     }
 
     /**
@@ -40,7 +40,7 @@ public class EmployeeDao extends BaseDao<Employee> {
     /**
      * 搜索条件
      */
-    private SqlAndParams addCondition(Employee employee) {
+    private ConditionAndParams addCondition(Employee employee) {
         StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(employee.getName())) {
@@ -55,7 +55,7 @@ public class EmployeeDao extends BaseDao<Employee> {
             sql.append(" and e.gender = ?");
             params.add(employee.getGender());
         }
-        return SqlAndParams.build(sql.toString(), params.toArray());
+        return ConditionAndParams.build(sql.toString(), params.toArray());
     }
 
     /**

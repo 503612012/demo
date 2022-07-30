@@ -2,7 +2,7 @@ package com.oven.demo.core.log.dao;
 
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.SqlAndParams;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.log.entity.Log;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +33,7 @@ public class LogDao extends BaseDao<Log> {
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
-        return super.getByPage(addCondition(log), pageNum, pageSize, "operator_time desc");
+        return super.getByPage( pageNum, pageSize, "operator_time desc");
     }
 
     /**
@@ -46,7 +46,7 @@ public class LogDao extends BaseDao<Log> {
     /**
      * 搜索条件
      */
-    private SqlAndParams addCondition(Log log) {
+    private ConditionAndParams addCondition(Log log) {
         StringBuilder sql = new StringBuilder();
         List<Object> params = new ArrayList<>();
         if (!StringUtils.isEmpty(log.getTitle())) {
@@ -57,7 +57,7 @@ public class LogDao extends BaseDao<Log> {
             sql.append(" and operator_id = ?");
             params.add(log.getOperatorId());
         }
-        return SqlAndParams.build(sql.toString(), params.toArray());
+        return ConditionAndParams.build(sql.toString(), params.toArray());
     }
 
     /**

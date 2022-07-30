@@ -1,7 +1,7 @@
 package com.oven.demo.core.role.dao;
 
-import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.role.entity.RoleMenu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,8 +26,7 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
      * @param roleId 角色ID
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
-        String sql = "select * from t_role_menu where role_id = ?";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(RoleMenu.class), roleId);
+        return super.getAll(ConditionAndParams.build("and role_id = ?", new Object[]{roleId}));
     }
 
     /**
@@ -37,9 +36,7 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
      * @param menuId 菜单ID
      */
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
-        String sql = "select * from t_role_menu where role_id = ? and menu_id = ?";
-        List<RoleMenu> list = this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(RoleMenu.class), roleId, menuId);
-        return list.size() == 0 ? null : list.get(0);
+        return super.getOne(ConditionAndParams.build("and role_id = ? and menu_id = ?", new Object[]{roleId, menuId}));
     }
 
     /**

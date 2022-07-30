@@ -2,6 +2,7 @@ package com.oven.demo.core.menu.dao;
 
 import com.oven.demo.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.base.dao.BaseDao;
+import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.menu.entity.Menu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,8 +28,7 @@ public class MenuDao extends BaseDao<Menu> {
      * @param pid 父ID
      */
     public List<Menu> getByPid(Integer pid) {
-        String sql = "select * from t_menu where pid = ? and `status` = 0 order by sort";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class), pid);
+        return super.getAll(ConditionAndParams.build("and pid = ? and `status` = 0", new Object[]{pid}), "sort");
     }
 
     /**
