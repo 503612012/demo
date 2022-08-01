@@ -250,6 +250,7 @@
                                 <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>eot</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>svg</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>ico</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>woff</nonFilteredFileExtension>
                                 <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
                             </nonFilteredFileExtensions>
