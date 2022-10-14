@@ -1,21 +1,21 @@
-### 一、部署建议
+## 一、部署建议
 
 > 建议将所有文件放到`/home/demo`目录下，否则需要修改相关文件中的配置。
 
-### 二、文件清单
+## 二、文件清单
 
 | 文件                         | 描述        |
 |----------------------------|-----------|
-| lib                        | 第三方依赖包    |
-| resources                  | 资源目录      |
+| __`lib`__                  | 第三方依赖包    |
+| __`license`__              | 授权信息相关文件  |
+| __`resources`__            | 资源目录      |
 | app.sh                     | 容器启动后执行脚本 |
-| backup.sh                  | 数据库备份脚本   |
+| backup                     | 数据库备份脚本   |
 | build.sh                   | 镜像构建脚本    |
 | Dockerfile                 | 镜像构建文件    |
 | jdk-8u181-linux-x64.tar.gz | jdk安装包    |
-| license.lic                | 授权文件      |
 | mysql.sh                   | 数据库安装脚本   |
-| publicCerts.keystore       | 公钥        |
+| nginx.tar.gz               | nginx     |
 | run.sh                     | 容器启动脚本    |
 | simsun.ttf                 | 字体文件      |
 | start.sh                   | 应用启动脚本    |
@@ -23,59 +23,44 @@
 | demo.sql                   | 数据库初始化脚本  |
 | demo-1.0.0.jar             | 应用代码      |
 
-### 三、配置修改
+## 三、配置修改
+
+##### 1) 修改配置文件
 
 > 修改`application-pro.properties`文件中的数据源配置
 
-### 四、数据库部署
+##### 2) 授权脚本文件
+
+> chmod u+x *.sh
+
+##### 3) 授权二进制文件
+
+> ```shell
+> chmod u+x license/key
+> chmod u+x backup
+> ```
+
+## 四、数据库部署
 
 ```shell
 ./mysql.sh
 ```
 
-### 五、应用镜像构建
+## 五、应用镜像构建
 
 ```shell
 ./build.sh
 ```
 
-### 六、启动应用容器
+## 六、启动应用容器
 
 ```shell
 ./run.sh
 ```
 
--- 已发布
-- 1. 系统及业务简单介绍
-- 2. 项目目录结构
-- 3. 全局常量、枚举、缓存KEY定义
-- 4. 配置内容放入数据库
-- 5. 多环境区分
-- 6. 登录模块
+## 七、开发环境搭建
 
--- 已录制
-- 7. 登录拦截器
-- 8. 在线状态，强制退出
-- 9. shiro细粒度控制
-- 10. shiro记住我功能
-- 11. 日志记录
-- 12. 全部异常捕获
-
--- 未录制
-- 13. 接口返回统一数据结构
-- 14. 接口请求记录入库
-- 15. 编程技巧replaceFirst
-- 11. 菜单位置可切换
-- 11. 皮肤切换
-- 16. 前端的改造
-- 17. 接口限速
-- 18. 页面缓存
-- 19. 自定义参数解析器(对添加用户有影响)
-- 20. 秒杀模拟
-- 21.
-- 22. 自定义表格汇总
-- 23. 模块化引入js
-- 24. 手机自适应
-- 25. maven插件
-- 26. 在线部署
-- 27. 升级维护
+> #### 1. 修改 [src/main/resources/application-dev.properties](./src/main/resources/application-dev.properties) 中数据源信息
+> #### 2. 修改 [src/main/resources/logback-dev.xml](./src/main/resources/logback-dev.xml) 中日志保存路径信息
+> #### 3. 修改 [src/main/java/com/oven/demo/framework/config/DevEnvSet.java](./src/main/java/com/oven/demo/framework/config/DevEnvSet.java) 中相关配置项
+> #### 4. 修改 [pom.xml](./pom.xml) 中指定profile

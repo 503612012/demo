@@ -1,5 +1,6 @@
 package com.oven.demo.framework.config;
 
+import com.oven.demo.common.util.EncryptUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
@@ -17,8 +18,8 @@ import java.util.Properties;
 @Slf4j
 public class PropertyConfig {
 
+    public final static String PRO_PROFILE = "pro"; // 生产环境
     private final static String DEV_PROFILE = "dev"; // 开发环境
-    private final static String PRO_PROFILE = "pro"; // 生产环境
     private final static String PROFILE = "@profile@"; // 由于IDEA开发环境无法进行变量替换，故这里识别到占位符时，默认为开发环境
 
     /**
@@ -59,26 +60,34 @@ public class PropertyConfig {
             log.error("加载配置文件异常，异常信息：", e);
             return null;
         }
-        String driverClassName = properties.getProperty("spring.datasource.druid.driver-class-name");
-        String url = properties.getProperty("spring.datasource.druid.url");
-        String userName = properties.getProperty("spring.datasource.druid.username");
-        String password = properties.getProperty("spring.datasource.druid.password");
+        properties.put("demo.profile", profile);
+        String driverClassName = "com.mysql.cj.jdbc.Driver";
+        String url = properties.getProperty("mysql.url");
+        String userName = properties.getProperty("mysql.username");
+        String password = properties.getProperty("mysql.password");
 
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
+            if (PRO_PROFILE.equals(profile)) { // 生产环境，数据库密码解密
+                password = EncryptUtils.aesDecrypt(password, EncryptUtils.KEY);
+            }
+            properties.put("spring.datasource.druid.driver-class-name", driverClassName);
+            properties.put("spring.datasource.druid.url", url);
+            properties.put("spring.datasource.druid.username", userName);
+            properties.put("spring.datasource.druid.password", password);
+
             Class.forName(driverClassName);
-            String tableName = "t_config";
-            String sql = "select * from " + tableName;
+            String sql = "select * from t_config";
             conn = DriverManager.getConnection(url, userName, password);
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
-            log.info(" 从数据库中加载配置信息...");
+            log.info("从数据库中加载配置信息...");
             while (rs.next()) {
                 String key = rs.getString("key");
                 String value = rs.getString("value");
-                log.info(" {} --- {}", key, value);
+                log.info("{} --- {}", key, value);
                 properties.put(key, value);
             }
             return properties;

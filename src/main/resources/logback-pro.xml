@@ -116,6 +116,10 @@
         <appender-ref ref="SYNC_DEBUG"/>
         <appender-ref ref="SYNC_LOG"/>
     </logger>
+    <logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" level="ERROR" additivity="false">
+        <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_LOG"/>
+    </logger>
     <logger name="com" additivity="false" level="INFO">
         <appender-ref ref="SYNC_LOG"/>
     </logger>

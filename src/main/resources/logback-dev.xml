@@ -2,8 +2,31 @@
 <configuration>
 
     <property name="LOG_FILE" value="demo"/>
-    <property name="LOG_HOME" value="/Users/oven/logs/demo"/>
+    <property name="LOG_HOME" value="/Users/oven/logs/demo/logs/"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L - %msg%n"/>
+
+    <!-- 日志定义 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${LOG_FILE}.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <maxHistory>180</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 异步INFO日志定义 -->
+    <appender name="SYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
     <!-- INFO日志定义 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_FILE}.info.log</file>
@@ -73,7 +96,10 @@
     <!-- 定义控制台日志信息 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
+            <!-- 包路径缩写 -->
             <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{10}).%M:%L - %msg%n</pattern>
+            <!-- 包路径不缩写 -->
+            <!-- <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger).%M:%L - %msg%n</pattern> -->
         </encoder>
     </appender>
 
@@ -86,7 +112,10 @@
     <!-- 定义控制台打印JDBC信息 -->
     <appender name="JDBC" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
+            <!-- 包路径缩写 -->
             <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger{10}).%M:%L - %yellow(%msg%n)</pattern>
+            <!-- 包路径不缩写 -->
+            <!-- <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger).%M:%L - %yellow(%msg%n)</pattern> -->
         </encoder>
     </appender>
 
@@ -99,9 +128,9 @@
     <root level="INFO">
         <appender-ref ref="SYNC_STDOUT"/>
     </root>
-    <logger name="com.oven.demo.core" level="ERROR" additivity="false">
-        <appender-ref ref="SYNC_ERROR"/>
+    <logger name="com.oven.demo.core" level="INFO" additivity="false">
         <appender-ref ref="SYNC_STDOUT"/>
+        <appender-ref ref="SYNC_FILE"/>
     </logger>
     <logger name="com.oven.demo.framework.exception" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
@@ -130,6 +159,10 @@
     <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="TRACE" additivity="false">
         <appender-ref ref="SYNC_JDBC"/>
         <appender-ref ref="SYNC_DEBUG"/>
+    </logger>
+    <logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" level="ERROR" additivity="false">
+        <appender-ref ref="SYNC_ERROR"/>
+        <appender-ref ref="SYNC_STDOUT"/>
     </logger>
 
 </configuration>

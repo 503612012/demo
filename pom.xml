@@ -158,6 +158,35 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>nexus-aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+
+        <repository>
+            <id>nexus-oven</id>
+            <name>nexus-oven</name>
+            <url>http://maven.cloveaire.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus-oven</id>
+            <name>nexus-oven</name>
+            <url>http://maven.cloveaire.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <plugins>
             <!-- 指定编译jdk版本 -->
@@ -169,19 +198,6 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
-            <!-- 指定资源文件目录 -->
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-jar-plugin</artifactId>-->
-            <!--                <configuration>-->
-            <!--                    <archive>-->
-            <!--                        <manifestEntries>-->
-            <!--                            <Class-Path>./resources/</Class-Path>-->
-            <!--                        </manifestEntries>-->
-            <!--                    </archive>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
 
             <!-- 将第三方依赖打包到lib目录 -->
             <plugin>
@@ -368,6 +384,7 @@
             </plugin>
 
             <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
+            <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -398,15 +415,30 @@
                                     </fileset>
                                 </copy>
                                 <echo message="finish copy shell to target folder"/>
+                                <echo message="start copy backup to target folder"/>
+                                <copy file="src/main/release/backup" tofile="${project.build.directory}/backup"/>
+                                <echo message="finish copy backup"/>
                                 <echo message="start copy demo.sql to target folder"/>
                                 <copy file="src/main/release/demo.sql" tofile="${project.build.directory}/demo.sql"/>
                                 <echo message="finish copy demo.sql"/>
-                                <!-- <echo message="start copy jdk-8u181-linux-x64.tar.gz to target folder"/>-->
-                                <!-- <copy file="src/main/release/jdk-8u181-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u181-linux-x64.tar.gz"/>-->
-                                <!-- <echo message="finish copy jdk-8u181-linux-x64.tar.gz"/>-->
+                                <echo message="start copy jdk-8u181-linux-x64.tar.gz to target folder"/>
+                                <copy file="src/main/release/jdk-8u181-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u181-linux-x64.tar.gz"/>
+                                <echo message="finish copy jdk-8u181-linux-x64.tar.gz"/>
                                 <echo message="start copy simsun.ttf to target folder"/>
                                 <copy file="src/main/release/simsun.ttf" tofile="${project.build.directory}/simsun.ttf"/>
                                 <echo message="finish copy simsun.ttf"/>
+                                <echo message="start mkdir license"/>
+                                <mkdir dir="${project.build.directory}/license"/>
+                                <echo message="finish mkdir license"/>
+                                <echo message="start copy key to target folder"/>
+                                <copy file="src/main/release/license/key" tofile="${project.build.directory}/license/key"/>
+                                <echo message="finish copy key"/>
+                                <echo message="start copy license.lic to target folder"/>
+                                <copy file="src/main/release/license/license.lic" tofile="${project.build.directory}/license/license.lic"/>
+                                <echo message="finish copy license.lic"/>
+                                <echo message="start copy publicCerts.keystore to target folder"/>
+                                <copy file="src/main/release/license/publicCerts.keystore" tofile="${project.build.directory}/license/publicCerts.keystore"/>
+                                <echo message="finish copy publicCerts.keystore"/>
                             </target>
                         </configuration>
                     </execution>

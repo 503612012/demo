@@ -1,6 +1,6 @@
 FROM centos:7
 MAINTAINER Oven <503612012@qq.com>
-LABEL Description="This image is used to run springboot with jdk8." Version="1.0"
+LABEL Description="demo powered by oven" Version="1.0"
 
 RUN mkdir -p /usr/local/
 ADD jdk-8u181-linux-x64.tar.gz /usr/local/
@@ -26,4 +26,5 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shang
 RUN yum -y install kde-l10n-Chinese telnet && yum clean all && localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
 ENV LC_ALL "zh_CN.UTF-8"
 
-CMD ["sh", "/home/demo/app.sh"]
+WORKDIR /home/demo/
+CMD ["sh", "app.sh"]

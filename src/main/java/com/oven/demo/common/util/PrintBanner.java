@@ -21,8 +21,7 @@ public class PrintBanner implements Banner {
             "/  .-.  \\ \\ \\   / /    | |_ \\_|  |   \\ | |   \n" +
             "| |   | |  \\ \\ / /     |  _| _   | |\\ \\| |   \n" +
             "\\  `-'  /   \\ ' /     _| |__/ | _| |_\\   |_  \n" +
-            " `.___.'     \\_/     |________||_____|\\____| \n" +
-            "                                             ";
+            " `.___.'     \\_/     |________||_____|\\____| \n\n";
 
     @Override
     public void printBanner(Environment environment, Class<?> sourceClass, PrintStream printStream) {
