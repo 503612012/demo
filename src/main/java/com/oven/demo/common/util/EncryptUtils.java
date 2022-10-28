@@ -1,7 +1,6 @@
 package com.oven.demo.common.util;
 
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -22,8 +21,8 @@ public class EncryptUtils {
         return Base64.encodeBase64String(bytes);
     }
 
-    private static byte[] base64Decode(String base64Code) throws Exception {
-        return new BASE64Decoder().decodeBuffer(base64Code);
+    private static byte[] base64Decode(String base64Code) {
+        return Base64.decodeBase64(base64Code);
     }
 
     private static byte[] aesEncryptToBytes(String content, String encryptKey) throws Exception {

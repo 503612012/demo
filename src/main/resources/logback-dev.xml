@@ -2,7 +2,8 @@
 <configuration>
 
     <property name="LOG_FILE" value="demo"/>
-    <property name="LOG_HOME" value="/Users/oven/logs/demo/logs/"/>
+    <property scope="context" name="LOG_HOME" value="temp"/>
+    <springProperty scope="context" name="LOG_HOME" source="log.home"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L - %msg%n"/>
 
     <!-- 日志定义 -->

@@ -343,7 +343,7 @@ public class Quant {
        ----------------------------------------------------------------------------------- */
     public void unbiasnet() {
 
-        int i;// j;
+        int i; // j;
 
         for (i = 0; i < NET_SIZE; i++) {
             network[i][0] >>= NET_BIAS_SHIFT;

@@ -64,8 +64,8 @@ public class Encoder {
 
     int g_init_bits;
 
-    int ClearCode;
-    int EOFCode;
+    int clearCode;
+    int eopCode;
 
     // output
     //
@@ -133,10 +133,10 @@ public class Encoder {
     // table clear for block compress
     void cl_block(OutputStream outs) throws IOException {
         cl_hash(hsize);
-        free_ent = ClearCode + 2;
+        free_ent = clearCode + 2;
         clear_flg = true;
 
-        output(ClearCode, outs);
+        output(clearCode, outs);
     }
 
     // reset code table
@@ -161,11 +161,11 @@ public class Encoder {
         // Set up the necessary values
         clear_flg = false;
         n_bits = g_init_bits;
-        maxcode = MAXCODE(n_bits);
+        maxcode = maxcode(n_bits);
 
-        ClearCode = 1 << (init_bits - 1);
-        EOFCode = ClearCode + 1;
-        free_ent = ClearCode + 2;
+        clearCode = 1 << (init_bits - 1);
+        eopCode = clearCode + 1;
+        free_ent = clearCode + 2;
 
         a_count = 0; // clear packet
 
@@ -180,7 +180,7 @@ public class Encoder {
         hsize_reg = hsize;
         cl_hash(hsize_reg); // clear hash table
 
-        output(ClearCode, outs);
+        output(clearCode, outs);
 
         outer_loop:
         while ((c = nextPixel()) != EOF) {
@@ -190,8 +190,7 @@ public class Encoder {
             if (htab[i] == fcode) {
                 ent = codetab[i];
                 continue;
-            } else if (htab[i] >= 0) // non-empty slot
-            {
+            } else if (htab[i] >= 0) { // non-empty slot
                 disp = hsize_reg - i; // secondary hash (after G. Knott)
                 if (i == 0) {
                     disp = 1;
@@ -218,7 +217,7 @@ public class Encoder {
         }
         // Put out the final code.
         output(ent, outs);
-        output(EOFCode, outs);
+        output(eopCode, outs);
     }
 
     //----------------------------------------------------------------------------
@@ -242,7 +241,7 @@ public class Encoder {
         }
     }
 
-    final int MAXCODE(int n_bits) {
+    final int maxcode(int n_bits) {
         return (1 << n_bits) - 1;
     }
 
@@ -282,19 +281,19 @@ public class Encoder {
         // then increase it, if possible.
         if (free_ent > maxcode || clear_flg) {
             if (clear_flg) {
-                maxcode = MAXCODE(n_bits = g_init_bits);
+                maxcode = maxcode(n_bits = g_init_bits);
                 clear_flg = false;
             } else {
                 ++n_bits;
                 if (n_bits == maxbits) {
                     maxcode = maxmaxcode;
                 } else {
-                    maxcode = MAXCODE(n_bits);
+                    maxcode = maxcode(n_bits);
                 }
             }
         }
 
-        if (code == EOFCode) {
+        if (code == eopCode) {
             // At EOF, write the rest of the buffer.
             while (cur_bits > 0) {
                 char_out((byte) (cur_accum & 0xff), outs);

@@ -54,7 +54,7 @@ public class CacheServiceImpl implements CacheService {
      * @param funcParm function函数的调用参数
      */
     @Override
-    public <T, M> T get(String key, Function<M, T> function, M funcParm) {
+    public <T, X> T get(String key, Function<X, T> function, X funcParm) {
         return get(key, function, funcParm, null);
     }
 
@@ -80,7 +80,7 @@ public class CacheServiceImpl implements CacheService {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T, M> T get(String key, Function<M, T> function, M funcParm, Long expireTime) {
+    public <T, X> T get(String key, Function<X, T> function, X funcParm, Long expireTime) {
         T obj = null;
         if (StringUtils.isEmpty(key)) {
             return null;
@@ -91,7 +91,7 @@ public class CacheServiceImpl implements CacheService {
             if (function != null && obj == null) {
                 obj = function.apply(funcParm);
                 if (obj != null) {
-                    set(key, obj, expireTime);// 设置缓存信息
+                    set(key, obj, expireTime); // 设置缓存信息
                 }
             }
         } catch (Exception e) {

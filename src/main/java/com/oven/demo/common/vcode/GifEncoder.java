@@ -1,6 +1,7 @@
 package com.oven.demo.common.vcode;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.BufferedOutputStream;
@@ -149,7 +150,7 @@ public class GifEncoder {
         return ok;
     }
 
-    //added by alvaro
+    // added by alvaro
     public boolean outFlush() {
         boolean ok = true;
         try {
@@ -365,9 +366,9 @@ public class GifEncoder {
         int w = image.getWidth();
         int h = image.getHeight();
         int type = image.getType();
-        if ((w != width)
-                || (h != height)
-                || (type != BufferedImage.TYPE_3BYTE_BGR)) {
+        if ((w != width) ||
+                (h != height) ||
+                (type != BufferedImage.TYPE_3BYTE_BGR)) {
             // create new image with right size/format
             BufferedImage temp =
                     new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);

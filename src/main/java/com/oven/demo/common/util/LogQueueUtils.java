@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class LogQueueUtils {
 
-    private final static Integer POP_MAX_COUNT = 1000;
+    private static final Integer POP_MAX_COUNT = 1000;
 
     private final BlockingQueue<Log> logQueue = new LinkedBlockingQueue<>();
 

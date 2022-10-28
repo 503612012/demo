@@ -31,7 +31,7 @@ public interface CacheService {
      * @param function 如没有缓存，调用该callable函数返回对象 可为空
      * @param funcParm function函数的调用参数
      */
-    <T, M> T get(String key, Function<M, T> function, M funcParm);
+    <T, X> T get(String key, Function<X, T> function, X funcParm);
 
     /**
      * 查询缓存
@@ -50,7 +50,7 @@ public interface CacheService {
      * @param funcParm   function函数的调用参数
      * @param expireTime 过期时间（单位：毫秒） 可为空
      */
-    <T, M> T get(String key, Function<M, T> function, M funcParm, Long expireTime);
+    <T, X> T get(String key, Function<X, T> function, X funcParm, Long expireTime);
 
     /**
      * 设置缓存键值

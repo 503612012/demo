@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class RequestLogQueueUtils {
 
-    private final static Integer POP_MAX_COUNT = 10000;
+    private static final Integer POP_MAX_COUNT = 10000;
 
     private final BlockingQueue<RequestLog> reqeustLogQueue = new LinkedBlockingQueue<>();
 

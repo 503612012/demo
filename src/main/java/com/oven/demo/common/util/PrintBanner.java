@@ -16,7 +16,7 @@ import java.io.PrintStream;
 @Builder
 public class PrintBanner implements Banner {
 
-    private final static String MSG = "\n\n   ___   ____   ____  ________  ____  _____  \n" +
+    private static final String MSG = "\n\n   ___   ____   ____  ________  ____  _____  \n" +
             " .'   `.|_  _| |_  _||_   __  ||_   \\|_   _| \n" +
             "/  .-.  \\ \\ \\   / /    | |_ \\_|  |   \\ | |   \n" +
             "| |   | |  \\ \\ / /     |  _| _   | |\\ \\| |   \n" +

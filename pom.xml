@@ -32,7 +32,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.3</version>
+            <version>5.8.9</version>
         </dependency>
 
         <!-- redis启动器 -->
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.11</version>
+            <version>1.2.14</version>
         </dependency>
 
         <!-- guava支持 -->
@@ -78,6 +78,7 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
+            <!--suppress MavenPackageUpdate -->
             <version>1.7.0</version>
         </dependency>
 
@@ -131,6 +132,7 @@
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
+            <!--suppress MavenPackageUpdate -->
             <version>3.2.2</version>
         </dependency>
     </dependencies>
@@ -197,6 +199,36 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+
+            <!-- 代码格式检查 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>9.3</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- 将第三方依赖打包到lib目录 -->
@@ -473,6 +505,9 @@
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.bak"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.original"/>
+                                <delete file="${project.build.directory}/checkstyle-cachefile"/>
+                                <delete file="${project.build.directory}/checkstyle-checker.xml"/>
+                                <delete file="${project.build.directory}/checkstyle-result.xml"/>
                                 <echo message="finish delete useless file"/>
                             </target>
                         </configuration>

@@ -26,14 +26,14 @@ public class RedisThreadPoolTools {
     }
 
     static class RedisThreadPoolHolder {
-        static RedisThreadPoolTools INSTANCE = new RedisThreadPoolTools();
+        static RedisThreadPoolTools instance = new RedisThreadPoolTools();
     }
 
     /**
      * 并发发送线程池
      */
     public static RedisThreadPoolTools getInstance() {
-        return RedisThreadPoolHolder.INSTANCE;
+        return RedisThreadPoolHolder.instance;
     }
 
     public void execute(Runnable r) {

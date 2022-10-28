@@ -1,6 +1,7 @@
 package com.oven.demo.common.vcode;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.OutputStream;
 
 /**

@@ -1,5 +1,7 @@
 package com.oven.demo.framework.config;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Properties;
 
 /**
@@ -9,26 +11,26 @@ import java.util.Properties;
  */
 public class DevEnvSet {
 
-    // Mac
-    public static final String LICENSE_PATH = "/Users/oven/logs/license/license.lic"; // 证书生成路径
-    public static final String PUBLIC_KEYS_STORE_PATH = "/Users/oven/logs/license/publicCerts.keystore"; // 密钥库存储路径
-
-    // Win
-    // public static final String LICENSE_PATH = "E:\\logs\\demo\\license\\license.lic"; // 证书生成路径
-    // public static final String PUBLIC_KEYS_STORE_PATH = "E:\\logs\\demo\\license\\publicCerts.keystore"; // 密钥库存储路径
-
+    /**
+     * 开发环境根据自己操作系统和相关文件路径修改一下配置
+     */
     public static void config(Properties properties) {
         String profile = String.valueOf(properties.get("demo.profile"));
         if (PropertyConfig.PRO_PROFILE.equals(profile)) {
             return;
         }
-        // Mac
         properties.put("logging.config", "classpath:logback-dev.xml");
-        properties.put("avatar.path", "/Users/oven/logs/demo/files/avatar/");
+
+        String platform = System.getenv("p");
+        // Mac
+        if (StringUtils.isEmpty(platform) || "m".equalsIgnoreCase(platform)) {
+            properties.put("log.home", "/Users/oven/logs/demo/logs/");
+        }
 
         // Win
-        // properties.put("logging.config", "classpath:logback-dev.xml");
-        // properties.put("avatar.path", "E:\\logs\\demo\\files\\avatar\\");
+        if ("w".equalsIgnoreCase(platform)) {
+            properties.put("log.home", "E:\\logs\\demo\\");
+        }
     }
 
 }
