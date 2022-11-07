@@ -1,3 +1,7 @@
+/.idea/*
+!/.idea/icon.svg
+
+/target/
+/.git/
+/.DS_Store
 /demo.iml
-.idea
-target
