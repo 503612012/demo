@@ -1,5 +1,6 @@
 #!/bin/bash
-mysql_mount_dir="/home/demo/data/mysql"
+. ./path.sh
+mysql_mount_dir="${root_path}/data/mysql"
 is_first_start=false
 if [ ! -d $mysql_mount_dir ]; then
   is_first_start=true
@@ -39,15 +40,15 @@ echo "$passwd" >/tmp/.pwd.tmp
 openssl enc -des-cbc -in /tmp/.pwd.tmp -out ./pwd -K 7844713234413263 -iv 386a593775735436 -a
 rm -rf /tmp/.pwd.tmp
 
-echo 'mysql container starting...'
-docker run -d -p 3309:3306 --name mysql-demo -u root -v /home/demo/data/backup:/home/backup -v ${mysql_mount_dir}:/var/lib/mysql -v /etc/localtime:/etc/localtime --restart=always -e MYSQL_ROOT_PASSWORD=${passwd} mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1
-echo 'mysql container started'
+echo "mysql container starting..."
+docker run -d -p 3309:3306 --name mysql-demo -u root -v ${root_path}/demo/data/backup:/home/backup -v ${mysql_mount_dir}:/var/lib/mysql -v /etc/localtime:/etc/localtime --restart=always -e MYSQL_ROOT_PASSWORD=${passwd} mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1
+echo "mysql container started"
 
 if [ "$is_first_start" = false ]; then
   exit
 fi
 
-echo 'demo.sql copying...'
+echo "database initting..."
 docker cp demo.sql mysql-demo:/home
 
 i=0
@@ -59,9 +60,9 @@ while [ $i -le 50 ]; do
   sleep 0.3
 done
 printf "\n"
-echo 'finish copying demo.sql...'
+echo "init database finished"
 
-echo 'begin to config database...'
+echo "begin to config database..."
 docker exec -i mysql-demo bash <<EOP
 mysql -uroot -p${passwd} <<EOF
 set names utf8;
@@ -76,6 +77,6 @@ exit
 EOF
 exit
 EOP
-echo 'config database finished'
+echo "config database finished"
 rm -rf ./mysql.sh
 rm -rf ./demo.sql

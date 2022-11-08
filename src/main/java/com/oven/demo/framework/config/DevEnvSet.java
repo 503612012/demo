@@ -37,7 +37,7 @@ public class DevEnvSet {
      */
     public static void config(Properties properties) {
         try {
-            String profile = String.valueOf(properties.get("vcas.profile"));
+            String profile = String.valueOf(properties.get("demo.profile"));
             if (PropertyConfig.PRO_PROFILE.equals(profile)) {
                 return;
             }
