@@ -15,6 +15,7 @@
 | Dockerfile                 | 镜像构建文件    |
 | jdk-8u181-linux-x64.tar.gz | jdk安装包    |
 | mysql.sh                   | 数据库安装脚本   |
+| path.sh                    | 项目部署根路径   |
 | nginx.tar.gz               | nginx     |
 | run.sh                     | 容器启动脚本    |
 | simsun.ttf                 | 字体文件      |
