@@ -25,7 +25,7 @@ public class ConditionAndParams {
         return ConditionAndParams.build("", params);
     }
 
-    public static ConditionAndParams build(String condition, Object[] params) {
+    public static ConditionAndParams build(String condition, Object... params) {
         ConditionAndParams result = new ConditionAndParams();
         result.setCondition(condition);
         result.setParams(params);

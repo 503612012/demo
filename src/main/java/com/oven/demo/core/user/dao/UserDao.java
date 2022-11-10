@@ -46,7 +46,7 @@ public class UserDao extends BaseDao<User> {
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
-        return super.getOne(ConditionAndParams.build("and user_name = ?", new Object[]{userName}));
+        return super.getOne(ConditionAndParams.build("and user_name = ?", userName));
     }
 
     /**

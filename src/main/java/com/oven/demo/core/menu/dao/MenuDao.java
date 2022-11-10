@@ -28,7 +28,7 @@ public class MenuDao extends BaseDao<Menu> {
      * @param pid 父ID
      */
     public List<Menu> getByPid(Integer pid) {
-        return super.getAll(ConditionAndParams.build("and pid = ? and `status` = 0", new Object[]{pid}), "sort");
+        return super.getAll(ConditionAndParams.build("and pid = ? and `status` = 0", pid), "sort");
     }
 
     /**

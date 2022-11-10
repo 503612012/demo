@@ -26,7 +26,7 @@ public class UserRoleDao extends BaseDao<UserRole> {
      * @param userId 用户ID
      */
     public List<UserRole> getByUserId(Integer userId) {
-        return super.getAll(ConditionAndParams.build("and user_id = ?", new Object[]{userId}));
+        return super.getAll(ConditionAndParams.build("and user_id = ?", userId));
     }
 
     /**
@@ -36,7 +36,7 @@ public class UserRoleDao extends BaseDao<UserRole> {
      * @param roleId 角色ID
      */
     public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
-        return super.getOne(ConditionAndParams.build("and user_id = ? and role_id = ?", new Object[]{userId, roleId}));
+        return super.getOne(ConditionAndParams.build("and user_id = ? and role_id = ?", userId, roleId));
     }
 
     /**
@@ -55,7 +55,7 @@ public class UserRoleDao extends BaseDao<UserRole> {
      * @param roleId 角色ID
      */
     public List<UserRole> getByRoleId(Integer roleId) {
-        return super.getAll(ConditionAndParams.build("and role_id = ?", new Object[]{roleId}));
+        return super.getAll(ConditionAndParams.build("and role_id = ?", roleId));
     }
 
 }
