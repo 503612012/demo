@@ -2,6 +2,7 @@ package com.oven.demo.framework.config;
 
 import com.oven.demo.common.util.EncryptUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -18,7 +19,7 @@ import java.util.Properties;
 @Slf4j
 public class PropertyConfig {
 
-    public static final  String PRO_PROFILE = "pro"; // 生产环境
+    public static final String PRO_PROFILE = "pro"; // 生产环境
     private static final String DEV_PROFILE = "dev"; // 开发环境
     private static final String PROFILE = "@profile@"; // 由于IDEA开发环境无法进行变量替换，故这里识别到占位符时，默认为开发环境
 
@@ -62,9 +63,20 @@ public class PropertyConfig {
         }
         properties.put("demo.profile", profile);
         String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String url = properties.getProperty("mysql.url");
-        String userName = properties.getProperty("mysql.username");
-        String password = properties.getProperty("mysql.password");
+        String url = System.getenv("db.url");
+        if (StringUtils.isEmpty(url)) {
+            url = properties.getProperty("mysql.url");
+        } else {
+            url = "jdbc:mysql://" + url + "/db_demo?characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        }
+        String userName = System.getenv("db.uname");
+        if (StringUtils.isEmpty(userName)) {
+            userName = properties.getProperty("mysql.username");
+        }
+        String password = System.getenv("db.pwd");
+        if (StringUtils.isEmpty(password)) {
+            password = properties.getProperty("mysql.password");
+        }
 
         Connection conn = null;
         PreparedStatement pstmt = null;
