@@ -67,7 +67,7 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) {
         // 请求返回的内容
         if (ret instanceof ResultInfo) {
-            log.info("返回结果：" + ((ResultInfo) ret).getCode().toString());
+            log.info("返回结果：" + ((ResultInfo<?>) ret).getCode().toString());
         }
     }
 
