@@ -1,7 +1,7 @@
 package com.oven.demo.core.user.dao;
 
-import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.ConditionAndParams;
+import com.oven.basic.base.dao.BaseDao;
+import com.oven.basic.base.entity.ConditionAndParams;
 import com.oven.demo.core.user.entity.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

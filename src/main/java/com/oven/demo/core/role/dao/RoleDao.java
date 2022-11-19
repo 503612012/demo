@@ -1,8 +1,8 @@
 package com.oven.demo.core.role.dao;
 
+import com.oven.basic.base.dao.BaseDao;
+import com.oven.basic.base.entity.ConditionAndParams;
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.ConditionAndParams;
 import com.oven.demo.core.role.entity.Role;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;

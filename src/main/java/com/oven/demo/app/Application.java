@@ -1,6 +1,6 @@
 package com.oven.demo.app;
 
-import com.oven.demo.common.util.PrintBanner;
+import com.oven.basic.common.util.PrintBanner;
 import com.oven.demo.framework.config.DevEnvSet;
 import com.oven.demo.framework.config.PropertyConfig;
 import lombok.extern.slf4j.Slf4j;

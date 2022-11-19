@@ -1,6 +1,6 @@
 package com.oven.demo.core.system.dao;
 
-import com.oven.demo.core.base.dao.BaseDao;
+import com.oven.basic.base.dao.BaseDao;
 import com.oven.demo.core.system.entity.SysDicEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

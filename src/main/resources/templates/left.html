@@ -15,6 +15,17 @@
         .hide {
             display: none;
         }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+            background-color: #f9f9f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background-color: #8c8c8c;
+        }
     </style>
     <div class="layui-side-scroll" style="width: auto;">
         <ul class="layui-nav layui-nav-tree" lay-filter="test" id="user-menus"></ul>

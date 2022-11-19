@@ -1,10 +1,10 @@
 package com.oven.demo.framework.aop;
 
+import com.oven.basic.common.requestLog.RequestLog;
+import com.oven.basic.common.util.ParametersUtils;
+import com.oven.basic.common.util.RequestLogQueueUtils;
+import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.requestLog.RequestLog;
-import com.oven.demo.common.util.ParametersUtils;
-import com.oven.demo.common.util.RequestLogQueueUtils;
-import com.oven.demo.common.util.ResultInfo;
 import com.oven.demo.core.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;

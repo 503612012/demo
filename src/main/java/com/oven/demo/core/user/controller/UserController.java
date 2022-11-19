@@ -1,15 +1,15 @@
 package com.oven.demo.core.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.common.util.EncryptUtils;
+import com.oven.basic.common.util.LayuiPager;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.common.util.CommonUtils;
-import com.oven.demo.common.util.EncryptUtils;
-import com.oven.demo.common.util.LayuiPager;
-import com.oven.demo.core.base.controller.BaseController;
-import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.core.user.entity.User;
+import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
@@ -107,7 +107,7 @@ public class UserController extends BaseController {
             List<User> list = userService.getByPage(page, limit, user);
 
             ServletContext context = req.getServletContext();
-            //noinspection unchecked
+            // noinspection unchecked
             Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) context.getAttribute(AppConst.LOGINEDUSERS);
             for (User item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
@@ -379,7 +379,7 @@ public class UserController extends BaseController {
             String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
             File path = new File(avatarPath);
             if (!path.exists()) {
-                //noinspection ResultOfMethodCallIgnored
+                // noinspection ResultOfMethodCallIgnored
                 path.mkdirs();
             }
             File savedFile = new File(avatarPath, fileName);

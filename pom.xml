@@ -22,6 +22,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.oven.basic</groupId>
+            <artifactId>basic</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
         <!-- web启动器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -273,19 +279,19 @@
             </plugin>
 
             <!-- 去掉打包后jar包中BOOT-INF中的文件 -->
-            <!--            <plugin>-->
-            <!--                <groupId>com.oven.maven</groupId>-->
-            <!--                <artifactId>oven-maven-plugin</artifactId>-->
-            <!--                <version>1.0.1</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <phase>package</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>rejar</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
+            <!-- <plugin>-->
+            <!--     <groupId>com.oven.maven</groupId>-->
+            <!--     <artifactId>oven-maven-plugin</artifactId>-->
+            <!--     <version>1.0.1</version>-->
+            <!--     <executions>-->
+            <!--         <execution>-->
+            <!--             <phase>package</phase>-->
+            <!--             <goals>-->
+            <!--                 <goal>rejar</goal>-->
+            <!--             </goals>-->
+            <!--         </execution>-->
+            <!--     </executions>-->
+            <!-- </plugin>-->
 
             <!-- 拷贝资源文件到resources目录 -->
             <plugin>
@@ -528,7 +534,8 @@
                         <configuration>
                             <target>
                                 <echo message="start change jar name"/>
-                                <move file="${project.build.directory}/${project.artifactId}-${project.version}-encrypted.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                <move file="${project.build.directory}/${project.artifactId}-${project.version}-encrypted.jar"
+                                      tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                 <delete dir="${project.build.directory}/antrun"/>
                                 <echo message="finish change jar name"/>
                             </target>

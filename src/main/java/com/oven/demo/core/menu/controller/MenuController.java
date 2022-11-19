@@ -1,8 +1,8 @@
 package com.oven.demo.core.menu.controller;
 
+import com.oven.basic.base.controller.BaseController;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
-import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.menu.entity.Menu;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.framework.annotation.AspectLog;

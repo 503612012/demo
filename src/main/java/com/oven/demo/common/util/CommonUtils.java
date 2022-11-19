@@ -1,5 +1,6 @@
 package com.oven.demo.common.util;
 
+import com.oven.basic.common.util.IPUtils;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.user.entity.User;
 import org.apache.shiro.SecurityUtils;

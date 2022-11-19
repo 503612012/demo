@@ -1,11 +1,11 @@
 package com.oven.demo.core.role.controller;
 
+import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.common.util.LayuiPager;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.common.util.CommonUtils;
-import com.oven.demo.common.util.LayuiPager;
-import com.oven.demo.core.base.controller.BaseController;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.service.RoleService;

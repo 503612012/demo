@@ -1,8 +1,9 @@
 package com.oven.demo.core.task;
 
-import com.oven.demo.common.requestLog.RequestLog;
-import com.oven.demo.common.requestLog.RequestLogService;
-import com.oven.demo.common.util.RequestLogQueueUtils;
+import com.oven.basic.common.requestLog.RequestLog;
+import com.oven.basic.common.requestLog.RequestLogService;
+import com.oven.basic.common.util.RequestLogQueueUtils;
+import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.crontab.service.CrontabService;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
@@ -49,7 +50,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
         if (!CollectionUtils.isEmpty(list)) {
             String tableName = "t_request_log_" + DateTime.now().toString("yyyyMM");
             if (!requestLogService.isExist(tableName)) {
-                requestLogService.createTable(tableName);
+                requestLogService.createTable(AppConst.REQUEST_LOG_TEMPLATE_TABLENAME, tableName);
             }
             requestLogService.batchSave(list, tableName);
             log.info("成功保存{}条接口访问日志到数据库。", list.size());

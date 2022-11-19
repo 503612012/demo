@@ -1,9 +1,9 @@
 package com.oven.demo.framework.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.enumerate.ResultEnum;
-import com.oven.demo.common.util.ResultInfo;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.user.entity.User;
 import org.apache.commons.codec.CharEncoding;

@@ -1,8 +1,8 @@
 package com.oven.demo.core.menu.dao;
 
-import com.oven.demo.common.util.VoPropertyRowMapper;
-import com.oven.demo.core.base.dao.BaseDao;
-import com.oven.demo.core.base.entity.ConditionAndParams;
+import com.oven.basic.base.dao.BaseDao;
+import com.oven.basic.base.entity.ConditionAndParams;
+import com.oven.basic.common.util.VoPropertyRowMapper;
 import com.oven.demo.core.menu.entity.Menu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
