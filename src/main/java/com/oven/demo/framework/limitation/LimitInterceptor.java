@@ -1,9 +1,9 @@
 package com.oven.demo.framework.limitation;
 
 import com.google.common.collect.ImmutableList;
+import com.oven.basic.common.enumerate.ResultEnum;
 import com.oven.basic.common.util.IPUtils;
-import com.oven.demo.common.enumerate.ResultEnum;
-import com.oven.demo.framework.exception.MyException;
+import com.oven.basic.framework.exception.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

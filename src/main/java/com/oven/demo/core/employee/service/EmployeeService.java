@@ -1,8 +1,8 @@
 package com.oven.demo.core.employee.service;
 
+import com.oven.basic.common.utils.CommonUtils;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.RedisCacheKey;
-import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.employee.dao.EmployeeDao;
 import com.oven.demo.core.employee.entity.Employee;

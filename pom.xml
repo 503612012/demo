@@ -27,6 +27,11 @@
             <artifactId>basic</artifactId>
             <version>1.0.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.oven.basic</groupId>
+            <artifactId>basic-web</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!-- web启动器 -->
         <dependency>
@@ -156,8 +161,8 @@
             <id>dev</id>
             <properties>
                 <profile>dev</profile>
-                <platform>mac</platform>
-                <!-- <platform>windows</platform> -->
+                <!-- <platform>mac</platform> -->
+                <platform>windows</platform>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>

@@ -2,23 +2,21 @@ package com.oven.demo.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.common.constant.PermissionCode;
+import com.oven.basic.common.enumerate.ResultEnum;
 import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.IPUtils;
+import com.oven.basic.common.utils.CommonUtils;
 import com.oven.basic.common.vcode.Captcha;
 import com.oven.basic.common.vcode.GifCaptcha;
+import com.oven.basic.core.log.service.LogService;
+import com.oven.basic.core.menu.service.MenuService;
+import com.oven.basic.core.user.entity.User;
+import com.oven.basic.core.user.service.UserService;
+import com.oven.basic.framework.exception.MyException;
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
-import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.employee.entity.Employee;
 import com.oven.demo.core.employee.service.EmployeeService;
-import com.oven.demo.core.log.service.LogService;
-import com.oven.demo.core.menu.service.MenuService;
-import com.oven.demo.core.system.service.SysDicService;
-import com.oven.demo.core.user.entity.User;
-import com.oven.demo.core.user.service.UserService;
-import com.oven.demo.framework.annotation.AspectLog;
-import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
 import com.oven.demo.framework.limitation.LimitType;
@@ -65,23 +63,7 @@ public class SystemController extends BaseController {
     @Resource
     private MenuService menuService;
     @Resource
-    private SysDicService sysDicService;
-    @Resource
     private EmployeeService employeeService;
-
-    /**
-     * 秒杀模拟
-     */
-    @ResponseBody
-    @RequestMapping("/secKill")
-    public Object secKill() {
-        try {
-            sysDicService.secKill();
-            return super.success("秒杀成功！");
-        } catch (Exception e) {
-            return super.fail(400, "秒杀接口异常！");
-        }
-    }
 
     /**
      * 获取验证码（Gif版本）
@@ -159,7 +141,6 @@ public class SystemController extends BaseController {
      * 强制退出
      */
     @ResponseBody
-    @AspectLog(title = "强制退出")
     @RequestMapping("/forceLogout")
     @RequiresPermissions(PermissionCode.FORCE_LOGOUT)
     public Object forceLogout(String userName, HttpServletRequest req) throws MyException {

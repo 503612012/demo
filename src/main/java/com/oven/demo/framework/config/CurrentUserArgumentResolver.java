@@ -1,7 +1,7 @@
 package com.oven.demo.framework.config;
 
+import com.oven.basic.core.user.entity.User;
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.core.user.entity.User;
 import com.oven.demo.framework.annotation.CurrentUser;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
