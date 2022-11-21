@@ -22,13 +22,15 @@ public class DevEnvSet {
      * Win
      */
     private static void configWithWin(Properties properties) {
-        properties.put("log.home", "E:\\logs\\demo\\");
+        properties.put("avatar.path", "E:\\logs\\demo\\avatar\\");
+        properties.put("log.home", "E:\\logs\\demo\\logs\\");
     }
 
     /**
      * Mac
      */
     private static void configWithMac(Properties properties) {
+        properties.put("avatar.path", "/Users/oven/logs/demo/avatar/");
         properties.put("log.home", "/Users/oven/logs/demo/logs/");
     }
 
