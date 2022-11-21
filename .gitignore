@@ -1,5 +1,6 @@
 /.idea/*
 !/.idea/icon.svg
+!/.idea/icon.png
 
 /target/
 /.git/
