@@ -133,11 +133,19 @@
         <appender-ref ref="SYNC_STDOUT"/>
         <appender-ref ref="SYNC_FILE"/>
     </logger>
-    <logger name="com.oven.demo.framework.exception" level="ERROR" additivity="false">
+    <logger name="com.oven.basic.core" level="INFO" additivity="false">
+        <appender-ref ref="SYNC_STDOUT"/>
+        <appender-ref ref="SYNC_FILE"/>
+    </logger>
+    <logger name="com.oven.basic.framework.exception" level="ERROR" additivity="false">
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
     <logger name="com.oven.demo.framework.aop" level="INFO" additivity="false">
+        <appender-ref ref="SYNC_INFO"/>
+        <appender-ref ref="SYNC_STDOUT"/>
+    </logger>
+    <logger name="com.oven.basic.framework.aop" level="INFO" additivity="false">
         <appender-ref ref="SYNC_INFO"/>
         <appender-ref ref="SYNC_STDOUT"/>
     </logger>
