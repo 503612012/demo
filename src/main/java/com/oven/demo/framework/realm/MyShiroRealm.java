@@ -1,10 +1,10 @@
 package com.oven.demo.framework.realm;
 
-import com.oven.basic.common.enumerate.ResultEnum;
-import com.oven.basic.core.menu.service.MenuService;
-import com.oven.basic.core.user.entity.User;
-import com.oven.basic.core.user.service.UserService;
 import com.oven.demo.common.constant.AppConst;
+import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.core.menu.service.MenuService;
+import com.oven.demo.core.user.entity.User;
+import com.oven.demo.core.user.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

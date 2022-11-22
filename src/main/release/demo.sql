@@ -100,7 +100,8 @@ create table t_sys_dic
     _key     varchar(1024) null,
     _value   varchar(1024) null,
     _profile varchar(31)   null,
-    _desc    varchar(1024) null
+    _desc    varchar(1024) null,
+    _status  int default 0 not null comment '状态：0正常、1停用'
 );
 
 create table t_sys_filter
@@ -181,8 +182,7 @@ insert into t_config (dbid, `key`, `value`, `desc`) values (35, 'spring.data.red
 insert into t_config (dbid, `key`, `value`, `desc`) values (36, 'spring.data.jpa.repositories.enabled', 'false', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (37, 'spring.transaction.rollback-on-commit-failure', 'true', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (38, 'avatar.path', '/home/demo/files/avatar/', '头像保存地址');
-insert into t_config (dbid, `key`, `value`, `desc`) values (39, 'basic.table.prefix', 't', '表名前缀');
-insert into t_config (dbid, `key`, `value`, `desc`) values (40, 'log.home', '/home/demo/logs', '日志保存路径');
+insert into t_config (dbid, `key`, `value`, `desc`) values (39, 'log.home', '/home/demo/logs', '日志保存路径');
 
 insert into t_crontab (dbid, _key, _desc, cron) values (1, 'REQUEST_LOG_CRON', '定时任务-保存接口请求记录', '0 */1 * * * ?');
 insert into t_crontab (dbid, _key, _desc, cron) values (2, 'LOG_CRON', '定时任务-保存操作日志', '0 */1 * * * ?');
@@ -217,13 +217,13 @@ insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, c
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (28, 'sys:dic:status', '修改数据字典状态', 23, 5, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (29, 'sys:monitor', '服务监控', 1, 4, '/monitor/index', '', 1, null, '2018-02-09 18:15:27', 1, '2019-09-18 10:55:01', 0);
 insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (30, 'sys:datasource', '数据源监控', 1, 5, '/druid', '', 1, null, '2018-02-09 18:15:27', 1, '2019-09-18 10:55:01', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (31, 'B1', '员工管理', 0, 1, null, 'layui-icon-user', 1, null, '2018-02-09 18:15:27', 1, '2018-10-31 09:25:38', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (32, 'B1_01', '员工管理', 31, 1, '/employee/index', '', 1, null, '2018-02-09 18:15:27', null, '2018-08-21 14:59:32', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (33, 'B1_01_01', '添加员工', 32, 1, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (34, 'B1_01_02', '修改员工', 32, 2, null, '', 2, null, '2018-02-09 18:15:27', 1, '2019-09-19 15:41:49', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (35, 'B1_01_03', '删除员工', 32, 3, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (36, 'B1_01_04', '修改员工状态', 32, 4, null, null, 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
-insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (37, 'B1_01_05', '显示金额', 32, 5, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (31, 'employee', '员工管理', 0, 1, null, 'layui-icon-user', 1, null, '2018-02-09 18:15:27', 1, '2018-10-31 09:25:38', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (32, 'employee:employee', '员工管理', 31, 1, '/employee/index', '', 1, null, '2018-02-09 18:15:27', null, '2018-08-21 14:59:32', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (33, 'employee:employee:add', '添加员工', 32, 1, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (34, 'employee:employee:update', '修改员工', 32, 2, null, '', 2, null, '2018-02-09 18:15:27', 1, '2019-09-19 15:41:49', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (35, 'employee:employee:del', '删除员工', 32, 3, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (36, 'employee:employee:status', '修改员工状态', 32, 4, null, null, 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
+insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_id, last_modify_time, `status`) values (37, 'employee:employee:showmeoney', '显示金额', 32, 5, null, '', 2, null, '2018-02-09 18:15:27', null, '2018-02-09 18:15:27', 0);
 
 insert into t_role (dbid, role_name, create_time, create_id, `status`, last_modify_time, last_modify_id) values (1, '超级管理员', '2018-10-19 12:52:17', 1, 0, '2019-02-06 17:04:26', 1);
 insert into t_role (dbid, role_name, create_time, create_id, `status`, last_modify_time, last_modify_id) values (2, '普通用户', '2018-10-26 01:15:48', 1, 0, '2019-09-25 22:54:15', 1);

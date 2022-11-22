@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" th:href="@{/css/dark.css}">
+</head>
+<body class="dark">
+
+<div class="layui-fluid" style="padding: 10px;">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header logTable layuiadmin-card-header-auto" style="padding-top: 15px; padding-bottom: 15px; height: auto; position: relative;">
+            <div class="layui-inline">
+                <label class="layui-form-label">标题：</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="title" id="titleReload" autocomplete="off" placeholder="搜索标题">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">操作人：</label>
+                <div class="layui-input-block">
+                    <select name="operatorId" lay-verify="" id="logSearchSelect"></select>
+                </div>
+            </div>
+            <button class="layui-btn layuiadmin-btn-admin log-search" lay-submit="" lay-filter="log-back-search" style="line-height: 0">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
+            </button>
+            <button class="layui-btn layuiadmin-btn-admin log-reset" lay-submit="" lay-filter="log-back-reset" style="line-height: 0">
+                <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
+            </button>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-hide" id="log-list" lay-filter="log-list" style="margin: 10px;"></table>
+        </div>
+    </div>
+</div>
+
+<script data-main="/js/log/log.js" th:src="@{/js/lib/require.js}"></script>
+</body>
+</html>

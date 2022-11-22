@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" th:href="@{/css/dark.css}">
+</head>
+<body class="dark">
+
+<div class="layui-fluid" style="padding: 10px;">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header roleTable layuiadmin-card-header-auto" style="padding-top: 15px; padding-bottom: 15px; height: auto; position: relative;">
+            <div class="layui-inline">
+                <input style="width: 300px;" class="layui-input" name="roleName" id="roleNameReload" autocomplete="off" placeholder="搜索角色名称">
+            </div>
+            <button class="layui-btn layuiadmin-btn-admin role-search" lay-submit="" lay-filter="role-back-search" style="line-height: 0">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
+            </button>
+            <button class="layui-btn layuiadmin-btn-admin role-reset" lay-submit="" lay-filter="role-back-reset" style="line-height: 0">
+                <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
+            </button>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-hide" id="role-list" lay-filter="role-list" style="margin: 10px;"></table>
+        </div>
+    </div>
+</div>
+
+</body>
+<div id="roleTips" class="hide">
+    <form lay-filter="role-from" class="layui-form" action="" style="width: 80%; margin-top: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名称：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" id="roleId">
+                <input type="text" lay-verify="required" class="layui-input" name="roleName" autocomplete="off" id="roleName" placeholder="请输入角色名">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="role-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/html" id="roleListToolBar">
+    <div class="layui-btn-container">
+        <button th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).ROLE_INSERT)}" class="layui-btn layui-btn-sm" id="role-add-btn" lay-event="role-add-btn">
+            <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加角色</i>
+        </button>
+    </div>
+</script>
+<script type="text/html" id="roleListBar">
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).ROLE_SETMENU)}" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">设置权限</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).ROLE_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).ROLE_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var menu = [[${session.menu}]];
+
+    var hasChangeRoleStatusPermission = /*[[${T(com.oven.demo.common.constant.PermissionCode).ROLE_SETSTATUS}]]*/ '';
+
+    function hasPermission(code) {
+        for (var i = 0; i < menu.length; i++) {
+            if (code == menu[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*]]>*/
+</script>
+<script data-main="/js/role/role.js" th:src="@{/js/lib/require.js}"></script>
+</html>

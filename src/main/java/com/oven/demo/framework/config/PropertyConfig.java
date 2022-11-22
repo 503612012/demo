@@ -1,6 +1,5 @@
 package com.oven.demo.framework.config;
 
-import com.oven.basic.base.utils.TablePrefix;
 import com.oven.basic.common.util.EncryptUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -102,9 +101,6 @@ public class PropertyConfig {
                 String value = rs.getString("value");
                 log.info("{} --- {}", key, value);
                 properties.put(key, value);
-                if ("basic.table.prefix".equals(key)) {
-                    TablePrefix.getInstance().set(value);
-                }
             }
             return properties;
         } catch (Exception e) {

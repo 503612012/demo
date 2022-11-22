@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link th:if="${session.userTheme == 'dark'}" rel="stylesheet" th:href="@{/css/dark.css}">
+</head>
+<body class="dark">
+
+<div class="layui-fluid" style="padding: 10px;">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header sysdicTable layuiadmin-card-header-auto" style="padding-top: 15px; padding-bottom: 15px; height: auto; position: relative; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="layui-inline">
+                    <input style="width: 300px;" placeholder="数据键/描述" class="layui-input" name="key" id="keyReload" autocomplete="off">
+                </div>
+                <button class="layui-btn layuiadmin-btn-admin sysdic-search" lay-submit="" style="line-height: 0">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="vertical-align: initial;">查询</i>
+                </button>
+                <button class="layui-btn layuiadmin-btn-admin sysdic-reset" lay-submit="" style="line-height: 0">
+                    <i class="layui-icon layuiadmin-button-btn" style="vertical-align: initial;">重置</i>
+                </button>
+            </div>
+            <div class="layui-btn-container">
+                <button th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).SYSDIC_INSERT)}" class="layui-btn layui-btn-sm hide" id="sysdic-add-btn" lay-event="sysdic-add-btn">
+                    <i class="layui-icon layui-icon-add-circle" style="vertical-align: initial;">添加数据字典</i>
+                </button>
+                <button th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).SYSDIC_RELOAD)}" class="layui-btn layui-btn-sm" id="sysdic-reload-btn" lay-event="sysdic-reload-btn">
+                    <i class="layui-icon layui-icon-refresh-3" style="vertical-align: initial;">重载数据字典</i>
+                </button>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-hide" id="sysdic-list" lay-filter="sysdic-list" style="margin: 10px;"></table>
+        </div>
+    </div>
+</div>
+
+</body>
+<div id="sysdicTips" class="hide">
+    <form class="layui-form" id="sysdicForm" lay-filter="sysdic-form" action="" style="margin-top: 20px; width: 88%;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">键：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" id="sysdicId">
+                <input type="text" name="key" lay-verify="required" placeholder="请输入键" autocomplete="off" class="layui-input layui-disabled">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">值：</label>
+            <div class="layui-input-block">
+                <input type="text" name="value" lay-verify="required" placeholder="请输入值" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述：</label>
+            <div class="layui-input-block">
+                <input type="text" name="desc" placeholder="请输入描述" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="sysdic-submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/html" id="sysdicListBar">
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).SYSDIC_UPDATE)}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).SYSDIC_DELETE)}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var menu = [[${session.menu}]];
+
+    var hasChangeSysDicStatusPermission = /*[[${T(com.oven.demo.common.constant.PermissionCode).SYSDIC_STATUS}]]*/ '';
+
+    function hasPermission(code) {
+        for (var i = 0; i < menu.length; i++) {
+            if (code == menu[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*]]>*/
+</script>
+<script data-main="/js/sysdic/index.js" th:src="@{/js/lib/require.js}"></script>
+</html>

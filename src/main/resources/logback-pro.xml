@@ -94,15 +94,11 @@
         <includeCallerData>true</includeCallerData>
     </appender>
 
-    <logger name="com.oven.basic.framework.exception" additivity="false" level="ERROR">
+    <logger name="com.oven.demo.framework.exception" additivity="false" level="ERROR">
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_LOG"/>
     </logger>
     <logger name="com.oven.demo.framework.aop" additivity="false" level="INFO">
-        <appender-ref ref="SYNC_INFO"/>
-        <appender-ref ref="SYNC_LOG"/>
-    </logger>
-    <logger name="com.oven.basic.framework.aop" additivity="false" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
         <appender-ref ref="SYNC_LOG"/>
     </logger>

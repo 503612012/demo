@@ -4,8 +4,8 @@ import com.oven.basic.common.requestLog.RequestLog;
 import com.oven.basic.common.util.ParametersUtils;
 import com.oven.basic.common.util.RequestLogQueueUtils;
 import com.oven.basic.common.util.ResultInfo;
-import com.oven.basic.core.user.entity.User;
 import com.oven.demo.common.constant.AppConst;
+import com.oven.demo.core.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -67,7 +67,7 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) {
         // 请求返回的内容
         if (ret instanceof ResultInfo) {
-            log.info("返回结果：" + ((ResultInfo<?>) ret).getCode().toString());
+            log.info("返回结果：" + ((ResultInfo) ret).getCode().toString());
         }
     }
 
