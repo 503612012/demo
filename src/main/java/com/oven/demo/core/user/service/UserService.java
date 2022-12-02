@@ -1,6 +1,7 @@
 package com.oven.demo.core.user.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
@@ -11,7 +12,6 @@ import com.oven.demo.core.user.dao.UserDao;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.entity.UserRole;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -118,9 +118,9 @@ public class UserService extends BaseService {
         user.setErrNum(0);
         user.setStatus(0);
         user.setCreateId(CommonUtils.getCurrentUser().getId());
-        user.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        user.setCreateTime(DateUtils.getCurrentTime());
         user.setLastModifyId(CommonUtils.getCurrentUser().getId());
-        user.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        user.setLastModifyTime(DateUtils.getCurrentTime());
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
         userDao.save(user);
@@ -132,7 +132,7 @@ public class UserService extends BaseService {
      * 修改用户
      */
     public void update(User user) throws Exception {
-        user.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        user.setLastModifyTime(DateUtils.getCurrentTime());
         user.setLastModifyId(CommonUtils.getCurrentUser().getId());
         userDao.update(user);
         // 移除缓存

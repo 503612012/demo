@@ -2,6 +2,7 @@ package com.oven.demo.core.role.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
@@ -12,7 +13,6 @@ import com.oven.demo.core.role.dao.RoleDao;
 import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.entity.RoleMenu;
 import com.oven.demo.framework.realm.MyShiroRealm;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -98,9 +98,9 @@ public class RoleService extends BaseService {
     public void save(Role role) throws Exception {
         role.setStatus(0);
         role.setCreateId(CommonUtils.getCurrentUser().getId());
-        role.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        role.setCreateTime(DateUtils.getCurrentTime());
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
-        role.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        role.setLastModifyTime(DateUtils.getCurrentTime());
         roleDao.save(role);
         // 移除缓存
         super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
@@ -110,7 +110,7 @@ public class RoleService extends BaseService {
      * 修改角色
      */
     public void update(Role role) throws Exception {
-        role.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        role.setLastModifyTime(DateUtils.getCurrentTime());
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
         roleDao.update(role);
         // 移除缓存

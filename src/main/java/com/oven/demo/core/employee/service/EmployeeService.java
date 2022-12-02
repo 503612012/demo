@@ -1,12 +1,11 @@
 package com.oven.demo.core.employee.service;
 
-import com.oven.demo.common.constant.AppConst;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.employee.dao.EmployeeDao;
 import com.oven.demo.core.employee.entity.Employee;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,9 +29,9 @@ public class EmployeeService extends BaseService {
     public void save(Employee employee) throws Exception {
         employee.setStatus(0);
         employee.setCreateId(CommonUtils.getCurrentUser().getId());
-        employee.setCreateTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        employee.setCreateTime(DateUtils.getCurrentTime());
         employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
-        employee.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        employee.setLastModifyTime(DateUtils.getCurrentTime());
         employeeDao.save(employee);
         // 移除缓存
         super.batchRemove(RedisCacheKey.EMPLOYEE_PREFIX);
@@ -42,7 +41,7 @@ public class EmployeeService extends BaseService {
      * 更新
      */
     public void update(Employee employee) throws Exception {
-        employee.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        employee.setLastModifyTime(DateUtils.getCurrentTime());
         employee.setLastModifyId(CommonUtils.getCurrentUser().getId());
         employeeDao.update(employee);
         // 移除缓存

@@ -1,6 +1,6 @@
 package com.oven.demo.core.menu.service;
 
-import com.oven.demo.common.constant.AppConst;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.base.service.BaseService;
@@ -10,7 +10,6 @@ import com.oven.demo.core.role.entity.RoleMenu;
 import com.oven.demo.core.role.service.RoleMenuService;
 import com.oven.demo.core.user.entity.UserRole;
 import com.oven.demo.core.user.service.UserRoleService;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -59,7 +58,7 @@ public class MenuService extends BaseService {
      * 修改菜单
      */
     public void update(Menu menu) throws Exception {
-        menu.setLastModifyTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        menu.setLastModifyTime(DateUtils.getCurrentTime());
         menu.setLastModifyId(CommonUtils.getCurrentUser().getId());
         menuDao.update(menu);
         // 移除缓存

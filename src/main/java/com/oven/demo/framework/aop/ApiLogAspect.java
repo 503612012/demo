@@ -2,7 +2,7 @@ package com.oven.demo.framework.aop;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.alibaba.fastjson.JSON;
-import com.oven.demo.common.constant.AppConst;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.common.util.LogQueueUtils;
 import com.oven.demo.core.log.entity.Log;
@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -75,7 +74,7 @@ public class ApiLogAspect {
                 .requestMethod(requestMethod)
                 .operatorId(operatorId)
                 .operatorName(operatorName)
-                .operatorTime(DateTime.now().toString(AppConst.TIME_PATTERN))
+                .operatorTime(DateUtils.getCurrentTime())
                 .operatorIp(operatorIp)
                 .build();
         LogQueueUtils.getInstance().offer(log);

@@ -1,12 +1,11 @@
 package com.oven.demo.core.log.service;
 
-import com.oven.demo.common.constant.AppConst;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.util.LogQueueUtils;
 import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.log.dao.LogDao;
 import com.oven.demo.core.log.entity.Log;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -99,7 +98,7 @@ public class LogService extends BaseService {
                 .requestMethod(requestMethod)
                 .operatorId(operatorId)
                 .operatorName(operatorName)
-                .operatorTime(DateTime.now().toString(AppConst.TIME_PATTERN))
+                .operatorTime(DateUtils.getCurrentTime())
                 .operatorIp(operatorIp)
                 .build();
         LogQueueUtils.getInstance().offer(log);

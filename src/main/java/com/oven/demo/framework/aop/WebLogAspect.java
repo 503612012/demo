@@ -1,6 +1,7 @@
 package com.oven.demo.framework.aop;
 
 import com.oven.basic.common.requestLog.RequestLog;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.basic.common.util.ParametersUtils;
 import com.oven.basic.common.util.RequestLogQueueUtils;
 import com.oven.basic.common.util.ResultInfo;
@@ -11,7 +12,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -51,7 +51,7 @@ public class WebLogAspect {
         requestLog.setRequestIp(request.getRemoteAddr());
         requestLog.setRequestMethod(request.getMethod());
         requestLog.setRequestParam(ParametersUtils.getParameters(request));
-        requestLog.setRequestTime(DateTime.now().toString(AppConst.TIME_PATTERN));
+        requestLog.setRequestTime(DateUtils.getCurrentTime());
         requestLog.setRequestUrl(request.getRequestURL().toString());
         if (request.getSession().getAttribute(AppConst.CURRENT_USER) != null) {
             User currentUser = (User) request.getSession().getAttribute(AppConst.CURRENT_USER);

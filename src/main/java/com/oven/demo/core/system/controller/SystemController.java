@@ -2,6 +2,7 @@ package com.oven.demo.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.common.util.DateUtils;
 import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.IPUtils;
 import com.oven.basic.common.vcode.Captcha;
@@ -30,7 +31,6 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -239,7 +239,7 @@ public class SystemController extends BaseController {
             // 登录成功后放入session中
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInDb);
             logService.addLog("登录系统！", "成功！", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-            userService.updateLastLoginTime(DateTime.now().toString(AppConst.TIME_PATTERN), userInDb.getId());
+            userService.updateLastLoginTime(DateUtils.getCurrentTime(), userInDb.getId());
 
             // 获取该用户的所有权限编码，放入session中
             Object userMenus = req.getSession().getAttribute(AppConst.USER_MENU);
