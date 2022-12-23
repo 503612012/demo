@@ -227,6 +227,11 @@
                         <artifactId>checkstyle</artifactId>
                         <version>9.3</version>
                     </dependency>
+                    <dependency>
+                        <groupId>com.oven.checkstyle</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>1.0.0</version>
+                    </dependency>
                 </dependencies>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
@@ -430,7 +435,6 @@
                 </executions>
             </plugin>
 
-            <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
             <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
