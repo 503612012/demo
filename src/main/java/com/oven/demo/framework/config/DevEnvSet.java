@@ -7,6 +7,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
 import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
@@ -41,6 +42,13 @@ public class DevEnvSet {
             if (PropertyConfig.PRO_PROFILE.equals(profile)) {
                 return;
             }
+            // 校验githook
+            if (!checkGitHook()) {
+                log.info("\n\n\n" + String.format("\033[%d;%dm%s\033[0m", 33, 1, "=========================== 请先执行 ") +
+                        String.format("\033[%d;%dm%s\033[0m", 31, 1, "mvn compile clean") +
+                        String.format("\033[%d;%dm%s\033[0m", 33, 1, " 命令 ===========================\n\n"));
+                System.exit(-1);
+            }
             log.info("=========================== >>> 开始初始化开发环境配置");
             properties.put("logging.config", "classpath:logback-dev.xml");
 
@@ -65,6 +73,19 @@ public class DevEnvSet {
         } catch (Exception e) {
             log.info("=========================== >>> 初始化开发环境配置异常：", e);
         }
+    }
+
+    /**
+     * 校验githook
+     */
+    private static boolean checkGitHook() {
+        URL url = DevEnvSet.class.getResource("/");
+        if (url == null) {
+            return false;
+        }
+        String filePath = url.getPath().replace("target/classes/", "") + ".git" + File.separator + "hooks" + File.separator + "pre-commit";
+        File preCommitFile = new File(filePath);
+        return preCommitFile.exists();
     }
 
 }
