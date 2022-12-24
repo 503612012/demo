@@ -560,6 +560,7 @@
                             <goal>install</goal>
                         </goals>
                         <configuration>
+                            <platform>${platform}</platform>
                             <hooks>
                                 <pre-commit>
                                     echo running code validation
