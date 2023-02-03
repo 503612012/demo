@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -42,6 +43,7 @@ import java.util.UUID;
  *
  * @author Oven
  */
+@ApiIgnore
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {

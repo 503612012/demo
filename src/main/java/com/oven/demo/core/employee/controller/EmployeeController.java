@@ -2,6 +2,8 @@ package com.oven.demo.core.employee.controller;
 
 import com.oven.basic.base.controller.BaseController;
 import com.oven.basic.common.util.LayuiPager;
+import com.oven.basic.common.util.ResultInfo;
+import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.employee.entity.Employee;
@@ -12,10 +14,15 @@ import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
 import com.oven.demo.framework.limitation.LimitType;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,8 +33,9 @@ import java.util.List;
  * @author Oven
  */
 @Controller
+@Api(tags = "员工控制器")
 @RequestMapping("/employee")
-public class EmployeeController extends BaseController {
+public class EmployeeController extends BaseController<Employee> {
 
     @Resource
     private UserService userService;
@@ -37,6 +45,7 @@ public class EmployeeController extends BaseController {
     /**
      * 去到员工管理页面
      */
+    @ApiIgnore
     @RequestMapping("/index")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     public String index() {
@@ -51,9 +60,11 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    public Object getById(Integer id) throws MyException {
+    @ApiImplicitParam(name = "id", value = "员工主键", dataType = "int", required = true)
+    @ApiOperation(value = "通过ID获取员工", notes = "通过ID获取员工接口", httpMethod = AppConst.GET)
+    public ResultInfo<Employee> getById(Integer id) throws MyException {
         try {
-            return super.success(employeeService.getById(id));
+            return super.ok(employeeService.getById(id));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取员工异常", e);
         }
@@ -68,7 +79,15 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    public Object getByPage(Integer page, Integer limit, Employee employee) throws MyException {
+    @ApiOperation(value = "分页获取员工", notes = "分页获取员工接口", httpMethod = AppConst.GET)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", dataType = "int", required = true),
+            @ApiImplicitParam(name = "limit", value = "每页数量", dataType = "int", required = true),
+            @ApiImplicitParam(name = "name", value = "姓名", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "contact", value = "联系方式", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "gender", value = "性别", dataType = "int", paramType = "query")
+    })
+    public LayuiPager<Employee> getByPage(Integer page, Integer limit, @ApiIgnore Employee employee) throws MyException {
         try {
             LayuiPager<Employee> result = new LayuiPager<>();
             List<Employee> list = employeeService.getByPage(page, limit, employee);
@@ -94,8 +113,9 @@ public class EmployeeController extends BaseController {
     @RequestMapping("/save")
     @AspectLog(title = "添加员工")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
+    @ApiOperation(value = "添加员工", notes = "添加员工接口", httpMethod = AppConst.POST)
     @Limit(key = LimitKey.EMPLOYEE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object save(Employee employee) throws MyException {
+    public ResultInfo<Object> save(Employee employee) throws MyException {
         try {
             employeeService.save(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
@@ -111,8 +131,9 @@ public class EmployeeController extends BaseController {
     @AspectLog(title = "修改员工")
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
+    @ApiOperation(value = "修改员工", notes = "修改员工接口", httpMethod = AppConst.POST)
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object update(Employee employee) throws MyException {
+    public ResultInfo<Object> update(Employee employee) throws MyException {
         try {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
@@ -130,8 +151,10 @@ public class EmployeeController extends BaseController {
     @AspectLog(title = "删除员工")
     @RequestMapping("/delete")
     @RequiresPermissions(PermissionCode.EMPLOYEE_DELETE)
+    @ApiOperation(value = "删除员工", notes = "删除员工接口", httpMethod = AppConst.POST)
+    @ApiImplicitParam(name = "id", value = "员工主键", dataType = "int", required = true)
     @Limit(key = LimitKey.EMPLOYEE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object delete(Integer id) throws MyException {
+    public ResultInfo<Object> delete(Integer id) throws MyException {
         try {
             boolean result = employeeService.delete(id);
             if (result) {
@@ -154,8 +177,13 @@ public class EmployeeController extends BaseController {
     @AspectLog(title = "修改员工状态")
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SETSTATUS)
+    @ApiOperation(value = "修改员工状态", notes = "修改员工状态接口", httpMethod = AppConst.POST)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "status", value = "员工状态", dataType = "int", required = true),
+            @ApiImplicitParam(name = "employeeId", value = "员工主键", dataType = "int", required = true)
+    })
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object updateStatus(Integer employeeId, Integer status) throws MyException {
+    public ResultInfo<Object> updateStatus(Integer employeeId, Integer status) throws MyException {
         try {
             Employee employee = employeeService.getById(employeeId);
             employee.setStatus(status);
@@ -172,7 +200,8 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/getAll")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    public Object getAll() throws MyException {
+    @ApiOperation(value = "获取所有员工", notes = "获取所有员工接口", httpMethod = AppConst.GET)
+    public ResultInfo<Object> getAll() throws MyException {
         try {
             return super.success(employeeService.getAll());
         } catch (Exception e) {
@@ -186,7 +215,8 @@ public class EmployeeController extends BaseController {
     @ResponseBody
     @RequestMapping("/getHourSalaryByEmployeeId")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SHOWMONEY)
-    public Object getHourSalaryByEmployeeId(String employeeId) throws MyException {
+    @ApiOperation(value = "获取一个员工的时薪", notes = "获取一个员工的时薪接口", httpMethod = AppConst.GET)
+    public ResultInfo<Object> getHourSalaryByEmployeeId(String employeeId) throws MyException {
         try {
             return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));
         } catch (Exception e) {

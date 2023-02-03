@@ -37,6 +37,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -55,6 +56,7 @@ import java.util.UUID;
  * @author Oven
  */
 @Slf4j
+@ApiIgnore
 @Controller
 public class SystemController extends BaseController {
 

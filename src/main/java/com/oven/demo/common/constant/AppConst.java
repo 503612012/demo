@@ -29,4 +29,7 @@ public interface AppConst {
     String CAPTCHA = "_captcha";
     String PERCENTAGE_MARK = "\\\\%";
 
+    String GET = "GET";
+    String POST = "POST";
+
 }
