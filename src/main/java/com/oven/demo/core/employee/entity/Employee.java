@@ -7,7 +7,6 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * 员工实体类
@@ -17,9 +16,7 @@ import java.io.Serializable;
 @Data
 @Table(name = "t_employee")
 @ApiModel(value = "员工实体类", description = "员工实体类")
-public class Employee implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Employee {
 
     @Id
     @Column(name = "dbid")
@@ -40,7 +37,7 @@ public class Employee implements Serializable {
 
     @Column(name = "gender")
     @ApiModelProperty(value = "性别：0-女、1-男", dataType = "int")
-    private Integer gender; // 0-女、1-男
+    private Integer gender; // 性别：0-女、1-男
 
     @Column(name = "address")
     @ApiModelProperty(value = "住址", dataType = "string")

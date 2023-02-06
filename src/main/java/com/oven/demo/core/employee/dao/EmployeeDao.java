@@ -61,7 +61,7 @@ public class EmployeeDao extends BaseDao<Employee> {
     /**
      * 获取一个员工的时薪
      */
-    public Double getHourSalaryByEmployeeId(String employeeId) {
+    public Double getHourSalaryByEmployeeId(Integer employeeId) {
         String sql = "select hour_salary from t_employee where dbid = ?";
         return this.jdbcTemplate.queryForObject(sql, Double.class, employeeId);
     }

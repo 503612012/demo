@@ -60,7 +60,7 @@ public class EmployeeController extends BaseController<Employee> {
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
-    @ApiImplicitParam(name = "id", value = "员工主键", dataType = "int", required = true)
+    @ApiImplicitParam(name = "id", value = "员工主键", required = true)
     @ApiOperation(value = "通过ID获取员工", notes = "通过ID获取员工接口", httpMethod = AppConst.GET)
     public ResultInfo<Employee> getById(Integer id) throws MyException {
         try {
@@ -81,11 +81,11 @@ public class EmployeeController extends BaseController<Employee> {
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     @ApiOperation(value = "分页获取员工", notes = "分页获取员工接口", httpMethod = AppConst.GET)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "页码", dataType = "int", required = true),
-            @ApiImplicitParam(name = "limit", value = "每页数量", dataType = "int", required = true),
+            @ApiImplicitParam(name = "page", value = "页码", required = true),
+            @ApiImplicitParam(name = "limit", value = "每页数量", required = true),
+            @ApiImplicitParam(name = "gender", value = "性别", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "name", value = "姓名", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "contact", value = "联系方式", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "gender", value = "性别", dataType = "int", paramType = "query")
+            @ApiImplicitParam(name = "contact", value = "联系方式", dataType = "string", paramType = "query")
     })
     public LayuiPager<Employee> getByPage(Integer page, Integer limit, @ApiIgnore Employee employee) throws MyException {
         try {
@@ -114,8 +114,16 @@ public class EmployeeController extends BaseController<Employee> {
     @AspectLog(title = "添加员工")
     @RequiresPermissions(PermissionCode.EMPLOYEE_INSERT)
     @ApiOperation(value = "添加员工", notes = "添加员工接口", httpMethod = AppConst.POST)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "姓名", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "address", value = "住址", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "contact", value = "联系方式", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "age", value = "年龄", dataType = "java.lang.Integer", paramType = "query", required = true),
+            @ApiImplicitParam(name = "hourSalary", value = "时薪", dataType = "java.lang.Double", paramType = "query", required = true),
+            @ApiImplicitParam(name = "gender", value = "性别：0-女、1-男", dataType = "java.lang.Integer", paramType = "query", required = true),
+    })
     @Limit(key = LimitKey.EMPLOYEE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> save(Employee employee) throws MyException {
+    public ResultInfo<Object> save(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.save(employee);
             return super.success(ResultEnum.INSERT_SUCCESS.getValue());
@@ -132,8 +140,17 @@ public class EmployeeController extends BaseController<Employee> {
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.EMPLOYEE_UPDATE)
     @ApiOperation(value = "修改员工", notes = "修改员工接口", httpMethod = AppConst.POST)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "姓名", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "address", value = "住址", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "contact", value = "联系方式", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "id", value = "主键", dataType = "java.lang.Integer", paramType = "query", required = true),
+            @ApiImplicitParam(name = "age", value = "年龄", dataType = "java.lang.Integer", paramType = "query", required = true),
+            @ApiImplicitParam(name = "hourSalary", value = "时薪", dataType = "java.lang.Double", paramType = "query", required = true),
+            @ApiImplicitParam(name = "gender", value = "性别：0-女、1-男", dataType = "java.lang.Integer", paramType = "query", required = true),
+    })
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> update(Employee employee) throws MyException {
+    public ResultInfo<Object> update(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.update(employee);
             return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
@@ -215,8 +232,9 @@ public class EmployeeController extends BaseController<Employee> {
     @ResponseBody
     @RequestMapping("/getHourSalaryByEmployeeId")
     @RequiresPermissions(PermissionCode.EMPLOYEE_SHOWMONEY)
+    @ApiImplicitParam(name = "employeeId", value = "员工主键", required = true)
     @ApiOperation(value = "获取一个员工的时薪", notes = "获取一个员工的时薪接口", httpMethod = AppConst.GET)
-    public ResultInfo<Object> getHourSalaryByEmployeeId(String employeeId) throws MyException {
+    public ResultInfo<Object> getHourSalaryByEmployeeId(Integer employeeId) throws MyException {
         try {
             return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));
         } catch (Exception e) {

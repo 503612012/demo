@@ -259,6 +259,7 @@
                 </configuration>
             </plugin>
 
+            <!-- 自动生成git版本号 -->
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
@@ -296,39 +297,39 @@
             </plugin>
 
             <!-- 代码格式检查 -->
-            <!-- <plugin> -->
-            <!--     <groupId>org.apache.maven.plugins</groupId> -->
-            <!--     <artifactId>maven-checkstyle-plugin</artifactId> -->
-            <!--     <version>3.1.2</version> -->
-            <!--     <dependencies> -->
-            <!--         <dependency> -->
-            <!--             <groupId>com.puppycrawl.tools</groupId> -->
-            <!--             <artifactId>checkstyle</artifactId> -->
-            <!--             <version>9.3</version> -->
-            <!--         </dependency> -->
-            <!--         <dependency> -->
-            <!--             <groupId>com.oven.checkstyle</groupId> -->
-            <!--             <artifactId>checkstyle</artifactId> -->
-            <!--             <version>1.0.0</version> -->
-            <!--         </dependency> -->
-            <!--     </dependencies> -->
-            <!--     <configuration> -->
-            <!--         <configLocation>checkstyle.xml</configLocation> -->
-            <!--         <encoding>UTF-8</encoding> -->
-            <!--         <consoleOutput>true</consoleOutput> -->
-            <!--         <failsOnError>true</failsOnError> -->
-            <!--         <linkXRef>false</linkXRef> -->
-            <!--     </configuration> -->
-            <!--     <executions> -->
-            <!--         <execution> -->
-            <!--             <id>validate</id> -->
-            <!--             <phase>validate</phase> -->
-            <!--             <goals> -->
-            <!--                 <goal>check</goal> -->
-            <!--             </goals> -->
-            <!--         </execution> -->
-            <!--     </executions> -->
-            <!-- </plugin> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>9.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.oven.checkstyle</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>1.0.0</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- 将第三方依赖打包到lib目录 -->
             <plugin>
@@ -365,19 +366,19 @@
             </plugin>
 
             <!-- 去掉打包后jar包中BOOT-INF中的文件 -->
-            <!-- <plugin>-->
-            <!--     <groupId>com.oven.maven</groupId>-->
-            <!--     <artifactId>oven-maven-plugin</artifactId>-->
-            <!--     <version>1.0.1</version>-->
-            <!--     <executions>-->
-            <!--         <execution>-->
-            <!--             <phase>package</phase>-->
-            <!--             <goals>-->
-            <!--                 <goal>rejar</goal>-->
-            <!--             </goals>-->
-            <!--         </execution>-->
-            <!--     </executions>-->
-            <!-- </plugin>-->
+            <!-- <plugin> -->
+            <!--     <groupId>com.oven.maven</groupId> -->
+            <!--     <artifactId>oven-maven-plugin</artifactId> -->
+            <!--     <version>1.0.1</version> -->
+            <!--     <executions> -->
+            <!--         <execution> -->
+            <!--             <phase>package</phase> -->
+            <!--             <goals> -->
+            <!--                 <goal>rejar</goal> -->
+            <!--             </goals> -->
+            <!--         </execution> -->
+            <!--     </executions> -->
+            <!-- </plugin> -->
 
             <!-- 拷贝资源文件到resources目录 -->
             <plugin>
@@ -457,199 +458,199 @@
             </plugin>
 
             <!-- 压缩拷贝js和css文件 -->
-            <!-- <plugin> -->
-            <!--     <groupId>net.alchim31.maven</groupId> -->
-            <!--     <artifactId>yuicompressor-maven-plugin</artifactId> -->
-            <!--     <version>1.5.1</version> -->
-            <!--     <executions> -->
-            <!--         <execution> -->
-            <!--             <phase>prepare-package</phase> -->
-            <!--             <goals> -->
-            <!--                 <goal>compress</goal> -->
-            <!--             </goals> -->
-            <!--         </execution> -->
-            <!--     </executions> -->
-            <!--     <configuration> -->
-            <!--         &lt;!&ndash; 读取js,css文件采用UTF-8编码 &ndash;&gt; -->
-            <!--         <encoding>UTF-8</encoding> -->
-            <!--         &lt;!&ndash; 若存在已压缩的文件，会先对比源文件是否有改动，有改动便压缩，无改动就不压缩 &ndash;&gt; -->
-            <!--         <force>true</force> -->
-            <!--         &lt;!&ndash; 不显示js可能的错误 &ndash;&gt; -->
-            <!--         <jswarn>false</jswarn> -->
-            <!--         &lt;!&ndash; 压缩之前先执行聚合文件操作 &ndash;&gt; -->
-            <!--         <preProcessAggregates>true</preProcessAggregates> -->
-            <!--         &lt;!&ndash; 是否不添加min后缀 &ndash;&gt; -->
-            <!--         <nosuffix>true</nosuffix> -->
-            <!--         &lt;!&ndash; 在指定的列号后插入新行 &ndash;&gt; -->
-            <!--         <linebreakpos>-1</linebreakpos> -->
-            <!--         <sourceDirectory>src/main/resources</sourceDirectory> -->
-            <!--         <outputDirectory>${project.build.directory}/resources</outputDirectory> -->
-            <!--         <includes> -->
-            <!--             <include>**/*.js</include> -->
-            <!--             <include>**/*.css</include> -->
-            <!--         </includes> -->
-            <!--         <excludes> -->
-            <!--             <exclude>**/*min.js</exclude> -->
-            <!--             <exclude>**/*min.css</exclude> -->
-            <!--         </excludes> -->
-            <!--     </configuration> -->
-            <!-- </plugin> -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 读取js,css文件采用UTF-8编码 -->
+                    <encoding>UTF-8</encoding>
+                    <!-- 若存在已压缩的文件，会先对比源文件是否有改动，有改动便压缩，无改动就不压缩 -->
+                    <force>true</force>
+                    <!-- 不显示js可能的错误 -->
+                    <jswarn>false</jswarn>
+                    <!-- 压缩之前先执行聚合文件操作 -->
+                    <preProcessAggregates>true</preProcessAggregates>
+                    <!-- 是否不添加min后缀 -->
+                    <nosuffix>true</nosuffix>
+                    <!-- 在指定的列号后插入新行 -->
+                    <linebreakpos>-1</linebreakpos>
+                    <sourceDirectory>src/main/resources</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                    <includes>
+                        <include>**/*.js</include>
+                        <include>**/*.css</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*min.js</exclude>
+                        <exclude>**/*min.css</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 
-            <!-- <plugin> -->
-            <!--     <groupId>com.oven.encryjar</groupId> -->
-            <!--     <artifactId>encryjar-maven-plugin</artifactId> -->
-            <!--     <version>1.0.0</version> -->
-            <!--     <configuration> -->
-            <!--         <password>Cyeg4HM6gmg0nMEpkz7CwA==</password> -->
-            <!--         <packages>com.oven.demo</packages> -->
-            <!--         <classpath>${project.build.directory}/lib</classpath> -->
-            <!--     </configuration> -->
-            <!--     <executions> -->
-            <!--         <execution> -->
-            <!--             <phase>package</phase> -->
-            <!--             <goals> -->
-            <!--                 <goal>encryjar</goal> -->
-            <!--             </goals> -->
-            <!--         </execution> -->
-            <!--     </executions> -->
-            <!-- </plugin> -->
+            <plugin>
+                <groupId>com.oven.encryjar</groupId>
+                <artifactId>encryjar-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <password>Cyeg4HM6gmg0nMEpkz7CwA==</password>
+                    <packages>com.oven.demo</packages>
+                    <classpath>${project.build.directory}/lib</classpath>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>encryjar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
-            <!-- <plugin> -->
-            <!--     <groupId>org.apache.maven.plugins</groupId> -->
-            <!--     <artifactId>maven-antrun-plugin</artifactId> -->
-            <!--     <version>1.8</version> -->
-            <!--     <dependencies> -->
-            <!--         <dependency> -->
-            <!--             <groupId>org.apache.ant</groupId> -->
-            <!--             <artifactId>ant</artifactId> -->
-            <!--             <version>1.10.9</version> -->
-            <!--         </dependency> -->
-            <!--     </dependencies> -->
-            <!--     <executions> -->
-            <!--         <execution> -->
-            <!--             <id>copy</id> -->
-            <!--             <phase>package</phase> -->
-            <!--             <goals> -->
-            <!--                 <goal>run</goal> -->
-            <!--             </goals> -->
-            <!--             <configuration> -->
-            <!--                 <target> -->
-            <!--                     <echo message="start copy Dockerfile to target folder"/> -->
-            <!--                     <copy file="src/main/release/Dockerfile" tofile="${project.build.directory}/Dockerfile"/> -->
-            <!--                     <echo message="finish copy Dockerfile to target folder"/> -->
-            <!--                     <echo message="start copy shell to target folder"/> -->
-            <!--                     <copy todir="${project.build.directory}/"> -->
-            <!--                         <fileset dir="src/main/release/"> -->
-            <!--                             <include name="*.sh"/> -->
-            <!--                         </fileset> -->
-            <!--                     </copy> -->
-            <!--                     <echo message="finish copy shell to target folder"/> -->
-            <!--                     <echo message="start copy backup to target folder"/> -->
-            <!--                     <copy file="src/main/release/backup" tofile="${project.build.directory}/backup"/> -->
-            <!--                     <echo message="finish copy backup"/> -->
-            <!--                     <echo message="start copy demo.sql to target folder"/> -->
-            <!--                     <copy file="src/main/release/demo.sql" tofile="${project.build.directory}/demo.sql"/> -->
-            <!--                     <echo message="finish copy demo.sql"/> -->
-            <!--                     <echo message="start copy jdk-8u181-linux-x64.tar.gz to target folder"/> -->
-            <!--                     <copy file="src/main/release/jdk-8u181-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u181-linux-x64.tar.gz"/> -->
-            <!--                     <echo message="finish copy jdk-8u181-linux-x64.tar.gz"/> -->
-            <!--                     <echo message="start copy simsun.ttf to target folder"/> -->
-            <!--                     <copy file="src/main/release/simsun.ttf" tofile="${project.build.directory}/simsun.ttf"/> -->
-            <!--                     <echo message="finish copy simsun.ttf"/> -->
-            <!--                     <echo message="start mkdir license"/> -->
-            <!--                     <mkdir dir="${project.build.directory}/license"/> -->
-            <!--                     <echo message="finish mkdir license"/> -->
-            <!--                     <echo message="start copy key to target folder"/> -->
-            <!--                     <copy file="src/main/release/license/key" tofile="${project.build.directory}/license/key"/> -->
-            <!--                     <echo message="finish copy key"/> -->
-            <!--                     <echo message="start copy license.lic to target folder"/> -->
-            <!--                     <copy file="src/main/release/license/license.lic" tofile="${project.build.directory}/license/license.lic"/> -->
-            <!--                     <echo message="finish copy license.lic"/> -->
-            <!--                     <echo message="start copy publicCerts.keystore to target folder"/> -->
-            <!--                     <copy file="src/main/release/license/publicCerts.keystore" tofile="${project.build.directory}/license/publicCerts.keystore"/> -->
-            <!--                     <echo message="finish copy publicCerts.keystore"/> -->
-            <!--                 </target> -->
-            <!--             </configuration> -->
-            <!--         </execution> -->
-            <!--         <execution> -->
-            <!--             <id>chmod</id> -->
-            <!--             <phase>package</phase> -->
-            <!--             <goals> -->
-            <!--                 <goal>run</goal> -->
-            <!--             </goals> -->
-            <!--             <configuration> -->
-            <!--                 <target> -->
-            <!--                     <echo message="start exec chmod u+x shell"/> -->
-            <!--                     <chmod dir="${project.build.directory}/" perm="u+x" includes="*.sh"/> -->
-            <!--                     <echo message="finish exec chmod u+x shell"/> -->
-            <!--                 </target> -->
-            <!--             </configuration> -->
-            <!--         </execution> -->
-            <!--         &lt;!&ndash; <execution> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <id>delete</id> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <phase>package</phase> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <goals> &ndash;&gt; -->
-            <!--         &lt;!&ndash;         <goal>run</goal> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     </goals> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <configuration> &ndash;&gt; -->
-            <!--         &lt;!&ndash;         <target> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <echo message="start delete useless file in target"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete dir="${project.build.directory}/antrun"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete dir="${project.build.directory}/generated-sources"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete dir="${project.build.directory}/maven-archiver"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete dir="${project.build.directory}/maven-status"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete dir="${project.build.directory}/classes"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.bak"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.original"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete file="${project.build.directory}/checkstyle-cachefile"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete file="${project.build.directory}/checkstyle-checker.xml"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete file="${project.build.directory}/checkstyle-result.xml"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <echo message="finish delete useless file"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;         </target> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     </configuration> &ndash;&gt; -->
-            <!--         &lt;!&ndash; </execution> &ndash;&gt; -->
-            <!--         &lt;!&ndash; <execution> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <id>mv</id> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <phase>package</phase> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <goals> &ndash;&gt; -->
-            <!--         &lt;!&ndash;         <goal>run</goal> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     </goals> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     <configuration> &ndash;&gt; -->
-            <!--         &lt;!&ndash;         <target> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <echo message="start change jar name"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <move file="${project.build.directory}/${project.artifactId}-${project.version}-encrypted.jar" &ndash;&gt; -->
-            <!--         &lt;!&ndash;                   tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <delete dir="${project.build.directory}/antrun"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;             <echo message="finish change jar name"/> &ndash;&gt; -->
-            <!--         &lt;!&ndash;         </target> &ndash;&gt; -->
-            <!--         &lt;!&ndash;     </configuration> &ndash;&gt; -->
-            <!--         &lt;!&ndash; </execution> &ndash;&gt; -->
-            <!--     </executions> -->
-            <!-- </plugin> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant</artifactId>
+                        <version>1.10.9</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="start copy Dockerfile to target folder"/>
+                                <copy file="src/main/release/Dockerfile" tofile="${project.build.directory}/Dockerfile"/>
+                                <echo message="finish copy Dockerfile to target folder"/>
+                                <echo message="start copy shell to target folder"/>
+                                <copy todir="${project.build.directory}/">
+                                    <fileset dir="src/main/release/">
+                                        <include name="*.sh"/>
+                                    </fileset>
+                                </copy>
+                                <echo message="finish copy shell to target folder"/>
+                                <echo message="start copy backup to target folder"/>
+                                <copy file="src/main/release/backup" tofile="${project.build.directory}/backup"/>
+                                <echo message="finish copy backup"/>
+                                <echo message="start copy demo.sql to target folder"/>
+                                <copy file="src/main/release/demo.sql" tofile="${project.build.directory}/demo.sql"/>
+                                <echo message="finish copy demo.sql"/>
+                                <echo message="start copy jdk-8u181-linux-x64.tar.gz to target folder"/>
+                                <copy file="src/main/release/jdk-8u181-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u181-linux-x64.tar.gz"/>
+                                <echo message="finish copy jdk-8u181-linux-x64.tar.gz"/>
+                                <echo message="start copy simsun.ttf to target folder"/>
+                                <copy file="src/main/release/simsun.ttf" tofile="${project.build.directory}/simsun.ttf"/>
+                                <echo message="finish copy simsun.ttf"/>
+                                <echo message="start mkdir license"/>
+                                <mkdir dir="${project.build.directory}/license"/>
+                                <echo message="finish mkdir license"/>
+                                <echo message="start copy key to target folder"/>
+                                <copy file="src/main/release/license/key" tofile="${project.build.directory}/license/key"/>
+                                <echo message="finish copy key"/>
+                                <echo message="start copy license.lic to target folder"/>
+                                <copy file="src/main/release/license/license.lic" tofile="${project.build.directory}/license/license.lic"/>
+                                <echo message="finish copy license.lic"/>
+                                <echo message="start copy publicCerts.keystore to target folder"/>
+                                <copy file="src/main/release/license/publicCerts.keystore" tofile="${project.build.directory}/license/publicCerts.keystore"/>
+                                <echo message="finish copy publicCerts.keystore"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>chmod</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="start exec chmod u+x shell"/>
+                                <chmod dir="${project.build.directory}/" perm="u+x" includes="*.sh"/>
+                                <echo message="finish exec chmod u+x shell"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>delete</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="start delete useless file in target"/>
+                                <delete dir="${project.build.directory}/antrun"/>
+                                <delete dir="${project.build.directory}/generated-sources"/>
+                                <delete dir="${project.build.directory}/maven-archiver"/>
+                                <delete dir="${project.build.directory}/maven-status"/>
+                                <delete dir="${project.build.directory}/classes"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.bak"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.original"/>
+                                <delete file="${project.build.directory}/checkstyle-cachefile"/>
+                                <delete file="${project.build.directory}/checkstyle-checker.xml"/>
+                                <delete file="${project.build.directory}/checkstyle-result.xml"/>
+                                <echo message="finish delete useless file"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>mv</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="start change jar name"/>
+                                <move file="${project.build.directory}/${project.artifactId}-${project.version}-encrypted.jar"
+                                      tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                <delete dir="${project.build.directory}/antrun"/>
+                                <echo message="finish change jar name"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-            <!-- <plugin> -->
-            <!--     <groupId>com.oven.githook</groupId> -->
-            <!--     <artifactId>githook</artifactId> -->
-            <!--     <version>1.0.1</version> -->
-            <!--     <executions> -->
-            <!--         <execution> -->
-            <!--             <goals> -->
-            <!--                 <goal>install</goal> -->
-            <!--             </goals> -->
-            <!--             <configuration> -->
-            <!--                 <platform>${platform}</platform> -->
-            <!--                 <hooks> -->
-            <!--                     <pre-commit> -->
-            <!--                         echo running code validation -->
-            <!--                         exec mvn clean validate -f ${project.basedir} -->
-            <!--                     </pre-commit> -->
-            <!--                 </hooks> -->
-            <!--             </configuration> -->
-            <!--         </execution> -->
-            <!--     </executions> -->
-            <!-- </plugin> -->
+            <plugin>
+                <groupId>com.oven.githook</groupId>
+                <artifactId>githook</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <platform>${platform}</platform>
+                            <hooks>
+                                <pre-commit>
+                                    echo running code validation
+                                    exec mvn clean validate -f ${project.basedir}
+                                </pre-commit>
+                            </hooks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <resources>
             <resource>

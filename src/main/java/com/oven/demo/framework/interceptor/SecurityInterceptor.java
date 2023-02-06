@@ -6,6 +6,7 @@ import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.user.entity.User;
+import com.oven.demo.core.user.service.UserService;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -32,6 +33,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     @Resource
     private MenuService menuService;
+    @Resource
+    private UserService userService;
 
     private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     private static final String GET_GIF_CODE = "/getGifCode";
@@ -126,6 +129,18 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             loginedMap.put(user.getUserName(), obj);
 
             req.getSession().setAttribute(AppConst.CURRENT_USER, user);
+            if (StringUtils.isEmpty(user.getConfig())) {
+                user = userService.getById(user.getId());
+            }
+            if (StringUtils.isEmpty(user.getConfig())) {
+                req.getSession().setAttribute("userTheme", "light");
+                req.getSession().setAttribute("menuPosition", "left");
+            } else {
+                String userTheme = JSONObject.parseObject(user.getConfig()).getString("userTheme");
+                req.getSession().setAttribute("userTheme", StringUtils.isEmpty(userTheme) ? "light" : userTheme);
+                String menuPosition = JSONObject.parseObject(user.getConfig()).getString("menuPosition");
+                req.getSession().setAttribute("menuPosition", StringUtils.isEmpty(menuPosition) ? "left" : menuPosition);
+            }
         }
 
         // 获取该用户的所有权限编码，放入session中
@@ -141,7 +156,10 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
      * 放行的url
      */
     private boolean isExcludedUrls(String servletPath, HttpServletResponse resp) throws IOException {
-        if (servletPath.startsWith(LOGIN) || servletPath.startsWith(DO_LOGIN) || ERR.equals(servletPath) || servletPath.startsWith(GET_GIF_CODE)) {
+        if (servletPath.startsWith(LOGIN) ||
+                servletPath.startsWith(DO_LOGIN) ||
+                ERR.equals(servletPath) ||
+                servletPath.startsWith(GET_GIF_CODE)) {
             return true;
         }
         if (servletPath.startsWith(ERROR)) {

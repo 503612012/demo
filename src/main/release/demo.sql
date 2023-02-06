@@ -177,12 +177,13 @@ insert into t_config (dbid, `key`, `value`, `desc`) values (30, 'spring.redis.po
 insert into t_config (dbid, `key`, `value`, `desc`) values (31, 'spring.redis.jedis.pool.max-wait', '-1', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (32, 'spring.redis.jedis.pool.max-idle', '8', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (33, 'spring.redis.pool.min-idle', '0', null);
-insert into t_config (dbid, `key`, `value`, `desc`) values (34, 'logging.config', 'classpath:logback-pro.xml', null);
-insert into t_config (dbid, `key`, `value`, `desc`) values (35, 'spring.data.redis.repositories.enabled', 'false', null);
-insert into t_config (dbid, `key`, `value`, `desc`) values (36, 'spring.data.jpa.repositories.enabled', 'false', null);
-insert into t_config (dbid, `key`, `value`, `desc`) values (37, 'spring.transaction.rollback-on-commit-failure', 'true', null);
-insert into t_config (dbid, `key`, `value`, `desc`) values (38, 'avatar.path', '/home/demo/files/avatar/', '头像保存地址');
-insert into t_config (dbid, `key`, `value`, `desc`) values (39, 'log.home', '/home/demo/logs', '日志保存路径');
+insert into t_config (dbid, `key`, `value`, `desc`) values (34, 'springfox.documentation.swagger.v2.use-model-v3', 'false', null);
+insert into t_config (dbid, `key`, `value`, `desc`) values (35, 'logging.config', 'classpath:logback-pro.xml', null);
+insert into t_config (dbid, `key`, `value`, `desc`) values (36, 'spring.data.redis.repositories.enabled', 'false', null);
+insert into t_config (dbid, `key`, `value`, `desc`) values (37, 'spring.data.jpa.repositories.enabled', 'false', null);
+insert into t_config (dbid, `key`, `value`, `desc`) values (38, 'spring.transaction.rollback-on-commit-failure', 'true', null);
+insert into t_config (dbid, `key`, `value`, `desc`) values (39, 'avatar.path', '/home/demo/files/avatar/', '头像保存地址');
+insert into t_config (dbid, `key`, `value`, `desc`) values (40, 'log.home', '/home/demo/logs', '日志保存路径');
 
 insert into t_crontab (dbid, _key, _desc, cron) values (1, 'REQUEST_LOG_CRON', '定时任务-保存接口请求记录', '0 */1 * * * ?');
 insert into t_crontab (dbid, _key, _desc, cron) values (2, 'LOG_CRON', '定时任务-保存操作日志', '0 */1 * * * ?');

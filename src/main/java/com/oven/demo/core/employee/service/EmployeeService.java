@@ -134,7 +134,7 @@ public class EmployeeService extends BaseService {
     /**
      * 获取一个员工的时薪
      */
-    public Double getHourSalaryByEmployeeId(String employeeId) {
+    public Double getHourSalaryByEmployeeId(Integer employeeId) {
         Double hourSalary = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 先读取缓存
         if (hourSalary == null) { // double check
             synchronized (this) {
