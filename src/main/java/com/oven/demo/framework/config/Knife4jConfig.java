@@ -1,22 +1,28 @@
 package com.oven.demo.framework.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.oven.demo.common.enumerate.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Response;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * knife4j配置
@@ -48,7 +54,24 @@ public class Knife4jConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.oven.demo"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .useDefaultResponseMessages(false)
+                .globalResponses(HttpMethod.PUT, responseMessageList())
+                .globalResponses(HttpMethod.GET, responseMessageList())
+                .globalResponses(HttpMethod.POST, responseMessageList())
+                .globalResponses(HttpMethod.HEAD, responseMessageList())
+                .globalResponses(HttpMethod.PATCH, responseMessageList())
+                .globalResponses(HttpMethod.TRACE, responseMessageList())
+                .globalResponses(HttpMethod.DELETE, responseMessageList())
+                .globalResponses(HttpMethod.OPTIONS, responseMessageList());
+    }
+
+    private List<Response> responseMessageList() {
+        List<Response> list = new ArrayList<>();
+        for (ResultEnum resultEnum : ResultEnum.values()) {
+            list.add(new ResponseBuilder().code(String.valueOf(resultEnum.getCode())).description(resultEnum.getValue()).build());
+        }
+        return list;
     }
 
     public String getVersion() {

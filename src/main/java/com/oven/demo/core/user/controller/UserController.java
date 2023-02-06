@@ -46,7 +46,7 @@ import java.util.UUID;
 @ApiIgnore
 @Controller
 @RequestMapping("/user")
-public class UserController extends BaseController {
+public class UserController extends BaseController<User> {
 
     @Value("${avatar.path}")
     private String avatarPath;
@@ -174,7 +174,7 @@ public class UserController extends BaseController {
                 return super.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
             }
             userService.save(user);
-            return super.success(ResultEnum.INSERT_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加用户异常", e);
         }
@@ -230,7 +230,7 @@ public class UserController extends BaseController {
                 return super.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
             }
             userService.update(user);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户异常", e);
         }
@@ -252,7 +252,7 @@ public class UserController extends BaseController {
                 return super.fail(ResultEnum.CAN_NOT_DELETE_USER.getCode(), ResultEnum.CAN_NOT_DELETE_USER.getValue());
             }
             userService.delete(id);
-            return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除用户异常", e);
         }
@@ -277,7 +277,7 @@ public class UserController extends BaseController {
             User user = userService.getById(userId);
             user.setStatus(status);
             userService.update(user);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户状态异常", e);
         }
@@ -317,7 +317,7 @@ public class UserController extends BaseController {
                 return super.fail(ResultEnum.CAN_NOT_SET_ROLE.getCode(), ResultEnum.CAN_NOT_SET_ROLE.getValue());
             }
             userService.setUserRole(userId, roleIds);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置用户角色异常", e);
         }
@@ -358,7 +358,7 @@ public class UserController extends BaseController {
             newPwd = EncryptUtils.aesDecrypt(newPwd, EncryptUtils.KEY);
             user.setPassword(newPwd);
             userService.update(user);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改密码异常", e);
         }
@@ -406,7 +406,7 @@ public class UserController extends BaseController {
     public Object resetErrNum(Integer userId) throws MyException {
         try {
             userService.resetErrNum(userId);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "重置错误次数异常", e);
         }
@@ -423,7 +423,7 @@ public class UserController extends BaseController {
         try {
             userService.updateConfig("userTheme", userTheme);
             req.getSession().setAttribute("userTheme", userTheme);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改主题异常", e);
         }
@@ -440,7 +440,7 @@ public class UserController extends BaseController {
         try {
             userService.updateConfig("menuPosition", menuPosition);
             req.getSession().setAttribute("menuPosition", menuPosition);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单位置异常", e);
         }

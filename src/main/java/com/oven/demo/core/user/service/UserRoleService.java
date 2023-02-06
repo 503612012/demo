@@ -1,7 +1,7 @@
 package com.oven.demo.core.user.service;
 
 import com.oven.demo.common.constant.RedisCacheKey;
-import com.oven.demo.core.base.service.BaseService;
+import com.oven.demo.common.service.BaseService;
 import com.oven.demo.core.user.dao.UserRoleDao;
 import com.oven.demo.core.user.entity.UserRole;
 import org.springframework.stereotype.Service;

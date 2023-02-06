@@ -37,7 +37,7 @@ import java.util.List;
 @ApiIgnore
 @Controller
 @RequestMapping("/role")
-public class RoleController extends BaseController {
+public class RoleController extends BaseController<Role> {
 
     @Resource
     private RoleService roleService;
@@ -114,7 +114,7 @@ public class RoleController extends BaseController {
     public Object save(Role role) throws MyException {
         try {
             roleService.save(role);
-            return super.success(ResultEnum.INSERT_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加角色异常", e);
         }
@@ -134,7 +134,7 @@ public class RoleController extends BaseController {
                 return super.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
             }
             roleService.update(role);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色异常", e);
         }
@@ -160,7 +160,7 @@ public class RoleController extends BaseController {
                 return super.fail(400, "该角色被其他用户引用，禁止删除！");
             }
             roleService.delete(id);
-            return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除角色异常", e);
         }
@@ -185,7 +185,7 @@ public class RoleController extends BaseController {
             Role role = roleService.getById(roleId);
             role.setStatus(status);
             roleService.update(role);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色状态异常", e);
         }

@@ -8,9 +8,6 @@ package com.oven.demo.common.enumerate;
 public enum ResultEnum {
 
     SUCCESS(200, "操作成功！"),
-    INSERT_SUCCESS(200, "添加成功！"),
-    DELETE_SUCCESS(200, "删除成功！"),
-    UPDATE_SUCCESS(200, "修改成功！"),
 
     UNKNOW_ERROR(3001, "未知错误！"),
     OVER_LIMIT_ERROR(3002, "OVER LIMIT!"),

@@ -126,7 +126,7 @@ public class EmployeeController extends BaseController<Employee> {
     public ResultInfo<Object> save(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.save(employee);
-            return super.success(ResultEnum.INSERT_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加员工异常", e);
         }
@@ -153,7 +153,7 @@ public class EmployeeController extends BaseController<Employee> {
     public ResultInfo<Object> update(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.update(employee);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工异常", e);
         }
@@ -175,7 +175,7 @@ public class EmployeeController extends BaseController<Employee> {
         try {
             boolean result = employeeService.delete(id);
             if (result) {
-                return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+                return super.success(ResultEnum.SUCCESS.getValue());
             } else {
                 return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
@@ -205,7 +205,7 @@ public class EmployeeController extends BaseController<Employee> {
             Employee employee = employeeService.getById(employeeId);
             employee.setStatus(status);
             employeeService.update(employee);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工状态异常", e);
         }

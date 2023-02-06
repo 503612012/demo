@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
 @ApiIgnore
 @Controller
 @RequestMapping("/monitor")
-public class MonitorController extends BaseController {
+public class MonitorController extends BaseController<Object> {
 
     /**
      * 去到监控页面

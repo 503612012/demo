@@ -24,7 +24,7 @@ import java.util.List;
 @ApiIgnore
 @Controller
 @RequestMapping("/log")
-public class LogController extends BaseController {
+public class LogController extends BaseController<Log> {
 
     @Resource
     private LogService logService;

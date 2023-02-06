@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 @ApiIgnore
 @Controller
 @RequestMapping("/menu")
-public class MenuController extends BaseController {
+public class MenuController extends BaseController<Menu> {
 
     @Resource
     private MenuService menuService;
@@ -64,7 +64,7 @@ public class MenuController extends BaseController {
     @Limit(key = LimitKey.MENU_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
     public Object doUpdate(Menu menu) throws MyException {
         try {
-//            menuService.update(menu);
+            // menuService.update(menu);
             return super.success("暂不开通修改功能");
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单异常", e);
@@ -87,7 +87,7 @@ public class MenuController extends BaseController {
             Menu menu = menuService.getById(menuId);
             menu.setStatus(status);
             menuService.update(menu);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单状态异常", e);
         }

@@ -1,4 +1,4 @@
-package com.oven.demo.core.base.service;
+package com.oven.demo.common.service;
 
 import com.oven.demo.framework.cache.CacheService;
 import org.springframework.stereotype.Service;

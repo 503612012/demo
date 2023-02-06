@@ -2,7 +2,7 @@ package com.oven.demo.core.system.service;
 
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.redis.IRedisService;
-import com.oven.demo.core.base.service.BaseService;
+import com.oven.demo.common.service.BaseService;
 import com.oven.demo.core.system.dao.SysDicDao;
 import com.oven.demo.core.system.entity.SysDicEntity;
 import org.springframework.stereotype.Service;

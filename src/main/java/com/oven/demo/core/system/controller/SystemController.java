@@ -58,7 +58,7 @@ import java.util.UUID;
 @Slf4j
 @ApiIgnore
 @Controller
-public class SystemController extends BaseController {
+public class SystemController extends BaseController<Object> {
 
     @Resource
     private LogService logService;

@@ -8,6 +8,7 @@ import com.oven.demo.core.system.entity.SysDicEntity;
 import com.oven.demo.core.system.service.SysDicService;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.config.InitSysDic;
+import com.oven.demo.framework.config.SysDic;
 import com.oven.demo.framework.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ import java.util.List;
 @ApiIgnore
 @Controller
 @RequestMapping("/sysdic")
-public class SysDicController extends BaseController {
+public class SysDicController extends BaseController<SysDic> {
 
     @Resource
     private InitSysDic initSysDic;
@@ -92,7 +93,7 @@ public class SysDicController extends BaseController {
     public Object save(SysDicEntity sysdic) throws MyException {
         try {
             sysDicService.save(sysdic);
-            return super.success(ResultEnum.INSERT_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加数据字典异常", e);
         }
@@ -108,7 +109,7 @@ public class SysDicController extends BaseController {
     public Object update(SysDicEntity sysdic) throws MyException {
         try {
             sysDicService.update(sysdic);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改数据字典异常", e);
         }
@@ -127,7 +128,7 @@ public class SysDicController extends BaseController {
         try {
             boolean result = sysDicService.delete(id);
             if (result) {
-                return super.success(ResultEnum.DELETE_SUCCESS.getValue());
+                return super.success(ResultEnum.SUCCESS.getValue());
             } else {
                 return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
@@ -161,7 +162,7 @@ public class SysDicController extends BaseController {
     public Object updateStatus(Integer id, Integer status) throws MyException {
         try {
             sysDicService.updateStatus(id, status);
-            return super.success(ResultEnum.UPDATE_SUCCESS.getValue());
+            return super.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改数据字典状态异常", e);
         }

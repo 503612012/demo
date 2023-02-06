@@ -1,7 +1,7 @@
 package com.oven.demo.core.crontab.service;
 
 import com.oven.demo.common.constant.RedisCacheKey;
-import com.oven.demo.core.base.service.BaseService;
+import com.oven.demo.common.service.BaseService;
 import com.oven.demo.core.crontab.dao.CrontabDao;
 import org.springframework.stereotype.Service;
 

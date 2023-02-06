@@ -2,8 +2,8 @@ package com.oven.demo.core.menu.service;
 
 import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.RedisCacheKey;
+import com.oven.demo.common.service.BaseService;
 import com.oven.demo.common.util.CommonUtils;
-import com.oven.demo.core.base.service.BaseService;
 import com.oven.demo.core.menu.dao.MenuDao;
 import com.oven.demo.core.menu.entity.Menu;
 import com.oven.demo.core.role.entity.RoleMenu;
