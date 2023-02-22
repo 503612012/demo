@@ -30,11 +30,6 @@
 
     <!-- 日志定义 -->
     <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>DENY</onMatch>
-            <onMismatch>ACCEPT</onMismatch>
-        </filter>
         <file>${LOG_HOME}/${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/${LOG_FILE}.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
@@ -69,6 +64,11 @@
             <pattern>${PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
     </appender>
 
     <!-- 异步ERROR日志定义 -->
@@ -99,10 +99,6 @@
         <includeCallerData>true</includeCallerData>
     </appender>
 
-    <logger name="com.oven.demo.framework.exception" additivity="false" level="ERROR">
-        <appender-ref ref="SYNC_ERROR"/>
-        <appender-ref ref="SYNC_LOG"/>
-    </logger>
     <logger name="com.oven.demo.framework.aop" additivity="false" level="INFO">
         <appender-ref ref="SYNC_INFO"/>
         <appender-ref ref="SYNC_LOG"/>
@@ -126,11 +122,9 @@
         <appender-ref ref="SYNC_ERROR"/>
         <appender-ref ref="SYNC_LOG"/>
     </logger>
-    <logger name="com" additivity="false" level="INFO">
-        <appender-ref ref="SYNC_LOG"/>
-    </logger>
     <root level="INFO">
         <appender-ref ref="SYNC_LOG"/>
+        <appender-ref ref="SYNC_ERROR"/>
     </root>
 
 </configuration>
