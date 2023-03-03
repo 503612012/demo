@@ -165,8 +165,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     /**
      * 设置用户角色
      *
-     * @param userId  用户ID
-     * @param roleIds 角色ID列表
+     * @param userId  用户id
+     * @param roleIds 角色id列表
      */
     var setUserRole = function(userId, roleIds) {
         var params = {

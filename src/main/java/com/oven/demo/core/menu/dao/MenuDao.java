@@ -23,9 +23,9 @@ public class MenuDao extends BaseDao<Menu> {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 通过父ID获取
+     * 通过父id获取
      *
-     * @param pid 父ID
+     * @param pid 父id
      */
     public List<Menu> getByPid(Integer pid) {
         return super.getAll(ConditionAndParams.build("and pid = ? and `status` = 0", pid), "sort");
@@ -34,8 +34,8 @@ public class MenuDao extends BaseDao<Menu> {
     /**
      * 获取某个用户授过权的菜单的子菜单
      *
-     * @param pid     用户ID
-     * @param menuIds 菜单ID列表
+     * @param pid     用户id
+     * @param menuIds 菜单id列表
      */
     public List<Menu> getByPidAndHasPermission(Integer pid, List<Integer> menuIds) {
         String in = StringUtils.collectionToDelimitedString(menuIds, ",");

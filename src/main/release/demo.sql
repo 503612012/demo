@@ -1,66 +1,66 @@
 create table t_config
 (
-    dbid   int auto_increment primary key,
-    `key`  varchar(255)  null,
-    `value`  varchar(255)  null,
-    `desc` varchar(1023) null
+    dbid    int auto_increment primary key,
+    `key`   varchar(255)  null,
+    `value` varchar(255)  null,
+    `desc`  varchar(1023) null comment '描述信息'
 );
 
 create table t_crontab
 (
     dbid  int auto_increment primary key,
-    _key  varchar(63)  null,
-    _desc varchar(255) null,
-    cron  varchar(31)  null
+    _key  varchar(63)  null comment 'cron表达式key',
+    _desc varchar(255) null comment '描述信息',
+    cron  varchar(31)  null comment 'cron表达式'
 );
 
 create table t_employee
 (
     dbid             int auto_increment comment '主键' primary key,
-    `name`             varchar(31)   null comment '员工姓名',
+    `name`           varchar(31)   null comment '员工姓名',
     age              int           null comment '年龄',
-    `status`           int           null comment '状态，0-正常、1-删除',
-    gender           int           null comment '0-女、1-男',
+    `status`         int           null comment '状态：0-正常、1-删除',
+    gender           int           null comment '性别：0-女、1-男',
     address          varchar(1023) null comment '住址',
     contact          varchar(15)   null comment '联系方式',
     hour_salary      double        null comment '时薪',
-    create_id        int           null comment '创建人ID',
+    create_id        int           null comment '创建人id',
     create_time      varchar(31)   null comment '创建时间',
-    last_modify_id   int           null comment '最后修改人ID',
+    last_modify_id   int           null comment '最后修改人id',
     last_modify_time varchar(31)   null comment '最后修改时间',
     constraint t_employee_dbid_uindex unique (dbid)
 ) comment '员工表';
 
-create table db_demo.t_log
+create table t_log
 (
     dbid           int auto_increment comment '主键' primary key,
     title          varchar(63)   null comment '标题',
     request        varchar(5000) null comment '内容',
-    response       varchar(5000) null,
-    request_uri    varchar(127)  null,
-    request_method varchar(15)   null,
-    operator_id    int           null comment '操作人ID',
+    response       varchar(5000) null comment '请求返回',
+    request_uri    varchar(127)  null comment '请求uri',
+    request_method varchar(15)   null comment '请求方法',
+    operator_id    int           null comment '操作人id',
     operator_name  varchar(31)   null comment '操作人姓名',
     operator_time  varchar(31)   null comment '操作时间',
-    operator_ip    varchar(31)   null comment '操作人IP地址',
+    operator_ip    varchar(31)   null comment '操作人ip地址',
     constraint t_log_dbid_uindex unique (dbid)
 ) comment '日志表';
 
 create table t_menu
 (
-    dbid             int auto_increment comment '目录表' primary key,
-    menu_code        varchar(63)  null comment '目录编码',
-    menu_name        varchar(63)  null comment '目录名称',
-    pid              int          null comment '父ID',
+    dbid             int auto_increment comment '菜单表' primary key,
+    menu_code        varchar(63)  null comment '菜单编码',
+    menu_name        varchar(63)  null comment '菜单名称',
+    pid              int          null comment '父id',
     sort             int          null comment '排序值',
     url              varchar(511) null comment '链接',
     iconCls          varchar(63)  null comment '图标',
-    type             int          null comment '1目录,2按钮',
-    create_id        int          null comment '创建人ID',
+    type             int          null comment '类型：1-目录、2-按钮',
+    create_id        int          null comment '创建人id',
     create_time      varchar(31)  null comment '创建时间',
-    last_modify_id   int          null comment '最后修改人ID',
+    last_modify_id   int          null comment '最后修改人id',
     last_modify_time varchar(31)  null comment '最后修改时间',
-    `status`           int          null comment '状态，0-正常、1-删除',
+    `status`         int          null comment '状态：0-正常、1-删除',
     constraint menu_code unique (menu_code)
 ) comment '菜单表';
 
@@ -69,9 +69,9 @@ create table t_request_log_template
     request_time   varchar(31)   null comment '请求时间',
     request_url    varchar(1023) null comment '请求地址',
     request_method varchar(31)   null comment '请求方法',
-    request_ip     varchar(127)  null comment '请求者IP',
+    request_ip     varchar(127)  null comment '请求者ip',
     request_param  text          null comment '请求参数',
-    user_id        int           null comment '登录人ID'
+    user_id        int           null comment '登录人id'
 ) comment '接口请求日志模板表';
 
 create table t_role
@@ -79,18 +79,18 @@ create table t_role
     dbid             int auto_increment comment '主键' primary key,
     role_name        varchar(31) null comment '角色名称',
     create_time      varchar(31) null comment '创建时间',
-    create_id        int         null comment '创建人ID',
-    `status`           int         null comment '状态，0-正常、1-删除',
+    create_id        int         null comment '创建人id',
+    `status`         int         null comment '状态：0-正常、1-删除',
     last_modify_time varchar(31) null comment '最后修改时间',
-    last_modify_id   int         null comment '最后修改人ID',
+    last_modify_id   int         null comment '最后修改人id',
     constraint t_role_dbid_uindex unique (dbid)
 ) comment '角色表';
 
 create table t_role_menu
 (
     dbid    int auto_increment comment '主键' primary key,
-    role_id int null comment '角色ID',
-    menu_id int null comment '菜单ID',
+    role_id int null comment '角色id',
+    menu_id int null comment '菜单id',
     constraint t_role_menu_dbid_uindex unique (dbid)
 ) comment '角色-菜单关系表';
 
@@ -100,7 +100,7 @@ create table t_sys_dic
     _key     varchar(1024) null,
     _value   varchar(1024) null,
     _profile varchar(31)   null,
-    _desc    varchar(1024) null,
+    _desc    varchar(1024) null comment '描述信息',
     _status  int default 0 not null comment '状态：0正常、1停用'
 );
 
@@ -118,29 +118,28 @@ create table t_user
 (
     dbid             int auto_increment comment '主键' primary key,
     user_name        varchar(31)  null comment '用户名',
-    `password`         varchar(63)  null comment '密码',
+    `password`       varchar(63)  null comment '密码',
     nick_name        varchar(31)  null comment '昵称',
     age              int          null comment '年龄',
     email            varchar(63)  null comment '邮箱',
     phone            varchar(11)  null comment '手机号',
-    `status`           int          null comment '状态，0-正常、1-删除',
-    gender           int          null comment '0-女、1-男',
+    `status`         int          null comment '状态：0-正常、1-删除',
+    gender           int          null comment '性别：0-女、1-男',
     create_time      varchar(31)  null comment '创建时间',
-    create_id        int          null comment '创建人ID',
+    create_id        int          null comment '创建人id',
     last_modify_time varchar(31)  null comment '最后修改时间',
-    last_modify_id   int          null comment '最后修改人ID',
+    last_modify_id   int          null comment '最后修改人id',
     last_login_time  varchar(31)  null comment '最后登录时间',
-    open_id          varchar(127) null,
-    err_num          int          null,
-    avatar           varchar(127) null,
-    config           varchar(511) null
+    err_num          int          null comment '密码错误次数',
+    avatar           varchar(127) null comment '头像地址',
+    config           varchar(511) null comment '个性化配置'
 ) comment '用户表';
 
 create table t_user_role
 (
     dbid    int auto_increment comment '主键' primary key,
-    user_id int null comment '用户ID',
-    role_id int null comment '角色ID',
+    user_id int null comment '用户id',
+    role_id int null comment '角色id',
     constraint t_user_role_dbid_uindex unique (dbid)
 ) comment '用户-角色关系表';
 
@@ -228,7 +227,7 @@ insert into t_menu (dbid, menu_code, menu_name, pid, sort, url, iconCls, type, c
 
 insert into t_role (dbid, role_name, create_time, create_id, `status`, last_modify_time, last_modify_id) values (1, '超级管理员', '2018-10-19 12:52:17', 1, 0, '2019-02-06 17:04:26', 1);
 insert into t_role (dbid, role_name, create_time, create_id, `status`, last_modify_time, last_modify_id) values (2, '普通用户', '2018-10-26 01:15:48', 1, 0, '2019-09-25 22:54:15', 1);
-insert into t_role (dbid, role_name, create_time, create_id, `status`, last_modify_time, last_modify_id) values (28, '测试角色', '2021-04-30 09:42:01', 1, 0, '2021-04-30 09:42:01', 1);
+insert into t_role (dbid, role_name, create_time, create_id, `status`, last_modify_time, last_modify_id) values (3, '测试角色', '2021-04-30 09:42:01', 1, 0, '2021-04-30 09:42:01', 1);
 
 insert into t_role_menu (dbid, role_id, menu_id) values (1, 1, 1);
 insert into t_role_menu (dbid, role_id, menu_id) values (2, 1, 2);
@@ -270,6 +269,6 @@ insert into t_role_menu (dbid, role_id, menu_id) values (37, 1, 37);
 
 insert into t_sys_dic (dbid, _key, _value, _profile, _desc) values (4, 'secKill', '0', null, null);
 
-insert into t_user (dbid, user_name, `password`, nick_name, age, email, phone, `status`, gender, create_time, create_id, last_modify_time, last_modify_id, last_login_time, open_id, err_num, avatar) values (1, 'admin', '18526bf18b5fbe2f1c4f4a6745b25201', 'admin', 27, '1234567@qq.com', '15752175217', 0, 1, '2020-10-15 10:01:28', 1, '2020-10-23 19:05:58', 1, '2021-12-21 11:01:36', null, 0, null);
+insert into t_user (dbid, user_name, `password`, nick_name, age, email, phone, `status`, gender, create_time, create_id, last_modify_time, last_modify_id, last_login_time, err_num, avatar) values (1, 'admin', '18526bf18b5fbe2f1c4f4a6745b25201', 'admin', 27, '1234567@qq.com', '15752175217', 0, 1, '2020-10-15 10:01:28', 1, '2020-10-23 19:05:58', 1, '2021-12-21 11:01:36', 0, null);
     
 insert into t_user_role (dbid, user_id, role_id) values (1, 1, 1);

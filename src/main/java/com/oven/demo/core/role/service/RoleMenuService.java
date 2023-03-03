@@ -22,9 +22,9 @@ public class RoleMenuService extends BaseService {
     private RoleMenuDao roleMenuDao;
 
     /**
-     * 通过角色ID查询
+     * 通过角色id查询
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
         List<RoleMenu> list = super.get(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID, roleId)); // 先读取缓存
@@ -41,10 +41,10 @@ public class RoleMenuService extends BaseService {
     }
 
     /**
-     * 通过角色ID和菜单ID查询
+     * 通过角色id和菜单id查询
      *
-     * @param roleId 角色ID
-     * @param menuId 菜单ID
+     * @param roleId 角色id
+     * @param menuId 菜单id
      */
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
         RoleMenu roleMenu = super.get(MessageFormat.format(RedisCacheKey.ROLEMENU_GET_BY_ROLEID_AND_MENUID, roleId, menuId)); // 先读取缓存
@@ -61,9 +61,9 @@ public class RoleMenuService extends BaseService {
     }
 
     /**
-     * 通过角色ID删除
+     * 通过角色id删除
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      */
     public void deleteByRoleId(Integer roleId) {
         roleMenuDao.deleteByRoleId(roleId);

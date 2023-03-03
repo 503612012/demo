@@ -23,22 +23,22 @@ public class Role implements Serializable {
     private Integer id;
 
     @Column(name = "role_name")
-    private String roleName;
+    private String roleName; // 角色名称
 
     @Column(name = "create_time", updatable = false)
-    private String createTime;
+    private String createTime; // 创建时间
 
     @Column(name = "create_id", updatable = false)
-    private Integer createId;
+    private Integer createId; // 创建人id
 
     @Column(name = "status")
-    private Integer status; // 状态，0-正常、1-删除
+    private Integer status; // 状态：0-正常、1-删除
 
     @Column(name = "last_modify_time")
-    private String lastModifyTime;
+    private String lastModifyTime; // 最后修改时间
 
     @Column(name = "last_modify_id")
-    private Integer lastModifyId;
+    private Integer lastModifyId; // 最后修改人id
 
     // 非数据库属性
     private String createName;

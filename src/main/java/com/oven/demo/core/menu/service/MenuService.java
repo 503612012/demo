@@ -38,7 +38,7 @@ public class MenuService extends BaseService {
     /**
      * 通过id获取
      *
-     * @param id 菜单ID
+     * @param id 菜单id
      */
     public Menu getById(Integer id) {
         Menu menu = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_ID, id)); // 先读取缓存
@@ -66,9 +66,9 @@ public class MenuService extends BaseService {
     }
 
     /**
-     * 根据用户ID获取该用户的目录树
+     * 根据用户id获取该用户的目录树
      *
-     * @param userId 用户ID
+     * @param userId 用户id
      */
     public List<Map<String, Object>> getMenuTreeByUserId(Integer userId) {
         List<Map<String, Object>> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId)); // 先读取缓存
@@ -90,8 +90,8 @@ public class MenuService extends BaseService {
     /**
      * 组装菜单
      *
-     * @param userId 用户ID
-     * @param list   所有菜单的ID（不区分菜单的类型，即该用户下所有拥有的权限）
+     * @param userId 用户id
+     * @param list   所有菜单的id（不区分菜单的类型，即该用户下所有拥有的权限）
      */
     private List<Map<String, Object>> installMenu(Integer userId, List<List<RoleMenu>> list) {
         List<Map<String, Object>> result = new ArrayList<>();
@@ -114,8 +114,8 @@ public class MenuService extends BaseService {
     /**
      * 获取某个用户授过权的菜单的子菜单
      *
-     * @param userId 用户ID
-     * @param pid    菜单ID
+     * @param userId 用户id
+     * @param pid    菜单id
      */
     private List<Menu> getByPidAndHasPermission(Integer userId, Integer pid) {
         List<Menu> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 先读取缓存
@@ -141,9 +141,9 @@ public class MenuService extends BaseService {
     }
 
     /**
-     * 通过用户ID获取该用户的所有权限编码
+     * 通过用户id获取该用户的所有权限编码
      *
-     * @param userId 用户ID
+     * @param userId 用户id
      */
     public List<String> getAllMenuCodeByUserId(Integer userId) {
         List<String> list = super.get(MessageFormat.format(RedisCacheKey.USER_MENU_CODES, userId)); // 先读取缓存
@@ -170,7 +170,7 @@ public class MenuService extends BaseService {
     }
 
     /**
-     * 通过父ID获取
+     * 通过父id获取
      */
     public List<Menu> getByPid(Integer pid) {
         List<Menu> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID, pid)); // 先读取缓存

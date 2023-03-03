@@ -58,9 +58,9 @@ public class RoleController extends BaseController<Role> {
     }
 
     /**
-     * 通过ID获取角色
+     * 通过id获取角色
      *
-     * @param id 角色ID
+     * @param id 角色id
      */
     @ResponseBody
     @RequestMapping("/getById")
@@ -69,7 +69,7 @@ public class RoleController extends BaseController<Role> {
         try {
             return super.success(roleService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取角色异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取角色异常", e);
         }
     }
 
@@ -143,7 +143,7 @@ public class RoleController extends BaseController<Role> {
     /**
      * 删除角色
      *
-     * @param id 角色ID
+     * @param id 角色id
      */
     @ResponseBody
     @RequestMapping("/delete")
@@ -169,7 +169,7 @@ public class RoleController extends BaseController<Role> {
     /**
      * 修改角色状态
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      * @param status 状态编码
      */
     @ResponseBody
@@ -203,9 +203,9 @@ public class RoleController extends BaseController<Role> {
     }
 
     /**
-     * 根据角色ID获取权限树
+     * 根据角色id获取权限树
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      */
     @ResponseBody
     @RequestMapping("/getRoleMenuTree")
@@ -214,15 +214,15 @@ public class RoleController extends BaseController<Role> {
         try {
             return super.success(roleService.getMenuTreeByRoleId(roleId));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色ID获取权限树异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色id获取权限树异常", e);
         }
     }
 
     /**
      * 设置角色权限
      *
-     * @param roleId  角色ID
-     * @param menuIds 菜单ID列表
+     * @param roleId  角色id
+     * @param menuIds 菜单id列表
      */
     @ResponseBody
     @AspectLog(title = "设置角色权限")

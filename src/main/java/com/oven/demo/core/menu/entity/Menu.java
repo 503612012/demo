@@ -23,40 +23,40 @@ public class Menu implements Serializable, Comparable<Menu> {
     private Integer id;
 
     @Column(name = "menu_code")
-    private String menuCode;
+    private String menuCode; // 菜单编码
 
     @Column(name = "menu_name")
-    private String menuName;
+    private String menuName; // 菜单名称
 
     @Column(name = "pid")
-    private Integer pid;
+    private Integer pid; // 父id
 
     @Column(name = "sort")
-    private Integer sort;
+    private Integer sort; // 排序值
 
     @Column(name = "url")
-    private String url;
+    private String url; // 链接
 
     @Column(name = "iconCls")
-    private String iconCls;
+    private String iconCls; // 图标
 
     @Column(name = "type")
-    private Integer type;
+    private Integer type; // 类型：1-目录、2-按钮
 
     @Column(name = "create_id", updatable = false)
-    private Integer createId;
+    private Integer createId; // 创建人id
 
     @Column(name = "create_time", updatable = false)
-    private String createTime;
+    private String createTime; // 创建时间
 
     @Column(name = "last_modify_id")
-    private Integer lastModifyId;
+    private Integer lastModifyId; // 最后修改人id
 
     @Column(name = "last_modify_time")
-    private String lastModifyTime;
+    private String lastModifyTime; // 最后修改时间
 
     @Column(name = "status")
-    private Integer status; // 状态，0-正常、1-删除
+    private Integer status; // 状态：0-正常、1-删除
 
     // 非数据库属性
     @Column(name = "title", insertable = false, updatable = false)

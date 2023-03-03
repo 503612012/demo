@@ -39,7 +39,7 @@ public class UserService extends BaseService {
     /**
      * 通过id获取
      *
-     * @param id 用户ID
+     * @param id 用户id
      */
     public User getById(Integer id) {
         User user = super.get(MessageFormat.format(RedisCacheKey.USER_GET_BY_ID, id)); // 先读取缓存
@@ -152,9 +152,9 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 通过用户ID获取角色列表
+     * 通过用户id获取角色列表
      *
-     * @param id 用户ID
+     * @param id 用户id
      */
     public List<JSONObject> getRoleByUserId(Integer id) {
         List<JSONObject> list = super.get(MessageFormat.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id)); // 先读取缓存
@@ -184,8 +184,8 @@ public class UserService extends BaseService {
     /**
      * 设置用户角色
      *
-     * @param userId  用户ID
-     * @param roleIds 角色ID列表
+     * @param userId  用户id
+     * @param roleIds 角色id列表
      */
     @Transactional(rollbackFor = Exception.class)
     public void setUserRole(Integer userId, String roleIds) throws Exception {

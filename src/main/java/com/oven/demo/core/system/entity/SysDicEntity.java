@@ -26,7 +26,7 @@ public class SysDicEntity {
     private String value;
 
     @Column(name = "_desc")
-    private String desc;
+    private String desc; // 描述信息
 
     @Column(name = "_profile")
     private String profile;

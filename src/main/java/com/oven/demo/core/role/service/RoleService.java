@@ -39,7 +39,7 @@ public class RoleService extends BaseService {
     /**
      * 通过id获取
      *
-     * @param id 角色ID
+     * @param id 角色id
      */
     public Role getById(Integer id) {
         Role role = super.get(MessageFormat.format(RedisCacheKey.ROLE_GET_BY_ID, id)); // 先读取缓存
@@ -146,7 +146,7 @@ public class RoleService extends BaseService {
     /**
      * 获取菜单目录树
      *
-     * @param id 角色ID
+     * @param id 角色id
      */
     public JSONArray getMenuTreeByRoleId(Integer id) {
         JSONArray result = new JSONArray();
@@ -205,8 +205,8 @@ public class RoleService extends BaseService {
     /**
      * 设置角色权限
      *
-     * @param roleId  角色ID
-     * @param menuIds 菜单ID列表
+     * @param roleId  角色id
+     * @param menuIds 菜单id列表
      */
     @Transactional(rollbackFor = Exception.class)
     public void setRoleMenu(Integer roleId, String menuIds) throws Exception {

@@ -44,9 +44,9 @@ public class SysDicController extends BaseController<SysDic> {
     }
 
     /**
-     * 通过ID获取数据字典
+     * 通过id获取数据字典
      *
-     * @param id 数据字典ID
+     * @param id 数据字典id
      */
     @ResponseBody
     @RequestMapping("/getById")
@@ -55,7 +55,7 @@ public class SysDicController extends BaseController<SysDic> {
         try {
             return super.success(sysDicService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取数据字典异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取数据字典异常", e);
         }
     }
 
@@ -118,7 +118,7 @@ public class SysDicController extends BaseController<SysDic> {
     /**
      * 删除数据字典
      *
-     * @param id 数据字典ID
+     * @param id 数据字典id
      */
     @ResponseBody
     @RequestMapping("/delete")

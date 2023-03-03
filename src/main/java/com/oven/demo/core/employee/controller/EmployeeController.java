@@ -53,20 +53,20 @@ public class EmployeeController extends BaseController<Employee> {
     }
 
     /**
-     * 通过ID获取员工
+     * 通过id获取员工
      *
-     * @param id 员工ID
+     * @param id 员工id
      */
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     @ApiImplicitParam(name = "id", value = "员工主键", required = true)
-    @ApiOperation(value = "通过ID获取员工", notes = "通过ID获取员工接口", httpMethod = AppConst.GET)
+    @ApiOperation(value = "通过id获取员工", notes = "通过id获取员工接口", httpMethod = AppConst.GET)
     public ResultInfo<Employee> getById(Integer id) throws MyException {
         try {
             return super.ok(employeeService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取员工异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取员工异常", e);
         }
     }
 
@@ -162,7 +162,7 @@ public class EmployeeController extends BaseController<Employee> {
     /**
      * 删除员工
      *
-     * @param id 员工ID
+     * @param id 员工id
      */
     @ResponseBody
     @AspectLog(title = "删除员工")
@@ -187,7 +187,7 @@ public class EmployeeController extends BaseController<Employee> {
     /**
      * 修改员工状态
      *
-     * @param employeeId 员工ID
+     * @param employeeId 员工id
      * @param status     状态编码
      */
     @ResponseBody

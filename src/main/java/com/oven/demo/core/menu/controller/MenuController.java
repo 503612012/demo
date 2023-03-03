@@ -74,7 +74,7 @@ public class MenuController extends BaseController<Menu> {
     /**
      * 修改菜单状态
      *
-     * @param menuId 菜单ID
+     * @param menuId 菜单id
      * @param status 状态编码
      */
     @ResponseBody

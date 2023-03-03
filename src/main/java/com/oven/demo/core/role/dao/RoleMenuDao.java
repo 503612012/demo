@@ -21,28 +21,28 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 通过角色ID查询
+     * 通过角色id查询
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
         return super.getAll(ConditionAndParams.build("and role_id = ?", roleId));
     }
 
     /**
-     * 通过角色ID和菜单ID查询
+     * 通过角色id和菜单id查询
      *
-     * @param roleId 角色ID
-     * @param menuId 菜单ID
+     * @param roleId 角色id
+     * @param menuId 菜单id
      */
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
         return super.getOne(ConditionAndParams.build("and role_id = ? and menu_id = ?", roleId, menuId));
     }
 
     /**
-     * 通过角色ID删除
+     * 通过角色id删除
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      */
     public void deleteByRoleId(Integer roleId) {
         String sql = "delete from t_role_menu where role_id = ?";

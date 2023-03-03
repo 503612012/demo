@@ -39,9 +39,9 @@ public class LogController extends BaseController<Log> {
     }
 
     /**
-     * 通过ID获取日志
+     * 通过id获取日志
      *
-     * @param id 日志ID
+     * @param id 日志id
      */
     @ResponseBody
     @RequestMapping("/getById")
@@ -50,7 +50,7 @@ public class LogController extends BaseController<Log> {
         try {
             return super.success(logService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取日志异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取日志异常", e);
         }
     }
 

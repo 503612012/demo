@@ -20,7 +20,7 @@ import java.util.Properties;
 public class PropertyConfig {
 
     public static final String PRO_PROFILE = "pro"; // 生产环境
-    private static final String DEV_PROFILE = "dev"; // 开发环境
+    public static final String DEV_PROFILE = "dev"; // 开发环境
     private static final String PROFILE = "@profile@"; // 由于IDEA开发环境无法进行变量替换，故这里识别到占位符时，默认为开发环境
 
     /**

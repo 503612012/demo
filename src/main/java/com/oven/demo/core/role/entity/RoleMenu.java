@@ -23,9 +23,9 @@ public class RoleMenu implements Serializable {
     private Integer id;
 
     @Column(name = "role_id")
-    private Integer roleId;
+    private Integer roleId; // 角色id
 
     @Column(name = "menu_id")
-    private Integer menuId;
+    private Integer menuId; // 菜单id
 
 }

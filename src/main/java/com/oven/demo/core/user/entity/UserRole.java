@@ -23,9 +23,9 @@ public class UserRole implements Serializable {
     private Integer id;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Integer userId; // 用户id
 
     @Column(name = "role_id")
-    private Integer roleId;
+    private Integer roleId; // 角色id
 
 }

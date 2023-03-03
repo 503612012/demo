@@ -5,6 +5,7 @@ import com.oven.demo.common.enumerate.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,9 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 public class Knife4jConfig {
+
+    @Value("${vcas.profile}")
+    private String profile;
 
     private ApiInfo apiInfo() {
         String version = getVersion();
@@ -76,10 +80,15 @@ public class Knife4jConfig {
 
     public String getVersion() {
         try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            String path = System.getProperty("user.dir") + File.separator + "pom.xml";
-            Model model = reader.read(new FileReader(path));
-            return model.getVersion();
+            if (PropertyConfig.DEV_PROFILE.equals(profile)) {
+                MavenXpp3Reader reader = new MavenXpp3Reader();
+                String path = System.getProperty("user.dir") + File.separator + "pom.xml";
+                Model model = reader.read(new FileReader(path));
+                return model.getVersion();
+            }
+            String version = this.getClass().getPackage().getImplementationVersion();
+            log.info("获取到的version是：" + version);
+            return version;
         } catch (Exception e) {
             log.error("获取maven版本号异常：", e);
             return null;

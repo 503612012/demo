@@ -56,16 +56,16 @@ public class Employee {
     private String createTime; // 创建时间
 
     @Column(name = "create_id", updatable = false)
-    @ApiModelProperty(value = "创建人ID", dataType = "int")
-    private Integer createId; // 创建人ID
+    @ApiModelProperty(value = "创建人id", dataType = "int")
+    private Integer createId; // 创建人id
 
     @Column(name = "last_modify_time")
     @ApiModelProperty(value = "最后修改时间", dataType = "string")
     private String lastModifyTime; // 最后修改时间
 
     @Column(name = "last_modify_id")
-    @ApiModelProperty(value = "最后修改人ID", dataType = "int")
-    private Integer lastModifyId; // 最后修改人ID
+    @ApiModelProperty(value = "最后修改人id", dataType = "int")
+    private Integer lastModifyId; // 最后修改人id
 
     // 非数据库属性
     @ApiModelProperty(value = "创建人", dataType = "string")

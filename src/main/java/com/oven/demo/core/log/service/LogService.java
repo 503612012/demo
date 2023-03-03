@@ -26,7 +26,7 @@ public class LogService extends BaseService {
     /**
      * 通过id获取
      *
-     * @param id 日志ID
+     * @param id 日志id
      */
     public Log getById(Integer id) {
         Log log = super.get(MessageFormat.format(RedisCacheKey.LOG_GET_BY_ID, id)); // 先读取缓存

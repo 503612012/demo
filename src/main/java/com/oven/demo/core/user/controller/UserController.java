@@ -66,9 +66,9 @@ public class UserController extends BaseController<User> {
     }
 
     /**
-     * 通过ID获取用户
+     * 通过id获取用户
      *
-     * @param id 用户ID
+     * @param id 用户id
      */
     @ResponseBody
     @RequestMapping("/getById")
@@ -77,7 +77,7 @@ public class UserController extends BaseController<User> {
         try {
             return super.success(userService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过ID获取用户异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取用户异常", e);
         }
     }
 
@@ -202,7 +202,7 @@ public class UserController extends BaseController<User> {
     /**
      * 去到用户更新页面
      *
-     * @param id 用户ID
+     * @param id 用户id
      */
     @RequestMapping("/update")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
@@ -239,7 +239,7 @@ public class UserController extends BaseController<User> {
     /**
      * 删除用户
      *
-     * @param id 用户ID
+     * @param id 用户id
      */
     @ResponseBody
     @RequestMapping("/delete")
@@ -261,7 +261,7 @@ public class UserController extends BaseController<User> {
     /**
      * 修改用户状态
      *
-     * @param userId 用户ID
+     * @param userId 用户id
      * @param status 状态编码
      */
     @ResponseBody
@@ -284,9 +284,9 @@ public class UserController extends BaseController<User> {
     }
 
     /**
-     * 通过用户ID获取角色列表
+     * 通过用户id获取角色列表
      *
-     * @param id 用户ID
+     * @param id 用户id
      */
     @ResponseBody
     @RequestMapping("/getRoleByUserId")
@@ -296,15 +296,15 @@ public class UserController extends BaseController<User> {
             List<JSONObject> list = userService.getRoleByUserId(id);
             return super.success(list);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过用户ID获取角色列表异常", e);
+            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过用户id获取角色列表异常", e);
         }
     }
 
     /**
      * 设置用户角色
      *
-     * @param userId  用户ID
-     * @param roleIds 角色ID列表
+     * @param userId  用户id
+     * @param roleIds 角色id列表
      */
     @ResponseBody
     @AspectLog(title = "设置用户角色")

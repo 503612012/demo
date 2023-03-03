@@ -29,30 +29,30 @@ public class Log implements Serializable {
     private Integer id;
 
     @Column(name = "title")
-    private String title;
+    private String title; // 标题
 
     @Column(name = "request")
-    private String request;
+    private String request; // 内容
 
     @Column(name = "response")
-    private String response;
+    private String response; // 请求返回
 
     @Column(name = "request_uri")
-    private String requestUri;
+    private String requestUri; // 请求uri
 
     @Column(name = "request_method")
-    private String requestMethod;
+    private String requestMethod; // 请求方法
 
     @Column(name = "operator_id")
-    private Integer operatorId;
+    private Integer operatorId; // 操作人id
 
     @Column(name = "operator_name")
-    private String operatorName;
+    private String operatorName; // 操作人姓名
 
     @Column(name = "operator_time")
-    private String operatorTime;
+    private String operatorTime; // 操作时间
 
     @Column(name = "operator_ip")
-    private String operatorIp;
+    private String operatorIp; // 操作人ip地址
 
 }
