@@ -36,7 +36,7 @@ import java.util.List;
 @EnableSwagger2
 public class Knife4jConfig {
 
-    @Value("${vcas.profile}")
+    @Value("${demo.profile}")
     private String profile;
 
     private ApiInfo apiInfo() {
