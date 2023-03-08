@@ -1,7 +1,7 @@
 #!/bin/bash
 . ./path.sh
 echo "begin build demo image..."
-docker build -t demo:1.0.0 ./
+docker build -t demo:@version@ ./
 echo "build demo image finish..."
 
 flag=$(cat /var/spool/cron/root | grep demo | grep -v grep | awk '{print $6}')

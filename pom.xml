@@ -515,7 +515,7 @@
                 </executions>
             </plugin>
 
-            <!-- 打包后赋予target目录下启动脚本和停止脚本执行权限 -->
+            <!-- 整理release文件夹 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -570,6 +570,18 @@
                                 <echo message="start copy publicCerts.keystore to target folder"/>
                                 <copy file="src/main/release/license/publicCerts.keystore" tofile="${project.build.directory}/license/publicCerts.keystore"/>
                                 <echo message="finish copy publicCerts.keystore"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>version</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}"/>
                             </target>
                         </configuration>
                     </execution>
