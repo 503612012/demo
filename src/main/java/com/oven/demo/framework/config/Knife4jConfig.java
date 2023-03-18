@@ -45,7 +45,7 @@ public class Knife4jConfig {
                 .title("财务管理系统接口文档")
                 .description("财务管理系统接口文档")
                 .termsOfServiceUrl("http://localhost:8080")
-                .contact(new Contact("Oven", "http://cloveaire.com", "503612012@qq.com"))
+                .contact(new Contact("Oven", "http://qqxki.com", "503612012@qq.com"))
                 .version(version)
                 .build();
     }

@@ -228,7 +228,7 @@
         <repository>
             <id>nexus-oven</id>
             <name>nexus-oven</name>
-            <url>http://maven.cloveaire.com/nexus/content/groups/public/</url>
+            <url>http://maven.qqxki.com/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
@@ -236,7 +236,7 @@
         <pluginRepository>
             <id>nexus-oven</id>
             <name>nexus-oven</name>
-            <url>http://maven.cloveaire.com/nexus/content/groups/public/</url>
+            <url>http://maven.qqxki.com/nexus/content/groups/public/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
