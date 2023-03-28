@@ -24,8 +24,6 @@ public interface AppConst {
     String SHIRO_COOKIE_KEY = APP_NAME + "shiro_cookie_key";
     String SHIRO_CACHE_KEY_PROFIX = APP_NAME;
 
-    String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-
     String CAPTCHA = "_captcha";
     String PERCENTAGE_MARK = "\\\\%";
 
