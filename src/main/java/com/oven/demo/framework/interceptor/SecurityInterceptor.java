@@ -39,6 +39,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     private static final String GET_GIF_CODE = "/getGifCode";
     private static final String DO_LOGIN = "/doLogin";
+    private static final String VERSION = "/version";
     private static final String ERROR = "/error";
     private static final String LOGIN = "/login";
     private static final String ERR = "/err";
@@ -157,6 +158,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
      */
     private boolean isExcludedUrls(String servletPath, HttpServletResponse resp) throws IOException {
         if (servletPath.startsWith(LOGIN) ||
+                VERSION.equals(servletPath) ||
                 servletPath.startsWith(DO_LOGIN) ||
                 ERR.equals(servletPath) ||
                 servletPath.startsWith(GET_GIF_CODE)) {

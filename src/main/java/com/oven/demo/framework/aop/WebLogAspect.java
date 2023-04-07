@@ -40,6 +40,9 @@ public class WebLogAspect {
             return;
         }
         HttpServletRequest request = attributes.getRequest();
+        if ("/version".equals(request.getRequestURI())) {
+            return;
+        }
         // 记录请求内容
         log.info("请求地址：" + request.getRequestURL().toString());
         log.info("请求方法：" + request.getMethod());
