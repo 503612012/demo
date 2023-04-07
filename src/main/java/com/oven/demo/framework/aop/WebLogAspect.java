@@ -2,6 +2,7 @@ package com.oven.demo.framework.aop;
 
 import com.oven.basic.common.requestLog.RequestLog;
 import com.oven.basic.common.util.DateUtils;
+import com.oven.basic.common.util.IPUtils;
 import com.oven.basic.common.util.ParametersUtils;
 import com.oven.basic.common.util.RequestLogQueueUtils;
 import com.oven.basic.common.util.ResultInfo;
@@ -44,14 +45,15 @@ public class WebLogAspect {
             return;
         }
         // 记录请求内容
-        log.info("请求地址：" + request.getRequestURL().toString());
-        log.info("请求方法：" + request.getMethod());
-        log.info("请求者IP：" + request.getRemoteAddr());
-        log.info("请求参数：" + ParametersUtils.getParameters(request));
+        String requestIp = IPUtils.getClientIPAddr(request);
+        log.info("请求地址：{}", request.getRequestURL().toString());
+        log.info("请求方法：{}", request.getMethod());
+        log.info("请求者IP：{}", requestIp);
+        log.info("请求参数：{}", ParametersUtils.getParameters(request));
 
         // 放入日志队列，保存到数据库
         RequestLog requestLog = new RequestLog();
-        requestLog.setRequestIp(request.getRemoteAddr());
+        requestLog.setRequestIp(requestIp);
         requestLog.setRequestMethod(request.getMethod());
         requestLog.setRequestParam(ParametersUtils.getParameters(request));
         requestLog.setRequestTime(DateUtils.getCurrentTime());
@@ -70,7 +72,7 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) {
         // 请求返回的内容
         if (ret instanceof ResultInfo) {
-            log.info("返回结果：" + ((ResultInfo) ret).getCode().toString());
+            log.info("返回结果：{}", ((ResultInfo<?>) ret).getCode().toString());
         }
     }
 
