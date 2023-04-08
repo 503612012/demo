@@ -11,7 +11,7 @@ ENV CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 
 ADD simsun.ttf /usr/local/jdk1.8.0_181/jre/lib/fonts
 
-RUN mkdir -p /home/demo/
+RUN mkdir -p /home/demo/logs
 ADD lib /home/demo/lib
 ADD resources /home/demo/resources
 ADD demo-1.0.0.jar /home/demo
@@ -27,4 +27,4 @@ RUN yum -y install kde-l10n-Chinese telnet && yum clean all && localedef -c -f U
 ENV LC_ALL "zh_CN.UTF-8"
 
 WORKDIR /home/demo/
-CMD ["sh", "app.sh"]
+CMD /home/demo/app.sh && tail -f /home/demo/logs/demo.log

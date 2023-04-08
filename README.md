@@ -30,11 +30,15 @@
 
 > 修改`application-pro.properties`文件中的数据源配置
 
-##### 2) 授权脚本文件
+##### 2) 修改配置文件
+
+> 修改`demo.sql`文件中的redis配置
+
+##### 3) 授权脚本文件
 
 > chmod u+x *.sh
 
-##### 3) 授权二进制文件
+##### 4) 授权二进制文件
 
 > chmod u+x license/key
 >

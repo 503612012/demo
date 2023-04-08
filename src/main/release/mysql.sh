@@ -41,7 +41,7 @@ openssl enc -des-cbc -in /tmp/.pwd.tmp -out ./pwd -K 7844713234413263 -iv 386a59
 rm -rf /tmp/.pwd.tmp
 
 echo "mysql container starting..."
-docker run -d -p 3309:3306 --name mysql-demo -u root -v ${APP_HOME}/demo/data/backup:/home/backup -v ${mysql_mount_dir}:/var/lib/mysql -v /etc/localtime:/etc/localtime --restart=always -e MYSQL_ROOT_PASSWORD=${passwd} mysql:8 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1
+docker run -d -p 3309:3306 --name mysql-demo -u root -v ${APP_HOME}/demo/data/backup:/home/backup -v ${mysql_mount_dir}:/var/lib/mysql -v /etc/localtime:/etc/localtime --restart=always -e MYSQL_ROOT_PASSWORD=${passwd} mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1
 echo "mysql container started"
 
 if [ "$is_first_start" = false ]; then
