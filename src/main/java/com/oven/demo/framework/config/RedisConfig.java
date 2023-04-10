@@ -1,6 +1,5 @@
 package com.oven.demo.framework.config;
 
-import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -24,12 +23,11 @@ public class RedisConfig {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory); // 创建redis连接
 
-        GenericFastJsonRedisSerializer jsonRedisSerializer = new GenericFastJsonRedisSerializer(); // 序列化方式
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(stringRedisSerializer); // key的序列化方式是string类型
-        redisTemplate.setValueSerializer(jsonRedisSerializer); // value的序列化方式是 json
+        redisTemplate.setValueSerializer(new RedisObjectSerializer()); // value的序列化方式
         redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        redisTemplate.setHashValueSerializer(jsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(new RedisObjectSerializer());
 
         return redisTemplate;
     }
