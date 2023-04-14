@@ -319,6 +319,7 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
+                    <propertyExpansion>maxMethodLength=120</propertyExpansion>
                 </configuration>
                 <executions>
                     <execution>
