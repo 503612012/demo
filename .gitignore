@@ -1,8 +1,41 @@
-/.idea/*
 !/.idea/icon.svg
 !/.idea/icon.png
 
-/target/
-/.git/
-/.DS_Store
-/demo.iml
+# Maven target directory
+target/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Gradle files
+.gradle/
+build/
+
+# Logs
+log/
+logs/
+
+# OS generated files
+.DS_Store
+
+# Compiled class file
+*.class
+
+# Spring boot devtools
+.restart
+
+# Git
+.git
+
+# misc
+*.orig
+*.bak
+*.tmp
