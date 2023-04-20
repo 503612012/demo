@@ -1,6 +1,6 @@
 FROM centos:7
 MAINTAINER Oven <503612012@qq.com>
-LABEL Description="demo powered by oven" Version="1.0"
+LABEL Description="demo powered by oven" Version="@version@"
 
 RUN mkdir -p /usr/local/
 ADD jdk-8u341-linux-x64.tar.gz /usr/local/
