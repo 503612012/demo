@@ -13,7 +13,7 @@
 | backup                     | 数据库备份脚本   |
 | build.sh                   | 镜像构建脚本    |
 | Dockerfile                 | 镜像构建文件    |
-| jdk-8u181-linux-x64.tar.gz | jdk安装包    |
+| jdk-8u341-linux-x64.tar.gz | jdk安装包    |
 | mysql.sh                   | 数据库安装脚本   |
 | path.sh                    | 项目部署根路径   |
 | nginx.tar.gz               | nginx     |

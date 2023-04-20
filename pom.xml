@@ -553,9 +553,9 @@
                                 <echo message="start copy demo.sql to target folder"/>
                                 <copy file="src/main/release/demo.sql" tofile="${project.build.directory}/demo.sql"/>
                                 <echo message="finish copy demo.sql"/>
-                                <echo message="start copy jdk-8u181-linux-x64.tar.gz to target folder"/>
-                                <copy file="src/main/release/jdk-8u181-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u181-linux-x64.tar.gz"/>
-                                <echo message="finish copy jdk-8u181-linux-x64.tar.gz"/>
+                                <echo message="start copy jdk-8u341-linux-x64.tar.gz to target folder"/>
+                                <copy file="src/main/release/jdk-8u341-linux-x64.tar.gz" tofile="${project.build.directory}/jdk-8u341-linux-x64.tar.gz"/>
+                                <echo message="finish copy jdk-8u341-linux-x64.tar.gz"/>
                                 <echo message="start copy simsun.ttf to target folder"/>
                                 <copy file="src/main/release/simsun.ttf" tofile="${project.build.directory}/simsun.ttf"/>
                                 <echo message="finish copy simsun.ttf"/>
@@ -582,7 +582,9 @@
                         </goals>
                         <configuration>
                             <target>
+                                <replace file="${project.build.directory}/run.sh" token="@version@" value="${project.version}"/>
                                 <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}"/>
+                                <replace file="${project.build.directory}/Dockerfile" token="@version@" value="${project.version}"/>
                             </target>
                         </configuration>
                     </execution>

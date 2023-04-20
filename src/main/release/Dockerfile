@@ -3,18 +3,18 @@ MAINTAINER Oven <503612012@qq.com>
 LABEL Description="demo powered by oven" Version="1.0"
 
 RUN mkdir -p /usr/local/
-ADD jdk-8u181-linux-x64.tar.gz /usr/local/
-ENV JAVA_HOME=/usr/local/jdk1.8.0_181
-ENV JAVA_BIN=/usr/local/jdk1.8.0_181/bin
+ADD jdk-8u341-linux-x64.tar.gz /usr/local/
+ENV JAVA_HOME=/usr/local/jdk1.8.0_341
+ENV JAVA_BIN=/usr/local/jdk1.8.0_341/bin
 ENV PATH=$PATH:$JAVA_HOME/bin
 ENV CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 
-ADD simsun.ttf /usr/local/jdk1.8.0_181/jre/lib/fonts
+ADD simsun.ttf /usr/local/jdk1.8.0_341/jre/lib/fonts
 
 RUN mkdir -p /home/demo/logs
 ADD lib /home/demo/lib
 ADD resources /home/demo/resources
-ADD demo-1.0.0.jar /home/demo
+ADD demo-@version@.jar /home/demo
 ADD start.sh /home/demo
 RUN chmod +x /home/demo/start.sh
 ADD stop.sh /home/demo
