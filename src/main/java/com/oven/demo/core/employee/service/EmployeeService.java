@@ -117,7 +117,7 @@ public class EmployeeService extends BaseService {
     /**
      * 获取所有员工
      */
-    public Object getAll() {
+    public List<Employee> getAll() {
         List<Employee> list = super.get(RedisCacheKey.EMPLOYEE_GET_ALL); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {

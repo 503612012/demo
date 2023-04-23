@@ -1,7 +1,8 @@
 package com.oven.demo.core.role.controller;
 
-import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.LayuiPager;
+import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
@@ -37,7 +38,7 @@ import java.util.List;
 @ApiIgnore
 @Controller
 @RequestMapping("/role")
-public class RoleController extends BaseController<Role> {
+public class RoleController {
 
     @Resource
     private RoleService roleService;
@@ -65,9 +66,9 @@ public class RoleController extends BaseController<Role> {
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
-    public Object getById(Integer id) throws MyException {
+    public ResultInfo<Object> getById(Integer id) throws MyException {
         try {
-            return super.success(roleService.getById(id));
+            return Result.success(roleService.getById(id));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取角色异常", e);
         }
@@ -111,10 +112,10 @@ public class RoleController extends BaseController<Role> {
     @AspectLog(title = "添加角色")
     @RequiresPermissions(PermissionCode.ROLE_INSERT)
     @Limit(key = LimitKey.ROLE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object save(Role role) throws MyException {
+    public ResultInfo<Object> save(Role role) throws MyException {
         try {
             roleService.save(role);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加角色异常", e);
         }
@@ -128,13 +129,13 @@ public class RoleController extends BaseController<Role> {
     @AspectLog(title = "修改角色")
     @RequiresPermissions(PermissionCode.ROLE_UPDATE)
     @Limit(key = LimitKey.ROLE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object update(Role role) throws MyException {
+    public ResultInfo<Object> update(Role role) throws MyException {
         try {
             if (role.getId() == 1 || role.getId() == 2) {
-                return super.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
+                return Result.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
             }
             roleService.update(role);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色异常", e);
         }
@@ -150,17 +151,17 @@ public class RoleController extends BaseController<Role> {
     @AspectLog(title = "删除角色")
     @RequiresPermissions(PermissionCode.ROLE_DELETE)
     @Limit(key = LimitKey.ROLE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object delete(Integer id) throws MyException {
+    public ResultInfo<Object> delete(Integer id) throws MyException {
         try {
             if (id == 1 || id == 2) {
-                return super.fail(ResultEnum.CAN_NOT_DELETE_ROLE.getCode(), ResultEnum.CAN_NOT_DELETE_ROLE.getValue());
+                return Result.fail(ResultEnum.CAN_NOT_DELETE_ROLE.getCode(), ResultEnum.CAN_NOT_DELETE_ROLE.getValue());
             }
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
             if (userRoles != null && userRoles.size() > 0) {
-                return super.fail(400, "该角色被其他用户引用，禁止删除！");
+                return Result.fail(400, "该角色被其他用户引用，禁止删除！");
             }
             roleService.delete(id);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除角色异常", e);
         }
@@ -177,15 +178,15 @@ public class RoleController extends BaseController<Role> {
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.ROLE_SETSTATUS)
     @Limit(key = LimitKey.ROLE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object updateStatus(Integer roleId, Integer status) throws MyException {
+    public ResultInfo<Object> updateStatus(Integer roleId, Integer status) throws MyException {
         try {
             if (roleId == 1 || roleId == 2) {
-                return super.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
+                return Result.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
             }
             Role role = roleService.getById(roleId);
             role.setStatus(status);
             roleService.update(role);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色状态异常", e);
         }
@@ -210,9 +211,9 @@ public class RoleController extends BaseController<Role> {
     @ResponseBody
     @RequestMapping("/getRoleMenuTree")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
-    public Object getRoleMenuTree(Integer roleId) throws MyException {
+    public ResultInfo<Object> getRoleMenuTree(Integer roleId) throws MyException {
         try {
-            return super.success(roleService.getMenuTreeByRoleId(roleId));
+            return Result.success(roleService.getMenuTreeByRoleId(roleId));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色id获取权限树异常", e);
         }
@@ -229,16 +230,16 @@ public class RoleController extends BaseController<Role> {
     @RequestMapping("/setRoleMenu")
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
     @Limit(key = LimitKey.ROLE_SET_ROLE_MENU_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
+    public ResultInfo<Object> setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             // if (roleId == 1 || roleId == 2) {
-            //     return super.fail(ResultEnum.CAN_NOT_SET_MENU.getCode(), ResultEnum.CAN_NOT_SET_MENU.getValue());
+            //     return Result.fail(ResultEnum.CAN_NOT_SET_MENU.getCode(), ResultEnum.CAN_NOT_SET_MENU.getValue());
             // }
             roleService.setRoleMenu(roleId, menuIds);
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
-            return super.success(ResultEnum.UPDATE_ERROR.getValue());
+            return Result.success(ResultEnum.UPDATE_ERROR.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置角色权限异常", e);
         }

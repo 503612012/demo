@@ -206,7 +206,7 @@ public class UserService extends BaseService {
     /**
      * 获取所有用户
      */
-    public Object getAll() {
+    public List<User> getAll() {
         List<User> list = super.get(RedisCacheKey.USER_GET_ALL); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {

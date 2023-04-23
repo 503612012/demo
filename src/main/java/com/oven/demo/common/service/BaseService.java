@@ -30,6 +30,9 @@ public class BaseService {
         cacheService.set(key, obj);
     }
 
+    /**
+     * 移除缓存
+     */
     public void remove(String key) {
         cacheService.remove(key);
     }

@@ -1,7 +1,8 @@
 package com.oven.demo.core.log.controller;
 
-import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.LayuiPager;
+import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.log.entity.Log;
@@ -24,7 +25,7 @@ import java.util.List;
 @ApiIgnore
 @Controller
 @RequestMapping("/log")
-public class LogController extends BaseController<Log> {
+public class LogController {
 
     @Resource
     private LogService logService;
@@ -46,9 +47,9 @@ public class LogController extends BaseController<Log> {
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
-    public Object getById(Integer id) throws MyException {
+    public ResultInfo<Object> getById(Integer id) throws MyException {
         try {
-            return super.success(logService.getById(id));
+            return Result.success(logService.getById(id));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取日志异常", e);
         }

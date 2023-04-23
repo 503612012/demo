@@ -1,6 +1,6 @@
 package com.oven.demo.core.employee.controller;
 
-import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.LayuiPager;
 import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.AppConst;
@@ -35,7 +35,7 @@ import java.util.List;
 @Controller
 @Api(tags = "员工控制器")
 @RequestMapping("/employee")
-public class EmployeeController extends BaseController<Employee> {
+public class EmployeeController {
 
     @Resource
     private UserService userService;
@@ -64,7 +64,7 @@ public class EmployeeController extends BaseController<Employee> {
     @ApiOperation(value = "通过id获取员工", notes = "通过id获取员工接口", httpMethod = AppConst.GET)
     public ResultInfo<Employee> getById(Integer id) throws MyException {
         try {
-            return super.ok(employeeService.getById(id));
+            return Result.success(employeeService.getById(id));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取员工异常", e);
         }
@@ -126,7 +126,7 @@ public class EmployeeController extends BaseController<Employee> {
     public ResultInfo<Object> save(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.save(employee);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加员工异常", e);
         }
@@ -153,7 +153,7 @@ public class EmployeeController extends BaseController<Employee> {
     public ResultInfo<Object> update(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.update(employee);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工异常", e);
         }
@@ -175,9 +175,9 @@ public class EmployeeController extends BaseController<Employee> {
         try {
             boolean result = employeeService.delete(id);
             if (result) {
-                return super.success(ResultEnum.SUCCESS.getValue());
+                return Result.success(ResultEnum.SUCCESS.getValue());
             } else {
-                return super.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
+                return Result.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
         } catch (Exception e) {
             throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除员工异常", e);
@@ -205,7 +205,7 @@ public class EmployeeController extends BaseController<Employee> {
             Employee employee = employeeService.getById(employeeId);
             employee.setStatus(status);
             employeeService.update(employee);
-            return super.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
             throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工状态异常", e);
         }
@@ -220,7 +220,7 @@ public class EmployeeController extends BaseController<Employee> {
     @ApiOperation(value = "获取所有员工", notes = "获取所有员工接口", httpMethod = AppConst.GET)
     public ResultInfo<Object> getAll() throws MyException {
         try {
-            return super.success(employeeService.getAll());
+            return Result.success(employeeService.getAll());
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有员工异常", e);
         }
@@ -236,7 +236,7 @@ public class EmployeeController extends BaseController<Employee> {
     @ApiOperation(value = "获取一个员工的时薪", notes = "获取一个员工的时薪接口", httpMethod = AppConst.GET)
     public ResultInfo<Object> getHourSalaryByEmployeeId(Integer employeeId) throws MyException {
         try {
-            return super.success(employeeService.getHourSalaryByEmployeeId(employeeId));
+            return Result.success(employeeService.getHourSalaryByEmployeeId(employeeId));
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取一个员工的时薪异常", e);
         }

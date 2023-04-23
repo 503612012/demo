@@ -1,10 +1,11 @@
 package com.oven.demo.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.DateUtils;
 import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.IPUtils;
+import com.oven.basic.common.util.ResultInfo;
 import com.oven.basic.common.vcode.Captcha;
 import com.oven.basic.common.vcode.GifCaptcha;
 import com.oven.demo.common.constant.AppConst;
@@ -58,7 +59,7 @@ import java.util.UUID;
 @Slf4j
 @ApiIgnore
 @Controller
-public class SystemController extends BaseController<Object> {
+public class SystemController {
 
     @Resource
     private LogService logService;
@@ -76,12 +77,12 @@ public class SystemController extends BaseController<Object> {
      */
     @ResponseBody
     @RequestMapping("/secKill")
-    public Object secKill() {
+    public ResultInfo<Object> secKill() {
         try {
             sysDicService.secKill();
-            return super.success("秒杀成功！");
+            return Result.success("秒杀成功！");
         } catch (Exception e) {
-            return super.fail(400, "秒杀接口异常！");
+            return Result.fail(400, "秒杀接口异常！");
         }
     }
 
@@ -164,7 +165,7 @@ public class SystemController extends BaseController<Object> {
     @AspectLog(title = "强制退出")
     @RequestMapping("/forceLogout")
     @RequiresPermissions(PermissionCode.FORCE_LOGOUT)
-    public Object forceLogout(String userName, HttpServletRequest req) throws MyException {
+    public ResultInfo<Object> forceLogout(String userName, HttpServletRequest req) throws MyException {
         try {
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked") Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
@@ -174,7 +175,7 @@ public class SystemController extends BaseController<Object> {
                 obj.put(AppConst.SESSION, null);
                 loginedMap.put(userName, obj);
             }
-            return super.success("退出成功");
+            return Result.success("退出成功");
         } catch (Exception e) {
             throw new MyException(ResultEnum.FORCE_LOGOUT_ERROR.getCode(), ResultEnum.FORCE_LOGOUT_ERROR.getValue(), "强制退出异常", e);
         }
@@ -204,15 +205,15 @@ public class SystemController extends BaseController<Object> {
      */
     @ResponseBody
     @RequestMapping("/doLogin")
-    public Object doLogin(String userName, String pwd, String inputCode, boolean rememberMe, HttpServletRequest req) throws MyException {
+    public ResultInfo<Object> doLogin(String userName, String pwd, String inputCode, boolean rememberMe, HttpServletRequest req) throws MyException {
         try {
             // 校验验证码
             String code = (String) req.getSession().getAttribute(AppConst.CAPTCHA);
             if (StringUtils.isEmpty(inputCode)) {
-                return super.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
+                return Result.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
             } else {
                 if (!inputCode.equalsIgnoreCase(code)) {
-                    return super.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
+                    return Result.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
                 }
             }
 
@@ -224,7 +225,7 @@ public class SystemController extends BaseController<Object> {
             User userInDb = userService.getByUserName(userName);
             if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return super.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
+                return Result.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
             }
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
@@ -259,23 +260,23 @@ public class SystemController extends BaseController<Object> {
                 req.getSession().setAttribute("menuPosition", StringUtils.isEmpty(menuPosition) ? "left" : menuPosition);
             }
 
-            return super.success("登录成功！");
+            return Result.success("登录成功！");
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return super.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
+                return Result.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
             } else if (e instanceof IncorrectCredentialsException) {
                 if (userInDb.getErrNum() >= 5) {
                     logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                    return super.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
+                    return Result.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
                 }
                 userService.logPasswordWrong(userInDb.getId());
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return super.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
+                return Result.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
             } else if (e instanceof LockedAccountException) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return super.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
+                return Result.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
                 throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
             }
@@ -287,13 +288,13 @@ public class SystemController extends BaseController<Object> {
      */
     @ResponseBody
     @RequestMapping("/getMenus")
-    public Object getMenus(HttpServletRequest req) throws MyException {
+    public ResultInfo<Object> getMenus(HttpServletRequest req) throws MyException {
         try {
             List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(CommonUtils.getCurrentUser().getId());
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
-            return super.success(menus);
+            return Result.success(menus);
         } catch (Exception e) {
             throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
         }
@@ -304,7 +305,7 @@ public class SystemController extends BaseController<Object> {
      */
     @ResponseBody
     @RequestMapping("/getMainPageData")
-    public Object getMainPageData() throws MyException {
+    public ResultInfo<Object> getMainPageData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
             Integer totalEmployee = employeeService.getTotalNum(new Employee());
@@ -312,7 +313,7 @@ public class SystemController extends BaseController<Object> {
             obj.put("totalEmployee", totalEmployee);
             obj.put("totalWorksite", "0");
             obj.put("totalWorkhour", "0.00");
-            return super.success(obj);
+            return Result.success(obj);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页数据异常", e);
         }
@@ -348,12 +349,12 @@ public class SystemController extends BaseController<Object> {
      */
     @ResponseBody
     @RequestMapping("/getProportionData")
-    public Object getProportionData() throws MyException {
+    public ResultInfo<Object> getProportionData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
             obj.put("salaryProportion", "0.00");
             obj.put("workhourProportion", "0.00");
-            return super.success(obj);
+            return Result.success(obj);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页占比信息异常", e);
         }
@@ -365,7 +366,7 @@ public class SystemController extends BaseController<Object> {
     @ResponseBody
     @RequestMapping("/limit")
     @Limit(key = "limit", period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public Object limit() {
+    public String limit() {
         return UUID.randomUUID().toString();
     }
 

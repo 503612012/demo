@@ -8,7 +8,8 @@ import cn.hutool.system.JvmInfo;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.RuntimeInfo;
 import cn.hutool.system.SystemUtil;
-import com.oven.basic.base.controller.BaseController;
+import com.oven.basic.base.utils.Result;
+import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
 import com.oven.demo.core.monitor.entity.SysMachineResult;
@@ -30,7 +31,7 @@ import java.text.DecimalFormat;
 @ApiIgnore
 @Controller
 @RequestMapping("/monitor")
-public class MonitorController extends BaseController<Object> {
+public class MonitorController {
 
     /**
      * 去到监控页面
@@ -47,7 +48,7 @@ public class MonitorController extends BaseController<Object> {
     @ResponseBody
     @RequestMapping("/data")
     @RequiresPermissions(PermissionCode.MONITOR_MANAGER)
-    public Object data() throws MyException {
+    public ResultInfo<Object> data() throws MyException {
         try {
             JvmInfo jvmInfo = SystemUtil.getJvmInfo();
             JavaRuntimeInfo javaRuntimeInfo = SystemUtil.getJavaRuntimeInfo();
@@ -80,7 +81,7 @@ public class MonitorController extends BaseController<Object> {
             String usedRate = (new DecimalFormat("#.00")).format(NumberUtil.mul(rate, 100)) + "%";
             sysJvmMemInfo.setJvmMemoryUsedRate(usedRate);
             sysMachineResult.setSysJvmMemInfo(sysJvmMemInfo);
-            return super.success(sysMachineResult);
+            return Result.success(sysMachineResult);
         } catch (Exception e) {
             throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), "监控接口异常", e);
         }
