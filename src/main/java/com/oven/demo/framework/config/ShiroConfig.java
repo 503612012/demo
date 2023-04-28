@@ -99,7 +99,7 @@ public class ShiroConfig {
     private RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
-        redisCacheManager.setKeyPrefix(AppConst.SHIRO_CACHE_KEY_PROFIX);
+        redisCacheManager.setKeyPrefix(AppConst.SHIRO_CACHE_KEY_PREFIX);
         return redisCacheManager;
     }
 
@@ -109,7 +109,7 @@ public class ShiroConfig {
         RedisSessionDAO sessionDAO = new RedisSessionDAO();
         sessionDAO.setRedisManager(redisManager());
         sessionManager.setSessionDAO(sessionDAO);
-        sessionDAO.setKeyPrefix(AppConst.SHIRO_CACHE_KEY_PROFIX + "shiro_session_");
+        sessionDAO.setKeyPrefix(AppConst.SHIRO_CACHE_KEY_PREFIX + "shiro_session_");
 //        sessionManager.setGlobalSessionTimeout(10000); // 10s
         sessionManager.setGlobalSessionTimeout(600000); // 10m
         sessionManager.setDeleteInvalidSessions(true);

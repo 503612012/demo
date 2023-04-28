@@ -19,10 +19,10 @@ public interface AppConst {
 
     String USER_MENU = "menu"; // 用户菜单
 
-    String REQUEST_LOG_TEMPLATE_TABLENAME = "t_request_log_template"; // 请求日志模板表名
+    String REQUEST_LOG_TEMPLATE_TABLE_NAME = "t_request_log_template"; // 请求日志模板表名
 
     String SHIRO_COOKIE_KEY = APP_NAME + "shiro_cookie_key";
-    String SHIRO_CACHE_KEY_PROFIX = APP_NAME;
+    String SHIRO_CACHE_KEY_PREFIX = APP_NAME;
 
     String CAPTCHA = "_captcha";
     String PERCENTAGE_MARK = "\\\\%";

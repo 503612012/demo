@@ -228,7 +228,7 @@ public class RoleService extends BaseService {
         // 移除缓存
         super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
         // 移除shiro授权缓存
-        super.batchRemove(AppConst.SHIRO_CACHE_KEY_PROFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + CommonUtils.getCurrentUser().getId());
+        super.batchRemove(AppConst.SHIRO_CACHE_KEY_PREFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + CommonUtils.getCurrentUser().getId());
     }
 
 }

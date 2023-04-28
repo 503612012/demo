@@ -50,7 +50,7 @@ public class RequestLogIntoDbTask implements SchedulingConfigurer {
         if (!CollectionUtils.isEmpty(list)) {
             String tableName = "t_request_log_" + DateTime.now().toString("yyyyMM");
             if (!requestLogService.isExist(tableName)) {
-                requestLogService.createTable(AppConst.REQUEST_LOG_TEMPLATE_TABLENAME, tableName);
+                requestLogService.createTable(AppConst.REQUEST_LOG_TEMPLATE_TABLE_NAME, tableName);
             }
             requestLogService.batchSave(list, tableName);
             log.info("成功保存{}条接口访问日志到数据库。", list.size());
