@@ -34,16 +34,6 @@
 
 > 修改`demo.sql`文件中的redis配置
 
-##### 3) 授权脚本文件
-
-> chmod u+x *.sh
-
-##### 4) 授权二进制文件
-
-> chmod u+x license/key
->
-> chmod u+x backup
-
 ## 四、数据库部署
 
 ```shell
