@@ -3,7 +3,7 @@ requirejs.config({
     baseUrl: '/',
     paths: {
         jquery: 'js/lib/jquery.min',
-        layui: 'layui/layui.all',
+        layui: 'layui/layui',
         http: 'js/common/http',
         common: 'js/common/common',
         echarts: 'js/lib/echarts.min'

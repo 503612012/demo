@@ -3,7 +3,7 @@ requirejs.config({
     baseUrl: '/',
     paths: {
         jquery: 'js/lib/jquery.min',
-        layui: 'layui/layui.all',
+        layui: 'layui/layui',
         http: 'js/common/http',
         common: 'js/common/common'
     },
@@ -43,8 +43,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         id: 'userReload',
         even: true,
         cols: [[
-            {field: 'userName', width: 120, title: '用户名', sort: true},
-            {field: 'nickName', width: 120, title: '昵称'},
+            {field: 'userName', title: '用户名', sort: true},
+            {field: 'nickName', title: '昵称'},
             {
                 field: 'isOnline', align: "center", width: 88, title: '在线状态', templet: function(d) {
                     if (d.online) {
@@ -71,7 +71,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     }
                 }
             },
-            {title: '操作', align: 'center', toolbar: '#userListBar'}
+            {title: '操作', width: 280, align: 'center', toolbar: '#userListBar'}
         ]],
         page: true
     });
