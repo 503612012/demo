@@ -184,7 +184,7 @@ insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.boot.a
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoints.web.base-path', '/actuator', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoints.web.exposure.include', '*', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.health.show-details', 'always', null);
-insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.logfile.external-file', '${log.home}/vcas.log', null);
+insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.logfile.external-file', '${log.home}/demo.log', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.shutdown.enabled', 'false', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'logging.config', 'classpath:logback-pro.xml', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.data.redis.repositories.enabled', 'false', null);
