@@ -61,6 +61,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/version", "anon");
         filterChainDefinitionMap.put("/doLogin", "anon");
         filterChainDefinitionMap.put("/getGifCode", "anon");
+        filterChainDefinitionMap.put("/actuator/**", "anon");
         filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/");

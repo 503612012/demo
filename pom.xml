@@ -107,6 +107,12 @@
             <artifactId>joda-time</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+
         <!-- 接口文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

@@ -1,6 +1,7 @@
 package com.oven.demo.framework.config;
 
 import com.oven.basic.common.util.EncryptUtils;
+import com.oven.demo.common.constant.AppConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -102,6 +103,9 @@ public class PropertyConfig {
                 log.info("{} --- {}", key, value);
                 properties.put(key, value);
             }
+            properties.put("spring.application.name", AppConst.APP_NAME.replace("_", "".toUpperCase()));
+            properties.put("info.name", AppConst.APP_NAME.replace("_", "".toLowerCase()));
+            properties.put("info.auth", "Oven");
             return properties;
         } catch (Exception e) {
             log.error("加载系统配置表异常，异常信息：", e);

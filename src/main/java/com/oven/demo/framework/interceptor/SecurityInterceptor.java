@@ -38,6 +38,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     private static final String GET_GIF_CODE = "/getGifCode";
+    private static final String ACTUATOR = "/actuator";
     private static final String DO_LOGIN = "/doLogin";
     private static final String VERSION = "/version";
     private static final String ERROR = "/error";
@@ -160,6 +161,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         if (servletPath.startsWith(LOGIN) ||
                 VERSION.equals(servletPath) ||
                 servletPath.startsWith(DO_LOGIN) ||
+                servletPath.startsWith(ACTUATOR) ||
                 ERR.equals(servletPath) ||
                 servletPath.startsWith(GET_GIF_CODE)) {
             return true;
