@@ -198,7 +198,9 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     yes: function() {
                         var roleIds = [];
                         $("body .layui-form-checked").each(function() {
-                            roleIds.push($(this).attr("data-role-id"));
+                            if ($(this).attr("data-role-id") != undefined) {
+                                roleIds.push($(this).attr("data-role-id"));
+                            }
                         });
                         setUserRole(userid, roleIds.toString());
                     },
