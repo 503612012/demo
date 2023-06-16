@@ -39,7 +39,6 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     table.render({
         elem: '#user-list',
         url: '/user/getByPage/',
-        toolbar: '#userListToolBar',
         id: 'userReload',
         even: true,
         cols: [[
@@ -229,10 +228,8 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     });
 
     // 头工具栏事件
-    table.on('toolbar(user-list)', function(obj) {
-        if (obj.event == 'user-add-btn') {
-            window.parent.mainFrm.location.href = "/user/add";
-        }
+    $('#user-add-btn').on('click', function() {
+        window.parent.mainFrm.location.href = "/user/add";
     });
 
     common.cacheMousedown();

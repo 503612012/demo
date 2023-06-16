@@ -38,7 +38,6 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     table.render({
         elem: '#employee-list',
         url: '/employee/getByPage/',
-        toolbar: '#employeeListToolBar',
         id: 'employeeReload',
         even: true,
         cols: [[
@@ -140,7 +139,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             type: 1,
             offset: '20px',
             content: $('#employeeTips'),
-            area: [$(window).width() <= 750 ? '60%' : '500px', '500px'],
+            area: [$(window).width() <= 750 ? '60%' : '500px', '520px'],
             resize: false,
             end: function() {
                 $("#employeeTips").css("display", 'none');
@@ -185,14 +184,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     });
 
     // 头工具栏事件
-    table.on('toolbar(employee-list)', function(obj) {
-        if (obj.event == 'employee-add-btn') {
-            if (obj.event == 'employee-add-btn') {
-                $('#employeeForm')[0].reset();
-                layui.form.render();
-                openDialog('添加员工');
-            }
-        }
+    $('#employee-add-btn').on('click', function() {
+        $('#employeeForm')[0].reset();
+        layui.form.render();
+        openDialog('添加员工');
     });
 
     common.cacheMousedown();

@@ -36,7 +36,6 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     table.render({
         elem: '#role-list',
         url: '/role/getByPage/',
-        toolbar: '#roleListToolBar',
         id: 'roleReload',
         even: true,
         cols: [[
@@ -162,12 +161,10 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     });
 
     // 头工具栏事件
-    table.on('toolbar(role-list)', function(obj) {
-        if (obj.event == 'role-add-btn') {
-            $('#roleId').val('');
-            $('#roleName').val('');
-            openDialog('添加角色');
-        }
+    $('#role-add-btn').on('click', function() {
+        $('#roleId').val('');
+        $('#roleName').val('');
+        openDialog('添加角色');
     });
 
     common.cacheMousedown();
