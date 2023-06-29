@@ -1,6 +1,5 @@
 package com.oven.demo.core.system.controller;
 
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.LayuiPager;
 import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.PermissionCode;
@@ -53,9 +52,9 @@ public class SysDicController {
     @RequiresPermissions(PermissionCode.SYSDIC_MANAGER)
     public ResultInfo<Object> getById(Integer id) throws MyException {
         try {
-            return Result.success(sysDicService.getById(id));
+            return ResultInfo.success(sysDicService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取数据字典异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取数据字典异常", e);
         }
     }
 
@@ -79,7 +78,7 @@ public class SysDicController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取数据字典异常", e);
+            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取数据字典异常", e);
         }
     }
 
@@ -93,9 +92,9 @@ public class SysDicController {
     public ResultInfo<Object> save(SysDicEntity sysdic) throws MyException {
         try {
             sysDicService.save(sysdic);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加数据字典异常", e);
+            throw MyException.build(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加数据字典异常", e);
         }
     }
 
@@ -109,9 +108,9 @@ public class SysDicController {
     public ResultInfo<Object> update(SysDicEntity sysdic) throws MyException {
         try {
             sysDicService.update(sysdic);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改数据字典异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改数据字典异常", e);
         }
     }
 
@@ -128,12 +127,12 @@ public class SysDicController {
         try {
             boolean result = sysDicService.delete(id);
             if (result) {
-                return Result.success(ResultEnum.SUCCESS.getValue());
+                return ResultInfo.success(ResultEnum.SUCCESS.getValue());
             } else {
-                return Result.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
+                return ResultInfo.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除数据字典异常", e);
+            throw MyException.build(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除数据字典异常", e);
         }
     }
 
@@ -146,9 +145,9 @@ public class SysDicController {
     public ResultInfo<Object> reload() throws MyException {
         try {
             initSysDic.initSysDic();
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SYSTEM_ERROR.getCode(), ResultEnum.SYSTEM_ERROR.getValue(), "重载数据字典异常", e);
+            throw MyException.build(ResultEnum.SYSTEM_ERROR.getCode(), ResultEnum.SYSTEM_ERROR.getValue(), "重载数据字典异常", e);
         }
     }
 
@@ -162,9 +161,9 @@ public class SysDicController {
     public ResultInfo<Object> updateStatus(Integer id, Integer status) throws MyException {
         try {
             sysDicService.updateStatus(id, status);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改数据字典状态异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改数据字典状态异常", e);
         }
     }
 

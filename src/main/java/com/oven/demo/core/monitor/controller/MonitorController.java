@@ -8,7 +8,6 @@ import cn.hutool.system.JvmInfo;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.RuntimeInfo;
 import cn.hutool.system.SystemUtil;
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
@@ -81,9 +80,9 @@ public class MonitorController {
             String usedRate = (new DecimalFormat("#.00")).format(NumberUtil.mul(rate, 100)) + "%";
             sysJvmMemInfo.setJvmMemoryUsedRate(usedRate);
             sysMachineResult.setSysJvmMemInfo(sysJvmMemInfo);
-            return Result.success(sysMachineResult);
+            return ResultInfo.success(sysMachineResult);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), "监控接口异常", e);
+            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), "监控接口异常", e);
         }
     }
 

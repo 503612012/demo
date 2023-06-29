@@ -1,6 +1,5 @@
 package com.oven.demo.core.role.controller;
 
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.LayuiPager;
 import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.AppConst;
@@ -68,9 +67,9 @@ public class RoleController {
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
     public ResultInfo<Object> getById(Integer id) throws MyException {
         try {
-            return Result.success(roleService.getById(id));
+            return ResultInfo.success(roleService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取角色异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取角色异常", e);
         }
     }
 
@@ -100,7 +99,7 @@ public class RoleController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取角色异常", e);
+            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取角色异常", e);
         }
     }
 
@@ -115,9 +114,9 @@ public class RoleController {
     public ResultInfo<Object> save(Role role) throws MyException {
         try {
             roleService.save(role);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加角色异常", e);
+            throw MyException.build(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加角色异常", e);
         }
     }
 
@@ -132,12 +131,12 @@ public class RoleController {
     public ResultInfo<Object> update(Role role) throws MyException {
         try {
             if (role.getId() == 1 || role.getId() == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
             }
             roleService.update(role);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色异常", e);
         }
     }
 
@@ -154,16 +153,16 @@ public class RoleController {
     public ResultInfo<Object> delete(Integer id) throws MyException {
         try {
             if (id == 1 || id == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_DELETE_ROLE.getCode(), ResultEnum.CAN_NOT_DELETE_ROLE.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_DELETE_ROLE.getCode(), ResultEnum.CAN_NOT_DELETE_ROLE.getValue());
             }
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
             if (userRoles != null && userRoles.size() > 0) {
-                return Result.fail(400, "该角色被其他用户引用，禁止删除！");
+                return ResultInfo.fail(400, "该角色被其他用户引用，禁止删除！");
             }
             roleService.delete(id);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除角色异常", e);
+            throw MyException.build(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除角色异常", e);
         }
     }
 
@@ -181,14 +180,14 @@ public class RoleController {
     public ResultInfo<Object> updateStatus(Integer roleId, Integer status) throws MyException {
         try {
             if (roleId == 1 || roleId == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_UPDATE_ROLE.getCode(), ResultEnum.CAN_NOT_UPDATE_ROLE.getValue());
             }
             Role role = roleService.getById(roleId);
             role.setStatus(status);
             roleService.update(role);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色状态异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改角色状态异常", e);
         }
     }
 
@@ -213,9 +212,9 @@ public class RoleController {
     @RequiresPermissions(PermissionCode.ROLE_SETMENU)
     public ResultInfo<Object> getRoleMenuTree(Integer roleId) throws MyException {
         try {
-            return Result.success(roleService.getMenuTreeByRoleId(roleId));
+            return ResultInfo.success(roleService.getMenuTreeByRoleId(roleId));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色id获取权限树异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "根据角色id获取权限树异常", e);
         }
     }
 
@@ -233,15 +232,15 @@ public class RoleController {
     public ResultInfo<Object> setRoleMenu(Integer roleId, String menuIds, HttpServletRequest req) throws MyException {
         try {
             // if (roleId == 1 || roleId == 2) {
-            //     return Result.fail(ResultEnum.CAN_NOT_SET_MENU.getCode(), ResultEnum.CAN_NOT_SET_MENU.getValue());
+            //     return ResultInfo.fail(ResultEnum.CAN_NOT_SET_MENU.getCode(), ResultEnum.CAN_NOT_SET_MENU.getValue());
             // }
             roleService.setRoleMenu(roleId, menuIds);
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
-            return Result.success(ResultEnum.UPDATE_ERROR.getValue());
+            return ResultInfo.success(ResultEnum.UPDATE_ERROR.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置角色权限异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置角色权限异常", e);
         }
     }
 

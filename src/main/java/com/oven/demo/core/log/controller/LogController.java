@@ -1,6 +1,5 @@
 package com.oven.demo.core.log.controller;
 
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.LayuiPager;
 import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.PermissionCode;
@@ -49,9 +48,9 @@ public class LogController {
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
     public ResultInfo<Object> getById(Integer id) throws MyException {
         try {
-            return Result.success(logService.getById(id));
+            return ResultInfo.success(logService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取日志异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取日志异常", e);
         }
     }
 
@@ -75,7 +74,7 @@ public class LogController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取日志异常", e);
+            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取日志异常", e);
         }
     }
 

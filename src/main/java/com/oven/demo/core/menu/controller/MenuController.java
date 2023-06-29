@@ -1,6 +1,5 @@
 package com.oven.demo.core.menu.controller;
 
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.ResultInfo;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
@@ -49,9 +48,9 @@ public class MenuController {
     @RequiresPermissions(PermissionCode.MENU_MANAGER)
     public ResultInfo<Object> getMenuTreeTableData() throws MyException {
         try {
-            return Result.success(menuService.getMenuTreeTableData());
+            return ResultInfo.success(menuService.getMenuTreeTableData());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取菜单树形表格内容异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取菜单树形表格内容异常", e);
         }
     }
 
@@ -66,9 +65,9 @@ public class MenuController {
     public ResultInfo<Object> doUpdate(Menu menu) throws MyException {
         try {
             // menuService.update(menu);
-            return Result.success("暂不开通修改功能");
+            return ResultInfo.success("暂不开通修改功能");
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单异常", e);
         }
     }
 
@@ -88,9 +87,9 @@ public class MenuController {
             Menu menu = menuService.getById(menuId);
             menu.setStatus(status);
             menuService.update(menu);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单状态异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单状态异常", e);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.oven.demo.core.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.LayuiPager;
 import com.oven.basic.common.util.ResultInfo;
@@ -76,9 +75,9 @@ public class UserController {
     @RequiresPermissions(PermissionCode.USER_MANAGER)
     public ResultInfo<Object> getById(Integer id) throws MyException {
         try {
-            return Result.success(userService.getById(id));
+            return ResultInfo.success(userService.getById(id));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取用户异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取用户异常", e);
         }
     }
 
@@ -89,9 +88,9 @@ public class UserController {
     @RequestMapping("/getCurrentUserInfo")
     public ResultInfo<Object> getCurrentUserInfo() throws MyException {
         try {
-            return Result.success(userService.getByUserName(CommonUtils.getCurrentUser().getUserName()));
+            return ResultInfo.success(userService.getByUserName(CommonUtils.getCurrentUser().getUserName()));
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取当前登录用户异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取当前登录用户异常", e);
         }
     }
 
@@ -126,7 +125,7 @@ public class UserController {
             result.setCount(totalNum);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取用户异常", e);
+            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取用户异常", e);
         }
     }
 
@@ -172,12 +171,12 @@ public class UserController {
         try {
             User userInDb = userService.getByUserName(user.getUserName());
             if (userInDb != null) {
-                return Result.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
+                return ResultInfo.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
             }
             userService.save(user);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加用户异常", e);
+            throw MyException.build(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加用户异常", e);
         }
     }
 
@@ -191,12 +190,12 @@ public class UserController {
         try {
             User user = userService.getByUserName(userName);
             if (user == null) {
-                return Result.success(false);
+                return ResultInfo.success(false);
             } else {
-                return Result.success(true);
+                return ResultInfo.success(true);
             }
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "判断用户名是否存在异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "判断用户名是否存在异常", e);
         }
     }
 
@@ -213,7 +212,7 @@ public class UserController {
             model.addAttribute("user", user);
             return "/user/update";
         } catch (Exception e) {
-            throw new MyException(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到用户更新页面异常", e);
+            throw MyException.build(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到用户更新页面异常", e);
         }
     }
 
@@ -228,12 +227,12 @@ public class UserController {
     public ResultInfo<Object> doUpdate(User user) throws MyException {
         try {
             if (user.getId() == 1 || user.getId() == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
             }
             userService.update(user);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户异常", e);
         }
     }
 
@@ -250,12 +249,12 @@ public class UserController {
     public ResultInfo<Object> delete(Integer id) throws MyException {
         try {
             if (id == 1 || id == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_DELETE_USER.getCode(), ResultEnum.CAN_NOT_DELETE_USER.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_DELETE_USER.getCode(), ResultEnum.CAN_NOT_DELETE_USER.getValue());
             }
             userService.delete(id);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除用户异常", e);
+            throw MyException.build(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除用户异常", e);
         }
     }
 
@@ -273,14 +272,14 @@ public class UserController {
     public ResultInfo<Object> updateStatus(Integer userId, Integer status) throws MyException {
         try {
             if (userId == 1 || userId == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
             }
             User user = userService.getById(userId);
             user.setStatus(status);
             userService.update(user);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户状态异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户状态异常", e);
         }
     }
 
@@ -295,9 +294,9 @@ public class UserController {
     public ResultInfo<Object> getRoleByUserId(Integer id) throws MyException {
         try {
             List<JSONObject> list = userService.getRoleByUserId(id);
-            return Result.success(list);
+            return ResultInfo.success(list);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过用户id获取角色列表异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过用户id获取角色列表异常", e);
         }
     }
 
@@ -315,12 +314,12 @@ public class UserController {
     public ResultInfo<Object> setUserRole(Integer userId, String roleIds) throws MyException {
         try {
             if (userId == 1 || userId == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_SET_ROLE.getCode(), ResultEnum.CAN_NOT_SET_ROLE.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_SET_ROLE.getCode(), ResultEnum.CAN_NOT_SET_ROLE.getValue());
             }
             userService.setUserRole(userId, roleIds);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置用户角色异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置用户角色异常", e);
         }
     }
 
@@ -332,9 +331,9 @@ public class UserController {
     @RequiresPermissions(PermissionCode.USER_MANAGER)
     public ResultInfo<Object> getAll() throws MyException {
         try {
-            return Result.success(userService.getAll());
+            return ResultInfo.success(userService.getAll());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有用户异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有用户异常", e);
         }
     }
 
@@ -349,19 +348,19 @@ public class UserController {
             String oldPwdDecode = EncryptUtils.aesDecrypt(oldPwd, EncryptUtils.KEY);
             User user = userService.getByUserName(CommonUtils.getCurrentUser().getUserName());
             if (user.getId() == 1 || user.getId() == 2) {
-                return Result.fail(ResultEnum.CAN_NOT_SET_PWD.getCode(), ResultEnum.CAN_NOT_SET_PWD.getValue());
+                return ResultInfo.fail(ResultEnum.CAN_NOT_SET_PWD.getCode(), ResultEnum.CAN_NOT_SET_PWD.getValue());
             }
             Md5Hash md5 = new Md5Hash(oldPwdDecode, AppConst.MD5_SALT, 2);
             // 密码错误
             if (!md5.toString().equals(user.getPassword())) {
-                return Result.fail(ResultEnum.OLD_PASSWORD_WRONG.getCode(), ResultEnum.OLD_PASSWORD_WRONG.getValue());
+                return ResultInfo.fail(ResultEnum.OLD_PASSWORD_WRONG.getCode(), ResultEnum.OLD_PASSWORD_WRONG.getValue());
             }
             newPwd = EncryptUtils.aesDecrypt(newPwd, EncryptUtils.KEY);
             user.setPassword(newPwd);
             userService.update(user);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改密码异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改密码异常", e);
         }
     }
 
@@ -377,7 +376,7 @@ public class UserController {
         try {
             String originalFilename = file.getOriginalFilename();
             if (StringUtils.isEmpty(originalFilename)) {
-                return Result.fail(ResultEnum.UPDATE_ERROR.getCode(), "文件名称为空，请重新上传！");
+                return ResultInfo.fail(ResultEnum.UPDATE_ERROR.getCode(), "文件名称为空，请重新上传！");
             }
             String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
             File path = new File(avatarPath);
@@ -391,9 +390,9 @@ public class UserController {
             User userInSession = (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
             userInSession.setAvatar("/avatar/" + fileName);
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInSession);
-            return Result.success("保存成功！");
+            return ResultInfo.success("保存成功！");
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPLOAD_ERROR.getCode(), ResultEnum.UPLOAD_ERROR.getValue(), "上传头像异常", e);
+            throw MyException.build(ResultEnum.UPLOAD_ERROR.getCode(), ResultEnum.UPLOAD_ERROR.getValue(), "上传头像异常", e);
         }
     }
 
@@ -407,9 +406,9 @@ public class UserController {
     public ResultInfo<Object> resetErrNum(Integer userId) throws MyException {
         try {
             userService.resetErrNum(userId);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "重置错误次数异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "重置错误次数异常", e);
         }
     }
 
@@ -424,9 +423,9 @@ public class UserController {
         try {
             userService.updateConfig("userTheme", userTheme);
             req.getSession().setAttribute("userTheme", userTheme);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改主题异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改主题异常", e);
         }
     }
 
@@ -441,9 +440,9 @@ public class UserController {
         try {
             userService.updateConfig("menuPosition", menuPosition);
             req.getSession().setAttribute("menuPosition", menuPosition);
-            return Result.success(ResultEnum.SUCCESS.getValue());
+            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单位置异常", e);
+            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单位置异常", e);
         }
     }
 

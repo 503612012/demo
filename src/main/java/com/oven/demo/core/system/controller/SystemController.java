@@ -1,7 +1,6 @@
 package com.oven.demo.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.basic.base.utils.Result;
 import com.oven.basic.common.util.DateUtils;
 import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.IPUtils;
@@ -80,9 +79,9 @@ public class SystemController {
     public ResultInfo<Object> secKill() {
         try {
             sysDicService.secKill();
-            return Result.success("秒杀成功！");
+            return ResultInfo.success("秒杀成功！");
         } catch (Exception e) {
-            return Result.fail(400, "秒杀接口异常！");
+            return ResultInfo.fail(400, "秒杀接口异常！");
         }
     }
 
@@ -105,7 +104,7 @@ public class SystemController {
             captcha.out(response.getOutputStream());
             session.setAttribute(AppConst.CAPTCHA, captcha.text().toLowerCase());
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", "获取验证码异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", "获取验证码异常", e);
         }
     }
 
@@ -175,9 +174,9 @@ public class SystemController {
                 obj.put(AppConst.SESSION, null);
                 loginedMap.put(userName, obj);
             }
-            return Result.success("退出成功");
+            return ResultInfo.success("退出成功");
         } catch (Exception e) {
-            throw new MyException(ResultEnum.FORCE_LOGOUT_ERROR.getCode(), ResultEnum.FORCE_LOGOUT_ERROR.getValue(), "强制退出异常", e);
+            throw MyException.build(ResultEnum.FORCE_LOGOUT_ERROR.getCode(), ResultEnum.FORCE_LOGOUT_ERROR.getValue(), "强制退出异常", e);
         }
     }
 
@@ -210,10 +209,10 @@ public class SystemController {
             // 校验验证码
             String code = (String) req.getSession().getAttribute(AppConst.CAPTCHA);
             if (StringUtils.isEmpty(inputCode)) {
-                return Result.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
+                return ResultInfo.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
             } else {
                 if (!inputCode.equalsIgnoreCase(code)) {
-                    return Result.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
+                    return ResultInfo.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
                 }
             }
 
@@ -225,7 +224,7 @@ public class SystemController {
             User userInDb = userService.getByUserName(userName);
             if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return Result.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
+                return ResultInfo.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
             }
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
@@ -260,25 +259,25 @@ public class SystemController {
                 req.getSession().setAttribute("menuPosition", StringUtils.isEmpty(menuPosition) ? "left" : menuPosition);
             }
 
-            return Result.success("登录成功！");
+            return ResultInfo.success("登录成功！");
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return Result.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
+                return ResultInfo.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
             } else if (e instanceof IncorrectCredentialsException) {
                 if (userInDb.getErrNum() >= 5) {
                     logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                    return Result.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
+                    return ResultInfo.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
                 }
                 userService.logPasswordWrong(userInDb.getId());
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return Result.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
+                return ResultInfo.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
             } else if (e instanceof LockedAccountException) {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return Result.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
+                return ResultInfo.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
             } else {
-                throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
+                throw MyException.build(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
             }
         }
     }
@@ -294,9 +293,9 @@ public class SystemController {
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
-            return Result.success(menus);
+            return ResultInfo.success(menus);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
+            throw MyException.build(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
         }
     }
 
@@ -313,9 +312,9 @@ public class SystemController {
             obj.put("totalEmployee", totalEmployee);
             obj.put("totalWorksite", "0");
             obj.put("totalWorkhour", "0.00");
-            return Result.success(obj);
+            return ResultInfo.success(obj);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页数据异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页数据异常", e);
         }
     }
 
@@ -340,7 +339,7 @@ public class SystemController {
             result.put("data", data);
             return result;
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取薪资排行前五异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取薪资排行前五异常", e);
         }
     }
 
@@ -354,9 +353,9 @@ public class SystemController {
             JSONObject obj = new JSONObject();
             obj.put("salaryProportion", "0.00");
             obj.put("workhourProportion", "0.00");
-            return Result.success(obj);
+            return ResultInfo.success(obj);
         } catch (Exception e) {
-            throw new MyException(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页占比信息异常", e);
+            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页占比信息异常", e);
         }
     }
 

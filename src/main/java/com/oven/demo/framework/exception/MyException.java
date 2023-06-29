@@ -19,7 +19,11 @@ public class MyException extends Exception {
     private String log;
     private Exception e;
 
-    public MyException(Integer code, String msg, String log, Exception e) {
+    public static MyException build(Integer code, String msg, String log, Exception e) {
+        return new MyException(code, msg, log, e);
+    }
+
+    private MyException(Integer code, String msg, String log, Exception e) {
         this.code = code;
         this.msg = msg;
         this.log = log;
