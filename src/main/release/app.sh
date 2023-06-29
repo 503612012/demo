@@ -1,4 +1,6 @@
 #!/bin/sh
 cd /home/demo
-touch /home/demo/logs/demo.log
+if [ ! -f /home/demo/logs/demo.log ]; then
+  touch /home/demo/logs/demo.log
+fi
 ./start.sh
