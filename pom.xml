@@ -641,8 +641,7 @@
                         <configuration>
                             <target>
                                 <echo message="start change jar name"/>
-                                <move file="${project.build.directory}/${project.artifactId}-${project.version}-encrypted.jar"
-                                      tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                <move file="${project.build.directory}/${project.artifactId}-${project.version}-encrypted.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                 <delete dir="${project.build.directory}/antrun"/>
                                 <echo message="finish change jar name"/>
                             </target>
