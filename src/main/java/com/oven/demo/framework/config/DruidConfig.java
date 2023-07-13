@@ -117,7 +117,6 @@ public class DruidConfig {
         return servletRegistrationBean;
     }
 
-
     @Bean
     public FilterRegistrationBean<WebStatFilter> druidWebStatViewFilter() {
         FilterRegistrationBean<WebStatFilter> registrationBean = new FilterRegistrationBean<>(new WebStatFilter());
