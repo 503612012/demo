@@ -1,5 +1,6 @@
 package com.oven.demo.core.system.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.redis.IRedisService;
 import com.oven.demo.common.service.BaseService;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -114,21 +114,21 @@ public class SysDicService extends BaseService {
         sysDicDao.update(sysDic);
         // 移除缓存
         super.remove(RedisCacheKey.SYS_DIC_FIND_ALL);
-        super.remove(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, sysDic.getId()));
-        super.remove(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, sysDic.getKey()));
+        super.remove(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, sysDic.getId()));
+        super.remove(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, sysDic.getKey()));
     }
 
     /**
      * 通过主键查询
      */
     public SysDicEntity getById(Integer id) {
-        SysDicEntity result = super.get(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id)); // 先读取缓存
+        SysDicEntity result = super.get(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id)); // 先读取缓存
         if (result == null) { // double check
             synchronized (this) {
-                result = super.get(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                result = super.get(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (result == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     result = sysDicDao.getById(id);
-                    super.set(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id), result);
+                    super.set(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id), result);
                 }
             }
         }
@@ -160,7 +160,7 @@ public class SysDicService extends BaseService {
         if (flag) {
             // 移除缓存
             super.remove(RedisCacheKey.SYS_DIC_FIND_ALL);
-            super.remove(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id));
+            super.remove(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id));
         }
         return flag;
     }
@@ -172,20 +172,20 @@ public class SysDicService extends BaseService {
         sysDicDao.updateStatus(id, status);
         // 移除缓存
         super.remove(RedisCacheKey.SYS_DIC_FIND_ALL);
-        super.remove(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id));
+        super.remove(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_ID, id));
     }
 
     /**
      * 根据key查询
      */
     public SysDicEntity getByKey(String key) {
-        SysDicEntity result = super.get(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, key)); // 先读取缓存
+        SysDicEntity result = super.get(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, key)); // 先读取缓存
         if (result == null) { // double check
             synchronized (this) {
-                result = super.get(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, key)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                result = super.get(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, key)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (result == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     result = sysDicDao.getByKey(key);
-                    super.set(MessageFormat.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, key), result);
+                    super.set(StrUtil.format(RedisCacheKey.SYS_DIC_FIND_BY_KEY, key), result);
                 }
             }
         }

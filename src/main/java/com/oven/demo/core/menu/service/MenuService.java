@@ -1,5 +1,6 @@
 package com.oven.demo.core.menu.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.service.BaseService;
@@ -13,7 +14,6 @@ import com.oven.demo.core.user.service.UserRoleService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,13 +41,13 @@ public class MenuService extends BaseService {
      * @param id 菜单id
      */
     public Menu getById(Integer id) {
-        Menu menu = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_ID, id)); // 先读取缓存
+        Menu menu = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_ID, id)); // 先读取缓存
         if (menu == null) { // double check
             synchronized (this) {
-                menu = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                menu = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (menu == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     menu = menuDao.getById(id);
-                    super.set(MessageFormat.format(RedisCacheKey.MENU_GET_BY_ID, id), menu);
+                    super.set(StrUtil.format(RedisCacheKey.MENU_GET_BY_ID, id), menu);
                 }
             }
         }
@@ -71,16 +71,16 @@ public class MenuService extends BaseService {
      * @param userId 用户id
      */
     public List<Map<String, Object>> getMenuTreeByUserId(Integer userId) {
-        List<Map<String, Object>> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId)); // 先读取缓存
+        List<Map<String, Object>> list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     List<List<RoleMenu>> menus = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
                     roles.forEach(role -> menus.add(roleMenuService.getByRoleId(role.getRoleId())));
                     list = installMenu(userId, menus);
-                    super.set(MessageFormat.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId), list);
+                    super.set(StrUtil.format(RedisCacheKey.MENU_GET_MENU_TREE_BY_USERID, userId), list);
                 }
             }
         }
@@ -118,10 +118,10 @@ public class MenuService extends BaseService {
      * @param pid    菜单id
      */
     private List<Menu> getByPidAndHasPermission(Integer userId, Integer pid) {
-        List<Menu> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 先读取缓存
+        List<Menu> list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     List<Integer> menuIds = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
@@ -133,7 +133,7 @@ public class MenuService extends BaseService {
                     }
                     list = menuDao.getByPidAndHasPermission(pid, menuIds);
                     Collections.sort(list);
-                    super.set(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid), list);
+                    super.set(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid), list);
                 }
             }
         }
@@ -146,10 +146,10 @@ public class MenuService extends BaseService {
      * @param userId 用户id
      */
     public List<String> getAllMenuCodeByUserId(Integer userId) {
-        List<String> list = super.get(MessageFormat.format(RedisCacheKey.USER_MENU_CODES, userId)); // 先读取缓存
+        List<String> list = super.get(StrUtil.format(RedisCacheKey.USER_MENU_CODES, userId)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.USER_MENU_CODES, userId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(StrUtil.format(RedisCacheKey.USER_MENU_CODES, userId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
@@ -162,7 +162,7 @@ public class MenuService extends BaseService {
                             }
                         }
                     }
-                    super.set(MessageFormat.format(RedisCacheKey.USER_MENU_CODES, userId), list);
+                    super.set(StrUtil.format(RedisCacheKey.USER_MENU_CODES, userId), list);
                 }
             }
         }
@@ -173,13 +173,13 @@ public class MenuService extends BaseService {
      * 通过父id获取
      */
     public List<Menu> getByPid(Integer pid) {
-        List<Menu> list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID, pid)); // 先读取缓存
+        List<Menu> list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID, pid)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID, pid)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID, pid)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = menuDao.getByPid(pid);
-                    super.set(MessageFormat.format(RedisCacheKey.MENU_GET_BY_PID, pid), list);
+                    super.set(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID, pid), list);
                 }
             }
         }

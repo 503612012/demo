@@ -1,5 +1,6 @@
 package com.oven.demo.core.employee.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.RedisCacheKey;
 import com.oven.demo.common.service.BaseService;
@@ -9,7 +10,6 @@ import com.oven.demo.core.employee.entity.Employee;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -52,13 +52,13 @@ public class EmployeeService extends BaseService {
      * 通过主键查询
      */
     public Employee getById(Integer id) {
-        Employee employee = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_BY_ID, id)); // 先读取缓存
+        Employee employee = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_BY_ID, id)); // 先读取缓存
         if (employee == null) { // double check
             synchronized (this) {
-                employee = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                employee = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (employee == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     employee = employeeDao.getById(id);
-                    super.set(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_BY_ID, id), employee);
+                    super.set(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_BY_ID, id), employee);
                 }
             }
         }
@@ -72,13 +72,13 @@ public class EmployeeService extends BaseService {
      * @param pageSize 每页显示数量
      */
     public List<Employee> getByPage(Integer pageNum, Integer pageSize, Employee employee) {
-        List<Employee> list = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_BY_PAGE, pageNum, pageSize, employee.toString())); // 先读取缓存
+        List<Employee> list = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_BY_PAGE, pageNum, pageSize, employee.toString())); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_BY_PAGE, pageNum, pageSize, employee.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_BY_PAGE, pageNum, pageSize, employee.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = employeeDao.getByPage(pageNum, pageSize, employee);
-                    super.set(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_BY_PAGE, pageNum, pageSize, employee.toString()), list);
+                    super.set(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_BY_PAGE, pageNum, pageSize, employee.toString()), list);
                 }
             }
         }
@@ -89,13 +89,13 @@ public class EmployeeService extends BaseService {
      * 获取员工总数量
      */
     public Integer getTotalNum(Employee employee) {
-        Integer totalNum = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM, employee.toString())); // 先读取缓存
+        Integer totalNum = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM, employee.toString())); // 先读取缓存
         if (totalNum == null) { // double check
             synchronized (this) {
-                totalNum = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM, employee.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                totalNum = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM, employee.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     totalNum = employeeDao.getTotalNum(employee);
-                    super.set(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM, employee.toString()), totalNum);
+                    super.set(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_TOTAL_NUM, employee.toString()), totalNum);
                 }
             }
         }
@@ -135,13 +135,13 @@ public class EmployeeService extends BaseService {
      * 获取一个员工的时薪
      */
     public Double getHourSalaryByEmployeeId(Integer employeeId) {
-        Double hourSalary = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 先读取缓存
+        Double hourSalary = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 先读取缓存
         if (hourSalary == null) { // double check
             synchronized (this) {
-                hourSalary = super.get(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                hourSalary = super.get(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (hourSalary == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     hourSalary = employeeDao.getHourSalaryByEmployeeId(employeeId);
-                    super.set(MessageFormat.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId), hourSalary);
+                    super.set(StrUtil.format(RedisCacheKey.EMPLOYEE_GET_HOUR_SALARY_BY_EMPLOYEEID, employeeId), hourSalary);
                 }
             }
         }
