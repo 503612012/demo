@@ -26,5 +26,10 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shang
 RUN yum -y install kde-l10n-Chinese telnet && yum clean all && localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
 ENV LC_ALL "zh_CN.UTF-8"
 
+ENV PS1='\[\e[32m\]\u\[\e[35m\]@\[\e[36m\]\h \[\e[33m\]\w $ \[\e[0m\]'
+RUN echo "alias c='clear'" >> ~/.bashrc
+RUN echo "alias l='ls -lahk'" >> ~/.bashrc
+RUN echo "alias log='tail -f /home/vcas/logs/vcas.log'" >> ~/.bashrc
+
 WORKDIR /home/demo/
 CMD /home/demo/app.sh && tail -f /home/demo/logs/demo.log
