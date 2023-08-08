@@ -29,7 +29,7 @@ ENV LC_ALL "zh_CN.UTF-8"
 ENV PS1='\[\e[32m\]\u\[\e[35m\]@\[\e[36m\]\h \[\e[33m\]\w $ \[\e[0m\]'
 RUN echo "alias c='clear'" >> ~/.bashrc
 RUN echo "alias l='ls -lahk'" >> ~/.bashrc
-RUN echo "alias log='tail -f /home/vcas/logs/vcas.log'" >> ~/.bashrc
+RUN echo "alias log='tail -f /home/demo/logs/demo.log'" >> ~/.bashrc
 
 WORKDIR /home/demo/
 CMD /home/demo/app.sh && tail -f /home/demo/logs/demo.log
