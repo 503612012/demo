@@ -31,6 +31,8 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
+import org.springframework.boot.logging.LogLevel;
+import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -69,7 +71,25 @@ public class SystemController {
     @Resource
     private SysDicService sysDicService;
     @Resource
+    private LoggingSystem loggingSystem;
+    @Resource
     private EmployeeService employeeService;
+
+    /**
+     * 修改日志级别
+     */
+    @ResponseBody
+    @RequestMapping("/changeLogLevel")
+    public Object changeLogLevel(String logger, String level) throws MyException {
+        try {
+            LogLevel logLevel = LogLevel.valueOf(level.toUpperCase());
+            loggingSystem.setLogLevel(logger, logLevel);
+            log.info("修改日志级别{} to {}，更新完毕", logger, level);
+            return ResultInfo.success("修改成功");
+        } catch (Exception e) {
+            throw MyException.build(ResultEnum.SYSTEM_ERROR.getCode(), "修改日志级别异常！", "修改日志级别异常", e);
+        }
+    }
 
     /**
      * 秒杀模拟
@@ -112,7 +132,7 @@ public class SystemController {
      * 欢迎页面
      */
     @RequestMapping("/main.html")
-    public String main() {
+    public String mainPage() {
         return "main";
     }
 
