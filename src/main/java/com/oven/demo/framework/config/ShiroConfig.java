@@ -111,7 +111,7 @@ public class ShiroConfig {
         sessionDAO.setRedisManager(redisManager());
         sessionManager.setSessionDAO(sessionDAO);
         sessionDAO.setKeyPrefix(AppConst.SHIRO_CACHE_KEY_PREFIX + "shiro_session_");
-//        sessionManager.setGlobalSessionTimeout(10000); // 10s
+        // sessionManager.setGlobalSessionTimeout(10000); // 10s
         sessionManager.setGlobalSessionTimeout(600000); // 10m
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionValidationInterval(10000); // 10s
