@@ -12,7 +12,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/${LOG_FILE}.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
-            <maxFileSize>20MB</maxFileSize>
+            <maxFileSize>100MB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
@@ -34,7 +34,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/${LOG_FILE}.info.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
-            <maxFileSize>20MB</maxFileSize>
+            <maxFileSize>100MB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
@@ -56,7 +56,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/${LOG_FILE}.error.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
-            <maxFileSize>20MB</maxFileSize>
+            <maxFileSize>100MB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
@@ -78,7 +78,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/${LOG_FILE}.debug.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>180</maxHistory>
-            <maxFileSize>20MB</maxFileSize>
+            <maxFileSize>100MB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
