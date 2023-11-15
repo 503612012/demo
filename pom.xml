@@ -19,6 +19,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+
+        <git.user.name>Oven</git.user.name>
+        <git.user.email>503612012@qq.com</git.user.email>
     </properties>
 
     <dependencies>
@@ -205,8 +208,8 @@
             <id>dev</id>
             <properties>
                 <profile>dev</profile>
-                <platform>mac</platform>
-                <!-- <platform>windows</platform> -->
+                <!-- <platform>mac</platform> -->
+                <platform>windows</platform>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -667,6 +670,23 @@
                                     exec mvn clean validate -f ${project.basedir}
                                 </pre-commit>
                             </hooks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.oven.gitconfig</groupId>
+                <artifactId>gitconfig</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <name>${git.user.name}</name>
+                            <email>${git.user.email}</email>
                         </configuration>
                     </execution>
                 </executions>
