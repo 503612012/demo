@@ -208,8 +208,8 @@
             <id>dev</id>
             <properties>
                 <profile>dev</profile>
-                <!-- <platform>mac</platform> -->
-                <platform>windows</platform>
+                <platform>mac</platform>
+                <!-- <platform>windows</platform> -->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
