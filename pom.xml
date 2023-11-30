@@ -568,18 +568,6 @@
                                 <echo message="start copy simsun.ttf to target folder"/>
                                 <copy file="src/main/release/simsun.ttf" tofile="${project.build.directory}/simsun.ttf"/>
                                 <echo message="finish copy simsun.ttf"/>
-                                <echo message="start mkdir license"/>
-                                <mkdir dir="${project.build.directory}/license"/>
-                                <echo message="finish mkdir license"/>
-                                <echo message="start copy key to target folder"/>
-                                <copy file="src/main/release/license/key" tofile="${project.build.directory}/license/key"/>
-                                <echo message="finish copy key"/>
-                                <echo message="start copy license.lic to target folder"/>
-                                <copy file="src/main/release/license/license.lic" tofile="${project.build.directory}/license/license.lic"/>
-                                <echo message="finish copy license.lic"/>
-                                <echo message="start copy publicCerts.keystore to target folder"/>
-                                <copy file="src/main/release/license/publicCerts.keystore" tofile="${project.build.directory}/license/publicCerts.keystore"/>
-                                <echo message="finish copy publicCerts.keystore"/>
                             </target>
                         </configuration>
                     </execution>
