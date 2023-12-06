@@ -190,13 +190,13 @@ public class MenuService extends BaseService {
      * 分页菜单树形表格内容
      */
     public List<Menu> getMenuTreeTableData() {
-        List<Menu> list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA); // 先读取缓存
+        List<Menu> list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_TABLE_DATA); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(RedisCacheKey.MENU_GET_MENU_TREE_TABLE_DATA); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     list = menuDao.getMenuTreeTableData();
-                    super.set(RedisCacheKey.MENU_GET_MENU_TREE_DATLE_DATA, list);
+                    super.set(RedisCacheKey.MENU_GET_MENU_TREE_TABLE_DATA, list);
                 }
             }
         }
