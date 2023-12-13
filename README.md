@@ -11,12 +11,12 @@
 | app.sh                     | 容器启动后执行脚本 |
 | backup                     | 数据库备份脚本   |
 | build.sh                   | 镜像构建脚本    |
+| container.sh               | 容器启动脚本    |
 | Dockerfile                 | 镜像构建文件    |
 | jdk-8u341-linux-x64.tar.gz | jdk安装包    |
 | mysql.sh                   | 数据库安装脚本   |
 | path.sh                    | 项目部署根路径   |
 | nginx.tar.gz               | nginx     |
-| run.sh                     | 容器启动脚本    |
 | simsun.ttf                 | 字体文件      |
 | start.sh                   | 应用启动脚本    |
 | stop.sh                    | 应用停止脚本    |
@@ -48,7 +48,7 @@
 ## 六、启动应用容器
 
 ```shell
-./run.sh
+./container.sh
 ```
 
 ## 七、开发环境搭建

@@ -579,8 +579,8 @@
                         </goals>
                         <configuration>
                             <target>
-                                <replace file="${project.build.directory}/run.sh" token="@version@" value="${project.version}"/>
                                 <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}"/>
+                                <replace file="${project.build.directory}/container.sh" token="@version@" value="${project.version}"/>
                                 <replace file="${project.build.directory}/Dockerfile" token="@version@" value="${project.version}"/>
                             </target>
                         </configuration>
