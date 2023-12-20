@@ -23,7 +23,7 @@ public class CrontabDao {
     public String getCron(String key) {
         String sql = "select cron from t_crontab where _key = ?";
         List<String> list = this.jdbcTemplate.queryForList(sql, String.class, key);
-        return list.size() == 0 ? null : list.get(0);
+        return list.isEmpty() ? null : list.get(0);
     }
 
 }
