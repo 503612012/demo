@@ -1,7 +1,7 @@
 package com.oven.demo.common.constant;
 
 /**
- * Reids缓存使用的key定义类
+ * Redis缓存使用的key定义类
  *
  * @author Oven
  */
