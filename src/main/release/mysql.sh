@@ -48,7 +48,7 @@ if [ "$is_first_start" = false ]; then
   exit
 fi
 
-echo "database initting..."
+echo "database initialing..."
 docker cp demo.sql mysql-demo:/home
 
 i=0
