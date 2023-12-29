@@ -67,9 +67,9 @@ layui.use(['treetable', 'form'], function() {
                     title: '状态',
                     template: function(d) {
                         if (d.status == 1) {
-                            return '<div><div class="layui-unselect layui-form-checkbox menu-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                            return '<div class="layui-unselect layui-form-checkbox menu-status" data-id="' + d.id + '" data-status="' + d.status + '" lay-skin="tag"><div>锁定</div><i class="layui-icon layui-icon-ok"></i></div>';
                         } else if (d.status == 0) {
-                            return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked menu-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>正常</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                            return '<div class="layui-unselect layui-form-checkbox menu-status layui-form-checked" data-id="' + d.id + '" data-status="' + d.status + '" lay-skin="tag"><div>正常</div><i class="layui-icon layui-icon-ok"></i></div>';
                         }
                     }
                 },

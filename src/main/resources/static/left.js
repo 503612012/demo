@@ -35,11 +35,11 @@ define(['jquery'], function($) {
             html += '<i class="layui-icon ' + data[i].menu.iconCls + '"></i>';
             html += '<cite>&emsp;' + data[i].menu.menuName + '</cite>';
             if (data[i].children.length > 0) {
-                html += '<span class="layui-nav-more"></span>';
+                html += '<span class="layui-nav-more layui-icon layui-icon-down"></span>';
             }
             html += '</a>';
             for (var j = 0; j < data[i].children.length; j++) {
-                html += '<dl class="layui-nav-child">';
+                html += '<dl class="layui-nav-child" style="padding: 0;">';
                 html += '<dd data-name="" data-jump="/" class="level-two-menu ' + ((i == 0 && j == 0) == true ? 'layui-this' : '') + '"><a href="' + data[i].children[j].url + '" target="mainFrm">' + data[i].children[j].menuName + '</a></dd>';
                 html += '</dl>';
             }

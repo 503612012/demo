@@ -64,9 +64,9 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             {
                 field: 'status', width: 110, title: '状态', templet: function(d) {
                     if (d.status == 1) {
-                        return '<div><div class="layui-unselect layui-form-checkbox user-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>锁定</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                        return '<div class="layui-unselect layui-form-checkbox user-status" data-id="' + d.id + '" data-status="' + d.status + '" lay-skin="tag"><div>锁定</div><i class="layui-icon layui-icon-ok"></i></div>';
                     } else if (d.status == 0) {
-                        return '<div><div class="layui-unselect layui-form-checkbox layui-form-checked user-status" data-id="' + d.id + '" data-status="' + d.status + '"><span>正常</span><i class="layui-icon layui-icon-ok"></i></div></div>';
+                        return '<div class="layui-unselect layui-form-checkbox user-status layui-form-checked" data-id="' + d.id + '" data-status="' + d.status + '" lay-skin="tag"><div>正常</div><i class="layui-icon layui-icon-ok"></i></div>';
                     }
                 }
             },
@@ -185,7 +185,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
             http.post('/user/getRoleByUserId', {id: userid}, function(data) {
                 var html = '<div style="padding: 15px;">';
                 for (var i = 0; i < data.length; i++) {
-                    html += '<div style="margin-top: 7px;" data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><span>' + data[i].role.roleName + '</span><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
+                    html += '<div style="margin-top: 7px;" data-role-id="' + data[i].role.id + '" class="layui-unselect layui-form-checkbox ' + (data[i].checked == true ? 'layui-form-checked' : '') + '" lay-skin="primary"><div>' + data[i].role.roleName + '</div><i class="layui-icon layui-icon-ok user-set-role-checkbox"></i></div>';
                 }
                 html += '</div>';
                 layer.open({
