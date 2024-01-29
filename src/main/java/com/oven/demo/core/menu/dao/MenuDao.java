@@ -2,7 +2,7 @@ package com.oven.demo.core.menu.dao;
 
 import com.oven.basic.base.dao.BaseDao;
 import com.oven.basic.base.entity.ConditionAndParams;
-import com.oven.basic.common.util.VoPropertyRowMapper;
+import com.oven.basic.common.util.PropertyRowMapper;
 import com.oven.demo.core.menu.entity.Menu;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -40,7 +40,7 @@ public class MenuDao extends BaseDao<Menu> {
     public List<Menu> getByPidAndHasPermission(Integer pid, List<Integer> menuIds) {
         String in = StringUtils.collectionToDelimitedString(menuIds, ",");
         String sql = "select * from t_menu where pid = ? and `status` = 0 and dbid in (" + in + ") order by sort";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class), pid);
+        return this.jdbcTemplate.query(sql, PropertyRowMapper.build(Menu.class), pid);
     }
 
     /**
@@ -48,7 +48,7 @@ public class MenuDao extends BaseDao<Menu> {
      */
     public List<Menu> getMenuTreeTableData() {
         String sql = "select dbid, menu_code, menu_name, pid, sort, url, iconCls, type, create_id, create_time, last_modify_time, last_modify_id, status, menu_name as title from t_menu order by sort";
-        return this.jdbcTemplate.query(sql, new VoPropertyRowMapper<>(Menu.class));
+        return this.jdbcTemplate.query(sql, PropertyRowMapper.build(Menu.class));
     }
 
 }
