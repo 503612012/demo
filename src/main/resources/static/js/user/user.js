@@ -70,7 +70,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     }
                 }
             },
-            {title: '操作', width: 280, align: 'center', toolbar: '#userListBar'}
+            {fixed: 'right', title: '操作', width: 280, align: 'center', toolbar: '#userListBar'}
         ]],
         page: true
     });

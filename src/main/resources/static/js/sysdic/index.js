@@ -59,7 +59,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     }
                 }
             },
-            {title: '操作', align: 'center', toolbar: '#sysdicListBar'}
+            {fixed: 'right', title: '操作', align: 'center', toolbar: '#sysdicListBar'}
         ]],
         page: true
     });

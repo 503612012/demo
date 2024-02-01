@@ -74,6 +74,7 @@ layui.use(['treetable', 'form'], function() {
                     }
                 },
                 {
+                    fixed: 'right',
                     field: 'actions',
                     title: '操作',
                     template: function(item) {

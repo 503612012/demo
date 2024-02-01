@@ -64,7 +64,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
                     }
                 }
             },
-            {title: '操作', width: 120, align: 'center', toolbar: '#employeeListBar'}
+            {fixed: 'right', title: '操作', width: 120, align: 'center', toolbar: '#employeeListBar'}
         ]],
         page: true
     });

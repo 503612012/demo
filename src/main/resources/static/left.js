@@ -1,4 +1,6 @@
 //@sourceURL=/left.js
+// noinspection DuplicatedCode
+
 define(['jquery'], function($) {
 
     var isShow = true;  // 定义一个标志位
@@ -28,10 +30,15 @@ define(['jquery'], function($) {
      * 填充菜单
      */
     var fillMenus = function(data) {
+        var mainPage = null;
         var html = '';
         for (var i = 0; i < data.length; i++) {
             html += '<li data-name="" data-jump="" class="layui-nav-item ' + (i == 0 ? 'layui-nav-itemed' : '') + '">';
-            html += '<a href="javascript:" lay-tips="主页" lay-direction="2" class="level-one-menu">';
+            if (data[i].children.length > 0) {
+                html += '<a href="javascript:" lay-tips="' + data[i].menu.menuName + '" lay-direction="2" class="level-one-menu">';
+            } else {
+                html += '<a data-icon="' + data[i].menu.iconCls + '" href="' + data[i].menu.url + '" target="mainFrm" lay-tips="' + data[i].menu.menuName + '" lay-direction="2" class="level-one-menu menu-border-left path-menu-item">';
+            }
             html += '<i class="layui-icon ' + data[i].menu.iconCls + '"></i>';
             html += '<cite>&emsp;' + data[i].menu.menuName + '</cite>';
             if (data[i].children.length > 0) {
@@ -39,8 +46,13 @@ define(['jquery'], function($) {
             }
             html += '</a>';
             for (var j = 0; j < data[i].children.length; j++) {
+                if (data[i].children[j].open == true) {
+                    mainPage = data[i].children[j].url;
+                }
                 html += '<dl class="layui-nav-child" style="padding: 0;">';
-                html += '<dd data-name="" data-jump="/" class="level-two-menu ' + ((i == 0 && j == 0) == true ? 'layui-this' : '') + '"><a href="' + data[i].children[j].url + '" target="mainFrm">' + data[i].children[j].menuName + '</a></dd>';
+                html += '<dd data-name="" data-jump="/" class="level-two-menu ' + ((i == 0 && j == 0) == true ? 'layui-this' : '') + '">';
+                html += '<a class="path-menu-item" data-parent-icon="' + data[i].menu.iconCls + '" data-parent-name="' + data[i].menu.menuName + '" href="' + data[i].children[j].url + '" target="mainFrm">' + data[i].children[j].menuName + '</a>'
+                html += '</dd>';
                 html += '</dl>';
             }
             html += '</li>';
@@ -49,6 +61,7 @@ define(['jquery'], function($) {
             $(this).parent().toggleClass("layui-nav-itemed");
             $(".menu-border-left").removeClass("menu-border-left");
             $(this).addClass("menu-border-left");
+            $(".layui-this").removeClass("layui-this");
         });
         $("#user-menus").find(".level-two-menu").on("click", function() {
             if ($(window).width() < 750) {
@@ -59,7 +72,22 @@ define(['jquery'], function($) {
             $(".menu-border-left").removeClass("menu-border-left");
             $(this).parent().parent().find(".level-one-menu").addClass("menu-border-left");
         });
+        return mainPage;
     };
+
+    $('body').on('click', '.path-menu-item', function() {
+        var parentName = $(this).attr('data-parent-name');
+        var parentIcon = $(this).attr('data-parent-icon');
+        var name;
+        if (parentName == null || parentName == '' || parentName == undefined) {
+            var icon = $(this).attr('data-icon');
+            name = $(this).children('cite').html();
+            $('#menuPath').html('<span style="cursor: default;"><i style="margin: 0 5px;" class="layui-icon ' + icon + '"></i>' + name.trim() + '</span>');
+        } else {
+            name = $(this).html();
+            $('#menuPath').html('<span style="cursor: default;"><i style="margin: 0 5px;" class="layui-icon ' + parentIcon + '"></i>' + parentName + '  /  ' + name + '</span>');
+        }
+    });
 
     function initMenu(data) {
         if ($(window).width() < 750) {
