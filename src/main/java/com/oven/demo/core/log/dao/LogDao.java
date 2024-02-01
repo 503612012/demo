@@ -33,7 +33,7 @@ public class LogDao extends BaseDao<Log> {
      * @param pageSize 每页显示数量
      */
     public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
-        return super.getByPage(pageNum, pageSize, "operator_time desc");
+        return super.getByPage(pageNum, pageSize, addCondition(log), "operator_time desc");
     }
 
     /**
