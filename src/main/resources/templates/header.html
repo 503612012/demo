@@ -38,20 +38,20 @@
 <div id="changePwdTips" style="display: none;" xmlns:th="http://www.thymeleaf.org">
     <div class='layui-form'>
         <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
-            <label class='layui-form-label'>原始密码</label>
+            <label class='layui-form-label'>原始密码：</label>
             <div class='layui-input-inline'>
                 <input type="hidden" name="key" th:value="${session.key}">
                 <input type="password" name="oldPwd" lay-filter="required" placeholder="请输入原始密码" class='layui-input'>
             </div>
         </div>
         <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
-            <label class='layui-form-label'>新密码</label>
+            <label class='layui-form-label'>新密码：</label>
             <div class='layui-input-inline'>
                 <input type="password" name="newPwd" lay-filter="required" placeholder="请输入新密码" class='layui-input'>
             </div>
         </div>
         <div class='layui-inline' style="margin: 10px; display: flex; justify-content: center;">
-            <label class='layui-form-label'>确认新密码</label>
+            <label class='layui-form-label'>确认密码：</label>
             <div class='layui-input-inline'>
                 <input type="password" name="confirmPwd" lay-filter="required" placeholder="请再次输入新密码" class='layui-input'>
             </div>
@@ -67,7 +67,7 @@
     <div>
         <form class="layui-form" lay-filter="updateBaseInfoForm" action="" style="padding: 20px 77px 20px 20px;">
             <div class="layui-form-item">
-                <label class="layui-form-label">用户名</label>
+                <label class="layui-form-label">用户名：</label>
                 <div class="layui-input-inline">
                     <input type="hidden" name="id">
                     <input type="text" name="userName" disabled lay-verify="title" autocomplete="off" class="layui-input">
@@ -75,28 +75,28 @@
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">昵称</label>
+                <label class="layui-form-label">昵称：</label>
                 <div class="layui-input-inline">
                     <input type="text" name="nickName" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">年龄</label>
+                <label class="layui-form-label">年龄：</label>
                 <div class="layui-input-inline">
                     <input type="number" name="age" lay-verify="required" placeholder="请输入年龄" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">邮箱</label>
+                <label class="layui-form-label">邮箱：</label>
                 <div class="layui-input-inline">
                     <input type="email" name="email" lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">性别</label>
+                <label class="layui-form-label">性别：</label>
                 <div class="layui-input-inline">
                     <input type="radio" name="gender" value="1" title="男">
                     <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
@@ -110,7 +110,7 @@
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">手机号</label>
+                <label class="layui-form-label">手机号：</label>
                 <div class="layui-input-inline">
                     <input type="number" name="phone" lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
                 </div>
