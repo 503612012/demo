@@ -1,6 +1,7 @@
 package com.oven.demo.framework.cache.impl;
 
 import com.oven.demo.framework.cache.CacheService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -19,6 +20,7 @@ import java.util.function.Function;
  *
  * @author Oven
  */
+@Slf4j
 @Service
 public class CacheServiceImpl implements CacheService {
 
@@ -95,7 +97,7 @@ public class CacheServiceImpl implements CacheService {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("读取redis缓存异常：", e);
         }
         return obj;
     }

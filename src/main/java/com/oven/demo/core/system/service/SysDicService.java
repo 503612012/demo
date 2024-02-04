@@ -6,6 +6,7 @@ import com.oven.demo.common.redis.IRedisService;
 import com.oven.demo.common.service.BaseService;
 import com.oven.demo.core.system.dao.SysDicDao;
 import com.oven.demo.core.system.entity.SysDicEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Oven
  */
+@Slf4j
 @Service
 public class SysDicService extends BaseService {
 
@@ -54,8 +56,7 @@ public class SysDicService extends BaseService {
             }
             reduceNum(thread_index); // 生成订单
         } catch (Exception e) {
-            System.out.println("秒杀活动异常！");
-            e.printStackTrace();
+            log.error("秒杀活动异常：", e);
         } finally {
             // 释放分布式锁
             redisService.releaseLock("SEC_KILL_LOCK", lockId);
@@ -70,14 +71,13 @@ public class SysDicService extends BaseService {
             // 获取库存剩余量
             int num = Integer.parseInt(sysDicDao.getByKey("secKill").getValue());
             if (num > 0) { // 库存还有
-                System.out.println(thread_index + "，当前库存：" + num + "，线程【" + thread_index + "】售出一件！");
+                log.info("=========================== >>> {}，当前库存：{}，线程【{}】售出一件！", thread_index, num, thread_index);
                 sysDicDao.reduceNum();
             } else {
-                System.out.println("库存不足！");
+                log.info("库存不足！");
             }
         } catch (Exception e) {
-            System.out.println("生成订单异常！");
-            e.printStackTrace();
+            log.error("生成订单异常：", e);
         }
     }
 
