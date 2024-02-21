@@ -37,7 +37,7 @@ public class SysDicService extends BaseService {
             int thread_index = i;
             new Thread(() -> {
                 for (int n = 0; n < 30; n++) {
-                    doSecKill(thread_index);
+                    doSecKill(thread_index, n);
                 }
             }).start();
         }
@@ -46,7 +46,7 @@ public class SysDicService extends BaseService {
     /**
      * 开始秒杀
      */
-    private void doSecKill(int thread_index) {
+    private void doSecKill(int thread_index, int n) {
         // 获取分布式锁
         String lockId = redisService.acquireLock("SEC_KILL_LOCK", TimeUnit.MINUTES.toSeconds(30));
         try {
@@ -54,7 +54,7 @@ public class SysDicService extends BaseService {
                 TimeUnit.MILLISECONDS.sleep(100); // 等待100毫秒后重新获取分布式锁
                 lockId = redisService.acquireLock("SEC_KILL_LOCK", TimeUnit.MINUTES.toSeconds(30));
             }
-            reduceNum(thread_index); // 生成订单
+            reduceNum(thread_index, n); // 生成订单
         } catch (Exception e) {
             log.error("秒杀活动异常：", e);
         } finally {
@@ -66,15 +66,15 @@ public class SysDicService extends BaseService {
     /**
      * 生成订单
      */
-    private void reduceNum(int thread_index) {
+    private void reduceNum(int thread_index, int n) {
         try {
             // 获取库存剩余量
             int num = Integer.parseInt(sysDicDao.getByKey("secKill").getValue());
             if (num > 0) { // 库存还有
-                log.info("=========================== >>> {}，当前库存：{}，线程【{}】售出一件！", thread_index, num, thread_index);
+                log.info("=========================== >>> 当前库存：{}，线程【{} - {}】售出一件！", num, thread_index, n);
                 sysDicDao.reduceNum();
             } else {
-                log.info("库存不足！");
+                log.info("=========================== >>> 当前库存：{}，线程【{} - {}】库存不足！", num, thread_index, n);
             }
         } catch (Exception e) {
             log.error("生成订单异常：", e);
