@@ -177,7 +177,7 @@ insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.redis.
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.redis.jedis.pool.max-idle', '8', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.redis.pool.min-idle', '0', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'springfox.documentation.swagger.v2.use-model-v3', 'false', null);
-# insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.boot.admin.client.url', 'http://192.168.1.160:8001', null);
+# insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.boot.admin.client.url', 'http://192.168.18.66:8001', null);
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.boot.admin.client.username', 'admin', null);
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.boot.admin.client.password', '123456', null);
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.boot.admin.client.instance.prefer-ip', 'true', null);
