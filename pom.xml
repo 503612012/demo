@@ -596,7 +596,6 @@
                                 <echo message="start exec chmod u+x shell"/>
                                 <chmod dir="${project.build.directory}/" perm="u+x" includes="*.sh"/>
                                 <chmod dir="${project.build.directory}/" perm="u+x" includes="backup"/>
-                                <chmod dir="${project.build.directory}/license" perm="u+x" includes="key"/>
                                 <echo message="finish exec chmod u+x shell"/>
                             </target>
                         </configuration>
