@@ -230,7 +230,7 @@ public class EmployeeController {
      */
     @ResponseBody
     @RequestMapping("/getHourSalaryByEmployeeId")
-    @RequiresPermissions(PermissionCode.EMPLOYEE_SHOWMONEY)
+    @RequiresPermissions(PermissionCode.EMPLOYEE_SHOW_MONEY)
     @ApiImplicitParam(name = "employeeId", value = "员工主键", required = true)
     @ApiOperation(value = "获取一个员工的时薪", notes = "获取一个员工的时薪接口", httpMethod = AppConst.GET)
     public ResultInfo<Object> getHourSalaryByEmployeeId(Integer employeeId) throws MyException {

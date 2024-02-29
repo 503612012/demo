@@ -44,7 +44,7 @@ public interface RedisCacheKey {
     String MENU_GET_BY_PID = MENU_PREFIX + "getByPid_{}";
     String MENU_GET_MENU_TREE_TABLE_DATA = MENU_PREFIX + "getMenuTreeTableData";
     String MENU_GET_MENU_TREE_BY_USERID = MENU_PREFIX + "getMenuTreeByUserId_{}";
-    String MENU_GET_BY_PID_AND_HASPERMISSION = MENU_PREFIX + "getByPidAndHasPermission_{}_{}";
+    String MENU_GET_BY_PID_AND_HAS_PERMISSION = MENU_PREFIX + "getByPidAndHasPermission_{}_{}";
 
     // 用户角色关系实体类缓存key定义
     String USERROLE_PREFIX = PREFIX + "userRole_";

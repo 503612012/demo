@@ -45,6 +45,6 @@ public interface PermissionCode {
     String EMPLOYEE_UPDATE                    = "employee:employee:update";     // 修改员工
     String EMPLOYEE_DELETE                    = "employee:employee:del";        // 删除员工
     String EMPLOYEE_SETSTATUS                 = "employee:employee:status";     // 修改员工状态
-    String EMPLOYEE_SHOWMONEY                 = "employee:employee:showmeoney"; // 显示金额
+    String EMPLOYEE_SHOW_MONEY                = "employee:employee:showmeoney"; // 显示金额
 
 }

@@ -31,7 +31,7 @@ public class RedisServiceImpl implements IRedisService {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
-    private static final String SPRING_REDIS_CLUSTER_PIPELINE_MAXNUM = "20000";
+    private static final String SPRING_REDIS_CLUSTER_PIPELINE_MAX_NUM = "20000";
     private int maxNum;
 
     @Resource
@@ -428,7 +428,7 @@ public class RedisServiceImpl implements IRedisService {
      */
     private List<Map<String, Object>> splitMap(Map<String, Object> map) {
         try {
-            maxNum = Integer.parseInt(SPRING_REDIS_CLUSTER_PIPELINE_MAXNUM);
+            maxNum = Integer.parseInt(SPRING_REDIS_CLUSTER_PIPELINE_MAX_NUM);
         } catch (Exception e) {
             logger.error("从数据字典获取相关配置失败", e);
         }
@@ -504,7 +504,7 @@ public class RedisServiceImpl implements IRedisService {
      */
     private List<List<String>> splitList(List<String> list) {
         try {
-            maxNum = Integer.parseInt(SPRING_REDIS_CLUSTER_PIPELINE_MAXNUM);
+            maxNum = Integer.parseInt(SPRING_REDIS_CLUSTER_PIPELINE_MAX_NUM);
         } catch (Exception e) {
             logger.error("从数据字典获取相关配置失败", e);
         }

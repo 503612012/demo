@@ -187,13 +187,13 @@ public class RoleService extends BaseService {
                     }
                     levelTwoChildren.add(threeObj);
                 }
-                if (levelTwoChildren.size() > 0) {
+                if (!levelTwoChildren.isEmpty()) {
                     twoObj.put("children", levelTwoChildren);
                     twoObj.put("state", "closed");
                 }
                 levelOneChildren.add(twoObj);
             }
-            if (levelOneChildren.size() > 0) {
+            if (!levelOneChildren.isEmpty()) {
                 oneObj.put("children", levelOneChildren);
                 oneObj.put("state", "closed");
             }

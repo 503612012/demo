@@ -118,22 +118,22 @@ public class MenuService extends BaseService {
      * @param pid    菜单id
      */
     private List<Menu> getByPidAndHasPermission(Integer userId, Integer pid) {
-        List<Menu> list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 先读取缓存
+        List<Menu> list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HAS_PERMISSION, userId, pid)); // 先读取缓存
         if (list == null) { // double check
             synchronized (this) {
-                list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
+                list = super.get(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HAS_PERMISSION, userId, pid)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
                 if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
                     List<Integer> menuIds = new ArrayList<>();
                     List<UserRole> roles = userRoleService.getByUserId(userId);
                     for (UserRole role : roles) {
                         List<RoleMenu> roleMenus = roleMenuService.getByRoleId(role.getRoleId());
-                        if (roleMenus != null && roleMenus.size() > 0) {
+                        if (roleMenus != null && !roleMenus.isEmpty()) {
                             roleMenus.forEach(roleMenu -> menuIds.add(roleMenu.getMenuId()));
                         }
                     }
                     list = menuDao.getByPidAndHasPermission(pid, menuIds);
                     Collections.sort(list);
-                    super.set(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HASPERMISSION, userId, pid), list);
+                    super.set(StrUtil.format(RedisCacheKey.MENU_GET_BY_PID_AND_HAS_PERMISSION, userId, pid), list);
                 }
             }
         }
