@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * redis缓存操作接口
@@ -14,6 +15,32 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("unused")
 public interface IRedisDao {
+
+    /**
+     * 查询缓存
+     *
+     * @param key        缓存键 不可为空
+     * @param function   如没有缓存，调用该callable函数返回对象 可为空
+     * @param funcParam  function函数的调用参数
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    <T, X> T get(String key, Function<X, T> function, X funcParam, Long expireTime);
+
+    /**
+     * 设置缓存键值
+     *
+     * @param key        缓存键 不可为空
+     * @param obj        缓存值 不可为空
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    <T> void set(String key, T obj, Long expireTime);
+
+    /**
+     * 批量移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    void batchRemove(String... key);
 
     /**
      * 保存指定key和String类型值到redis缓存
@@ -97,17 +124,6 @@ public interface IRedisDao {
     boolean setIfAbsent(String key, Object value);
 
     /**
-     * cas锁实现，指定过期时间和单位（临时锁，如果不主动释放，到指定时间后自动释放）
-     *
-     * @param key     要获取锁的名称
-     * @param value   锁的值，通常使用某个id以在主动释放时判断是否自己的锁
-     * @param timeout 过期时间
-     * @param unit    过期时间单位
-     * @return 获取成功=true、失败=false
-     */
-    boolean setIfAbsent(String key, Object value, long timeout, TimeUnit unit);
-
-    /**
      * cas锁实现，指定过期时间，单位秒（临时锁，如果不主动释放，到指定时间后自动释放）
      *
      * @param key    要获取锁的名称
@@ -126,6 +142,17 @@ public interface IRedisDao {
      * @return 获取成功=true、失败=false
      */
     boolean setIfAbsent(String key, Object value, Date date);
+
+    /**
+     * cas锁实现，指定过期时间和单位（临时锁，如果不主动释放，到指定时间后自动释放）
+     *
+     * @param key     要获取锁的名称
+     * @param value   锁的值，通常使用某个id以在主动释放时判断是否自己的锁
+     * @param timeout 过期时间
+     * @param unit    过期时间单位
+     * @return 获取成功=true、失败=false
+     */
+    boolean setIfAbsent(String key, Object value, long timeout, TimeUnit unit);
 
     /**
      * 获取指定key的String值
@@ -179,6 +206,14 @@ public interface IRedisDao {
     boolean expire(String key, long expire);
 
     /**
+     * 设置key的过期时间，指定到date
+     *
+     * @param key  要设置的key
+     * @param date 过期的日期
+     */
+    boolean expire(String key, Date date);
+
+    /**
      * 设置key的过期时间，指定单位
      *
      * @param key     要设置的key
@@ -186,14 +221,6 @@ public interface IRedisDao {
      * @param unit    过期时间单位
      */
     boolean expire(String key, long timeout, TimeUnit unit);
-
-    /**
-     * 设置key的过期时间，指定到date
-     *
-     * @param key  要设置的key
-     * @param date 过期的日期
-     */
-    boolean expire(String key, Date date);
 
     /**
      * 获取key的过期时间，单位秒

@@ -2,14 +2,19 @@ package com.oven.demo.common.redis.impl;
 
 import com.oven.demo.common.redis.IRedisDao;
 import com.oven.demo.common.redis.util.JedisClusterPipeline;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConverters;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.TimeoutUtils;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
@@ -25,17 +30,100 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * redis缓存操作实现类
  *
  * @author Oven
  */
+@Slf4j
 @Component
 public class RedisDaoImpl implements IRedisDao {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    /**
+     * 查询缓存
+     *
+     * @param key        缓存键 不可为空
+     * @param function   如没有缓存，调用该callable函数返回对象 可为空
+     * @param funcParam  function函数的调用参数
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T, X> T get(String key, Function<X, T> function, X funcParam, Long expireTime) {
+        T obj = null;
+        if (StringUtils.isEmpty(key)) {
+            return null;
+        }
+        try {
+            ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+            obj = (T) operations.get(key);
+            if (function != null && obj == null) {
+                obj = function.apply(funcParam);
+                if (obj != null) {
+                    set(key, obj, expireTime); // 设置缓存信息
+                }
+            }
+        } catch (Exception e) {
+            log.error("读取redis缓存异常：", e);
+        }
+        return obj;
+    }
+
+    /**
+     * 设置缓存键值 直接向缓存中插入值，这会直接覆盖掉给定键之前映射的值
+     *
+     * @param key        缓存键 不可为空
+     * @param obj        缓存值 不可为空
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    @Override
+    public <T> void set(String key, T obj, Long expireTime) {
+        if (StringUtils.isEmpty(key)) {
+            return;
+        }
+        if (obj == null) {
+            return;
+        }
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+        operations.set(key, obj);
+        if (null != expireTime) {
+            redisTemplate.expire(key, expireTime, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    /**
+     * 批量移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    @Override
+    public void batchRemove(String... key) {
+        if (key != null && key.length > 0) {
+            if (key.length == 1) {
+                this.localBatchRemove(key[0]);
+            } else {
+                @SuppressWarnings("rawtypes") List keys = CollectionUtils.arrayToList(key);
+                for (Object item : keys) {
+                    this.localBatchRemove((String) item);
+                }
+            }
+        }
+    }
+
+    private void localBatchRemove(String key) {
+        Set<String> set = redisTemplate.keys(key + "*");
+        if (set != null) {
+            for (String item : set) {
+                redisTemplate.delete(item);
+            }
+        }
+    }
 
     @Override
     public void setString(final String key, final String value) {
@@ -141,6 +229,24 @@ public class RedisDaoImpl implements IRedisDao {
     }
 
     /**
+     * @param expire 过期时间，单位秒
+     */
+    @Override
+    public boolean setIfAbsent(final String key, final Object value, final long expire) {
+        return this.setIfAbsent(key, value, expire, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public boolean setIfAbsent(final String key, final Object value, final Date date) {
+        final long timeout = (null == date) ? -1L : (date.getTime() - System.currentTimeMillis());
+        if (timeout > 0L) {
+            return this.setIfAbsent(key, value, timeout, TimeUnit.MILLISECONDS);
+        } else {
+            return this.setIfAbsent(key, value);
+        }
+    }
+
+    /**
      * @param timeout 过期时间
      * @param unit    过期时间单位
      */
@@ -158,24 +264,6 @@ public class RedisDaoImpl implements IRedisDao {
             }
         }
         return lock;
-    }
-
-    /**
-     * @param expire 过期时间，单位秒
-     */
-    @Override
-    public boolean setIfAbsent(final String key, final Object value, final long expire) {
-        return this.setIfAbsent(key, value, expire, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public boolean setIfAbsent(final String key, final Object value, final Date date) {
-        final long timeout = (null == date) ? -1L : (date.getTime() - System.currentTimeMillis());
-        if (timeout > 0L) {
-            return this.setIfAbsent(key, value, timeout, TimeUnit.MILLISECONDS);
-        } else {
-            return this.setIfAbsent(key, value);
-        }
     }
 
     @Override
@@ -205,6 +293,9 @@ public class RedisDaoImpl implements IRedisDao {
 
     @Override
     public void remove(final String key) {
+        if (StringUtils.isEmpty(key)) {
+            return;
+        }
         this.redisTemplate.delete(key);
     }
 
@@ -222,6 +313,14 @@ public class RedisDaoImpl implements IRedisDao {
     }
 
     /**
+     * @param date 过期日期
+     */
+    @Override
+    public boolean expire(final String key, final Date date) {
+        return null != date && Objects.requireNonNull(this.redisTemplate.expireAt(key, date));
+    }
+
+    /**
      * @param timeout 过期时间
      * @param unit    过期时间单位
      */
@@ -229,14 +328,6 @@ public class RedisDaoImpl implements IRedisDao {
     public boolean expire(final String key, final long timeout, final TimeUnit unit) {
         final TimeUnit timeUnit = (null == unit ? TimeUnit.SECONDS : unit);
         return timeout > 0L && Objects.requireNonNull(this.redisTemplate.expire(key, timeout, timeUnit));
-    }
-
-    /**
-     * @param date 过期日期
-     */
-    @Override
-    public boolean expire(final String key, final Date date) {
-        return null != date && Objects.requireNonNull(this.redisTemplate.expireAt(key, date));
     }
 
     @Override

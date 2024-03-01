@@ -1,7 +1,6 @@
 package com.oven.demo.common.redis.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.BinaryJedisCluster;
 import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
@@ -34,9 +33,8 @@ import java.util.Queue;
  *
  * @author Oven
  */
+@Slf4j
 public class JedisClusterPipeline extends PipelineBase implements Closeable {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JedisClusterPipeline.class);
 
     /**
      * 部分字段没有对应的获取方法，采用反射来做。
@@ -127,18 +125,11 @@ public class JedisClusterPipeline extends PipelineBase implements Closeable {
                 }
             }
         } catch (JedisMovedDataException jme) {
-            // if MOVED redirection occurred, rebuilds cluster's slot cache,
-            // recommended by Redis cluster specification
-            LOGGER.error("error on sync!", jme);
+            log.error("error on sync!", jme);
             this.refreshCluster();
             throw jme;
         } catch (JedisRedirectionException jre) {
-            /*if (jre instanceof JedisMovedDataException) {
-                // if MOVED redirection occurred, rebuilds cluster's slot cache,
-                // recommended by Redis cluster specification
-            	this.refreshCluster();
-            }*/
-            LOGGER.error("error on sync!", jre);
+            log.error("error on sync!", jre);
             throw jre;
         } finally {
             if (clientSet.size() != this.jedisMap.size()) {
@@ -174,7 +165,7 @@ public class JedisClusterPipeline extends PipelineBase implements Closeable {
         try {
             jedis.getClient().getAll();
         } catch (Exception e) {
-            LOGGER.error("error on flushCachedData!", e);
+            log.error("error on flushCachedData!", e);
         }
     }
 
@@ -220,7 +211,7 @@ public class JedisClusterPipeline extends PipelineBase implements Closeable {
         try {
             return (T) field.get(obj);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            LOGGER.error("get value fail", e);
+            log.error("get value fail", e);
             throw new RuntimeException(e);
         }
     }

@@ -2,8 +2,7 @@ package com.oven.demo.common.redis.task;
 
 import com.oven.demo.common.redis.IExecutor;
 import com.oven.demo.common.redis.IRedisDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,9 +11,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Oven
  */
+@Slf4j
 public class RedisExecuteTask implements Runnable {
-
-    private static final Logger logger = LoggerFactory.getLogger(RedisExecuteTask.class);
 
     private final IRedisDao redisDao;
     private final IExecutor executor;
@@ -33,13 +31,13 @@ public class RedisExecuteTask implements Runnable {
                 this.executor.execute(this.redisDao);
                 return;
             } catch (Exception e) {
-                logger.error("执行redis异步任务时出现异常，异常信息：", e);
+                log.error("执行redis异步任务时出现异常，异常信息：", e);
             }
             if ((i + 1) < this.retry) {
                 this.waitFor();
             }
         }
-        logger.error("执行redis异步任务时出现异常，连续尝试{}次未能成功 ......", this.retry);
+        log.error("执行redis异步任务时出现异常，连续尝试{}次未能成功 ......", this.retry);
     }
 
     /**
@@ -49,7 +47,7 @@ public class RedisExecuteTask implements Runnable {
         try {
             TimeUnit.MILLISECONDS.sleep(TimeUnit.MILLISECONDS.toMillis(100));
         } catch (Exception e) {
-            logger.error("睡眠异常：", e);
+            log.error("睡眠异常：", e);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.oven.demo.common.redis.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,9 +10,8 @@ import java.util.concurrent.Executors;
  *
  * @author Oven
  */
+@Slf4j
 public class RedisThreadPoolTools {
-
-    private static final Logger logger = LoggerFactory.getLogger(RedisThreadPoolTools.class);
 
     private final ExecutorService service;
 
@@ -40,7 +38,7 @@ public class RedisThreadPoolTools {
         try {
             this.service.execute(r);
         } catch (Exception e) {
-            logger.error("线程调度发生异常，异常信息如下：", e);
+            log.error("线程调度发生异常，异常信息如下：", e);
         }
     }
 

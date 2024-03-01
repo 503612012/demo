@@ -5,8 +5,7 @@ import com.oven.demo.common.redis.IRedisDao;
 import com.oven.demo.common.redis.IRedisService;
 import com.oven.demo.common.redis.task.RedisExecuteTask;
 import com.oven.demo.common.redis.util.RedisThreadPoolTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,22 +19,113 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * redis服务层实现类
  *
  * @author Oven
  */
+@Slf4j
 @Service
 public class RedisServiceImpl implements IRedisService {
-
-    private static final Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
     private static final String SPRING_REDIS_CLUSTER_PIPELINE_MAX_NUM = "20000";
     private int maxNum;
 
     @Resource
     private IRedisDao redisDao;
+
+    /**
+     * 查询缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    @Override
+    public <T> T get(String key) {
+        return get(key, null, null, null);
+    }
+
+    /**
+     * 查询缓存
+     *
+     * @param key      缓存键 不可为空
+     * @param function 如没有缓存，调用该callable函数返回对象 可为空
+     */
+    @Override
+    public <T> T get(String key, Function<String, T> function) {
+        return get(key, function, key, null);
+    }
+
+    /**
+     * 查询缓存
+     *
+     * @param key       缓存键 不可为空
+     * @param function  如没有缓存，调用该callable函数返回对象 可为空
+     * @param funcParam function函数的调用参数
+     */
+    @Override
+    public <T, X> T get(String key, Function<X, T> function, X funcParam) {
+        return get(key, function, funcParam, null);
+    }
+
+    /**
+     * 查询缓存
+     *
+     * @param key        缓存键 不可为空
+     * @param function   如没有缓存，调用该callable函数返回对象 可为空
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    @Override
+    public <T> T get(String key, Function<String, T> function, Long expireTime) {
+        return get(key, function, key, expireTime);
+    }
+
+    /**
+     * 查询缓存
+     *
+     * @param key        缓存键 不可为空
+     * @param function   如没有缓存，调用该callable函数返回对象 可为空
+     * @param funcParam  function函数的调用参数
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    @Override
+    public <T, X> T get(String key, Function<X, T> function, X funcParam, Long expireTime) {
+        return redisDao.get(key, function, funcParam, expireTime);
+    }
+
+    /**
+     * 设置缓存键值 直接向缓存中插入值，这会直接覆盖掉给定键之前映射的值
+     *
+     * @param key 缓存键 不可为空
+     * @param obj 缓存值 不可为空
+     */
+    @Override
+    public <T> void set(String key, T obj) {
+        set(key, obj, null);
+    }
+
+    /**
+     * 设置缓存键值 直接向缓存中插入值，这会直接覆盖掉给定键之前映射的值
+     *
+     * @param key        缓存键 不可为空
+     * @param obj        缓存值 不可为空
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    @Override
+    public <T> void set(String key, T obj, Long expireTime) {
+        redisDao.set(key, obj, expireTime);
+    }
+
+    /**
+     * 批量移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    @Override
+    public void batchRemove(String... key) {
+        redisDao.batchRemove(key);
+    }
 
     @Override
     public boolean setString(final String key, final String value) {
@@ -81,14 +171,14 @@ public class RedisServiceImpl implements IRedisService {
                 executor.execute(this.redisDao);
                 return true;
             } catch (Exception e) {
-                logger.error("保存key={}时出现异常，异常信息：", key, e);
+                log.error("保存key={}时出现异常，异常信息：", key, e);
             }
 
             if ((i + 1) < times) {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         }
-        logger.error("保存时出现异常，连续尝试{}次未能成功，参数为：key={}, value={}, expire={} ......", times, key, value, expire);
+        log.error("保存时出现异常，连续尝试{}次未能成功，参数为：key={}, value={}, expire={} ......", times, key, value, expire);
         return false;
     }
 
@@ -135,14 +225,14 @@ public class RedisServiceImpl implements IRedisService {
                 executor.execute(this.redisDao);
                 return true;
             } catch (Exception e) {
-                logger.error("保存key={}时出现异常，异常信息：", key, e);
+                log.error("保存key={}时出现异常，异常信息：", key, e);
             }
 
             if ((i + 1) < times) {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         }
-        logger.error("保存时出现异常，连续尝试{}次未能成功，参数为：key={}, value={}, expire={} ......", times, key, value, expire);
+        log.error("保存时出现异常，连续尝试{}次未能成功，参数为：key={}, value={}, expire={} ......", times, key, value, expire);
         return false;
     }
 
@@ -159,14 +249,14 @@ public class RedisServiceImpl implements IRedisService {
             try {
                 return this.redisDao.getString(key);
             } catch (Exception e) {
-                logger.error("读取key={}时出现异常，异常信息：", key, e);
+                log.error("读取key={}时出现异常，异常信息：", key, e);
             }
 
             if ((i + 1) < times) {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         }
-        logger.error("读取时出现异常，连续尝试{}次未能成功，参数为：key={}, retry={} ......", times, key, retry);
+        log.error("读取时出现异常，连续尝试{}次未能成功，参数为：key={}, retry={} ......", times, key, retry);
         // 为了区分null和获取异常，这里抛出异常
         throw new RuntimeException("key=" + key + "读取redis数据时发生异常！");
     }
@@ -184,16 +274,26 @@ public class RedisServiceImpl implements IRedisService {
             try {
                 return this.redisDao.getObject(key);
             } catch (Exception e) {
-                logger.error("读取key={}时出现异常，异常信息：", key, e);
+                log.error("读取key={}时出现异常，异常信息：", key, e);
             }
 
             if ((i + 1) < times) {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         }
-        logger.error("读取时出现异常，连续尝试{}次未能成功，参数为：key={}, retry={} ......", times, key, retry);
+        log.error("读取时出现异常，连续尝试{}次未能成功，参数为：key={}, retry={} ......", times, key, retry);
         // 为了区分null和获取异常，这里抛出异常
         throw new RuntimeException("key=" + key + "读取redis数据时发生异常！");
+    }
+
+    /**
+     * 移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    @Override
+    public void remove(String key) {
+        redisDao.remove(key);
     }
 
     @Override
@@ -207,13 +307,13 @@ public class RedisServiceImpl implements IRedisService {
                 this.redisDao.remove(key);
                 return true;
             } catch (Exception e) {
-                logger.error("删除key={}时出现异常，异常信息：", key, e);
+                log.error("删除key={}时出现异常，异常信息：", key, e);
             }
             if ((i + 1) < times) {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         }
-        logger.error("删除时出现异常，连续尝试{}次未能成功，要删除的参数为：key={}, retry={} ......", times, key, retry);
+        log.error("删除时出现异常，连续尝试{}次未能成功，要删除的参数为：key={}, retry={} ......", times, key, retry);
         return false;
     }
 
@@ -239,14 +339,14 @@ public class RedisServiceImpl implements IRedisService {
                 executor.execute(this.redisDao);
                 return true;
             } catch (Exception e) {
-                logger.error("删除key={}时出现异常，异常信息：", key, e);
+                log.error("删除key={}时出现异常，异常信息：", key, e);
             }
 
             if ((i + 1) < times) {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         }
-        logger.error("删除时出现异常，连续尝试{}次未能成功，要删除的参数为：key={}, syn={} ......", times, key, syn);
+        log.error("删除时出现异常，连续尝试{}次未能成功，要删除的参数为：key={}, syn={} ......", times, key, syn);
         return false;
     }
 
@@ -259,7 +359,7 @@ public class RedisServiceImpl implements IRedisService {
                 return lockId;
             }
         } catch (Exception e) {
-            logger.error("获取锁key={}时出现异常，异常信息：", key, e);
+            log.error("获取锁key={}时出现异常，异常信息：", key, e);
         }
         return null;
     }
@@ -273,7 +373,7 @@ public class RedisServiceImpl implements IRedisService {
                 return lockId;
             }
         } catch (Exception e) {
-            logger.error("获取锁={}时出现异常，异常信息：", key, e);
+            log.error("获取锁={}时出现异常，异常信息：", key, e);
         }
         return null;
     }
@@ -291,7 +391,7 @@ public class RedisServiceImpl implements IRedisService {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         } catch (Exception e) {
-            logger.error("获取锁key={}时出现异常，异常信息：", key, e);
+            log.error("获取锁key={}时出现异常，异常信息：", key, e);
         }
         return null;
     }
@@ -309,7 +409,7 @@ public class RedisServiceImpl implements IRedisService {
                 waitFor(100, TimeUnit.MILLISECONDS);
             }
         } catch (Exception e) {
-            logger.error("获取锁key={}时出现异常，异常信息：", key, e);
+            log.error("获取锁key={}时出现异常，异常信息：", key, e);
         }
         return null;
     }
@@ -320,7 +420,7 @@ public class RedisServiceImpl implements IRedisService {
             this.redisDao.remove(key);
             return true;
         } catch (Exception e) {
-            logger.error("释放锁key={}时出现异常，异常信息：", key, e);
+            log.error("释放锁key={}时出现异常，异常信息：", key, e);
         }
         return false;
     }
@@ -365,7 +465,7 @@ public class RedisServiceImpl implements IRedisService {
             // 锁id不一样表示自己的锁已过期，锁被其他人使用，不需要释放
             return true;
         } catch (Exception e) {
-            logger.error("释放锁key={}时出现异常，异常信息：", key, e);
+            log.error("释放锁key={}时出现异常，异常信息：", key, e);
         }
         return false;
     }
@@ -418,7 +518,7 @@ public class RedisServiceImpl implements IRedisService {
             executor.execute(this.redisDao);
             return true;
         } catch (Exception e) {
-            logger.error("pipeline批量保存出现异常，异常信息：", e);
+            log.error("pipeline批量保存出现异常，异常信息：", e);
         }
         return false;
     }
@@ -430,7 +530,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             maxNum = Integer.parseInt(SPRING_REDIS_CLUSTER_PIPELINE_MAX_NUM);
         } catch (Exception e) {
-            logger.error("从数据字典获取相关配置失败", e);
+            log.error("从数据字典获取相关配置失败", e);
         }
 
         final int maxPerPipeline = Math.max(this.maxNum, 1000);
@@ -460,7 +560,7 @@ public class RedisServiceImpl implements IRedisService {
             }
             return result;
         } catch (Exception e) {
-            logger.error("pipeline批量读取出现异常，异常信息：", e);
+            log.error("pipeline批量读取出现异常，异常信息：", e);
         }
         return null;
     }
@@ -473,7 +573,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             redisDao.pipelineBatchSAdd(syncData);
         } catch (Exception e) {
-            logger.error("--pipelineBatchSAdd批量保存出现异常，异常信息：", e);
+            log.error("--pipelineBatchSAdd批量保存出现异常，异常信息：", e);
         }
     }
 
@@ -489,7 +589,7 @@ public class RedisServiceImpl implements IRedisService {
                 resultMap.putAll(this.redisDao.pipelineBatchSGet(readList));
             }
         } catch (Exception e) {
-            logger.error("pipeline批量读取出现异常，异常信息：", e);
+            log.error("pipeline批量读取出现异常，异常信息：", e);
         }
         return resultMap;
     }
@@ -506,7 +606,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             maxNum = Integer.parseInt(SPRING_REDIS_CLUSTER_PIPELINE_MAX_NUM);
         } catch (Exception e) {
-            logger.error("从数据字典获取相关配置失败", e);
+            log.error("从数据字典获取相关配置失败", e);
         }
 
         final int maxPerPipeline = Math.max(this.maxNum, 1000);
@@ -566,7 +666,7 @@ public class RedisServiceImpl implements IRedisService {
             executor.execute(this.redisDao);
             return true;
         } catch (Exception e) {
-            logger.error("multiSet批量保存出现异常，异常信息：", e);
+            log.error("multiSet批量保存出现异常，异常信息：", e);
         }
         return false;
     }
@@ -580,7 +680,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             return this.redisDao.multiGet(list);
         } catch (Exception e) {
-            logger.error("multGet批量读取出现异常，异常信息：", e);
+            log.error("multGet批量读取出现异常，异常信息：", e);
         }
         return null;
     }
@@ -590,7 +690,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             this.redisDao.trim(key, startIndex, endIndex);
         } catch (Exception e) {
-            logger.error("调用redis list清空方法异常：", e);
+            log.error("调用redis list清空方法异常：", e);
         }
     }
 
@@ -599,7 +699,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             return this.redisDao.leftPush(redisKey, value);
         } catch (Exception e) {
-            logger.error("调用redis list清空方法异常：", e);
+            log.error("调用redis list清空方法异常：", e);
             return 0L;
         }
     }
@@ -694,7 +794,7 @@ public class RedisServiceImpl implements IRedisService {
         try {
             TimeUnit.MILLISECONDS.sleep(unit.toMillis(timeout));
         } catch (Exception e) {
-            logger.error("睡眠以后：", e);
+            log.error("睡眠以后：", e);
         }
     }
 

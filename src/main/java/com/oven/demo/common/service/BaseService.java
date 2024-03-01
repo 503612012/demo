@@ -1,6 +1,6 @@
 package com.oven.demo.common.service;
 
-import com.oven.demo.framework.cache.CacheService;
+import com.oven.demo.common.redis.IRedisService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,34 +14,34 @@ import javax.annotation.Resource;
 public class BaseService {
 
     @Resource
-    private CacheService cacheService;
+    private IRedisService redisService;
 
     /**
      * 读缓存
      */
     public <T> T get(String key) {
-        return cacheService.get(key);
+        return redisService.get(key);
     }
 
     /**
      * 写缓存
      */
     public <T> void set(String key, T obj) {
-        cacheService.set(key, obj);
+        redisService.set(key, obj);
     }
 
     /**
      * 移除缓存
      */
     public void remove(String key) {
-        cacheService.remove(key);
+        redisService.remove(key);
     }
 
     /**
      * 批量移除缓存
      */
     public void batchRemove(String... key) {
-        cacheService.batchRemove(key);
+        redisService.batchRemove(key);
     }
 
 }

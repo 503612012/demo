@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * redis服务层接口
@@ -14,6 +15,73 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("unused")
 public interface IRedisService {
+
+    /**
+     * 查询缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    <T> T get(String key);
+
+    /**
+     * 查询缓存
+     *
+     * @param key      缓存键 不可为空
+     * @param function 如没有缓存，调用该callable函数返回对象 可为空
+     */
+    <T> T get(String key, Function<String, T> function);
+
+    /**
+     * 查询缓存
+     *
+     * @param key       缓存键 不可为空
+     * @param function  如没有缓存，调用该callable函数返回对象 可为空
+     * @param funcParam function函数的调用参数
+     */
+    <T, X> T get(String key, Function<X, T> function, X funcParam);
+
+    /**
+     * 查询缓存
+     *
+     * @param key        缓存键 不可为空
+     * @param function   如没有缓存，调用该callable函数返回对象 可为空
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    <T> T get(String key, Function<String, T> function, Long expireTime);
+
+    /**
+     * 查询缓存
+     *
+     * @param key        缓存键 不可为空
+     * @param function   如没有缓存，调用该callable函数返回对象 可为空
+     * @param funcParam  function函数的调用参数
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    <T, X> T get(String key, Function<X, T> function, X funcParam, Long expireTime);
+
+    /**
+     * 设置缓存键值
+     *
+     * @param key 缓存键 不可为空
+     * @param obj 缓存值 不可为空
+     */
+    <T> void set(String key, T obj);
+
+    /**
+     * 设置缓存键值
+     *
+     * @param key        缓存键 不可为空
+     * @param obj        缓存值 不可为空
+     * @param expireTime 过期时间（单位：毫秒） 可为空
+     */
+    <T> void set(String key, T obj, Long expireTime);
+
+    /**
+     * 批量移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    void batchRemove(String... key);
 
     /**
      * 保存字符串值
@@ -96,6 +164,13 @@ public interface IRedisService {
      * 字符串值获取方法，设置重试次数
      */
     String getString(String key, int retry);
+
+    /**
+     * 移除缓存
+     *
+     * @param key 缓存键 不可为空
+     */
+    void remove(String key);
 
     /**
      * 删除方法
@@ -216,7 +291,6 @@ public interface IRedisService {
      */
     List<Object> pipelineRead(List<String> list);
 
-
     /**
      * 管道批量添加集合数据(SET)
      *
@@ -287,7 +361,6 @@ public interface IRedisService {
      */
     Long leftPush(String redisKey, Collection<String> data);
 
-
     /**
      * 根据key来清空数据 set结构
      */
@@ -321,7 +394,6 @@ public interface IRedisService {
      * @param values redisValue
      */
     void sRem(String key, String... values);
-
 
     /**
      * 添加String类型map集合的一个字段
