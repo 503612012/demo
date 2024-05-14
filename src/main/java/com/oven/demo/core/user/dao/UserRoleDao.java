@@ -3,10 +3,8 @@ package com.oven.demo.core.user.dao;
 import com.oven.basic.base.dao.BaseDao;
 import com.oven.basic.base.entity.ConditionAndParams;
 import com.oven.demo.core.user.entity.UserRole;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,9 +14,6 @@ import java.util.List;
  */
 @Repository
 public class UserRoleDao extends BaseDao<UserRole> {
-
-    @Resource
-    private JdbcTemplate jdbcTemplate;
 
     /**
      * 通过用户id查询
@@ -45,8 +40,7 @@ public class UserRoleDao extends BaseDao<UserRole> {
      * @param userId 用户id
      */
     public void deleteByUserId(Integer userId) {
-        String sql = "delete from t_user_role where user_id = ?";
-        this.jdbcTemplate.update(sql, userId);
+        super.delete(ConditionAndParams.build("and user_id = ?", userId));
     }
 
     /**

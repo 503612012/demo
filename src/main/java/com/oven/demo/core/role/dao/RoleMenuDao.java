@@ -3,10 +3,8 @@ package com.oven.demo.core.role.dao;
 import com.oven.basic.base.dao.BaseDao;
 import com.oven.basic.base.entity.ConditionAndParams;
 import com.oven.demo.core.role.entity.RoleMenu;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,9 +14,6 @@ import java.util.List;
  */
 @Repository
 public class RoleMenuDao extends BaseDao<RoleMenu> {
-
-    @Resource
-    private JdbcTemplate jdbcTemplate;
 
     /**
      * 通过角色id查询
@@ -45,8 +40,7 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
      * @param roleId 角色id
      */
     public void deleteByRoleId(Integer roleId) {
-        String sql = "delete from t_role_menu where role_id = ?";
-        this.jdbcTemplate.update(sql, roleId);
+        super.delete(ConditionAndParams.build("and role_id = ?", roleId));
     }
 
 }
