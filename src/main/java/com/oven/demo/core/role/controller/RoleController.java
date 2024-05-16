@@ -21,6 +21,7 @@ import com.oven.demo.framework.limitation.LimitType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
@@ -75,17 +76,13 @@ public class RoleController {
 
     /**
      * 分页获取角色
-     *
-     * @param page  页码
-     * @param limit 每页显示数量
      */
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.ROLE_MANAGER)
-    public Object getByPage(Integer page, Integer limit, Role role) throws MyException {
+    public Object getByPage(@RequestBody Role role) throws MyException {
         try {
-            LayuiPager<Role> result = new LayuiPager<>();
-            List<Role> list = roleService.getByPage(page, limit, role);
+            List<Role> list = roleService.getByPage(role);
             for (Role item : list) {
                 User createUser = userService.getById(item.getCreateId());
                 item.setCreateName(createUser == null ? "" : createUser.getNickName());
@@ -93,11 +90,7 @@ public class RoleController {
                 item.setLastModifyName(lastModifyUser == null ? "" : lastModifyUser.getNickName());
             }
             Integer totalNum = roleService.getTotalNum(role);
-            result.setCode(0);
-            result.setMsg("");
-            result.setData(list);
-            result.setCount(totalNum);
-            return result;
+            return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
             throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取角色异常", e);
         }

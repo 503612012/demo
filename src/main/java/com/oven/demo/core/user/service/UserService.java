@@ -1,11 +1,8 @@
 package com.oven.demo.core.user.service;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.common.util.DateUtils;
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.constant.RedisCacheKey;
-import com.oven.demo.common.service.BaseService;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.service.RoleService;
@@ -27,7 +24,7 @@ import java.util.List;
  * @author Oven
  */
 @Service
-public class UserService extends BaseService {
+public class UserService {
 
     @Resource
     private UserDao userDao;
@@ -42,54 +39,21 @@ public class UserService extends BaseService {
      * @param id 用户id
      */
     public User getById(Integer id) {
-        User user = super.get(StrUtil.format(RedisCacheKey.USER_GET_BY_ID, id)); // 先读取缓存
-        if (user == null) { // double check
-            synchronized (this) {
-                user = super.get(StrUtil.format(RedisCacheKey.USER_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (user == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    user = userDao.getById(id);
-                    super.set(StrUtil.format(RedisCacheKey.USER_GET_BY_ID, id), user);
-                }
-            }
-        }
-        return user;
+        return userDao.getById(id);
     }
 
     /**
      * 分页获取用户
-     *
-     * @param pageNum  页码
-     * @param pageSize 每页显示数量
      */
-    public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        List<User> list = super.get(StrUtil.format(RedisCacheKey.USER_GET_BY_PAGE, pageNum, pageSize, user.toString())); // 先读取缓存
-        if (list == null) { // double check
-            synchronized (this) {
-                list = super.get(StrUtil.format(RedisCacheKey.USER_GET_BY_PAGE, pageNum, pageSize, user.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = userDao.getByPage(pageNum, pageSize, user);
-                    super.set(StrUtil.format(RedisCacheKey.USER_GET_BY_PAGE, pageNum, pageSize, user.toString()), list);
-                }
-            }
-        }
-        return list;
+    public List<User> getByPage(User user) {
+        return userDao.getByPage(user);
     }
 
     /**
      * 获取用户总数量
      */
     public Integer getTotalNum(User user) {
-        Integer totalNum = super.get(StrUtil.format(RedisCacheKey.USER_GET_TOTAL_NUM, user.toString())); // 先读取缓存
-        if (totalNum == null) { // double check
-            synchronized (this) {
-                totalNum = super.get(StrUtil.format(RedisCacheKey.USER_GET_TOTAL_NUM, user.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    totalNum = userDao.getTotalNum(user);
-                    super.set(StrUtil.format(RedisCacheKey.USER_GET_TOTAL_NUM, user.toString()), totalNum);
-                }
-            }
-        }
-        return totalNum;
+        return userDao.getTotalNum(user);
     }
 
     /**
@@ -98,17 +62,7 @@ public class UserService extends BaseService {
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
-        User user = super.get(StrUtil.format(RedisCacheKey.USER_GET_BY_USERNAME, userName)); // 先读取缓存
-        if (user == null) { // double check
-            synchronized (this) {
-                user = super.get(StrUtil.format(RedisCacheKey.USER_GET_BY_USERNAME, userName)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (user == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    user = userDao.getByUserName(userName);
-                    super.set(StrUtil.format(RedisCacheKey.USER_GET_BY_USERNAME, userName), user);
-                }
-            }
-        }
-        return user;
+        return userDao.getByUserName(userName);
     }
 
     /**
@@ -124,8 +78,6 @@ public class UserService extends BaseService {
         Md5Hash md5 = new Md5Hash(user.getPassword(), AppConst.MD5_SALT, 2);
         user.setPassword(md5.toString());
         userDao.save(user);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
     /**
@@ -135,8 +87,6 @@ public class UserService extends BaseService {
         user.setLastModifyTime(DateUtils.getCurrentTime());
         user.setLastModifyId(CommonUtils.getCurrentUser().getId());
         userDao.update(user);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
     /**
@@ -147,8 +97,6 @@ public class UserService extends BaseService {
         // 删除该用户的所有角色信息
         userRoleService.deleteByUserId(id);
         userDao.delete(id);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
 
     /**
@@ -157,26 +105,17 @@ public class UserService extends BaseService {
      * @param id 用户id
      */
     public List<JSONObject> getRoleByUserId(Integer id) {
-        List<JSONObject> list = super.get(StrUtil.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id)); // 先读取缓存
-        if (list == null) { // double check
-            synchronized (this) {
-                list = super.get(StrUtil.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = new ArrayList<>();
-                    List<Role> roles = roleService.getAll();
-                    for (Role role : roles) {
-                        JSONObject obj = new JSONObject();
-                        obj.put("role", role);
-                        if (userRoleService.getByUserIdAndRoleId(id, role.getId()) != null) {
-                            obj.put("checked", true);
-                        } else {
-                            obj.put("checked", false);
-                        }
-                        list.add(obj);
-                    }
-                    super.set(StrUtil.format(RedisCacheKey.USERROLE_GET_ROLE_BY_USERID, id), list);
-                }
+        List<JSONObject> list = new ArrayList<>();
+        List<Role> roles = roleService.getAll();
+        for (Role role : roles) {
+            JSONObject obj = new JSONObject();
+            obj.put("role", role);
+            if (userRoleService.getByUserIdAndRoleId(id, role.getId()) != null) {
+                obj.put("checked", true);
+            } else {
+                obj.put("checked", false);
             }
+            list.add(obj);
         }
         return list;
     }
@@ -199,31 +138,17 @@ public class UserService extends BaseService {
             item.setRoleId(Integer.parseInt(roleId));
             userRoleService.save(item);
         }
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.USERROLE_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.ROLE_PREFIX, RedisCacheKey.MENU_PREFIX);
     }
 
     /**
      * 获取所有用户
      */
     public List<User> getAll() {
-        List<User> list = super.get(RedisCacheKey.USER_GET_ALL); // 先读取缓存
-        if (list == null) { // double check
-            synchronized (this) {
-                list = super.get(RedisCacheKey.USER_GET_ALL); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = userDao.getAll();
-                    super.set(RedisCacheKey.USER_GET_ALL, list);
-                }
-            }
-        }
-        return list;
+        return userDao.getAll();
     }
 
     public void updateLastLoginTime(String time, Integer userId) {
         userDao.updateLastLoginTime(time, userId);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.USER_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
 
     /**
@@ -231,7 +156,6 @@ public class UserService extends BaseService {
      */
     public void logPasswordWrong(Integer userId) {
         userDao.logPasswordWrong(userId);
-        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
     /**
@@ -239,7 +163,6 @@ public class UserService extends BaseService {
      */
     public void updateAvatar(Integer id, String avatarFileName) {
         userDao.updateAvatar(id, avatarFileName);
-        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
     /**
@@ -247,7 +170,6 @@ public class UserService extends BaseService {
      */
     public void resetErrNum(Integer userId) {
         userDao.resetErrNum(userId);
-        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
     /**
@@ -266,7 +188,6 @@ public class UserService extends BaseService {
         }
         config.put(key, value);
         userDao.updateConfig(currentUser.getId(), config.toJSONString());
-        super.batchRemove(RedisCacheKey.USER_PREFIX);
     }
 
 }

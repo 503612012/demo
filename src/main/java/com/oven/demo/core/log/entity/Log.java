@@ -1,8 +1,10 @@
 package com.oven.demo.core.log.entity;
 
+import com.oven.basic.base.entity.PageRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -20,7 +22,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "t_log")
-public class Log implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Log extends PageRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

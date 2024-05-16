@@ -1,19 +1,14 @@
 package com.oven.demo.core.role.service;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.common.util.DateUtils;
-import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.constant.RedisCacheKey;
-import com.oven.demo.common.service.BaseService;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.menu.entity.Menu;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.role.dao.RoleDao;
 import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.entity.RoleMenu;
-import com.oven.demo.framework.realm.MyShiroRealm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -27,7 +22,7 @@ import java.util.List;
  * @author Oven
  */
 @Service
-public class RoleService extends BaseService {
+public class RoleService {
 
     @Resource
     private RoleDao roleDao;
@@ -42,54 +37,21 @@ public class RoleService extends BaseService {
      * @param id 角色id
      */
     public Role getById(Integer id) {
-        Role role = super.get(StrUtil.format(RedisCacheKey.ROLE_GET_BY_ID, id)); // 先读取缓存
-        if (role == null) { // double check
-            synchronized (this) {
-                role = super.get(StrUtil.format(RedisCacheKey.ROLE_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (role == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    role = roleDao.getById(id);
-                    super.set(StrUtil.format(RedisCacheKey.ROLE_GET_BY_ID, id), role);
-                }
-            }
-        }
-        return role;
+        return roleDao.getById(id);
     }
 
     /**
      * 分页获取角色
-     *
-     * @param pageNum  页码
-     * @param pageSize 每页显示数量
      */
-    public List<Role> getByPage(Integer pageNum, Integer pageSize, Role role) {
-        List<Role> list = super.get(StrUtil.format(RedisCacheKey.ROLE_GET_BY_PAGE, pageNum, pageSize, role.toString())); // 先读取缓存
-        if (list == null) { // double check
-            synchronized (this) {
-                list = super.get(StrUtil.format(RedisCacheKey.ROLE_GET_BY_PAGE, pageNum, pageSize, role.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = roleDao.getByPage(pageNum, pageSize, role);
-                    super.set(StrUtil.format(RedisCacheKey.ROLE_GET_BY_PAGE, pageNum, pageSize, role.toString()), list);
-                }
-            }
-        }
-        return list;
+    public List<Role> getByPage(Role role) {
+        return roleDao.getByPage(role);
     }
 
     /**
      * 获取角色总数量
      */
     public Integer getTotalNum(Role role) {
-        Integer totalNum = super.get(StrUtil.format(RedisCacheKey.ROLE_GET_TOTAL_NUM, role.toString())); // 先读取缓存
-        if (totalNum == null) { // double check
-            synchronized (this) {
-                totalNum = super.get(StrUtil.format(RedisCacheKey.ROLE_GET_TOTAL_NUM, role.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    totalNum = roleDao.getTotalNum(role);
-                    super.set(StrUtil.format(RedisCacheKey.ROLE_GET_TOTAL_NUM, role.toString()), totalNum);
-                }
-            }
-        }
-        return totalNum;
+        return roleDao.getTotalNum(role);
     }
 
     /**
@@ -102,8 +64,6 @@ public class RoleService extends BaseService {
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
         role.setLastModifyTime(DateUtils.getCurrentTime());
         roleDao.save(role);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
 
     /**
@@ -113,8 +73,6 @@ public class RoleService extends BaseService {
         role.setLastModifyTime(DateUtils.getCurrentTime());
         role.setLastModifyId(CommonUtils.getCurrentUser().getId());
         roleDao.update(role);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.ROLE_PREFIX, RedisCacheKey.USERROLE_PREFIX);
     }
 
     /**
@@ -122,25 +80,13 @@ public class RoleService extends BaseService {
      */
     public void delete(Integer id) throws Exception {
         roleDao.delete(id);
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.ROLE_PREFIX);
     }
 
     /**
      * 获取所有角色
      */
     public List<Role> getAll() {
-        List<Role> list = super.get(RedisCacheKey.ROLE_GET_ALL); // 先读取缓存
-        if (list == null) { // double check
-            synchronized (this) {
-                list = super.get(RedisCacheKey.ROLE_GET_ALL); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = roleDao.getAll();
-                    super.set(RedisCacheKey.ROLE_GET_ALL, list);
-                }
-            }
-        }
-        return list;
+        return roleDao.getAll();
     }
 
     /**
@@ -213,8 +159,6 @@ public class RoleService extends BaseService {
         // 删除角色原有的所有权限
         roleMenuService.deleteByRoleId(roleId);
         if (StringUtils.isEmpty(menuIds)) { // 删除了该角色所有的权限
-            // 移除缓存
-            super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
             return;
         }
         // 给角色添加新的菜单
@@ -225,10 +169,6 @@ public class RoleService extends BaseService {
             item.setMenuId(Integer.parseInt(menuId));
             roleMenuService.save(item);
         }
-        // 移除缓存
-        super.batchRemove(RedisCacheKey.MENU_PREFIX, RedisCacheKey.ROLEMENU_PREFIX, RedisCacheKey.USER_MENU_CODES_PREFIX);
-        // 移除shiro授权缓存
-        super.batchRemove(AppConst.SHIRO_CACHE_KEY_PREFIX + MyShiroRealm.class.getName() + ".authorizationCache:" + CommonUtils.getCurrentUser().getId());
     }
 
 }

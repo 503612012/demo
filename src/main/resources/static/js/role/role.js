@@ -21,14 +21,15 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重新加载表格
      */
     var reload = function() {
-        var roleNameReload = $('#roleNameReload');
+        var searchReload = $('#searchReload');
         // 执行重载
         table.reload('roleReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
             },
             where: {
-                roleName: roleNameReload.val()
+                search: searchReload.val(),
+                searchColumn: ['role_name'],
             }
         });
     };
@@ -36,8 +37,14 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     table.render({
         elem: '#role-list',
         url: '/role/getByPage/',
+        method: 'POST',
         id: 'roleReload',
         even: true,
+        contentType: 'application/json',
+        request: {
+            pageName: 'pageNum',
+            limitName: 'pageSize'
+        },
         cols: [[
             {type: 'numbers'},
             {field: 'roleName', title: '角色名', sort: true},
@@ -70,7 +77,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重置按钮点击事件绑定
      */
     $('.roleTable .role-reset').on('click', function() {
-        $('#roleNameReload').val('');
+        $('#searchReload').val('');
         reload();
     });
 

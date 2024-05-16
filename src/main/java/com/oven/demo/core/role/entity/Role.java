@@ -1,6 +1,8 @@
 package com.oven.demo.core.role.entity;
 
+import com.oven.basic.base.entity.PageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -14,7 +16,8 @@ import java.io.Serializable;
  */
 @Data
 @Table(name = "t_role")
-public class Role implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Role extends PageRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -2,15 +2,11 @@ package com.oven.demo.core.user.dao;
 
 import com.oven.basic.base.dao.BaseDao;
 import com.oven.basic.base.entity.ConditionAndParams;
-import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.user.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 用户dao层
@@ -24,50 +20,12 @@ public class UserDao extends BaseDao<User> {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 分页获取用户
-     *
-     * @param pageNum  当前页码
-     * @param pageSize 每页显示数量
-     */
-    public List<User> getByPage(Integer pageNum, Integer pageSize, User user) {
-        return super.getByPage(pageNum, pageSize, addCondition(user));
-    }
-
-    /**
-     * 获取用户总数量
-     */
-    public Integer getTotalNum(User user) {
-        return super.getTotalNum(addCondition(user));
-    }
-
-    /**
      * 通过用户名查询
      *
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
         return super.getOne(ConditionAndParams.build("and user_name = ?", userName));
-    }
-
-    /**
-     * 搜索条件
-     */
-    private ConditionAndParams addCondition(User user) {
-        StringBuilder sql = new StringBuilder();
-        List<Object> params = new ArrayList<>();
-        if (!StringUtils.isEmpty(user.getUserName())) {
-            sql.append(" and user_name like ?");
-            params.add("%" + user.getUserName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
-        }
-        if (!StringUtils.isEmpty(user.getNickName())) {
-            sql.append(" and nick_name like ?");
-            params.add("%" + user.getNickName().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
-        }
-        if (!StringUtils.isEmpty(user.getPhone())) {
-            sql.append(" and phone like ?");
-            params.add("%" + user.getPhone().replaceAll("%", AppConst.PERCENTAGE_MARK) + "%");
-        }
-        return ConditionAndParams.build(sql.toString(), params.toArray());
     }
 
     public void updateLastLoginTime(String time, Integer userId) {

@@ -20,8 +20,7 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
      * 重新加载表格
      */
     var reload = function() {
-        var titleReload = $('#titleReload');
-        var contentReload = $('#contentReload');
+        var searchReload = $('#searchReload');
         var logSearchSelect = $('#logSearchSelect');
         // 执行重载
         table.reload('logReload', {
@@ -29,9 +28,13 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
                 curr: 1 // 重新从第 1 页开始
             },
             where: {
-                title: titleReload.val(),
-                content: contentReload.val(),
-                operatorId: logSearchSelect.val()
+                orderBy: 'operator_time desc',
+                search: searchReload.val(),
+                searchColumn: ['title'],
+                exacts: [{
+                    'key': 'operator_id',
+                    'value': logSearchSelect.val()
+                }]
             }
         });
     };
@@ -40,8 +43,17 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
         elem: '#log-list',
         url: '/log/getByPage/',
         toolbar: '#logListToolBar',
+        method: 'POST',
         id: 'logReload',
         even: true,
+        contentType: 'application/json',
+        where: {
+            orderBy: 'operator_time desc'
+        },
+        request: {
+            pageName: 'pageNum',
+            limitName: 'pageSize'
+        },
         cols: [[
             {type: 'numbers'},
             {field: 'title', title: '标题', sort: true},
@@ -67,8 +79,7 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
      * 重置按钮点击事件绑定
      */
     $('.logTable .log-reset').on('click', function() {
-        $('#titleReload').val('');
-        $('#contentReload').val('');
+        $('#searchReload').val('');
         $('#logSearchSelect').val('');
         form.render("select");
         reload();

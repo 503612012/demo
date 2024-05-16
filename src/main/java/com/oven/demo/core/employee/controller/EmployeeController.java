@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
@@ -71,35 +72,20 @@ public class EmployeeController {
 
     /**
      * 分页获取员工
-     *
-     * @param page  页码
-     * @param limit 每页显示数量
      */
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     @ApiOperation(value = "分页获取员工", notes = "分页获取员工接口", httpMethod = AppConst.GET)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "页码", required = true),
-            @ApiImplicitParam(name = "limit", value = "每页数量", required = true),
-            @ApiImplicitParam(name = "gender", value = "性别", dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "name", value = "姓名", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "contact", value = "联系方式", dataType = "string", paramType = "query")
-    })
-    public LayuiPager<Employee> getByPage(Integer page, Integer limit, @ApiIgnore Employee employee) throws MyException {
+    public LayuiPager<Employee> getByPage(@RequestBody Employee employee) throws MyException {
         try {
-            LayuiPager<Employee> result = new LayuiPager<>();
-            List<Employee> list = employeeService.getByPage(page, limit, employee);
+            List<Employee> list = employeeService.getByPage(employee);
             for (Employee item : list) {
                 item.setCreateName(userService.getById(item.getCreateId()).getNickName());
                 item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
             }
             Integer totalNum = employeeService.getTotalNum(employee);
-            result.setCode(0);
-            result.setMsg("");
-            result.setData(list);
-            result.setCount(totalNum);
-            return result;
+            return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
             throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取员工异常", e);
         }

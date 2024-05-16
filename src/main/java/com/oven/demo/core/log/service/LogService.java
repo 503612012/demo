@@ -1,9 +1,6 @@
 package com.oven.demo.core.log.service;
 
-import cn.hutool.core.util.StrUtil;
 import com.oven.basic.common.util.DateUtils;
-import com.oven.demo.common.constant.RedisCacheKey;
-import com.oven.demo.common.service.BaseService;
 import com.oven.demo.common.util.LogQueueUtils;
 import com.oven.demo.core.log.dao.LogDao;
 import com.oven.demo.core.log.entity.Log;
@@ -18,7 +15,7 @@ import java.util.List;
  * @author Oven
  */
 @Service
-public class LogService extends BaseService {
+public class LogService {
 
     @Resource
     private LogDao logDao;
@@ -29,54 +26,21 @@ public class LogService extends BaseService {
      * @param id 日志id
      */
     public Log getById(Integer id) {
-        Log log = super.get(StrUtil.format(RedisCacheKey.LOG_GET_BY_ID, id)); // 先读取缓存
-        if (log == null) { // double check
-            synchronized (this) {
-                log = super.get(StrUtil.format(RedisCacheKey.LOG_GET_BY_ID, id)); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (log == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    log = logDao.getById(id);
-                    super.set(StrUtil.format(RedisCacheKey.LOG_GET_BY_ID, id), log);
-                }
-            }
-        }
-        return log;
+        return logDao.getById(id);
     }
 
     /**
      * 分页获取日志
-     *
-     * @param pageNum  页码
-     * @param pageSize 每页显示数量
      */
-    public List<Log> getByPage(Integer pageNum, Integer pageSize, Log log) {
-        List<Log> list = super.get(StrUtil.format(RedisCacheKey.LOG_GET_BY_PAGE, pageNum, pageSize, log.toString())); // 先读取缓存
-        if (list == null) { // double check
-            synchronized (this) {
-                list = super.get(StrUtil.format(RedisCacheKey.LOG_GET_BY_PAGE, pageNum, pageSize, log.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (list == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    list = logDao.getByPage(pageNum, pageSize, log);
-                    super.set(StrUtil.format(RedisCacheKey.LOG_GET_BY_PAGE, pageNum, pageSize, log.toString()), list);
-                }
-            }
-        }
-        return list;
+    public List<Log> getByPage(Log log) {
+        return logDao.getByPage(log);
     }
 
     /**
      * 获取日志总数量
      */
     public Integer getTotalNum(Log log) {
-        Integer totalNum = super.get(StrUtil.format(RedisCacheKey.LOG_GET_TOTAL_NUM, log.toString())); // 先读取缓存
-        if (totalNum == null) { // double check
-            synchronized (this) {
-                totalNum = super.get(StrUtil.format(RedisCacheKey.LOG_GET_TOTAL_NUM, log.toString())); // 再次从缓存中读取，防止高并发情况下缓存穿透问题
-                if (totalNum == null) { // 缓存中没有，再从数据库中读取，并写入缓存
-                    totalNum = logDao.getTotalNum(log);
-                    super.set(StrUtil.format(RedisCacheKey.LOG_GET_TOTAL_NUM, log.toString()), totalNum);
-                }
-            }
-        }
-        return totalNum;
+        return logDao.getTotalNum(log);
     }
 
     /**

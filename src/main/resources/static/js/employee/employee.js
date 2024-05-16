@@ -21,25 +21,30 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重新加载表格
      */
     var reload = function() {
-        var nameReload = $('#nameReload');
-        var contactReload = $('#contactReload');
+        var searchReload = $('#searchReload');
         // 执行重载
         table.reload('employeeReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
             },
             where: {
-                name: nameReload.val(),
-                contact: contactReload.val()
+                search: searchReload.val(),
+                searchColumn: ['name', 'contact']
             }
         });
     };
 
     table.render({
         elem: '#employee-list',
-        url: '/employee/getByPage/',
+        url: '/employee/getByPage',
+        method: 'POST',
         id: 'employeeReload',
         even: true,
+        contentType: 'application/json',
+        request: {
+            pageName: 'pageNum',
+            limitName: 'pageSize'
+        },
         cols: [[
             {field: 'name', title: '员工姓名', sort: true},
             {field: 'age', title: '年龄', sort: true},
@@ -80,8 +85,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重置按钮点击事件绑定
      */
     $('.employeeTable .employee-reset').on('click', function() {
-        $('#nameReload').val('');
-        $('#contactReload').val('');
+        $('#searchReload').val('');
         reload();
     });
 

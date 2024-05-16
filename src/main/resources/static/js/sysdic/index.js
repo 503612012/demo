@@ -21,14 +21,15 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重新加载表格
      */
     var reload = function() {
-        var keyReload = $('#keyReload');
+        var searchReload = $('#searchReload');
         // 执行重载
         table.reload('sysdicReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
             },
             where: {
-                key: keyReload.val()
+                search: searchReload.val(),
+                searchColumn: ['_key', '_desc'],
             }
         });
     };
@@ -36,8 +37,14 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     table.render({
         elem: '#sysdic-list',
         url: '/sysdic/getByPage/',
+        method: 'POST',
         id: 'sysdicReload',
         even: true,
+        contentType: 'application/json',
+        request: {
+            pageName: 'pageNum',
+            limitName: 'pageSize'
+        },
         cols: [[
             {field: 'id', width: 80, title: '序号', sort: true, align: 'center'},
             {field: 'key', title: '键', sort: true},
@@ -115,7 +122,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重置按钮点击事件绑定
      */
     $('.sysdicTable .sysdic-reset').on('click', function() {
-        $('#keyReload').val('');
+        $('#searchReload').val('');
         reload();
     });
 

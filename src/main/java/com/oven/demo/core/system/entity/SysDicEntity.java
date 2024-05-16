@@ -1,6 +1,8 @@
 package com.oven.demo.core.system.entity;
 
+import com.oven.basic.base.entity.PageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -13,7 +15,8 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "t_sys_dic")
-public class SysDicEntity {
+@EqualsAndHashCode(callSuper = true)
+public class SysDicEntity extends PageRequest {
 
     @Id
     @Column(name = "dbid")

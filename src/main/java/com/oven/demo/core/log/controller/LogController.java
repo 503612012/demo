@@ -9,6 +9,7 @@ import com.oven.demo.core.log.service.LogService;
 import com.oven.demo.framework.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
@@ -56,23 +57,15 @@ public class LogController {
 
     /**
      * 分页获取日志
-     *
-     * @param page  页码
-     * @param limit 每页显示数量
      */
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
-    public Object getByPage(Integer page, Integer limit, Log logVo) throws MyException {
+    public Object getByPage(@RequestBody Log logVo) throws MyException {
         try {
-            LayuiPager<Log> result = new LayuiPager<>();
-            List<Log> list = logService.getByPage(page, limit, logVo);
+            List<Log> list = logService.getByPage(logVo);
             Integer totalNum = logService.getTotalNum(logVo);
-            result.setCode(0);
-            result.setMsg("");
-            result.setData(list);
-            result.setCount(totalNum);
-            return result;
+            return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
             throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取日志异常", e);
         }

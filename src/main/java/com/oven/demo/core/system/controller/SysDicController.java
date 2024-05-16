@@ -11,6 +11,7 @@ import com.oven.demo.framework.config.InitSysDic;
 import com.oven.demo.framework.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
@@ -60,23 +61,15 @@ public class SysDicController {
 
     /**
      * 分页获取数据字典
-     *
-     * @param page  页码
-     * @param limit 每页显示数量
      */
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.SYSDIC_MANAGER)
-    public Object getByPage(Integer page, Integer limit, SysDicEntity sysdic) throws MyException {
+    public Object getByPage(@RequestBody SysDicEntity sysdic) throws MyException {
         try {
-            LayuiPager<SysDicEntity> result = new LayuiPager<>();
-            List<SysDicEntity> list = sysDicService.getByPage(page, limit, sysdic);
+            List<SysDicEntity> list = sysDicService.getByPage(sysdic);
             Integer totalNum = sysDicService.getTotalNum(sysdic);
-            result.setCode(0);
-            result.setMsg("");
-            result.setData(list);
-            result.setCount(totalNum);
-            return result;
+            return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
             throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取数据字典异常", e);
         }

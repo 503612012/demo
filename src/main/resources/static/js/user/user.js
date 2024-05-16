@@ -20,18 +20,15 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重新加载表格
      */
     var reload = function() {
-        var nickNameReload = $('#nickNameReload');
-        var userNameReload = $('#userNameReload');
-        var phoneReload = $('#phoneReload');
+        var searchReload = $('#searchReload');
         // 执行重载
         table.reload('userReload', {
             page: {
                 curr: 1 // 重新从第 1 页开始
             },
             where: {
-                nickName: nickNameReload.val(),
-                userName: userNameReload.val(),
-                phone: phoneReload.val()
+                search: searchReload.val(),
+                searchColumn: ['user_name', 'nick_name', 'phone'],
             }
         });
     };
@@ -39,8 +36,14 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
     table.render({
         elem: '#user-list',
         url: '/user/getByPage/',
+        method: 'POST',
         id: 'userReload',
         even: true,
+        contentType: 'application/json',
+        request: {
+            pageName: 'pageNum',
+            limitName: 'pageSize'
+        },
         cols: [[
             {field: 'userName', title: '用户名', sort: true},
             {field: 'nickName', title: '昵称'},
@@ -86,9 +89,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
      * 重置按钮点击事件绑定
      */
     $('.userTable .user-reset').on('click', function() {
-        $('#nickNameReload').val('');
-        $('#userNameReload').val('');
-        $('#phoneReload').val('');
+        $('#searchReload').val('');
         reload();
     });
 

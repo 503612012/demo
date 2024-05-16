@@ -1,22 +1,20 @@
 package com.oven.demo.core.employee.entity;
 
+import com.oven.basic.base.entity.PageRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * 员工实体类
- *
- * @author Oven
- */
 @Data
 @Table(name = "t_employee")
+@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工实体类", description = "员工实体类")
-public class Employee {
+public class Employee extends PageRequest {
 
     @Id
     @Column(name = "dbid")

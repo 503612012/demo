@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.oven.basic</groupId>
             <artifactId>basic</artifactId>
-            <version>1.0.7</version>
+            <version>1.0.8</version>
         </dependency>
 
         <!-- web启动器 -->

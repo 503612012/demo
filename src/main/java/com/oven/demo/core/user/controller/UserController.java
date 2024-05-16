@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -96,18 +97,13 @@ public class UserController {
 
     /**
      * 分页获取用户
-     *
-     * @param page  页码
-     * @param limit 每页显示数量
      */
     @ResponseBody
     @RequestMapping("/getByPage")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    public Object getByPage(Integer page, Integer limit, User user, HttpServletRequest req) throws MyException {
+    public Object getByPage(@RequestBody User user, HttpServletRequest req) throws MyException {
         try {
-            LayuiPager<User> result = new LayuiPager<>();
-            List<User> list = userService.getByPage(page, limit, user);
-
+            List<User> list = userService.getByPage(user);
             ServletContext context = req.getServletContext();
             // noinspection unchecked
             Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) context.getAttribute(AppConst.LOGINEDUSERS);
@@ -119,11 +115,7 @@ public class UserController {
                 item.setOnline(getOnlineStatus(loginedMap, item));
             }
             Integer totalNum = userService.getTotalNum(user);
-            result.setCode(0);
-            result.setMsg("");
-            result.setData(list);
-            result.setCount(totalNum);
-            return result;
+            return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
             throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取用户异常", e);
         }
