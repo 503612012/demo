@@ -14,6 +14,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">用户名：</label>
         <div class="layui-input-inline">
+            <input type="hidden" name="key" th:value="${key}">
             <input type="text" name="userName" lay-verify="userName" placeholder="请输入用户名" autocomplete="new-password" class="layui-input">
         </div>
     </div>

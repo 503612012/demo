@@ -28,11 +28,9 @@ $(function() {
             return;
         }
 
-        var key = $("input[name=key]").val();
-        key = CryptoJS.enc.Utf8.parse(key);
-        var srcs = CryptoJS.enc.Utf8.parse(password);
-        var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
-        password = encrypted.toString();
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----\n' + $("input[name=key]").val() + '\n-----END PUBLIC KEY-----');
+        var encrypted = encrypt.encrypt(password);
         var that = $(this);
         if (!that.hasClass('layui-btn-disabled')) {
             that.addClass('layui-btn-disabled'); // 禁用提交按钮
@@ -41,7 +39,7 @@ $(function() {
                 type: "POST",
                 data: {
                     "userName": userName,
-                    "pwd": password,
+                    "pwd": encrypted,
                     "inputCode": vercode,
                     "rememberMe": rememberMe
                 },

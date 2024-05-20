@@ -2,9 +2,9 @@ package com.oven.demo.core.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.common.util.DateUtils;
-import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.IPUtils;
 import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.RsaUtils;
 import com.oven.basic.common.vcode.Captcha;
 import com.oven.basic.common.vcode.GifCaptcha;
 import com.oven.demo.common.constant.AppConst;
@@ -19,6 +19,7 @@ import com.oven.demo.core.system.service.SysDicService;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.framework.annotation.AspectLog;
+import com.oven.demo.framework.config.RsaProperties;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -141,7 +142,7 @@ public class SystemController {
      */
     @RequestMapping("/")
     public String index(HttpServletRequest req) {
-        req.getSession().setAttribute("key", EncryptUtils.KEY);
+        req.getSession().setAttribute("key", RsaProperties.publicKey);
         return "index";
     }
 
@@ -151,7 +152,7 @@ public class SystemController {
     @RequestMapping("/login")
     public String login(String errorMsg, Model model) {
         model.addAttribute("errorMsg", errorMsg);
-        model.addAttribute("key", EncryptUtils.KEY);
+        model.addAttribute("key", RsaProperties.publicKey);
         return "login";
     }
 
@@ -167,7 +168,7 @@ public class SystemController {
             if (loginedMap != null) {
                 loginedMap.remove(user.getUserName());
             }
-            req.setAttribute("key", EncryptUtils.KEY);
+            req.setAttribute("key", RsaProperties.publicKey);
             req.getSession().removeAttribute(AppConst.CURRENT_USER);
             req.getSession().getServletContext().removeAttribute(AppConst.CURRENT_USER);
             SecurityUtils.getSubject().logout();
@@ -237,7 +238,7 @@ public class SystemController {
             }
 
             Subject subject = SecurityUtils.getSubject();
-            pwd = EncryptUtils.aesDecrypt(pwd, EncryptUtils.KEY);
+            pwd = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, pwd);
             UsernamePasswordToken token = new UsernamePasswordToken(userName, pwd, rememberMe);
             subject.login(token);
 

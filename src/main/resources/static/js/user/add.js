@@ -4,15 +4,17 @@ requirejs.config({
     paths: {
         jquery: 'js/lib/jquery.min',
         layui: 'layui/layui',
+        jsencrypt: 'js/lib/jsencrypt.min',
         http: 'js/common/http',
         common: 'js/common/common'
     },
     shim: {
-        layui: {exports: "layui"}
+        layui: {exports: "layui"},
+        jsencrypt: {exports: "JSEncrypt"}
     }
 });
 
-requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common) {
+requirejs(['jquery', 'jsencrypt', 'layui', 'http', 'common'], function($, JSEncrypt, layui, http, common) {
 
     var form = layui.form;
     var layer = layui.layer;
@@ -69,6 +71,12 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         }
         if (!that.hasClass('layui-btn-disabled')) {
             that.addClass('layui-btn-disabled'); // 禁用提交按钮
+
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----\n' + $("input[name=key]").val() + '\n-----END PUBLIC KEY-----');
+            var encrypted = encrypt.encrypt(data.field.password);
+            data.field.password = encrypted;
+
             http.post('/user/doAdd', data.field, function() {
                 that.removeClass('layui-btn-disabled'); // 释放提交按钮
                 window.parent.mainFrm.location.href = "/user/index";

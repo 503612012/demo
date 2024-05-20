@@ -36,9 +36,7 @@ while [[ "$flag" == true ]]; do
   flag=fasle
 done
 
-echo "$passwd" >/tmp/.pwd.tmp
-openssl enc -des-cbc -in /tmp/.pwd.tmp -out ./pwd -K 7844713234413263 -iv 386a593775735436 -a
-rm -rf /tmp/.pwd.tmp
+echo -n "$passwd" | openssl rsautl -encrypt -pubin -inkey <(echo -e "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6h42Pq2dHuMOU8eZT2CjvMgY2eizvW61WApQqWYuZwZ3BGChFiUehy4vh2JpW8lEFyX8eigawuVVRn55zDtbs/74ctfs2tUnyEhLX+em3ug1wCTlV2Sm8bYiBgejkXlzvy6RKvVaYspczIi3+146Y5ltcQVQ15Z9Us1eg10OWSwIDAQAB\n-----END PUBLIC KEY-----") -out ./pwd
 
 echo "mysql container starting..."
 docker run -d -p 3309:3306 --name mysql-demo -u root -v ${APP_HOME}/demo/data/backup:/home/backup -v ${mysql_mount_dir}:/var/lib/mysql -v /etc/localtime:/etc/localtime --restart=always -e MYSQL_ROOT_PASSWORD=${passwd} mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=1

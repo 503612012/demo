@@ -1,9 +1,9 @@
 package com.oven.demo.core.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.basic.common.util.EncryptUtils;
 import com.oven.basic.common.util.LayuiPager;
 import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.RsaUtils;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultEnum;
@@ -11,6 +11,7 @@ import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.framework.annotation.AspectLog;
+import com.oven.demo.framework.config.RsaProperties;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
 import com.oven.demo.framework.limitation.LimitKey;
@@ -147,7 +148,8 @@ public class UserController {
      */
     @RequestMapping("/add")
     @RequiresPermissions(PermissionCode.USER_INSERT)
-    public String add() {
+    public String add(Model model) {
+        model.addAttribute("key", RsaProperties.publicKey);
         return "user/add";
     }
 
@@ -165,6 +167,7 @@ public class UserController {
             if (userInDb != null) {
                 return ResultInfo.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
             }
+            user.setPassword(RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, user.getPassword()));
             userService.save(user);
             return ResultInfo.success(ResultEnum.SUCCESS.getValue());
         } catch (Exception e) {
@@ -337,7 +340,7 @@ public class UserController {
     @RequestMapping("/changePwd")
     public ResultInfo<Object> changePwd(String oldPwd, String newPwd) throws MyException {
         try {
-            String oldPwdDecode = EncryptUtils.aesDecrypt(oldPwd, EncryptUtils.KEY);
+            String oldPwdDecode = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, oldPwd);
             User user = userService.getByUserName(CommonUtils.getCurrentUser().getUserName());
             if (user.getId() == 1 || user.getId() == 2) {
                 return ResultInfo.fail(ResultEnum.CAN_NOT_SET_PWD.getCode(), ResultEnum.CAN_NOT_SET_PWD.getValue());
@@ -347,7 +350,7 @@ public class UserController {
             if (!md5.toString().equals(user.getPassword())) {
                 return ResultInfo.fail(ResultEnum.OLD_PASSWORD_WRONG.getCode(), ResultEnum.OLD_PASSWORD_WRONG.getValue());
             }
-            newPwd = EncryptUtils.aesDecrypt(newPwd, EncryptUtils.KEY);
+            newPwd = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, newPwd);
             user.setPassword(newPwd);
             userService.update(user);
             return ResultInfo.success(ResultEnum.SUCCESS.getValue());

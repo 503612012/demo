@@ -4,18 +4,18 @@ requirejs.config({
     paths: {
         jquery: 'js/lib/jquery.min',
         layui: 'layui/layui',
-        crypto: 'js/lib/crypto-js',
+        jsencrypt: 'js/lib/jsencrypt.min',
         http: 'js/common/http',
         common: 'js/common/common',
         left: 'left'
     },
     shim: {
         layui: {exports: "layui"},
-        crypto: {exports: "crypto"}
+        jsencrypt: {exports: "JSEncrypt"}
     }
 });
 
-requirejs(['jquery', 'crypto', 'layui', 'http', 'common', 'left'], function($, crypto, layui, http, common, left) {
+requirejs(['jquery', 'jsencrypt', 'layui', 'http', 'common', 'left'], function($, JSEncrypt, layui, http, common, left) {
 
     var layer = layui.layer;
     var form = layui.form;
@@ -140,16 +140,11 @@ requirejs(['jquery', 'crypto', 'layui', 'http', 'common', 'left'], function($, c
 
         if (!that.hasClass('layui-btn-disabled')) {
             that.addClass('layui-btn-disabled'); // 禁用提交按钮
-            var key = $("input[name=key]").val();
-            key = crypto.enc.Utf8.parse(key);
 
-            var srcs = crypto.enc.Utf8.parse(oldPwd);
-            var encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
-            oldPwd = encrypted.toString();
-
-            srcs = crypto.enc.Utf8.parse(newPwd);
-            encrypted = crypto.AES.encrypt(srcs, key, {mode: crypto.mode.ECB, padding: crypto.pad.Pkcs7});
-            newPwd = encrypted.toString();
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----\n' + $("input[name=key]").val() + '\n-----END PUBLIC KEY-----');
+            oldPwd = encrypt.encrypt(oldPwd);
+            newPwd = encrypt.encrypt(newPwd);
 
             var params = {
                 'oldPwd': oldPwd,

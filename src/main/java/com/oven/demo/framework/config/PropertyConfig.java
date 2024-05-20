@@ -100,7 +100,9 @@ public class PropertyConfig {
             while (rs.next()) {
                 String key = rs.getString("key");
                 String value = rs.getString("value");
-                log.info("{} --- {}", key, value);
+                if (!"rsa.private_key".equals(key)) {
+                    log.info("{} --- {}", key, value);
+                }
                 properties.put(key, value);
             }
             properties.put("spring.application.name", AppConst.APP_NAME.replace("_", "".toUpperCase()));
