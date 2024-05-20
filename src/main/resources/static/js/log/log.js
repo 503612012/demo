@@ -41,7 +41,7 @@ requirejs(['jquery', 'layui', 'http'], function($, layui, http) {
 
     table.render({
         elem: '#log-list',
-        url: '/log/getByPage/',
+        url: '/log/getByPage',
         toolbar: '#logListToolBar',
         method: 'POST',
         id: 'logReload',

@@ -36,7 +36,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
 
     table.render({
         elem: '#role-list',
-        url: '/role/getByPage/',
+        url: '/role/getByPage',
         method: 'POST',
         id: 'roleReload',
         even: true,

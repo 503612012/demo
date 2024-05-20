@@ -36,7 +36,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
 
     table.render({
         elem: '#sysdic-list',
-        url: '/sysdic/getByPage/',
+        url: '/sysdic/getByPage',
         method: 'POST',
         id: 'sysdicReload',
         even: true,

@@ -35,7 +35,7 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
 
     table.render({
         elem: '#user-list',
-        url: '/user/getByPage/',
+        url: '/user/getByPage',
         method: 'POST',
         id: 'userReload',
         even: true,
