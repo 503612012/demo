@@ -6,7 +6,7 @@
     <springProperty scope="context" name="LOG_HOME" source="log.home"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L - %msg%n"/>
 
-    <!-- 日志定义 -->
+    <!-- FILE日志定义 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -22,7 +22,7 @@
         </encoder>
     </appender>
 
-    <!-- 异步INFO日志定义 -->
+    <!-- 异步FILE日志定义 -->
     <appender name="SYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="FILE"/>
         <includeCallerData>true</includeCallerData>
