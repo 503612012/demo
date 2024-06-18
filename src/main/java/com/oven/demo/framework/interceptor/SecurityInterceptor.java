@@ -1,9 +1,9 @@
 package com.oven.demo.framework.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
@@ -73,7 +73,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         // 未登录或会话超时
         if (user == null) {
-            return responseRequest(ResultEnum.SESSION_TIMEOUT.getCode(), ResultEnum.SESSION_TIMEOUT.getValue(), ResultEnum.SESSION_TIMEOUT.getValue(), req, resp);
+            return responseRequest(ResultCode.SESSION_TIMEOUT, req, resp);
         }
 
         // 检查是否被其他人挤出去
@@ -81,17 +81,17 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         @SuppressWarnings("unchecked")
         Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
         if (loginedMap == null) { // 可能是掉线了
-            return responseRequest(ResultEnum.LOSE_LOGIN.getCode(), ResultEnum.LOSE_LOGIN.getValue(), ResultEnum.LOSE_LOGIN.getValue(), req, resp);
+            return responseRequest(ResultCode.LOSE_LOGIN, req, resp);
         }
         JSONObject obj = loginedMap.get(user.getUserName());
         String loginedUserSessionId = obj.getString(AppConst.SESSION_ID);
-        if (!StringUtils.isEmpty(loginedUserSessionId) && ResultEnum.FORCE_LOGOUT.getValue().equals(loginedUserSessionId)) {
-            return responseRequest(ResultEnum.FORCE_LOGOUT.getCode(), ResultEnum.FORCE_LOGOUT.getValue(), ResultEnum.FORCE_LOGOUT.getValue(), req, resp);
+        if (!StringUtils.isEmpty(loginedUserSessionId) && ResultCode.FORCE_LOGOUT.message().equals(loginedUserSessionId)) {
+            return responseRequest(ResultCode.FORCE_LOGOUT, req, resp);
         }
         String mySessionId = req.getSession().getId();
 
         if (!mySessionId.equals(loginedUserSessionId)) {
-            return responseRequest(ResultEnum.OTHER_LOGINED.getCode(), ResultEnum.OTHER_LOGINED.getValue(), ResultEnum.OTHER_LOGINED.getValue(), req, resp);
+            return responseRequest(ResultCode.OTHER_LOGINED, req, resp);
         }
         return true;
     }
@@ -99,13 +99,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     /**
      * 响应请求
      */
-    public boolean responseRequest(Integer code, String data, String param, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean responseRequest(ResultCode resultCode, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String requestType = req.getHeader("X-Requested-With");
         if (XML_HTTP_REQUEST.equals(requestType)) { // ajax请求
-            resp.getWriter().write(JSONObject.toJSONString(ResultInfo.build(code, data)));
+            resp.getWriter().write(JSONObject.toJSONString(Result.build(resultCode.code(), resultCode.message())));
             return false;
         }
-        param = URLEncoder.encode(param, CharEncoding.UTF_8);
+        String param = URLEncoder.encode(resultCode.message(), CharEncoding.UTF_8);
         resp.sendRedirect(getDomain(req) + "/login?errorMsg=" + param);
         return false;
     }

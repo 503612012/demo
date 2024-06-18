@@ -1,5 +1,6 @@
 package com.oven.demo.framework.exception;
 
+import com.oven.basic.common.util.IResultCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +19,10 @@ public class MyException extends Exception {
     private String msg;
     private String log;
     private Exception e;
+
+    public static MyException build(IResultCode resultCode, String log, Exception e) {
+        return new MyException(resultCode.code(), resultCode.message(), log, e);
+    }
 
     public static MyException build(Integer code, String msg, String log, Exception e) {
         return new MyException(code, msg, log, e);

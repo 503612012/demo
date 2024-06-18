@@ -1,9 +1,9 @@
 package com.oven.demo.core.log.controller;
 
 import com.oven.basic.common.util.LayuiPager;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.log.entity.Log;
 import com.oven.demo.core.log.service.LogService;
 import com.oven.demo.framework.exception.MyException;
@@ -47,11 +47,11 @@ public class LogController {
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.LOG_MANAGER)
-    public ResultInfo<Object> getById(Integer id) throws MyException {
+    public Result<Object> getById(Integer id) throws MyException {
         try {
-            return ResultInfo.success(logService.getById(id));
+            return Result.success(logService.getById(id));
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取日志异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "通过id获取日志异常", e);
         }
     }
 
@@ -67,7 +67,7 @@ public class LogController {
             Integer totalNum = logService.getTotalNum(logVo);
             return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取日志异常", e);
+            throw MyException.build(ResultCode.SEARCH_PAGE_ERROR, "分页获取日志异常", e);
         }
     }
 

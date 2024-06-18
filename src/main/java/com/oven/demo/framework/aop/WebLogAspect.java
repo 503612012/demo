@@ -5,7 +5,7 @@ import com.oven.basic.common.util.DateUtils;
 import com.oven.basic.common.util.IPUtils;
 import com.oven.basic.common.util.ParametersUtils;
 import com.oven.basic.common.util.RequestLogQueueUtils;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.core.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
@@ -71,8 +71,8 @@ public class WebLogAspect {
     @AfterReturning(returning = "ret", pointcut = "webLog()")
     public void doAfterReturning(Object ret) {
         // 请求返回的内容
-        if (ret instanceof ResultInfo) {
-            log.info("返回结果：{}", ((ResultInfo<?>) ret).getCode().toString());
+        if (ret instanceof Result) {
+            log.info("返回结果：{}", ((Result<?>) ret).getCode());
         }
     }
 

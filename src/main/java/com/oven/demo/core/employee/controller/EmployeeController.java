@@ -1,10 +1,10 @@
 package com.oven.demo.core.employee.controller;
 
 import com.oven.basic.common.util.LayuiPager;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.employee.entity.Employee;
 import com.oven.demo.core.employee.service.EmployeeService;
 import com.oven.demo.core.user.service.UserService;
@@ -62,11 +62,11 @@ public class EmployeeController {
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     @ApiImplicitParam(name = "id", value = "员工主键", required = true)
     @ApiOperation(value = "通过id获取员工", notes = "通过id获取员工接口", httpMethod = AppConst.GET)
-    public ResultInfo<Employee> getById(Integer id) throws MyException {
+    public Result<Employee> getById(Integer id) throws MyException {
         try {
-            return ResultInfo.success(employeeService.getById(id));
+            return Result.success(employeeService.getById(id));
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取员工异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "通过id获取员工异常", e);
         }
     }
 
@@ -87,7 +87,7 @@ public class EmployeeController {
             Integer totalNum = employeeService.getTotalNum(employee);
             return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取员工异常", e);
+            throw MyException.build(ResultCode.SEARCH_PAGE_ERROR, "分页获取员工异常", e);
         }
     }
 
@@ -108,12 +108,12 @@ public class EmployeeController {
             @ApiImplicitParam(name = "gender", value = "性别：0-女、1-男", dataType = "java.lang.Integer", paramType = "query", required = true),
     })
     @Limit(key = LimitKey.EMPLOYEE_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> save(@ApiIgnore Employee employee) throws MyException {
+    public Result<Object> save(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.save(employee);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加员工异常", e);
+            throw MyException.build(ResultCode.INSERT_ERROR, "添加员工异常", e);
         }
     }
 
@@ -135,12 +135,12 @@ public class EmployeeController {
             @ApiImplicitParam(name = "gender", value = "性别：0-女、1-男", dataType = "java.lang.Integer", paramType = "query", required = true),
     })
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> update(@ApiIgnore Employee employee) throws MyException {
+    public Result<Object> update(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.update(employee);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改员工异常", e);
         }
     }
 
@@ -156,16 +156,16 @@ public class EmployeeController {
     @ApiOperation(value = "删除员工", notes = "删除员工接口", httpMethod = AppConst.POST)
     @ApiImplicitParam(name = "id", value = "员工主键", dataType = "int", required = true)
     @Limit(key = LimitKey.EMPLOYEE_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> delete(Integer id) throws MyException {
+    public Result<Object> delete(Integer id) throws MyException {
         try {
             boolean result = employeeService.delete(id);
             if (result) {
-                return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+                return Result.success(ResultCode.SUCCESS);
             } else {
-                return ResultInfo.fail(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue());
+                return Result.fail(ResultCode.DELETE_ERROR);
             }
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除员工异常", e);
+            throw MyException.build(ResultCode.DELETE_ERROR, "删除员工异常", e);
         }
     }
 
@@ -185,14 +185,14 @@ public class EmployeeController {
             @ApiImplicitParam(name = "employeeId", value = "员工主键", dataType = "int", required = true)
     })
     @Limit(key = LimitKey.EMPLOYEE_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> updateStatus(Integer employeeId, Integer status) throws MyException {
+    public Result<Object> updateStatus(Integer employeeId, Integer status) throws MyException {
         try {
             Employee employee = employeeService.getById(employeeId);
             employee.setStatus(status);
             employeeService.update(employee);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改员工状态异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改员工状态异常", e);
         }
     }
 
@@ -203,11 +203,11 @@ public class EmployeeController {
     @RequestMapping("/getAll")
     @RequiresPermissions(PermissionCode.EMPLOYEE_MANAGER)
     @ApiOperation(value = "获取所有员工", notes = "获取所有员工接口", httpMethod = AppConst.GET)
-    public ResultInfo<Object> getAll() throws MyException {
+    public Result<Object> getAll() throws MyException {
         try {
-            return ResultInfo.success(employeeService.getAll());
+            return Result.success(employeeService.getAll());
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有员工异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取所有员工异常", e);
         }
     }
 
@@ -219,11 +219,11 @@ public class EmployeeController {
     @RequiresPermissions(PermissionCode.EMPLOYEE_SHOW_MONEY)
     @ApiImplicitParam(name = "employeeId", value = "员工主键", required = true)
     @ApiOperation(value = "获取一个员工的时薪", notes = "获取一个员工的时薪接口", httpMethod = AppConst.GET)
-    public ResultInfo<Object> getHourSalaryByEmployeeId(Integer employeeId) throws MyException {
+    public Result<Object> getHourSalaryByEmployeeId(Integer employeeId) throws MyException {
         try {
-            return ResultInfo.success(employeeService.getHourSalaryByEmployeeId(employeeId));
+            return Result.success(employeeService.getHourSalaryByEmployeeId(employeeId));
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取一个员工的时薪异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取一个员工的时薪异常", e);
         }
     }
 

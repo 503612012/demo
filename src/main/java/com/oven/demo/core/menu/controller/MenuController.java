@@ -1,8 +1,8 @@
 package com.oven.demo.core.menu.controller;
 
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.menu.entity.Menu;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.framework.annotation.AspectLog;
@@ -46,11 +46,11 @@ public class MenuController {
     @ResponseBody
     @RequestMapping("/getMenuTreeTableData")
     @RequiresPermissions(PermissionCode.MENU_MANAGER)
-    public ResultInfo<Object> getMenuTreeTableData() throws MyException {
+    public Result<Object> getMenuTreeTableData() throws MyException {
         try {
-            return ResultInfo.success(menuService.getMenuTreeTableData());
+            return Result.success(menuService.getMenuTreeTableData());
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取菜单树形表格内容异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "分页获取菜单树形表格内容异常", e);
         }
     }
 
@@ -62,12 +62,12 @@ public class MenuController {
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.MENU_UPDATE)
     @Limit(key = LimitKey.MENU_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> doUpdate(Menu menu) throws MyException {
+    public Result<Object> doUpdate(Menu menu) throws MyException {
         try {
             // menuService.update(menu);
-            return ResultInfo.success("暂不开通修改功能");
+            return Result.success("暂不开通修改功能");
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改菜单异常", e);
         }
     }
 
@@ -82,14 +82,14 @@ public class MenuController {
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.MENU_SETSTATUS)
     @Limit(key = LimitKey.MENU_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> updateStatus(Integer menuId, Integer status) throws MyException {
+    public Result<Object> updateStatus(Integer menuId, Integer status) throws MyException {
         try {
             Menu menu = menuService.getById(menuId);
             menu.setStatus(status);
             menuService.update(menu);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单状态异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改菜单状态异常", e);
         }
     }
 

@@ -3,13 +3,13 @@ package com.oven.demo.core.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.common.util.DateUtils;
 import com.oven.basic.common.util.IPUtils;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.basic.common.util.RsaUtils;
 import com.oven.basic.common.vcode.Captcha;
 import com.oven.basic.common.vcode.GifCaptcha;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.employee.entity.Employee;
 import com.oven.demo.core.employee.service.EmployeeService;
@@ -86,9 +86,9 @@ public class SystemController {
             LogLevel logLevel = LogLevel.valueOf(level.toUpperCase());
             loggingSystem.setLogLevel(logger, logLevel);
             log.info("修改日志级别{} to {}，更新完毕", logger, level);
-            return ResultInfo.success("修改成功");
+            return Result.success("修改成功");
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SYSTEM_ERROR.getCode(), "修改日志级别异常！", "修改日志级别异常", e);
+            throw MyException.build(ResultCode.SYSTEM_ERROR.code(), "修改日志级别异常！", "修改日志级别异常", e);
         }
     }
 
@@ -97,12 +97,12 @@ public class SystemController {
      */
     @ResponseBody
     @RequestMapping("/secKill")
-    public ResultInfo<Object> secKill() {
+    public Result<Object> secKill() {
         try {
             sysDicService.secKill();
-            return ResultInfo.success("秒杀成功！");
+            return Result.success("秒杀成功！");
         } catch (Exception e) {
-            return ResultInfo.fail(400, "秒杀接口异常！");
+            return Result.fail(400, "秒杀接口异常！");
         }
     }
 
@@ -125,7 +125,7 @@ public class SystemController {
             captcha.out(response.getOutputStream());
             session.setAttribute(AppConst.CAPTCHA, captcha.text().toLowerCase());
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), "获取验证码异常！", "获取验证码异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR.code(), "获取验证码异常！", "获取验证码异常", e);
         }
     }
 
@@ -185,19 +185,19 @@ public class SystemController {
     @AspectLog(title = "强制退出")
     @RequestMapping("/forceLogout")
     @RequiresPermissions(PermissionCode.FORCE_LOGOUT)
-    public ResultInfo<Object> forceLogout(String userName, HttpServletRequest req) throws MyException {
+    public Result<Object> forceLogout(String userName, HttpServletRequest req) throws MyException {
         try {
             ServletContext application = req.getServletContext();
             @SuppressWarnings("unchecked") Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) application.getAttribute(AppConst.LOGINEDUSERS);
             if (loginedMap != null) {
                 JSONObject obj = new JSONObject();
-                obj.put(AppConst.SESSION_ID, ResultEnum.FORCE_LOGOUT.getValue());
+                obj.put(AppConst.SESSION_ID, ResultCode.FORCE_LOGOUT.message());
                 obj.put(AppConst.SESSION, null);
                 loginedMap.put(userName, obj);
             }
-            return ResultInfo.success("退出成功");
+            return Result.success("退出成功");
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.FORCE_LOGOUT_ERROR.getCode(), ResultEnum.FORCE_LOGOUT_ERROR.getValue(), "强制退出异常", e);
+            throw MyException.build(ResultCode.FORCE_LOGOUT_ERROR, "强制退出异常", e);
         }
     }
 
@@ -225,15 +225,15 @@ public class SystemController {
      */
     @ResponseBody
     @RequestMapping("/doLogin")
-    public ResultInfo<Object> doLogin(String userName, String pwd, String inputCode, boolean rememberMe, HttpServletRequest req) throws MyException {
+    public Result<Object> doLogin(String userName, String pwd, String inputCode, boolean rememberMe, HttpServletRequest req) throws MyException {
         try {
             // 校验验证码
             String code = (String) req.getSession().getAttribute(AppConst.CAPTCHA);
             if (StringUtils.isEmpty(inputCode)) {
-                return ResultInfo.fail(ResultEnum.CAPTCHA_IS_NONE.getCode(), ResultEnum.CAPTCHA_IS_NONE.getValue());
+                return Result.fail(ResultCode.CAPTCHA_IS_NONE);
             } else {
                 if (!inputCode.equalsIgnoreCase(code)) {
-                    return ResultInfo.fail(ResultEnum.CAPTCHA_ERROR.getCode(), ResultEnum.CAPTCHA_ERROR.getValue());
+                    return Result.fail(ResultCode.CAPTCHA_ERROR);
                 }
             }
 
@@ -244,8 +244,8 @@ public class SystemController {
 
             User userInDb = userService.getByUserName(userName);
             if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return ResultInfo.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.OVER_WRONG_NUM.message() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
+                return Result.fail(ResultCode.OVER_WRONG_NUM);
             }
             // 登录成功后放入application，防止同一个账户多人登录
             ServletContext application = req.getServletContext();
@@ -280,25 +280,25 @@ public class SystemController {
                 req.getSession().setAttribute("menuPosition", StringUtils.isEmpty(menuPosition) ? "left" : menuPosition);
             }
 
-            return ResultInfo.success("登录成功！");
+            return Result.success("登录成功！");
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.NO_THIS_USER.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return ResultInfo.fail(ResultEnum.NO_THIS_USER.getCode(), ResultEnum.NO_THIS_USER.getValue());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.NO_THIS_USER.message() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
+                return Result.fail(ResultCode.NO_THIS_USER);
             } else if (e instanceof IncorrectCredentialsException) {
                 if (userInDb.getErrNum() >= 5) {
-                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.OVER_WRONG_NUM.getValue() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                    return ResultInfo.fail(ResultEnum.OVER_WRONG_NUM.getCode(), ResultEnum.OVER_WRONG_NUM.getValue());
+                    logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.OVER_WRONG_NUM.message() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
+                    return Result.fail(ResultCode.OVER_WRONG_NUM);
                 }
                 userService.logPasswordWrong(userInDb.getId());
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.PASSWORD_WRONG.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return ResultInfo.fail(ResultEnum.PASSWORD_WRONG.getCode(), ResultEnum.PASSWORD_WRONG.getValue());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.PASSWORD_WRONG.message() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
+                return Result.fail(ResultCode.PASSWORD_WRONG);
             } else if (e instanceof LockedAccountException) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultEnum.USER_DISABLE.getValue() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
-                return ResultInfo.fail(ResultEnum.USER_DISABLE.getCode(), ResultEnum.USER_DISABLE.getValue());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.USER_DISABLE.message() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
+                return Result.fail(ResultCode.USER_DISABLE);
             } else {
-                throw MyException.build(ResultEnum.UNKNOW_ERROR.getCode(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
+                throw MyException.build(ResultCode.UNKNOW_ERROR.code(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
             }
         }
     }
@@ -308,15 +308,15 @@ public class SystemController {
      */
     @ResponseBody
     @RequestMapping("/getMenus")
-    public ResultInfo<Object> getMenus(HttpServletRequest req) throws MyException {
+    public Result<Object> getMenus(HttpServletRequest req) throws MyException {
         try {
             List<Map<String, Object>> menus = menuService.getMenuTreeByUserId(CommonUtils.getCurrentUser().getId());
             // 获取该用户的所有权限编码，放入session中
             List<String> code = menuService.getAllMenuCodeByUserId(CommonUtils.getCurrentUser().getId());
             req.getSession().setAttribute(AppConst.USER_MENU, code);
-            return ResultInfo.success(menus);
+            return Result.success(menus);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UNKNOW_ERROR.getCode(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
+            throw MyException.build(ResultCode.UNKNOW_ERROR.code(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
         }
     }
 
@@ -325,7 +325,7 @@ public class SystemController {
      */
     @ResponseBody
     @RequestMapping("/getMainPageData")
-    public ResultInfo<Object> getMainPageData() throws MyException {
+    public Result<Object> getMainPageData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
             Integer totalEmployee = employeeService.getTotalNum(new Employee());
@@ -333,9 +333,9 @@ public class SystemController {
             obj.put("totalEmployee", totalEmployee);
             obj.put("totalWorksite", "0");
             obj.put("totalWorkhour", "0.00");
-            return ResultInfo.success(obj);
+            return Result.success(obj);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页数据异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取首页数据异常", e);
         }
     }
 
@@ -360,7 +360,7 @@ public class SystemController {
             result.put("data", data);
             return result;
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取薪资排行前五异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取薪资排行前五异常", e);
         }
     }
 
@@ -369,14 +369,14 @@ public class SystemController {
      */
     @ResponseBody
     @RequestMapping("/getProportionData")
-    public ResultInfo<Object> getProportionData() throws MyException {
+    public Result<Object> getProportionData() throws MyException {
         try {
             JSONObject obj = new JSONObject();
             obj.put("salaryProportion", "0.00");
             obj.put("workhourProportion", "0.00");
-            return ResultInfo.success(obj);
+            return Result.success(obj);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取首页占比信息异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取首页占比信息异常", e);
         }
     }
 

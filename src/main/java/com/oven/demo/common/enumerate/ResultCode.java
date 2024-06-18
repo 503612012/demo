@@ -1,11 +1,13 @@
 package com.oven.demo.common.enumerate;
 
+import com.oven.basic.common.util.IResultCode;
+
 /**
  * 统一返回枚举类
  *
  * @author Oven
  */
-public enum ResultEnum {
+public enum ResultCode implements IResultCode {
 
     SUCCESS(200, "操作成功！"),
 
@@ -43,28 +45,22 @@ public enum ResultEnum {
     CAN_NOT_DELETE_ROLE(7006, "该角色不可以删除"),
     CAN_NOT_SET_MENU(7007, "该角色禁止设置权限");
 
-    private Integer code;
-    private String value;
+    private final Integer code;
+    private final String message;
 
-    ResultEnum(Integer code, String value) {
+    ResultCode(Integer code, String message) {
         this.code = code;
-        this.value = value;
+        this.message = message;
     }
 
-    public Integer getCode() {
+    @Override
+    public Integer code() {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    @Override
+    public String message() {
+        return message;
     }
 
 }

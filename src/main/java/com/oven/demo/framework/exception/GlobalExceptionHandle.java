@@ -3,8 +3,8 @@ package com.oven.demo.framework.exception;
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.common.util.IPUtils;
 import com.oven.basic.common.util.ParametersUtils;
-import com.oven.basic.common.util.ResultInfo;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.basic.common.util.Result;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.framework.limitation.LimitException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -38,23 +38,23 @@ public class GlobalExceptionHandle {
         if (e instanceof MyException) {
             MyException myException = (MyException) e;
             log.error(myException.getLog(), myException.getE());
-            if (myException.getCode().equals(ResultEnum.SEARCH_PAGE_ERROR.getCode())) {
+            if (myException.getCode().equals(ResultCode.SEARCH_PAGE_ERROR.code())) {
                 JSONObject result = new JSONObject();
                 result.put("code", myException.getCode());
                 result.put("data", myException.getMsg());
                 return result;
-            } else if (myException.getCode().equals(ResultEnum.ERROR_PAGE.getCode())) {
+            } else if (myException.getCode().equals(ResultCode.ERROR_PAGE.code())) {
                 resp.sendRedirect("/err");
                 return "";
             } else {
-                return ResultInfo.build(myException.getCode(), myException.getMsg());
+                return Result.build(myException.getCode(), myException.getMsg());
             }
         } else if (e instanceof UnauthorizedException) {
             resp.sendRedirect("/noauth");
             return "";
         } else if (e instanceof LimitException) {
             LimitException limitException = (LimitException) e;
-            return ResultInfo.build(limitException.getCode(), limitException.getMsg());
+            return Result.build(limitException.getCode(), limitException.getMsg());
         } else {
             log.error("错误信息：", e);
         }

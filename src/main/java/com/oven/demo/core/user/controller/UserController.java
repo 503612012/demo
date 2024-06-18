@@ -2,11 +2,11 @@ package com.oven.demo.core.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oven.basic.common.util.LayuiPager;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.basic.common.util.RsaUtils;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
@@ -75,11 +75,11 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/getById")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    public ResultInfo<Object> getById(Integer id) throws MyException {
+    public Result<Object> getById(Integer id) throws MyException {
         try {
-            return ResultInfo.success(userService.getById(id));
+            return Result.success(userService.getById(id));
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过id获取用户异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "通过id获取用户异常", e);
         }
     }
 
@@ -88,11 +88,11 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/getCurrentUserInfo")
-    public ResultInfo<Object> getCurrentUserInfo() throws MyException {
+    public Result<Object> getCurrentUserInfo() throws MyException {
         try {
-            return ResultInfo.success(userService.getByUserName(CommonUtils.getCurrentUser().getUserName()));
+            return Result.success(userService.getByUserName(CommonUtils.getCurrentUser().getUserName()));
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取当前登录用户异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取当前登录用户异常", e);
         }
     }
 
@@ -118,7 +118,7 @@ public class UserController {
             Integer totalNum = userService.getTotalNum(user);
             return LayuiPager.build(list, totalNum);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "分页获取用户异常", e);
+            throw MyException.build(ResultCode.SEARCH_PAGE_ERROR, "分页获取用户异常", e);
         }
     }
 
@@ -130,7 +130,7 @@ public class UserController {
             if (loginedMap.containsKey(user.getUserName())) {
                 JSONObject obj = loginedMap.get(user.getUserName());
                 String sessionId = obj.getString(AppConst.SESSION_ID);
-                if (!StringUtils.isEmpty(sessionId) && !ResultEnum.FORCE_LOGOUT.getValue().equals(sessionId)) {
+                if (!StringUtils.isEmpty(sessionId) && !ResultCode.FORCE_LOGOUT.message().equals(sessionId)) {
                     Collection<Session> activeSessions = sessionManager.getSessionDAO().getActiveSessions();
                     for (Session s : activeSessions) {
                         if (sessionId.equals(s.getId())) {
@@ -161,17 +161,17 @@ public class UserController {
     @AspectLog(title = "添加用户")
     @RequiresPermissions(PermissionCode.USER_INSERT)
     @Limit(key = LimitKey.USER_INSERT_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> doAdd(User user) throws MyException {
+    public Result<Object> doAdd(User user) throws MyException {
         try {
             User userInDb = userService.getByUserName(user.getUserName());
             if (userInDb != null) {
-                return ResultInfo.fail(ResultEnum.USER_ALREADY_EXIST.getCode(), ResultEnum.USER_ALREADY_EXIST.getValue());
+                return Result.fail(ResultCode.USER_ALREADY_EXIST);
             }
             user.setPassword(RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, user.getPassword()));
             userService.save(user);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.INSERT_ERROR.getCode(), ResultEnum.INSERT_ERROR.getValue(), "添加用户异常", e);
+            throw MyException.build(ResultCode.INSERT_ERROR, "添加用户异常", e);
         }
     }
 
@@ -181,16 +181,16 @@ public class UserController {
     @ResponseBody
     @RequestMapping("isExist")
     @RequiresPermissions(PermissionCode.USER_INSERT)
-    public ResultInfo<Object> isExist(String userName) throws MyException {
+    public Result<Object> isExist(String userName) throws MyException {
         try {
             User user = userService.getByUserName(userName);
             if (user == null) {
-                return ResultInfo.success(false);
+                return Result.success(false);
             } else {
-                return ResultInfo.success(true);
+                return Result.success(true);
             }
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "判断用户名是否存在异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "判断用户名是否存在异常", e);
         }
     }
 
@@ -207,7 +207,7 @@ public class UserController {
             model.addAttribute("user", user);
             return "/user/update";
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.ERROR_PAGE.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "去到用户更新页面异常", e);
+            throw MyException.build(ResultCode.ERROR_PAGE, "去到用户更新页面异常", e);
         }
     }
 
@@ -219,15 +219,15 @@ public class UserController {
     @RequestMapping("/doUpdate")
     @RequiresPermissions(PermissionCode.USER_UPDATE)
     @Limit(key = LimitKey.USER_UPDATE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> doUpdate(User user) throws MyException {
+    public Result<Object> doUpdate(User user) throws MyException {
         try {
             if (user.getId() == 1 || user.getId() == 2) {
-                return ResultInfo.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
+                return Result.fail(ResultCode.CAN_NOT_UPDATE_USER);
             }
             userService.update(user);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改用户异常", e);
         }
     }
 
@@ -241,15 +241,15 @@ public class UserController {
     @AspectLog(title = "删除用户")
     @RequiresPermissions(PermissionCode.USER_DELETE)
     @Limit(key = LimitKey.USER_DELETE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.DELETE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> delete(Integer id) throws MyException {
+    public Result<Object> delete(Integer id) throws MyException {
         try {
             if (id == 1 || id == 2) {
-                return ResultInfo.fail(ResultEnum.CAN_NOT_DELETE_USER.getCode(), ResultEnum.CAN_NOT_DELETE_USER.getValue());
+                return Result.fail(ResultCode.CAN_NOT_DELETE_USER);
             }
             userService.delete(id);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.DELETE_ERROR.getCode(), ResultEnum.DELETE_ERROR.getValue(), "删除用户异常", e);
+            throw MyException.build(ResultCode.DELETE_ERROR, "删除用户异常", e);
         }
     }
 
@@ -264,17 +264,17 @@ public class UserController {
     @RequestMapping("/updateStatus")
     @RequiresPermissions(PermissionCode.USER_SETSTATUS)
     @Limit(key = LimitKey.USER_UPDATE_STATUS_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.UPDATE_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> updateStatus(Integer userId, Integer status) throws MyException {
+    public Result<Object> updateStatus(Integer userId, Integer status) throws MyException {
         try {
             if (userId == 1 || userId == 2) {
-                return ResultInfo.fail(ResultEnum.CAN_NOT_UPDATE_USER.getCode(), ResultEnum.CAN_NOT_UPDATE_USER.getValue());
+                return Result.fail(ResultCode.CAN_NOT_UPDATE_USER);
             }
             User user = userService.getById(userId);
             user.setStatus(status);
             userService.update(user);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改用户状态异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改用户状态异常", e);
         }
     }
 
@@ -286,12 +286,12 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/getRoleByUserId")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
-    public ResultInfo<Object> getRoleByUserId(Integer id) throws MyException {
+    public Result<Object> getRoleByUserId(Integer id) throws MyException {
         try {
             List<JSONObject> list = userService.getRoleByUserId(id);
-            return ResultInfo.success(list);
+            return Result.success(list);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "通过用户id获取角色列表异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "通过用户id获取角色列表异常", e);
         }
     }
 
@@ -306,15 +306,15 @@ public class UserController {
     @RequestMapping("/setUserRole")
     @RequiresPermissions(PermissionCode.USER_SETROLE)
     @Limit(key = LimitKey.USER_SET_USER_ROLE_LIMIT_KEY, period = LimitKey.LIMIT_TIME, count = 1, errMsg = LimitKey.SYSTEM_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> setUserRole(Integer userId, String roleIds) throws MyException {
+    public Result<Object> setUserRole(Integer userId, String roleIds) throws MyException {
         try {
             if (userId == 1 || userId == 2) {
-                return ResultInfo.fail(ResultEnum.CAN_NOT_SET_ROLE.getCode(), ResultEnum.CAN_NOT_SET_ROLE.getValue());
+                return Result.fail(ResultCode.CAN_NOT_SET_ROLE);
             }
             userService.setUserRole(userId, roleIds);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "设置用户角色异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "设置用户角色异常", e);
         }
     }
 
@@ -324,11 +324,11 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/getAll")
     @RequiresPermissions(PermissionCode.USER_MANAGER)
-    public ResultInfo<Object> getAll() throws MyException {
+    public Result<Object> getAll() throws MyException {
         try {
-            return ResultInfo.success(userService.getAll());
+            return Result.success(userService.getAll());
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_ERROR.getCode(), ResultEnum.SEARCH_ERROR.getValue(), "获取所有用户异常", e);
+            throw MyException.build(ResultCode.SEARCH_ERROR, "获取所有用户异常", e);
         }
     }
 
@@ -338,24 +338,24 @@ public class UserController {
     @ResponseBody
     @AspectLog(title = "修改密码")
     @RequestMapping("/changePwd")
-    public ResultInfo<Object> changePwd(String oldPwd, String newPwd) throws MyException {
+    public Result<Object> changePwd(String oldPwd, String newPwd) throws MyException {
         try {
             String oldPwdDecode = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, oldPwd);
             User user = userService.getByUserName(CommonUtils.getCurrentUser().getUserName());
             if (user.getId() == 1 || user.getId() == 2) {
-                return ResultInfo.fail(ResultEnum.CAN_NOT_SET_PWD.getCode(), ResultEnum.CAN_NOT_SET_PWD.getValue());
+                return Result.fail(ResultCode.CAN_NOT_SET_PWD);
             }
             Md5Hash md5 = new Md5Hash(oldPwdDecode, AppConst.MD5_SALT, 2);
             // 密码错误
             if (!md5.toString().equals(user.getPassword())) {
-                return ResultInfo.fail(ResultEnum.OLD_PASSWORD_WRONG.getCode(), ResultEnum.OLD_PASSWORD_WRONG.getValue());
+                return Result.fail(ResultCode.OLD_PASSWORD_WRONG);
             }
             newPwd = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, newPwd);
             user.setPassword(newPwd);
             userService.update(user);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改密码异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改密码异常", e);
         }
     }
 
@@ -367,11 +367,11 @@ public class UserController {
     @RequestMapping("/uploadAvatar")
     @RequiresPermissions(PermissionCode.UPLOAD_AVATAR)
     @Limit(key = LimitKey.USER_UPLOAD_AVATAR_LIMIT_KEY, period = 5, count = 1, errMsg = LimitKey.INSERT_LIMIT, limitType = LimitType.IP_AND_METHOD)
-    public ResultInfo<Object> uploadAvatar(MultipartFile file, HttpServletRequest req) throws MyException {
+    public Result<Object> uploadAvatar(MultipartFile file, HttpServletRequest req) throws MyException {
         try {
             String originalFilename = file.getOriginalFilename();
             if (StringUtils.isEmpty(originalFilename)) {
-                return ResultInfo.fail(ResultEnum.UPDATE_ERROR.getCode(), "文件名称为空，请重新上传！");
+                return Result.fail(ResultCode.UPDATE_ERROR.code(), "文件名称为空，请重新上传！");
             }
             String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
             File path = new File(avatarPath);
@@ -385,9 +385,9 @@ public class UserController {
             User userInSession = (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
             userInSession.setAvatar("/avatar/" + fileName);
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInSession);
-            return ResultInfo.success("保存成功！");
+            return Result.success("保存成功！");
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPLOAD_ERROR.getCode(), ResultEnum.UPLOAD_ERROR.getValue(), "上传头像异常", e);
+            throw MyException.build(ResultCode.UPLOAD_ERROR, "上传头像异常", e);
         }
     }
 
@@ -398,12 +398,12 @@ public class UserController {
     @AspectLog(title = "重置错误次数")
     @RequestMapping("/resetErrNum")
     @RequiresPermissions(PermissionCode.RESET_ERR_NUM)
-    public ResultInfo<Object> resetErrNum(Integer userId) throws MyException {
+    public Result<Object> resetErrNum(Integer userId) throws MyException {
         try {
             userService.resetErrNum(userId);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "重置错误次数异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "重置错误次数异常", e);
         }
     }
 
@@ -414,13 +414,13 @@ public class UserController {
     @AspectLog(title = "修改主题")
     @RequestMapping("/userTheme")
     @RequiresPermissions(PermissionCode.USER_THEME)
-    public ResultInfo<Object> userTheme(String userTheme, HttpServletRequest req) throws MyException {
+    public Result<Object> userTheme(String userTheme, HttpServletRequest req) throws MyException {
         try {
             userService.updateConfig("userTheme", userTheme);
             req.getSession().setAttribute("userTheme", userTheme);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改主题异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改主题异常", e);
         }
     }
 
@@ -431,13 +431,13 @@ public class UserController {
     @AspectLog(title = "修改菜单位置")
     @RequestMapping("/menuPosition")
     @RequiresPermissions(PermissionCode.MENU_POSITION)
-    public ResultInfo<Object> menuPosition(String menuPosition, HttpServletRequest req) throws MyException {
+    public Result<Object> menuPosition(String menuPosition, HttpServletRequest req) throws MyException {
         try {
             userService.updateConfig("menuPosition", menuPosition);
             req.getSession().setAttribute("menuPosition", menuPosition);
-            return ResultInfo.success(ResultEnum.SUCCESS.getValue());
+            return Result.success(ResultCode.SUCCESS);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.UPDATE_ERROR.getCode(), ResultEnum.UPDATE_ERROR.getValue(), "修改菜单位置异常", e);
+            throw MyException.build(ResultCode.UPDATE_ERROR, "修改菜单位置异常", e);
         }
     }
 

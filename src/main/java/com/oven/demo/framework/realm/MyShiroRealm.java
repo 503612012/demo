@@ -1,7 +1,7 @@
 package com.oven.demo.framework.realm;
 
 import com.oven.demo.common.constant.AppConst;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
@@ -58,18 +58,18 @@ public class MyShiroRealm extends AuthorizingRealm {
         User user = userService.getByUserName(userName);
         // 账号不存在
         if (user == null) {
-            throw new UnknownAccountException(ResultEnum.NO_THIS_USER.getValue());
+            throw new UnknownAccountException(ResultCode.NO_THIS_USER.message());
         }
 
         Md5Hash md5 = new Md5Hash(token.getPassword(), AppConst.MD5_SALT, 2);
         // 密码错误
         if (!md5.toString().equals(user.getPassword())) {
-            throw new IncorrectCredentialsException(ResultEnum.PASSWORD_WRONG.getValue());
+            throw new IncorrectCredentialsException(ResultCode.PASSWORD_WRONG.message());
         }
 
         // 账号锁定
         if (user.getStatus().equals(1)) {
-            throw new LockedAccountException(ResultEnum.USER_DISABLE.getValue());
+            throw new LockedAccountException(ResultCode.USER_DISABLE.message());
         }
         ByteSource salt = ByteSource.Util.bytes(AppConst.MD5_SALT);
         return new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());

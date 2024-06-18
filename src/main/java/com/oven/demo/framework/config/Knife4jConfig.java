@@ -1,7 +1,7 @@
 package com.oven.demo.framework.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -72,8 +72,8 @@ public class Knife4jConfig {
 
     private List<Response> responseMessageList() {
         List<Response> list = new ArrayList<>();
-        for (ResultEnum resultEnum : ResultEnum.values()) {
-            list.add(new ResponseBuilder().code(String.valueOf(resultEnum.getCode())).description(resultEnum.getValue()).build());
+        for (ResultCode resultCode : ResultCode.values()) {
+            list.add(new ResponseBuilder().code(String.valueOf(resultCode.code())).description(resultCode.message()).build());
         }
         return list;
     }
@@ -87,7 +87,7 @@ public class Knife4jConfig {
                 return model.getVersion();
             }
             String version = this.getClass().getPackage().getImplementationVersion();
-            log.info("获取到的version是：" + version);
+            log.info("获取到的version是：{}", version);
             return version;
         } catch (Exception e) {
             log.error("获取maven版本号异常：", e);

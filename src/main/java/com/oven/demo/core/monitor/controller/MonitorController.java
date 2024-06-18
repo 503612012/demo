@@ -8,9 +8,9 @@ import cn.hutool.system.JvmInfo;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.RuntimeInfo;
 import cn.hutool.system.SystemUtil;
-import com.oven.basic.common.util.ResultInfo;
+import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.PermissionCode;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.monitor.entity.SysMachineResult;
 import com.oven.demo.framework.exception.MyException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -47,7 +47,7 @@ public class MonitorController {
     @ResponseBody
     @RequestMapping("/data")
     @RequiresPermissions(PermissionCode.MONITOR_MANAGER)
-    public ResultInfo<Object> data() throws MyException {
+    public Result<Object> data() throws MyException {
         try {
             JvmInfo jvmInfo = SystemUtil.getJvmInfo();
             JavaRuntimeInfo javaRuntimeInfo = SystemUtil.getJavaRuntimeInfo();
@@ -80,9 +80,9 @@ public class MonitorController {
             String usedRate = (new DecimalFormat("#.00")).format(NumberUtil.mul(rate, 100)) + "%";
             sysJvmMemInfo.setJvmMemoryUsedRate(usedRate);
             sysMachineResult.setSysJvmMemInfo(sysJvmMemInfo);
-            return ResultInfo.success(sysMachineResult);
+            return Result.success(sysMachineResult);
         } catch (Exception e) {
-            throw MyException.build(ResultEnum.SEARCH_PAGE_ERROR.getCode(), ResultEnum.SEARCH_PAGE_ERROR.getValue(), "监控接口异常", e);
+            throw MyException.build(ResultCode.SEARCH_PAGE_ERROR, "监控接口异常", e);
         }
     }
 

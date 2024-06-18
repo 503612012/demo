@@ -2,7 +2,7 @@ package com.oven.demo.framework.limitation;
 
 import com.google.common.collect.ImmutableList;
 import com.oven.basic.common.util.IPUtils;
-import com.oven.demo.common.enumerate.ResultEnum;
+import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.framework.exception.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +78,7 @@ public class LimitInterceptor {
             if (e instanceof RuntimeException) {
                 log.error("{}请求{}超过次数限制！", key, method);
             }
-            throw new LimitException(ResultEnum.OVER_LIMIT_ERROR.getCode(), errMsg);
+            throw new LimitException(ResultCode.OVER_LIMIT_ERROR.code(), errMsg);
         }
     }
 
