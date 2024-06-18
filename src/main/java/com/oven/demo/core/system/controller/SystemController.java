@@ -244,7 +244,7 @@ public class SystemController {
 
             User userInDb = userService.getByUserName(userName);
             if (userInDb.getErrNum() >= 5 && (userInDb.getId() != 1 && userInDb.getId() != 2)) {
-                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.OVER_WRONG_NUM.message() + "]", 0, "", IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
+                logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.OVER_WRONG_NUM.message() + "]", 0, userName, IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                 return Result.fail(ResultCode.OVER_WRONG_NUM);
             }
             // 登录成功后放入application，防止同一个账户多人登录
