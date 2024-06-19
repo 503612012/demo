@@ -16,6 +16,7 @@
     </parent>
 
     <properties>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -579,9 +580,9 @@
                         </goals>
                         <configuration>
                             <target>
-                                <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}"/>
-                                <replace file="${project.build.directory}/container.sh" token="@version@" value="${project.version}"/>
-                                <replace file="${project.build.directory}/Dockerfile" token="@version@" value="${project.version}"/>
+                                <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
+                                <replace file="${project.build.directory}/container.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
+                                <replace file="${project.build.directory}/Dockerfile" token="@jar.version@" value="${project.version}"/>
                             </target>
                         </configuration>
                     </execution>

@@ -15,7 +15,7 @@ ADD simsun.ttf /usr/local/jdk1.8.0_341/jre/lib/fonts
 RUN mkdir -p /home/demo/logs
 ADD lib /home/demo/lib
 ADD resources /home/demo/resources
-ADD demo-@version@.jar /home/demo
+ADD demo-@jar.version@.jar /home/demo
 ADD start.sh /home/demo
 RUN chmod +x /home/demo/start.sh
 ADD stop.sh /home/demo
