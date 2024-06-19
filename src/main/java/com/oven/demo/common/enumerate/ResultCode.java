@@ -30,7 +30,7 @@ public enum ResultCode implements IResultCode {
     FORCE_LOGOUT_ERROR(4012, "强制退出异常！"),
     FORCE_LOGOUT(4013, "您已被管理员强制退出！"),
 
-    SEARCH_PAGE_ERROR(6000, "分页查询错误！"),
+    SEARCH_PAGE_ERROR(6000, "查询错误！"),
     SEARCH_ERROR(6001, "查询错误！"),
     INSERT_ERROR(6002, "添加错误！"),
     DELETE_ERROR(6003, "删除错误！"),
