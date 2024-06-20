@@ -73,7 +73,7 @@ public class LimitInterceptor {
             }
         } catch (Throwable e) {
             if (e instanceof MyException) {
-                throw MyException.build(((MyException) e).getCode(), ((MyException) e).getMsg(), ((MyException) e).getLog(), ((MyException) e).getE());
+                throw (MyException) e;
             }
             if (e instanceof RuntimeException) {
                 log.error("{}请求{}超过次数限制！", key, method);

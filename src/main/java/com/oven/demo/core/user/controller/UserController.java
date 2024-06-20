@@ -169,7 +169,7 @@ public class UserController {
             }
             user.setPassword(RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, user.getPassword()));
             userService.save(user);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.INSERT_ERROR, "添加用户异常", e);
         }
@@ -225,7 +225,7 @@ public class UserController {
                 return Result.fail(ResultCode.CAN_NOT_UPDATE_USER);
             }
             userService.update(user);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改用户异常", e);
         }
@@ -247,7 +247,7 @@ public class UserController {
                 return Result.fail(ResultCode.CAN_NOT_DELETE_USER);
             }
             userService.delete(id);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.DELETE_ERROR, "删除用户异常", e);
         }
@@ -272,7 +272,7 @@ public class UserController {
             User user = userService.getById(userId);
             user.setStatus(status);
             userService.update(user);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改用户状态异常", e);
         }
@@ -312,7 +312,7 @@ public class UserController {
                 return Result.fail(ResultCode.CAN_NOT_SET_ROLE);
             }
             userService.setUserRole(userId, roleIds);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "设置用户角色异常", e);
         }
@@ -353,7 +353,7 @@ public class UserController {
             newPwd = RsaUtils.decryptByPrivateKey(RsaProperties.privateKey, newPwd);
             user.setPassword(newPwd);
             userService.update(user);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改密码异常", e);
         }
@@ -371,7 +371,7 @@ public class UserController {
         try {
             String originalFilename = file.getOriginalFilename();
             if (StringUtils.isEmpty(originalFilename)) {
-                return Result.fail(ResultCode.UPDATE_ERROR.code(), "文件名称为空，请重新上传！");
+                return Result.fail(ResultCode.FILE_NAME_EMPTY_ERROR);
             }
             String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
             File path = new File(avatarPath);
@@ -385,7 +385,7 @@ public class UserController {
             User userInSession = (User) req.getSession().getAttribute(AppConst.CURRENT_USER);
             userInSession.setAvatar("/avatar/" + fileName);
             req.getSession().setAttribute(AppConst.CURRENT_USER, userInSession);
-            return Result.success("保存成功！");
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPLOAD_ERROR, "上传头像异常", e);
         }
@@ -401,7 +401,7 @@ public class UserController {
     public Result<Object> resetErrNum(Integer userId) throws MyException {
         try {
             userService.resetErrNum(userId);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "重置错误次数异常", e);
         }
@@ -418,7 +418,7 @@ public class UserController {
         try {
             userService.updateConfig("userTheme", userTheme);
             req.getSession().setAttribute("userTheme", userTheme);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改主题异常", e);
         }
@@ -435,7 +435,7 @@ public class UserController {
         try {
             userService.updateConfig("menuPosition", menuPosition);
             req.getSession().setAttribute("menuPosition", menuPosition);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改菜单位置异常", e);
         }

@@ -107,7 +107,7 @@ public class RoleController {
     public Result<Object> save(Role role) throws MyException {
         try {
             roleService.save(role);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.INSERT_ERROR, "添加角色异常", e);
         }
@@ -127,7 +127,7 @@ public class RoleController {
                 return Result.fail(ResultCode.CAN_NOT_UPDATE_ROLE);
             }
             roleService.update(role);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改角色异常", e);
         }
@@ -150,10 +150,10 @@ public class RoleController {
             }
             List<UserRole> userRoles = userRoleService.getByRoleId(id);
             if (userRoles != null && !userRoles.isEmpty()) {
-                return Result.fail(400, "该角色被其他用户引用，禁止删除！");
+                return Result.fail(ResultCode.DELETE_ROLE_ERROR);
             }
             roleService.delete(id);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.DELETE_ERROR, "删除角色异常", e);
         }
@@ -178,7 +178,7 @@ public class RoleController {
             Role role = roleService.getById(roleId);
             role.setStatus(status);
             roleService.update(role);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改角色状态异常", e);
         }

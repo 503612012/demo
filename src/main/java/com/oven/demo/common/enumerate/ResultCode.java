@@ -11,10 +11,17 @@ public enum ResultCode implements IResultCode {
 
     SUCCESS(200, "操作成功！"),
 
+    SECKILL_ERROR(3000, "秒杀接口异常！"),
     UNKNOW_ERROR(3001, "未知错误！"),
     OVER_LIMIT_ERROR(3002, "OVER LIMIT!"),
     SYSTEM_ERROR(3003, "系统错误！"),
     UPLOAD_ERROR(3004, "上传文件错误！"),
+    GET_CAPTCHA_ERROR(3005, "获取验证码异常！"),
+    FILE_NAME_EMPTY_ERROR(3006, "文件名称为空，请重新上传！"),
+    NOT_YET_ACTIVATED_ERROR(3007, "暂未开通修改功能！"),
+    DELETE_ROLE_ERROR(3008, "该角色被其他用户引用，禁止删除！"),
+    LOGIN_ERROR(3009, "登录操作出错，请联系网站管理人员。"),
+    GET_CURRENT_USER_ERROR(3010, "获取当前登录用户出错，请联系网站管理人员。"),
 
     NO_THIS_USER(4001, "用户名或密码错误！"),
     PASSWORD_WRONG(4002, "用户名或密码错误！"),

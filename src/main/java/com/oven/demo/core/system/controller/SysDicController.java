@@ -85,7 +85,7 @@ public class SysDicController {
     public Result<Object> save(SysDicEntity sysdic) throws MyException {
         try {
             sysDicService.save(sysdic);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.INSERT_ERROR, "添加数据字典异常", e);
         }
@@ -101,7 +101,7 @@ public class SysDicController {
     public Result<Object> update(SysDicEntity sysdic) throws MyException {
         try {
             sysDicService.update(sysdic);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改数据字典异常", e);
         }
@@ -120,7 +120,7 @@ public class SysDicController {
         try {
             boolean result = sysDicService.delete(id);
             if (result) {
-                return Result.success(ResultCode.SUCCESS);
+                return Result.success();
             } else {
                 return Result.fail(ResultCode.DELETE_ERROR);
             }
@@ -138,7 +138,7 @@ public class SysDicController {
     public Result<Object> reload() throws MyException {
         try {
             initSysDic.initSysDic();
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.SYSTEM_ERROR, "重载数据字典异常", e);
         }
@@ -154,7 +154,7 @@ public class SysDicController {
     public Result<Object> updateStatus(Integer id, Integer status) throws MyException {
         try {
             sysDicService.updateStatus(id, status);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改数据字典状态异常", e);
         }

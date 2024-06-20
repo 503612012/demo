@@ -47,14 +47,14 @@ public class GlobalExceptionHandle {
                 resp.sendRedirect("/err");
                 return "";
             } else {
-                return Result.build(myException.getCode(), myException.getMsg());
+                return Result.fail(myException);
             }
         } else if (e instanceof UnauthorizedException) {
             resp.sendRedirect("/noauth");
             return "";
         } else if (e instanceof LimitException) {
             LimitException limitException = (LimitException) e;
-            return Result.build(limitException.getCode(), limitException.getMsg());
+            return Result.fail(limitException);
         } else {
             log.error("错误信息：", e);
         }

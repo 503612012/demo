@@ -86,9 +86,9 @@ public class SystemController {
             LogLevel logLevel = LogLevel.valueOf(level.toUpperCase());
             loggingSystem.setLogLevel(logger, logLevel);
             log.info("修改日志级别{} to {}，更新完毕", logger, level);
-            return Result.success("修改成功");
+            return Result.success();
         } catch (Exception e) {
-            throw MyException.build(ResultCode.SYSTEM_ERROR.code(), "修改日志级别异常！", "修改日志级别异常", e);
+            throw MyException.build(ResultCode.SYSTEM_ERROR, "修改日志级别异常", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class SystemController {
             sysDicService.secKill();
             return Result.success("秒杀成功！");
         } catch (Exception e) {
-            return Result.fail(400, "秒杀接口异常！");
+            return Result.fail(ResultCode.SECKILL_ERROR);
         }
     }
 
@@ -125,7 +125,7 @@ public class SystemController {
             captcha.out(response.getOutputStream());
             session.setAttribute(AppConst.CAPTCHA, captcha.text().toLowerCase());
         } catch (Exception e) {
-            throw MyException.build(ResultCode.SEARCH_ERROR.code(), "获取验证码异常！", "获取验证码异常", e);
+            throw MyException.build(ResultCode.GET_CAPTCHA_ERROR, "获取验证码异常", e);
         }
     }
 
@@ -195,7 +195,7 @@ public class SystemController {
                 obj.put(AppConst.SESSION, null);
                 loginedMap.put(userName, obj);
             }
-            return Result.success("退出成功");
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.FORCE_LOGOUT_ERROR, "强制退出异常", e);
         }
@@ -280,7 +280,7 @@ public class SystemController {
                 req.getSession().setAttribute("menuPosition", StringUtils.isEmpty(menuPosition) ? "left" : menuPosition);
             }
 
-            return Result.success("登录成功！");
+            return Result.success();
         } catch (Exception e) {
             User userInDb = userService.getByUserName(userName);
             if (e instanceof UnknownAccountException) {
@@ -298,7 +298,7 @@ public class SystemController {
                 logService.addLog("登录系统！", "失败[用户名：" + userName + "，失败原因：" + ResultCode.USER_DISABLE.message() + "]", userInDb.getId(), userInDb.getNickName(), IPUtils.getClientIPAddr(req), req.getRequestURI(), req.getMethod());
                 return Result.fail(ResultCode.USER_DISABLE);
             } else {
-                throw MyException.build(ResultCode.UNKNOW_ERROR.code(), "登录操作出错，请联系网站管理人员。", "登录操作异常", e);
+                throw MyException.build(ResultCode.LOGIN_ERROR, "登录操作异常", e);
             }
         }
     }
@@ -316,7 +316,7 @@ public class SystemController {
             req.getSession().setAttribute(AppConst.USER_MENU, code);
             return Result.success(menus);
         } catch (Exception e) {
-            throw MyException.build(ResultCode.UNKNOW_ERROR.code(), "获取当前登录用户出错，请联系网站管理人员。", "获取当前登录用户的菜单异常", e);
+            throw MyException.build(ResultCode.GET_CURRENT_USER_ERROR, "获取当前登录用户的菜单异常", e);
         }
     }
 

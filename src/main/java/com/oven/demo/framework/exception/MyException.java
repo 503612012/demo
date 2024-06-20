@@ -1,5 +1,6 @@
 package com.oven.demo.framework.exception;
 
+import com.oven.basic.common.util.IException;
 import com.oven.basic.common.util.IResultCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MyException extends Exception {
+public class MyException extends Exception implements IException {
 
     private static final long serialVersionUID = -2511799915640286981L;
 
@@ -24,15 +25,21 @@ public class MyException extends Exception {
         return new MyException(resultCode.code(), resultCode.message(), log, e);
     }
 
-    public static MyException build(Integer code, String msg, String log, Exception e) {
-        return new MyException(code, msg, log, e);
-    }
-
     private MyException(Integer code, String msg, String log, Exception e) {
         this.code = code;
         this.msg = msg;
         this.log = log;
         this.e = e;
+    }
+
+    @Override
+    public Integer code() {
+        return code;
+    }
+
+    @Override
+    public String msg() {
+        return msg;
     }
 
 }

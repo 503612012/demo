@@ -65,7 +65,7 @@ public class MenuController {
     public Result<Object> doUpdate(Menu menu) throws MyException {
         try {
             // menuService.update(menu);
-            return Result.success("暂不开通修改功能");
+            return Result.success(ResultCode.NOT_YET_ACTIVATED_ERROR);
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改菜单异常", e);
         }
@@ -87,7 +87,7 @@ public class MenuController {
             Menu menu = menuService.getById(menuId);
             menu.setStatus(status);
             menuService.update(menu);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改菜单状态异常", e);
         }

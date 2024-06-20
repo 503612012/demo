@@ -111,7 +111,7 @@ public class EmployeeController {
     public Result<Object> save(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.save(employee);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.INSERT_ERROR, "添加员工异常", e);
         }
@@ -138,7 +138,7 @@ public class EmployeeController {
     public Result<Object> update(@ApiIgnore Employee employee) throws MyException {
         try {
             employeeService.update(employee);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改员工异常", e);
         }
@@ -160,7 +160,7 @@ public class EmployeeController {
         try {
             boolean result = employeeService.delete(id);
             if (result) {
-                return Result.success(ResultCode.SUCCESS);
+                return Result.success();
             } else {
                 return Result.fail(ResultCode.DELETE_ERROR);
             }
@@ -190,7 +190,7 @@ public class EmployeeController {
             Employee employee = employeeService.getById(employeeId);
             employee.setStatus(status);
             employeeService.update(employee);
-            return Result.success(ResultCode.SUCCESS);
+            return Result.success();
         } catch (Exception e) {
             throw MyException.build(ResultCode.UPDATE_ERROR, "修改员工状态异常", e);
         }
