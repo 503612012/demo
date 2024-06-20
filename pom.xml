@@ -657,9 +657,10 @@
                         <configuration>
                             <platform>${platform}</platform>
                             <hooks>
+                                <!--suppress MybatisXMapperXmlInspection, MavenModelInspection -->
                                 <pre-commit>
                                     echo running code validation
-                                    exec mvn clean validate -f ${project.basedir}
+                                    exec ${env.MAVEN_HOME}/bin/mvn clean validate -f ${project.basedir}
                                 </pre-commit>
                             </hooks>
                         </configuration>
