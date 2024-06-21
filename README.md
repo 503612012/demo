@@ -16,6 +16,7 @@
 | jdk-8u341-linux-x64.tar.gz | jdk安装包    |
 | mysql.sh                   | 数据库安装脚本   |
 | path.sh                    | 项目部署根路径   |
+| push.sh                    | 推送镜像脚本    |
 | nginx.tar.gz               | nginx     |
 | simsun.ttf                 | 字体文件      |
 | start.sh                   | 应用启动脚本    |
