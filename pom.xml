@@ -581,6 +581,7 @@
                         </goals>
                         <configuration>
                             <target>
+                                <replace file="${project.build.directory}/push.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
                                 <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
                                 <replace file="${project.build.directory}/container.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
                                 <replace file="${project.build.directory}/Dockerfile" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
