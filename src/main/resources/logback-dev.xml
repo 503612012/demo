@@ -98,9 +98,9 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!-- 包路径缩写 -->
-            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{10}).%M:%L - %msg%n</pattern>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{10}).%M:%L - %msg%n</pattern>
             <!-- 包路径不缩写 -->
-            <!-- <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger).%M:%L - %msg%n</pattern> -->
+            <!-- <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger).%M:%L - %msg%n</pattern> -->
         </encoder>
     </appender>
 
@@ -114,9 +114,9 @@
     <appender name="JDBC" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!-- 包路径缩写 -->
-            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger{10}).%M:%L - %yellow(%msg%n)</pattern>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger{10}).%M:%L - %yellow(%msg%n)</pattern>
             <!-- 包路径不缩写 -->
-            <!-- <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger).%M:%L - %yellow(%msg%n)</pattern> -->
+            <!-- <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger).%M:%L - %yellow(%msg%n)</pattern> -->
         </encoder>
     </appender>
 
