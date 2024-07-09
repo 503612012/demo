@@ -16,7 +16,6 @@
     </parent>
 
     <properties>
-        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jar.version>${version}</jar.version>
@@ -527,6 +526,26 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>build.time</name>
+                            <pattern>yyyy.MMdd.HHmmss</pattern>
+                            <locale>zh_CN</locale>
+                            <timeZone>Asia/Shanghai</timeZone>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- 整理release文件夹 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -581,10 +600,14 @@
                         </goals>
                         <configuration>
                             <target>
-                                <replace file="${project.build.directory}/push.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
-                                <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
-                                <replace file="${project.build.directory}/container.sh" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
-                                <replace file="${project.build.directory}/Dockerfile" token="@version@" value="${project.version}.${maven.build.timestamp}"/>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <replace file="${project.build.directory}/push.sh" token="@version@" value="${project.version}.${build.time}"/>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}.${build.time}"/>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <replace file="${project.build.directory}/container.sh" token="@version@" value="${project.version}.${build.time}"/>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <replace file="${project.build.directory}/Dockerfile" token="@version@" value="${project.version}.${build.time}"/>
                                 <replace file="${project.build.directory}/Dockerfile" token="@jar.version@" value="${project.version}"/>
                             </target>
                         </configuration>
