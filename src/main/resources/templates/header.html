@@ -22,7 +22,7 @@
                 <dd th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).USER_THEME) && session.userTheme == 'light'}"><a href="javascript:" class="userTheme" data="dark">暗色模式</a></dd>
                 <dd th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).MENU_POSITION) && session.menuPosition == 'header'}"><a href="javascript:" class="menuPosition" data="left">左侧菜单</a></dd>
                 <dd th:if="${session.menu.contains(T(com.oven.demo.common.constant.PermissionCode).MENU_POSITION) && session.menuPosition == 'left'}"><a href="javascript:" class="menuPosition" data="header">顶部菜单</a></dd>
-                <dd><a id="logoutBtn" href="/logout" class="menuPosition" data="header">退出</a></dd>
+                <dd><a id="logoutBtn" href="/logout" data="header">退出</a></dd>
             </dl>
         </li>
     </ul>
