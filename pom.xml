@@ -505,6 +505,7 @@
                 </configuration>
             </plugin>
 
+            <!-- 字节码加密 -->
             <plugin>
                 <groupId>com.oven.encryjar</groupId>
                 <artifactId>encryjar-maven-plugin</artifactId>
