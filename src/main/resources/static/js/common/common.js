@@ -6,14 +6,25 @@ define(['jquery', 'http'], function($, http) {
     function getCurrentDate(type) {
         var date = new Date();
         if (type == 1) {
-            return date.getFullYear();
-        } else if (type == 2) {
-            var seperator = "-";
+            // noinspection JSDuplicatedDeclaration
             var month = date.getMonth() + 1;
             if (month >= 1 && month <= 9) {
                 month = "0" + month;
             }
-            return date.getFullYear() + seperator + month;
+            var day = date.getDate();
+            if (day >= 1 && day <= 9) {
+                day = "0" + day;
+            }
+            return date.getFullYear() + "-" + month + "-" + day;
+        } else if (type == 2) {
+            // noinspection JSDuplicatedDeclaration
+            var month = date.getMonth() + 1;
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            return date.getFullYear() + "-" + month;
+        } else if (type == 3) {
+            return date.getFullYear();
         }
     }
 
