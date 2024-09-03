@@ -48,9 +48,9 @@ requirejs(['jquery', 'layui', 'http', 'common'], function($, layui, http, common
         cols: [[
             {type: 'numbers'},
             {field: 'roleName', title: '角色名', sort: true},
-            {field: 'createTime', title: '创建时间'},
+            {field: 'createTime', width: 180, title: '创建时间'},
             {field: 'createName', title: '创建人'},
-            {field: 'lastModifyTime', title: '最后修改时间'},
+            {field: 'lastModifyTime', width: 180, title: '最后修改时间'},
             {field: 'lastModifyName', title: '最后修改人'},
             {
                 field: 'status', title: '状态', templet: function(d) {
