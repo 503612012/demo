@@ -2,11 +2,13 @@ package com.oven.demo.core.user.dao;
 
 import com.oven.basic.base.dao.BaseDao;
 import com.oven.basic.base.entity.ConditionAndParams;
+import com.oven.basic.common.util.PropertyRowMapper;
 import com.oven.demo.core.user.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 用户dao层
@@ -63,6 +65,11 @@ public class UserDao extends BaseDao<User> {
     public void updateConfig(Integer id, String config) {
         String sql = "update t_user set `config` = ? where dbid = ?";
         jdbcTemplate.update(sql, config, id);
+    }
+
+    public List<User> getByIds(List<Integer> ids) {
+        String sql = "select * from crypto_user where dbid in (" + String.join(",", ids.stream().map(String::valueOf).toArray(String[]::new)) + ")";
+        return jdbcTemplate.query(sql, PropertyRowMapper.build(User.class));
     }
 
 }

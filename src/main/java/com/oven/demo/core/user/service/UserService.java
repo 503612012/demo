@@ -190,4 +190,8 @@ public class UserService {
         userDao.updateConfig(currentUser.getId(), config.toJSONString());
     }
 
+    public List<User> getByIds(List<Integer> ids) {
+        return userDao.getByIds(ids);
+    }
+
 }

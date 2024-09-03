@@ -5,9 +5,9 @@ import com.oven.basic.common.util.Result;
 import com.oven.demo.common.constant.AppConst;
 import com.oven.demo.common.constant.PermissionCode;
 import com.oven.demo.common.enumerate.ResultCode;
+import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.employee.entity.Employee;
 import com.oven.demo.core.employee.service.EmployeeService;
-import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
@@ -37,8 +37,6 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Resource
-    private UserService userService;
     @Resource
     private EmployeeService employeeService;
 
@@ -80,10 +78,8 @@ public class EmployeeController {
     public LayuiPager<Employee> getByPage(@RequestBody Employee employee) throws MyException {
         try {
             List<Employee> list = employeeService.getByPage(employee);
-            for (Employee item : list) {
-                item.setCreateName(userService.getById(item.getCreateId()).getNickName());
-                item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
-            }
+            CommonUtils.setCreateName(list);
+            CommonUtils.setLastModifyName(list);
             Integer totalNum = employeeService.getTotalNum(employee);
             return LayuiPager.build(list, totalNum);
         } catch (Exception e) {

@@ -9,10 +9,8 @@ import com.oven.demo.common.util.CommonUtils;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.role.entity.Role;
 import com.oven.demo.core.role.service.RoleService;
-import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.entity.UserRole;
 import com.oven.demo.core.user.service.UserRoleService;
-import com.oven.demo.core.user.service.UserService;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.exception.MyException;
 import com.oven.demo.framework.limitation.Limit;
@@ -42,8 +40,6 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
-    @Resource
-    private UserService userService;
     @Resource
     private MenuService menuService;
     @Resource
@@ -83,12 +79,8 @@ public class RoleController {
     public Object getByPage(@RequestBody Role role) throws MyException {
         try {
             List<Role> list = roleService.getByPage(role);
-            for (Role item : list) {
-                User createUser = userService.getById(item.getCreateId());
-                item.setCreateName(createUser == null ? "" : createUser.getNickName());
-                User lastModifyUser = userService.getById(item.getLastModifyId());
-                item.setLastModifyName(lastModifyUser == null ? "" : lastModifyUser.getNickName());
-            }
+            CommonUtils.setCreateName(list);
+            CommonUtils.setLastModifyName(list);
             Integer totalNum = roleService.getTotalNum(role);
             return LayuiPager.build(list, totalNum);
         } catch (Exception e) {

@@ -108,10 +108,9 @@ public class UserController {
             ServletContext context = req.getServletContext();
             // noinspection unchecked
             Map<String, JSONObject> loginedMap = (Map<String, JSONObject>) context.getAttribute(AppConst.LOGINEDUSERS);
+            CommonUtils.setCreateName(list);
+            CommonUtils.setLastModifyName(list);
             for (User item : list) {
-                item.setCreateName(userService.getById(item.getCreateId()).getNickName());
-                item.setLastModifyName(userService.getById(item.getLastModifyId()).getNickName());
-
                 // 在线状态
                 item.setOnline(getOnlineStatus(loginedMap, item));
             }
