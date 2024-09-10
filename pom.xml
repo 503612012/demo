@@ -42,7 +42,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.9</version>
+            <version>5.8.25</version>
         </dependency>
 
         <!-- redis启动器 -->
@@ -74,14 +74,14 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.14</version>
+            <version>1.2.23</version>
         </dependency>
 
         <!-- guava支持 -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>33.2.1-jre</version>
         </dependency>
 
         <!-- shiro支持 -->
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
+            <version>2.0.52</version>
         </dependency>
 
         <!-- joda-time依赖 -->
@@ -120,7 +120,7 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>2.0.8</version>
+            <version>3.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.plugin</groupId>
@@ -151,12 +151,12 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>1.5.22</version>
+            <version>1.6.14</version>
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
-            <version>1.5.22</version>
+            <version>1.6.14</version>
         </dependency>
 
         <!-- AOP支持 -->
@@ -197,7 +197,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
-            <version>3.8.5</version>
+            <version>3.9.8</version>
         </dependency>
     </dependencies>
 
@@ -237,6 +237,11 @@
             <id>nexus-oven</id>
             <name>nexus-oven</name>
             <url>http://maven.qqxki.com/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
 
