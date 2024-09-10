@@ -68,7 +68,7 @@ public class UserDao extends BaseDao<User> {
     }
 
     public List<User> getByIds(List<Integer> ids) {
-        String sql = "select * from crypto_user where dbid in (" + String.join(",", ids.stream().map(String::valueOf).toArray(String[]::new)) + ")";
+        String sql = "select * from t_user where dbid in (" + String.join(",", ids.stream().map(String::valueOf).toArray(String[]::new)) + ")";
         return jdbcTemplate.query(sql, PropertyRowMapper.build(User.class));
     }
 
