@@ -64,21 +64,23 @@ public class PropertyConfig {
         }
         properties.put("demo.profile", profile);
         String driverClassName = "com.mysql.cj.jdbc.Driver";
-        String url = System.getenv("db.url");
+        String url = System.getenv("db_url");
         if (StringUtils.isEmpty(url)) {
             url = properties.getProperty("mysql.url");
         } else {
             url = "jdbc:mysql://" + url + "/db_demo?characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         }
-        String userName = System.getenv("db.uname");
+        String userName = System.getenv("db_uname");
         if (StringUtils.isEmpty(userName)) {
             userName = properties.getProperty("mysql.username");
         }
-        String password = System.getenv("db.pwd");
+        String password = System.getenv("db_pwd");
         if (StringUtils.isEmpty(password)) {
             password = properties.getProperty("mysql.password");
         }
-
+        log.info("=========================== >>> db.url is {}", url);
+        log.info("=========================== >>> db.uname is {}", userName);
+        log.info("=========================== >>> db.pwd is {}", password);
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;

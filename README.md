@@ -16,8 +16,8 @@
 | jdk-8u341-linux-x64.tar.gz | jdk安装包    |
 | mysql.sh                   | 数据库安装脚本   |
 | path.sh                    | 项目部署根路径   |
+| pull.sh                    | 拉取镜像脚本    |
 | push.sh                    | 推送镜像脚本    |
-| nginx.tar.gz               | nginx     |
 | simsun.ttf                 | 字体文件      |
 | start.sh                   | 应用启动脚本    |
 | stop.sh                    | 应用停止脚本    |
@@ -54,7 +54,8 @@
 
 ## 七、开发环境搭建
 
-> 1. 修改 [src/main/resources/application-dev.properties](./src/main/resources/application-dev.properties) 中数据源信息，或启动时指定环境变量：`db.url=192.168.18.66:3306;db.uname=root;db.pwd=root`
+> 1. 修改 [src/main/resources/application-dev.properties](./src/main/resources/application-dev.properties) 中数据源信息，或启动时指定环境变量：
+     `db_url=192.168.18.66:3306;db_uname=root;db_pwd=root`
 > 2. 修改 [src/main/resources/logback-dev.xml](./src/main/resources/logback-dev.xml) 中日志保存路径信息
 > 3. 修改 [src/main/java/com/oven/demo/framework/config/DevEnvSet.java](./src/main/java/com/oven/demo/framework/config/DevEnvSet.java) 中相关配置项
 > 4. 修改 [pom.xml](./pom.xml) 中指定profile

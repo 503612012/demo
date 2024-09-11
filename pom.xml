@@ -605,6 +605,8 @@
                         <configuration>
                             <target>
                                 <!--suppress UnresolvedMavenProperty -->
+                                <replace file="${project.build.directory}/pull.sh" token="@version@" value="${project.version}.${build.time}"/>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <replace file="${project.build.directory}/push.sh" token="@version@" value="${project.version}.${build.time}"/>
                                 <!--suppress UnresolvedMavenProperty -->
                                 <replace file="${project.build.directory}/build.sh" token="@version@" value="${project.version}.${build.time}"/>
