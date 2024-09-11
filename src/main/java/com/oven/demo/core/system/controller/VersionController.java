@@ -1,5 +1,6 @@
 package com.oven.demo.core.system.controller;
 
+import com.oven.demo.framework.annotation.Anonymous;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 @RestController
 public class VersionController {
 
+    @Anonymous
     @GetMapping("/version")
     public String versionInformation() {
         return readGitProperties();

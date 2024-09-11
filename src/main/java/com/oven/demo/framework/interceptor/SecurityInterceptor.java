@@ -7,11 +7,13 @@ import com.oven.demo.common.enumerate.ResultCode;
 import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
+import com.oven.demo.framework.annotation.Anonymous;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,10 +40,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private UserService userService;
 
     private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
-    private static final String GET_GIF_CODE = "/getGifCode";
-    private static final String ACTUATOR = "/actuator";
-    private static final String DO_LOGIN = "/doLogin";
-    private static final String VERSION = "/version";
     private static final String ERROR = "/error";
     private static final String LOGIN = "/login";
     private static final String ERR = "/err";
@@ -51,7 +50,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         resp.setContentType("text/plain;charset=UTF-8");
         String servletPath = req.getServletPath();
         // 放行的请求
-        if (isExcludedUrls(servletPath, resp)) {
+        if (isExcludedUrls(servletPath, resp, handler)) {
             return true;
         }
 
@@ -157,18 +156,16 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     /**
      * 放行的url
      */
-    private boolean isExcludedUrls(String servletPath, HttpServletResponse resp) throws IOException {
-        if (servletPath.startsWith(LOGIN) ||
-                VERSION.equals(servletPath) ||
-                servletPath.startsWith(DO_LOGIN) ||
-                servletPath.startsWith(ACTUATOR) ||
-                ERR.equals(servletPath) ||
-                servletPath.startsWith(GET_GIF_CODE)) {
-            return true;
-        }
+    private boolean isExcludedUrls(String servletPath, HttpServletResponse resp, Object handler) throws IOException {
         if (servletPath.startsWith(ERROR)) {
             resp.sendRedirect(ERR);
             return true;
+        }
+        Annotation[] annotations = ((HandlerMethod) handler).getMethod().getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof Anonymous) {
+                return true;
+            }
         }
         return false;
     }

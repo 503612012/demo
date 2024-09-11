@@ -18,6 +18,7 @@ import com.oven.demo.core.menu.service.MenuService;
 import com.oven.demo.core.system.service.SysDicService;
 import com.oven.demo.core.user.entity.User;
 import com.oven.demo.core.user.service.UserService;
+import com.oven.demo.framework.annotation.Anonymous;
 import com.oven.demo.framework.annotation.AspectLog;
 import com.oven.demo.framework.config.RsaProperties;
 import com.oven.demo.framework.exception.MyException;
@@ -109,6 +110,7 @@ public class SystemController {
     /**
      * 获取验证码（Gif版本）
      */
+    @Anonymous
     @RequestMapping("/getGifCode")
     public void getGifCode(HttpServletResponse response, HttpServletRequest request) throws MyException {
         try {
@@ -149,6 +151,7 @@ public class SystemController {
     /**
      * 去到登录页面
      */
+    @Anonymous
     @RequestMapping("/login")
     public String login(String errorMsg, Model model) {
         model.addAttribute("errorMsg", errorMsg);
@@ -212,6 +215,7 @@ public class SystemController {
     /**
      * 去到错误页面
      */
+    @Anonymous
     @RequestMapping("/err")
     public String err() {
         return "err";
@@ -223,6 +227,7 @@ public class SystemController {
      * @param userName 用户名
      * @param pwd      密码
      */
+    @Anonymous
     @ResponseBody
     @RequestMapping("/doLogin")
     public Result<Object> doLogin(String userName, String pwd, String inputCode, boolean rememberMe, HttpServletRequest req) throws MyException {
