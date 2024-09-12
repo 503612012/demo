@@ -22,6 +22,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -48,6 +49,7 @@ import java.util.UUID;
 @ApiIgnore
 @Controller
 @RequestMapping("/user")
+@ConditionalOnBean(name = "sessionManager")
 public class UserController {
 
     @Value("${avatar.path}")

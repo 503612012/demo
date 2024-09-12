@@ -1,6 +1,7 @@
 package com.oven.demo.framework.config;
 
 import com.oven.demo.common.constant.AppConst;
+import com.oven.demo.framework.annotation.Anonymous;
 import com.oven.demo.framework.realm.MyShiroRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
@@ -15,16 +16,24 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * shiro配置类
@@ -32,6 +41,7 @@ import java.util.Properties;
  * @author Oven
  */
 @Configuration
+@ConditionalOnBean(RequestMappingHandlerMapping.class)
 public class ShiroConfig {
 
     @Value("${spring.redis.host}")
@@ -45,11 +55,14 @@ public class ShiroConfig {
     @Value("${spring.redis.database}")
     private int database;
 
+    @Resource
+    private RequestMappingHandlerMapping requestMappingHandlerMapping;
+
     @Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>(getAnonymousUrl());
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/*.js", "anon");
@@ -57,10 +70,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/*.woff", "anon");
         filterChainDefinitionMap.put("/*.woff2", "anon");
         filterChainDefinitionMap.put("/img/*.ico", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/version", "anon");
-        filterChainDefinitionMap.put("/doLogin", "anon");
-        filterChainDefinitionMap.put("/getGifCode", "anon");
         filterChainDefinitionMap.put("/actuator/**", "anon");
         filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setLoginUrl("/login");
@@ -68,6 +77,23 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/noauth");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
+    }
+
+    private Map<String, String> getAnonymousUrl() {
+        Map<String, String> map = new HashMap<>();
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
+            Anonymous anonymous = entry.getValue().getMethodAnnotation(Anonymous.class);
+            if (anonymous == null) {
+                continue;
+            }
+            Set<String> patterns = entry.getKey().getPatternsCondition().getPatterns();
+            if (CollectionUtils.isEmpty(patterns)) {
+                continue;
+            }
+            patterns.forEach(e -> map.put(e, "anon"));
+        }
+        return map;
     }
 
     /**
