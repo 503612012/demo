@@ -238,11 +238,6 @@
             <name>nexus-oven</name>
             <url>http://maven.qqxki.com/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>maven_central</id>
-            <name>Maven Central</name>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
     </repositories>
 
     <pluginRepositories>

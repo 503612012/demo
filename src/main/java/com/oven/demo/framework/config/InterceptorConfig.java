@@ -20,7 +20,18 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(securityInterceptor).excludePathPatterns("/css/**", "/js/**", "/layui/**", "/img/*.ico", "/*.js");
+        registry.addInterceptor(securityInterceptor).excludePathPatterns(
+                "/**/*.js",
+                "/**/*.css",
+                "/**/*.ico",
+                "/**/*.woff",
+                "/**/*.woff2",
+                "/**/*.gif",
+                "/**/*.png",
+                "/**/*.jpg",
+                "/**/*.jpeg",
+                "/**/*.properties"
+        );
     }
 
 }
