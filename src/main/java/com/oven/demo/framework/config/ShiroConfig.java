@@ -16,20 +16,26 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.Base64Utils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.annotation.Resource;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -41,7 +47,6 @@ import java.util.Set;
  * @author Oven
  */
 @Configuration
-@ConditionalOnBean(RequestMappingHandlerMapping.class)
 public class ShiroConfig {
 
     @Value("${spring.redis.host}")
@@ -55,45 +60,93 @@ public class ShiroConfig {
     @Value("${spring.redis.database}")
     private int database;
 
-    @Resource
-    private RequestMappingHandlerMapping requestMappingHandlerMapping;
-
     @Bean
-    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager, ApplicationContext applicationContext) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>(getAnonymousUrl());
-        filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/js/**", "anon");
-        filterChainDefinitionMap.put("/*.js", "anon");
-        filterChainDefinitionMap.put("/layui/**", "anon");
-        filterChainDefinitionMap.put("/*.woff", "anon");
-        filterChainDefinitionMap.put("/*.woff2", "anon");
-        filterChainDefinitionMap.put("/img/*.ico", "anon");
-        filterChainDefinitionMap.put("/actuator/**", "anon");
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/**/*.js", "anon");
+        filterChainDefinitionMap.put("/**/*.css", "anon");
+        filterChainDefinitionMap.put("/**/*.ico", "anon");
+        filterChainDefinitionMap.put("/**/*.woff", "anon");
+        filterChainDefinitionMap.put("/**/*.woff2", "anon");
+        filterChainDefinitionMap.put("/**/*.gif", "anon");
+        filterChainDefinitionMap.put("/**/*.png", "anon");
+        filterChainDefinitionMap.put("/**/*.jpg", "anon");
+        filterChainDefinitionMap.put("/**/*.jpeg", "anon");
+        filterChainDefinitionMap.put("/**/*.properties", "anon");
+        filterChainDefinitionMap.putAll(getAnonUrlMap(applicationContext));
         filterChainDefinitionMap.put("/**", "user");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/noauth");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
-    private Map<String, String> getAnonymousUrl() {
-        Map<String, String> map = new HashMap<>();
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
-            Anonymous anonymous = entry.getValue().getMethodAnnotation(Anonymous.class);
-            if (anonymous == null) {
-                continue;
+    private Map<String, String> getAnonUrlMap(ApplicationContext applicationContext) {
+        Map<String, String> anonUrlMap = new HashMap<>();
+        // 获取所有Controller
+        Map<String, Object> controllerMap = applicationContext.getBeansWithAnnotation(RestController.class);
+        controllerMap.putAll(applicationContext.getBeansWithAnnotation(Controller.class));
+        for (Map.Entry<String, Object> entry : controllerMap.entrySet()) {
+            Class<?> controller = entry.getValue().getClass();
+            // 获取controller上的@RequestMapping注解
+            RequestMapping controllerRequestMapping = controller.getAnnotation(RequestMapping.class);
+            // 获取controller的所有方法
+            Method[] controllerMethods = controller.getMethods();
+            for (Method method : controllerMethods) {
+                Anonymous anonymous = AnnotatedElementUtils.findMergedAnnotation(method, Anonymous.class);
+                if (anonymous == null) {
+                    continue;
+                }
+                // 将controller的访问路径和method的访问路径进行拼接
+                String[] methodUrls = getMethodUrls(method);
+                for (String methodUrl : methodUrls) {
+                    if (controllerRequestMapping == null) {
+                        anonUrlMap.put(methodUrl, "anon");
+                    } else {
+                        for (String controllerUrl : controllerRequestMapping.value()) {
+                            if (!methodUrl.startsWith("/")) {
+                                anonUrlMap.put(controllerUrl + "/" + methodUrl, "anon");
+                            } else {
+                                anonUrlMap.put(controllerUrl + methodUrl, "anon");
+                            }
+                        }
+                    }
+                }
             }
-            Set<String> patterns = entry.getKey().getPatternsCondition().getPatterns();
-            if (CollectionUtils.isEmpty(patterns)) {
-                continue;
-            }
-            patterns.forEach(e -> map.put(e, "anon"));
         }
-        return map;
+        return anonUrlMap;
+    }
+
+    private String[] getMethodUrls(Method method) {
+        Set<String> result = new HashSet<>();
+        GetMapping getMapping = AnnotatedElementUtils.findMergedAnnotation(method, GetMapping.class);
+        if (getMapping != null) {
+            result.addAll(Arrays.asList(getMapping.value()));
+        }
+        PostMapping postMapping = AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
+        if (postMapping != null) {
+            result.addAll(Arrays.asList(postMapping.value()));
+        }
+        PutMapping putMapping = AnnotatedElementUtils.findMergedAnnotation(method, PutMapping.class);
+        if (putMapping != null) {
+            result.addAll(Arrays.asList(putMapping.value()));
+        }
+        DeleteMapping deleteMapping = AnnotatedElementUtils.findMergedAnnotation(method, DeleteMapping.class);
+        if (deleteMapping != null) {
+            result.addAll(Arrays.asList(deleteMapping.value()));
+        }
+        PatchMapping patchMapping = AnnotatedElementUtils.findMergedAnnotation(method, PatchMapping.class);
+        if (patchMapping != null) {
+            result.addAll(Arrays.asList(patchMapping.value()));
+        }
+        RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
+        if (requestMapping != null) {
+            result.addAll(Arrays.asList(requestMapping.value()));
+        }
+        return result.toArray(new String[0]);
     }
 
     /**
