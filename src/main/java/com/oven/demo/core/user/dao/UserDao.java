@@ -27,7 +27,7 @@ public class UserDao extends BaseDao<User> {
      * @param userName 用户名
      */
     public User getByUserName(String userName) {
-        return super.getOne(ConditionAndParams.build("and user_name = ?", userName));
+        return super.getOne(ConditionAndParams.eq("user_name", userName));
     }
 
     public void updateLastLoginTime(String time, Integer userId) {

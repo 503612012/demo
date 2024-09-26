@@ -38,7 +38,7 @@ public class SysDicDao extends BaseDao<SysDicEntity> {
      * 根据key查询
      */
     public SysDicEntity getByKey(String key) {
-        return super.getOne(ConditionAndParams.build("and _key = ?", key));
+        return super.getOne(ConditionAndParams.eq("_key", key));
     }
 
     public void reduceNum() {

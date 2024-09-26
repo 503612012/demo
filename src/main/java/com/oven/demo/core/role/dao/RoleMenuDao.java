@@ -21,7 +21,7 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
      * @param roleId 角色id
      */
     public List<RoleMenu> getByRoleId(Integer roleId) {
-        return super.getAll(ConditionAndParams.build("and role_id = ?", roleId));
+        return super.getAll(ConditionAndParams.eq("role_id", roleId));
     }
 
     /**
@@ -40,7 +40,7 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
      * @param roleId 角色id
      */
     public void deleteByRoleId(Integer roleId) {
-        super.delete(ConditionAndParams.build("and role_id = ?", roleId));
+        super.delete(ConditionAndParams.eq("role_id", roleId));
     }
 
 }
