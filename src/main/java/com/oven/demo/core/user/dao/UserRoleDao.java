@@ -31,7 +31,7 @@ public class UserRoleDao extends BaseDao<UserRole> {
      * @param roleId 角色id
      */
     public UserRole getByUserIdAndRoleId(Integer userId, Integer roleId) {
-        return super.getOne(ConditionAndParams.build("and user_id = ? and role_id = ?", userId, roleId));
+        return super.getOne(ConditionAndParams.eq("user_id", userId).andEq("role_id", roleId));
     }
 
     /**

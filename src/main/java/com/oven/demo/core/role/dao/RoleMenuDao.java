@@ -31,7 +31,7 @@ public class RoleMenuDao extends BaseDao<RoleMenu> {
      * @param menuId 菜单id
      */
     public RoleMenu getByRoleIdAndMenuId(Integer roleId, Integer menuId) {
-        return super.getOne(ConditionAndParams.build("and role_id = ? and menu_id = ?", roleId, menuId));
+        return super.getOne(ConditionAndParams.eq("role_id", roleId).andEq("menu_id", menuId));
     }
 
     /**
