@@ -12,8 +12,7 @@ else
   fi
 fi
 
-flag=true
-while [[ "$flag" == true ]]; do
+while true; do
   read -s -p "请输入root用户密码(退出请输Y)：" passwd
   if [[ "$passwd" == "y" || "$passwd" == "Y" ]]; then
     exit
@@ -33,7 +32,7 @@ while [[ "$flag" == true ]]; do
     echo $'\n密码至少包含一个数字！'
     continue
   fi
-  flag=fasle
+  break
 done
 
 echo -n "$passwd" | openssl rsautl -encrypt -pubin -inkey <(echo -e "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6h42Pq2dHuMOU8eZT2CjvMgY2eizvW61WApQqWYuZwZ3BGChFiUehy4vh2JpW8lEFyX8eigawuVVRn55zDtbs/74ctfs2tUnyEhLX+em3ug1wCTlV2Sm8bYiBgejkXlzvy6RKvVaYspczIi3+146Y5ltcQVQ15Z9Us1eg10OWSwIDAQAB\n-----END PUBLIC KEY-----") -out ./pwd
