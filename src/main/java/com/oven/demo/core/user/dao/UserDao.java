@@ -2,12 +2,10 @@ package com.oven.demo.core.user.dao;
 
 import com.oven.basic.base.dao.BaseDao;
 import com.oven.basic.base.entity.ConditionAndParams;
-import com.oven.basic.common.util.PropertyRowMapper;
+import com.oven.basic.base.entity.UpdateColumn;
 import com.oven.demo.core.user.entity.User;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,9 +15,6 @@ import java.util.List;
  */
 @Repository
 public class UserDao extends BaseDao<User> {
-
-    @Resource
-    private JdbcTemplate jdbcTemplate;
 
     /**
      * 通过用户名查询
@@ -31,45 +26,39 @@ public class UserDao extends BaseDao<User> {
     }
 
     public void updateLastLoginTime(String time, Integer userId) {
-        String sql = "update t_user set last_login_time = ?, err_num = 0 where dbid = ?";
-        this.jdbcTemplate.update(sql, time, userId);
+        super.update(UpdateColumn.update("last_login_time", time).and("err_num", 0), ConditionAndParams.eq("dbid", userId));
     }
 
     /**
      * 登录密码错误次数加一
      */
     public void logPasswordWrong(Integer userId) {
-        String sql = "update t_user set err_num = err_num + 1 where dbid = ?";
-        jdbcTemplate.update(sql, userId);
+        super.increment("err_num", ConditionAndParams.eq("dbid", userId));
     }
 
     /**
      * 更新头像
      */
     public void updateAvatar(Integer id, String avatarFileName) {
-        String sql = "update t_user set avatar = ? where dbid = ?";
-        jdbcTemplate.update(sql, avatarFileName, id);
+        super.update(UpdateColumn.update("avatar", avatarFileName), ConditionAndParams.eq("dbid", id));
     }
 
     /**
      * 重置错误次数
      */
     public void resetErrNum(Integer userId) {
-        String sql = "update t_user set err_num = 0 where dbid = ?";
-        jdbcTemplate.update(sql, userId);
+        super.update(UpdateColumn.update("err_num", 0), ConditionAndParams.eq("dbid", userId));
     }
 
     /**
      * 修改用户个性化配置
      */
     public void updateConfig(Integer id, String config) {
-        String sql = "update t_user set `config` = ? where dbid = ?";
-        jdbcTemplate.update(sql, config, id);
+        super.update(UpdateColumn.update("config", config), ConditionAndParams.eq("dbid", id));
     }
 
     public List<User> getByIds(List<Integer> ids) {
-        String sql = "select * from t_user where dbid in (" + String.join(",", ids.stream().map(String::valueOf).toArray(String[]::new)) + ")";
-        return jdbcTemplate.query(sql, PropertyRowMapper.build(User.class));
+        return super.getAll(ConditionAndParams.in("dbid", ids));
     }
 
 }

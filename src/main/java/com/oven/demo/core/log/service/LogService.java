@@ -46,7 +46,7 @@ public class LogService {
     /**
      * 批量添加
      */
-    public void batchSave(List<Log> list) {
+    public void batchSave(List<Log> list) throws Exception {
         logDao.batchSave(list);
     }
 

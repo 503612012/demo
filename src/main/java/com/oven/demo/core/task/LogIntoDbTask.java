@@ -44,10 +44,14 @@ public class LogIntoDbTask implements SchedulingConfigurer {
     }
 
     private void doJob() {
-        List<Log> list = LogQueueUtils.getInstance().drainTo(null);
-        if (!CollectionUtils.isEmpty(list)) {
-            logService.batchSave(list);
-            log.info("成功保存{}条操作日志到数据库。", list.size());
+        try {
+            List<Log> list = LogQueueUtils.getInstance().drainTo(null);
+            if (!CollectionUtils.isEmpty(list)) {
+                logService.batchSave(list);
+                log.info("成功保存{}条操作日志到数据库。", list.size());
+            }
+        } catch (Exception e) {
+            log.error("批量添加日志异常：", e);
         }
     }
 

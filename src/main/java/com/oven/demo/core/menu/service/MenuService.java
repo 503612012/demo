@@ -9,6 +9,7 @@ import com.oven.demo.core.role.service.RoleMenuService;
 import com.oven.demo.core.user.entity.UserRole;
 import com.oven.demo.core.user.service.UserRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -137,7 +138,12 @@ public class MenuService {
      * 分页菜单树形表格内容
      */
     public List<Menu> getMenuTreeTableData() {
-        return menuDao.getMenuTreeTableData();
+        List<Menu> list = menuDao.getMenuTreeTableData();
+        if (CollectionUtils.isEmpty(list)) {
+            return list;
+        }
+        list.forEach(e -> e.setTitle(e.getMenuName()));
+        return list;
     }
 
 }
