@@ -4,6 +4,9 @@
 # Maven target directory
 target/
 
+# VSCode files
+.vscode
+
 # IntelliJ IDEA files
 .idea/
 *.iml
