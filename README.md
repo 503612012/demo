@@ -4,25 +4,23 @@
 
 ## 二、文件清单
 
-| 文件                         | 描述        |
-|----------------------------|-----------|
-| __`lib`__                  | 第三方依赖包    |
-| __`resources`__            | 资源目录      |
-| app.sh                     | 容器启动后执行脚本 |
-| backup                     | 数据库备份脚本   |
-| build.sh                   | 镜像构建脚本    |
-| container.sh               | 容器启动脚本    |
-| Dockerfile                 | 镜像构建文件    |
-| jdk-8u341-linux-x64.tar.gz | jdk安装包    |
-| mysql.sh                   | 数据库安装脚本   |
-| path.sh                    | 项目部署根路径   |
-| pull.sh                    | 拉取镜像脚本    |
-| push.sh                    | 推送镜像脚本    |
-| simsun.ttf                 | 字体文件      |
-| start.sh                   | 应用启动脚本    |
-| stop.sh                    | 应用停止脚本    |
-| demo.sql                   | 数据库初始化脚本  |
-| demo-1.0.0.jar             | 应用代码      |
+| 文件              | 描述        |
+|-----------------|-----------|
+| __`lib`__       | 第三方依赖包    |
+| __`resources`__ | 资源目录      |
+| app.sh          | 容器启动后执行脚本 |
+| backup          | 数据库备份脚本   |
+| build.sh        | 镜像构建脚本    |
+| container.sh    | 容器启动脚本    |
+| Dockerfile      | 镜像构建文件    |
+| mysql.sh        | 数据库安装脚本   |
+| path.sh         | 项目部署根路径   |
+| pull.sh         | 拉取镜像脚本    |
+| push.sh         | 推送镜像脚本    |
+| start.sh        | 应用启动脚本    |
+| stop.sh         | 应用停止脚本    |
+| demo.sql        | 数据库初始化脚本  |
+| demo-1.0.0.jar  | 应用代码      |
 
 ## 三、配置修改
 
