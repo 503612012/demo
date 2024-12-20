@@ -184,14 +184,14 @@ insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'springfox.doc
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoints.web.base-path', '/actuator', null);
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoints.web.exposure.include', '*', null);
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.health.show-details', 'always', null);
-# insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.logfile.external-file', '${log.home}/demo.log', null);
+# insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.logfile.external-file', '${log.home}/fms.log', null);
 # insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'management.endpoint.shutdown.enabled', 'false', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'logging.config', 'classpath:logback-pro.xml', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.data.redis.repositories.enabled', 'false', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.data.jpa.repositories.enabled', 'false', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'spring.transaction.rollback-on-commit-failure', 'true', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'avatar.path', '/data/storage/avatar/', '头像保存地址');
-insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'log.home', '/home/demo/logs/', '日志保存路径');
+insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'log.home', '/home/fms/logs/', '日志保存路径');
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'rsa.public_key', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6h42Pq2dHuMOU8eZT2CjvMgY2eizvW61WApQqWYuZwZ3BGChFiUehy4vh2JpW8lEFyX8eigawuVVRn55zDtbs/74ctfs2tUnyEhLX+em3ug1wCTlV2Sm8bYiBgejkXlzvy6RKvVaYspczIi3+146Y5ltcQVQ15Z9Us1eg10OWSwIDAQAB', null);
 insert into t_config (dbid, `key`, `value`, `desc`) values (null, 'rsa.private_key', 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALqHjY+rZ0e4w5Tx5lPYKO8yBjZ6LO9brVYClCpZi5nBncEYKEWJR6HLi+HYmlbyUQXJfx6KBrC5VVGfnnMO1uz/vhy1+za1SfISEtf56be6DXAJOVXZKbxtiIGB6OReXO/LpEq9VpiylzMiLf7XjpjmW1xBVDXln1SzV6DXQ5ZLAgMBAAECgYAuqEN/oWc3KH87nXp4lIRAuKmXLN5ajPsBnamEIlvp/OVB7JH+OsWBMhHuTyjkAL7FjM5QTEQ6JlGyFhQjQZ3+wbi3zK5edgTuxmfaAygCQxuByfClhmSMXokqTV8EC3jGC0+I360Xeyxf9Yx4F76iTDbUOOhoWrUqUDo7X4D2aQJBAP3bSuxpgF7GAb6oVBeRNkohTasKUsMZP4oYndtbCf8PCX1AhEf/S3EbMHGLH9i/FuOuinl4u9AM3TaKVuN2R10CQQC8GrvXDyQhhdDie+PE1JJRFWT7BzbSoa1sRoIeH8QweTYm0wYTjTEMZA2HavRK9eRxcLx756NTT7TKnCp1ScHHAkEA8xeaKcXlvdvTM+YxkNfnqxk1LQMXuehlpjJoh/QoIG0f4ydzBRb+AXPN8g0OFBr5KlKsHCJ3h4WqGF5lUjCjqQJAU78rRjJtiadEOrGh1K43fnYiAUlS9TAaQAycPcEy3cn5fAuTtvyzi6q4A0RxAza6wG7K2/djVeI0wcgJdzKhXQJBANXcZs4k8SHTk/I8pBANYBLJ2CKbZtkgw2xE1Oj6q/fjZWLSToV6LrVUOemTfvWfbKmXVz0U865X+HNpPO256iU=', null);
 

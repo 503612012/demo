@@ -1,6 +1,6 @@
 #!/bin/bash
-cd /home/demo
-if [ ! -f /home/demo/logs/demo.log ]; then
-  touch /home/demo/logs/demo.log
+cd /home/fms
+if [ ! -f /home/fms/logs/fms.log ]; then
+  touch /home/fms/logs/fms.log
 fi
 ./start.sh
